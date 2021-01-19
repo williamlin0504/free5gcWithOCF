@@ -959,7 +959,6 @@ func HandleInitialUEMessage(ran *context.AmfRan, message *ngapType.NGAPPDU) {
 			// 5G-GUTI := <GUAMI><5G-TMSI>
 			tmpReginID, _, _ := ngapConvert.AmfIdToNgap(servedGuami.AmfId)
 			amfID := ngapConvert.AmfIdToModels(tmpReginID, fiveGSTMSI.AMFSetID.Value, fiveGSTMSI.AMFPointer.Value)
-
 			tmsi := hex.EncodeToString(fiveGSTMSI.FiveGTMSI.Value)
 
 			guti := servedGuami.PlmnId.Mcc + servedGuami.PlmnId.Mnc + amfID + tmsi

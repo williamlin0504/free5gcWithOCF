@@ -104,8 +104,6 @@ func GutiToString(buf []byte) (guami models.Guami, guti string) {
 	guami.PlmnId.Mnc = plmnID[3:]
 	guami.AmfId = amfID
 	guti = plmnID + amfID + tmsi5G
-	guami.OcfId = ocfID
-	guti = plmnID + ocfID + tmsi5G
 	return
 }
 
@@ -168,11 +166,6 @@ func GutiToNas(guti string) nasType.GUTI5G {
 	gutiNas.SetAMFRegionID(amfRegionId)
 	gutiNas.SetAMFSetID(amfSetId)
 	gutiNas.SetAMFPointer(amfPointer)
-
-	ocfRegionId, ocfSetId, ocfPointer := OcfIdToNas(ocfId)
-	gutiNas.SetOCFRegionID(ocfRegionId)
-	gutiNas.SetOCFSetID(ocfSetId)
-	gutiNas.SetOCFPointer(ocfPointer)
 	if tmsiBytes, err := hex.DecodeString(tmsi); err != nil {
 		logger.ConvertLog.Warnf("Decode TMSI failed: %+v", err)
 	} else {
