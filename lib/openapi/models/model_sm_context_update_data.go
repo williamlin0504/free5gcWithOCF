@@ -16,6 +16,7 @@ type SmContextUpdateData struct {
 	Guami              *Guami                    `json:"guami,omitempty"`
 	ServingNetwork     *PlmnId                   `json:"servingNetwork,omitempty"`
 	BackupAmfInfo      []BackupAmfInfo           `json:"backupAmfInfo,omitempty"`
+	BackupOcfInfo      []BackupOcfInfo           `json:"backupOcfInfo,omitempty"`
 	AnType             AccessType                `json:"anType,omitempty"`
 	RatType            RatType                   `json:"ratType,omitempty"`
 	PresenceInLadn     PresenceState             `json:"presenceInLadn,omitempty"`

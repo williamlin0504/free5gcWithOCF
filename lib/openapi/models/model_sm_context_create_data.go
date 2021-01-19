@@ -42,6 +42,7 @@ type SmContextCreateData struct {
 	SupportedFeatures       string                    `json:"supportedFeatures,omitempty"`
 	SelMode                 DnnSelectionMode          `json:"selMode,omitempty"`
 	BackupAmfInfo           []BackupAmfInfo           `json:"backupAmfInfo,omitempty"`
+	BackupOcfInfo           []BackupOcfInfo           `json:"backupOcfInfo,omitempty"`
 	TraceData               *TraceData                `json:"traceData,omitempty"`
 	UdmGroupId              string                    `json:"udmGroupId,omitempty"`
 	RoutingIndicator        string                    `json:"routingIndicator,omitempty"`

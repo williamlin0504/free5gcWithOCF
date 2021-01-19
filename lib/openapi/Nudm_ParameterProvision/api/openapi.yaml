@@ -1847,6 +1847,11 @@ components:
             $ref: '#/components/schemas/BackupAmfInfo'
           minItems: 1
           type: array
+        backupOcfInfo:
+          items:
+            $ref: '#/components/schemas/BackupOcfInfo'
+          minItems: 1
+          type: array
         traceData:
           $ref: '#/components/schemas/TraceData'
         udmGroupId:
@@ -2115,6 +2120,12 @@ components:
         backupAmfInfo:
           items:
             $ref: '#/components/schemas/BackupAmfInfo'
+          minItems: 1
+          nullable: true
+          type: array
+        backupOcfInfo:
+          items:
+            $ref: '#/components/schemas/BackupOcfInfo'
           minItems: 1
           nullable: true
           type: array
@@ -4603,6 +4614,31 @@ components:
       - backupAmf
       type: object
     AmfName:
+      type: string
+    BackupOcfInfo:
+      example:
+        backupOcf: backupOcf
+        guamiList:
+        - plmnId:
+            mnc: mnc
+            mcc: mcc
+          ocfId: ocfId
+        - plmnId:
+            mnc: mnc
+            mcc: mcc
+          ocfId: ocfId
+      properties:
+        backupOcf:
+          type: string
+        guamiList:
+          items:
+            $ref: '#/components/schemas/Guami'
+          minItems: 1
+          type: array
+      required:
+      - backupOcf
+      type: object
+    OcfName:
       type: string
     TraceData:
       example:

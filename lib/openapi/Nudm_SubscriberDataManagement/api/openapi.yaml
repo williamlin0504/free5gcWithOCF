@@ -1847,6 +1847,11 @@ components:
             $ref: '#/components/schemas/BackupAmfInfo'
           minItems: 1
           type: array
+        backupOcfInfo:
+          items:
+            $ref: '#/components/schemas/BackupOcfInfo'
+          minItems: 1
+          type: array
         traceData:
           $ref: '#/components/schemas/TraceData'
         udmGroupId:
@@ -2117,6 +2122,11 @@ components:
             $ref: '#/components/schemas/BackupAmfInfo'
           minItems: 1
           nullable: true
+          type: array
+        backupOcfInfo:
+          items:
+            $ref: '#/components/schemas/BackupOcfInfo'
+          minItems: 1
           type: array
         anType:
           $ref: '#/components/schemas/AccessType'

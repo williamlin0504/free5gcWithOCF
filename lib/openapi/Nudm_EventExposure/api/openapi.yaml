@@ -4604,6 +4604,31 @@ components:
       type: object
     AmfName:
       type: string
+    BackupOcfInfo:
+      example:
+        backupOcf: backupOcf
+        guamiList:
+        - plmnId:
+            mnc: mnc
+            mcc: mcc
+          ocfId: ocfId
+        - plmnId:
+            mnc: mnc
+            mcc: mcc
+          ocfId: ocfId
+      properties:
+        backupOcf:
+          type: string
+        guamiList:
+          items:
+            $ref: '#/components/schemas/Guami'
+          minItems: 1
+          type: array
+      required:
+      - backupOcf
+      type: object
+    OcfName:
+      type: string
     TraceData:
       example:
         eventList: eventList
