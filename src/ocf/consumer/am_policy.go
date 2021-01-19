@@ -5,21 +5,21 @@ import (
 	"free5gc/lib/openapi"
 	"free5gc/lib/openapi/Npcf_AMPolicy"
 	"free5gc/lib/openapi/models"
-	amf_context "free5gc/src/ocf/context"
+	ocf_context "free5gc/src/ocf/context"
 	"free5gc/src/ocf/logger"
 	"regexp"
 )
 
-func AMPolicyControlCreate(ue *amf_context.OcfUe, anType models.AccessType) (*models.ProblemDetails, error) {
+func AMPolicyControlCreate(ue *ocf_context.OcfUe, anType models.AccessType) (*models.ProblemDetails, error) {
 
 	configuration := Npcf_AMPolicy.NewConfiguration()
 	configuration.SetBasePath(ue.PcfUri)
 	client := Npcf_AMPolicy.NewAPIClient(configuration)
 
-	amfSelf := amf_context.OCF_Self()
+	ocfSelf := ocf_context.OCF_Self()
 
 	policyAssociationRequest := models.PolicyAssociationRequest{
-		NotificationUri: amfSelf.GetIPv4Uri() + "/namf-callback/v1/am-policy/",
+		NotificationUri: ocfSelf.GetIPv4Uri() + "/nocf-callback/v1/am-policy/",
 		Supi:            ue.Supi,
 		Pei:             ue.Pei,
 		Gpsi:            ue.Gpsi,
@@ -28,7 +28,7 @@ func AMPolicyControlCreate(ue *amf_context.OcfUe, anType models.AccessType) (*mo
 			Mcc: ue.PlmnId.Mcc,
 			Mnc: ue.PlmnId.Mnc,
 		},
-		Guami: &amfSelf.ServedGuamiList[0],
+		Guami: &ocfSelf.ServedGuamiList[0],
 	}
 
 	if ue.AccessAndMobilitySubscriptionData != nil {
@@ -72,7 +72,7 @@ func AMPolicyControlCreate(ue *amf_context.OcfUe, anType models.AccessType) (*mo
 	return nil, nil
 }
 
-func AMPolicyControlUpdate(ue *amf_context.OcfUe, updateRequest models.PolicyAssociationUpdateRequest) (
+func AMPolicyControlUpdate(ue *ocf_context.OcfUe, updateRequest models.PolicyAssociationUpdateRequest) (
 	problemDetails *models.ProblemDetails, err error) {
 	configuration := Npcf_AMPolicy.NewConfiguration()
 	configuration.SetBasePath(ue.PcfUri)
@@ -111,7 +111,7 @@ func AMPolicyControlUpdate(ue *amf_context.OcfUe, updateRequest models.PolicyAss
 	return problemDetails, err
 }
 
-func AMPolicyControlDelete(ue *amf_context.OcfUe) (problemDetails *models.ProblemDetails, err error) {
+func AMPolicyControlDelete(ue *ocf_context.OcfUe) (problemDetails *models.ProblemDetails, err error) {
 
 	configuration := Npcf_AMPolicy.NewConfiguration()
 	configuration.SetBasePath(ue.PcfUri)

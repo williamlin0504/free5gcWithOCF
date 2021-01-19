@@ -27,6 +27,10 @@ type APIClient struct {
 	AMFNon3GPPAccessRegistrationInfoRetrievalApi           *AMFNon3GPPAccessRegistrationInfoRetrievalApiService
 	AMFRegistrationFor3GPPAccessApi                        *AMFRegistrationFor3GPPAccessApiService
 	AMFRegistrationForNon3GPPAccessApi                     *AMFRegistrationForNon3GPPAccessApiService
+	OCF3GppAccessRegistrationInfoRetrievalApi              *OCF3GppAccessRegistrationInfoRetrievalApiService
+	OCFNon3GPPAccessRegistrationInfoRetrievalApi           *OCFNon3GPPAccessRegistrationInfoRetrievalApiService
+	OCFRegistrationFor3GPPAccessApi                        *OCFRegistrationFor3GPPAccessApiService
+	OCFRegistrationForNon3GPPAccessApi                     *OCFRegistrationForNon3GPPAccessApiService
 	ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi    *ParameterUpdateInTheAMFRegistrationFor3GPPAccessApiService
 	ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApi *ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApiService
 	SMFDeregistrationApi                                   *SMFDeregistrationApiService
@@ -63,6 +67,10 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.AMFNon3GPPAccessRegistrationInfoRetrievalApi = (*AMFNon3GPPAccessRegistrationInfoRetrievalApiService)(&c.common)
 	c.AMFRegistrationFor3GPPAccessApi = (*AMFRegistrationFor3GPPAccessApiService)(&c.common)
 	c.AMFRegistrationForNon3GPPAccessApi = (*AMFRegistrationForNon3GPPAccessApiService)(&c.common)
+	c.OCF3GppAccessRegistrationInfoRetrievalApi = (*OCF3GppAccessRegistrationInfoRetrievalApiService)(&c.common)
+	c.OCFNon3GPPAccessRegistrationInfoRetrievalApi = (*OCFNon3GPPAccessRegistrationInfoRetrievalApiService)(&c.common)
+	c.OCFRegistrationFor3GPPAccessApi = (*OCFRegistrationFor3GPPAccessApiService)(&c.common)
+	c.OCFRegistrationForNon3GPPAccessApi = (*OCFRegistrationForNon3GPPAccessApiService)(&c.common)
 	c.ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi = (*ParameterUpdateInTheAMFRegistrationFor3GPPAccessApiService)(&c.common)
 	c.ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApi = (*ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApiService)(&c.common)
 	c.SMFDeregistrationApi = (*SMFDeregistrationApiService)(&c.common)

@@ -38,6 +38,7 @@ type NfProfile struct {
 	UdmInfo                          *UdmInfo                          `json:"udmInfo,omitempty" yaml:"udmInfo" bson:"udmInfo" mapstructure:"UdmInfo"`
 	AusfInfo                         *AusfInfo                         `json:"ausfInfo,omitempty" yaml:"ausfInfo" bson:"ausfInfo" mapstructure:"AusfInfo"`
 	AmfInfo                          *AmfInfo                          `json:"amfInfo,omitempty" yaml:"amfInfo" bson:"amfInfo" mapstructure:"AmfInfo"`
+	OcfInfo                          *OcfInfo                          `json:"ocfInfo,omitempty" yaml:"ocfInfo" bson:"ocfInfo" mapstructure:"OcfInfo"`
 	SmfInfo                          *SmfInfo                          `json:"smfInfo,omitempty" yaml:"smfInfo" bson:"smfInfo" mapstructure:"SmfInfo"`
 	UpfInfo                          *UpfInfo                          `json:"upfInfo,omitempty" yaml:"upfInfo" bson:"upfInfo" mapstructure:"UpfInfo"`
 	PcfInfo                          *PcfInfo                          `json:"pcfInfo,omitempty" yaml:"pcfInfo" bson:"pcfInfo" mapstructure:"PcfInfo"`
