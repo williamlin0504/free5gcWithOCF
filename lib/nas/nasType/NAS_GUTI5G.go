@@ -183,6 +183,43 @@ func (a *GUTI5G) SetAMFPointer(aMFPointer uint8) {
 }
 
 // GUTI5G 9.11.3.4
+// AMFRegionID Row, sBit, len = [4, 4], 8 , 8
+func (a *GUTI5G) GetOCFRegionID() (oCFRegionID uint8) {
+	return a.Octet[4]
+}
+
+// GUTI5G 9.11.3.4
+// AMFRegionID Row, sBit, len = [4, 4], 8 , 8
+func (a *GUTI5G) SetOCFRegionID(oCFRegionID uint8) {
+	a.Octet[4] = oCFRegionID
+}
+
+// GUTI5G 9.11.3.4
+// AMFSetID Row, sBit, len = [5, 6], 8 , 10
+func (a *GUTI5G) GetOCFSetID() (oCFSetID uint16) {
+	return (uint16(a.Octet[5])<<2 + uint16((a.Octet[6])&GetBitMask(8, 2))>>6)
+}
+
+// GUTI5G 9.11.3.4
+// AMFSetID Row, sBit, len = [5, 6], 8 , 10
+func (a *GUTI5G) SetOCFSetID(oCFSetID uint16) {
+	a.Octet[5] = uint8((oCFSetID)>>2) & 255
+	a.Octet[6] = a.Octet[6]&GetBitMask(6, 6) + uint8(oCFSetID&3)<<6
+}
+
+// GUTI5G 9.11.3.4
+// AMFPointer Row, sBit, len = [6, 6], 6 , 6
+func (a *GUTI5G) GetOCFPointer() (oCFPointer uint8) {
+	return a.Octet[6] & GetBitMask(6, 0)
+}
+
+// GUTI5G 9.11.3.4
+// AMFPointer Row, sBit, len = [6, 6], 6 , 6
+func (a *GUTI5G) SetOCFPointer(oCFPointer uint8) {
+	a.Octet[6] = (a.Octet[6] & 192) + (oCFPointer & 63)
+}
+
+// GUTI5G 9.11.3.4
 // TMSI5G Row, sBit, len = [7, 10], 8 , 32
 func (a *GUTI5G) GetTMSI5G() (tMSI5G [4]uint8) {
 	copy(tMSI5G[:], a.Octet[7:11])

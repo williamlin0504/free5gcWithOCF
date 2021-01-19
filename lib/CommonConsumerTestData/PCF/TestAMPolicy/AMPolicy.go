@@ -114,6 +114,7 @@ func GetAMreqdata() models.PolicyAssociationRequest {
 				Mnc: "93",
 			},
 			AmfId: "cafe00",
+			OcfId: "cafe01",
 		},
 		TimeZone: "+08:00+1h",
 		TraceReq: &models.TraceData{

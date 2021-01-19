@@ -104,6 +104,8 @@ func GutiToString(buf []byte) (guami models.Guami, guti string) {
 	guami.PlmnId.Mnc = plmnID[3:]
 	guami.AmfId = amfID
 	guti = plmnID + amfID + tmsi5G
+	guami.OcfId = ocfID
+	guti = plmnID + ocfID + tmsi5G
 	return
 }
 
