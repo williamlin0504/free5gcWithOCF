@@ -9,7 +9,7 @@
 
 package models
 
-type  struct {
+type EventSubscription struct {
 	Event       SmfEvent       `json:"event" yaml:"event" bson:"event" mapstructure:"Event"`
 	DnaiChgType DnaiChangeType `json:"dnaiChgType,omitempty" yaml:"dnaiChgType" bson:"dnaiChgType" mapstructure:"DnaiChgType"`
 }
