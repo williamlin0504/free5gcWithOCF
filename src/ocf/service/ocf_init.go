@@ -40,19 +40,19 @@ type OCF struct{}
 type (
 	// Config information.
 	Config struct {
-		amfcfg string
+		ocfcfg string
 	}
 )
 
 var config Config
 
-var amfCLi = []cli.Flag{
+var ocfCLi = []cli.Flag{
 	cli.StringFlag{
 		Name:  "free5gccfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
-		Name:  "amfcfg",
+		Name:  "ocfcfg",
 		Usage: "ocf config file",
 	},
 }
@@ -64,19 +64,19 @@ func init() {
 }
 
 func (*OCF) GetCliCmd() (flags []cli.Flag) {
-	return amfCLi
+	return ocfCLi
 }
 
 func (*OCF) Initialize(c *cli.Context) {
 
 	config = Config{
-		amfcfg: c.String("amfcfg"),
+		ocfcfg: c.String("ocfcfg"),
 	}
 
-	if config.amfcfg != "" {
-		factory.InitConfigFactory(config.amfcfg)
+	if config.ocfcfg != "" {
+		factory.InitConfigFactory(config.ocfcfg)
 	} else {
-		DefaultOcfConfigPath := path_util.Gofree5gcPath("free5gc/config/amfcfg.conf")
+		DefaultOcfConfigPath := path_util.Gofree5gcPath("free5gc/config/ocfcfg.conf")
 		factory.InitConfigFactory(DefaultOcfConfigPath)
 	}
 
@@ -196,7 +196,7 @@ func (ocf *OCF) Exec(c *cli.Context) error {
 
 	//OCF.Initialize(cfgPath, c)
 
-	initLog.Traceln("args:", c.String("amfcfg"))
+	initLog.Traceln("args:", c.String("ocfcfg"))
 	args := ocf.FilterCli(c)
 	initLog.Traceln("filter: ", args)
 	command := exec.Command("./ocf", args...)
@@ -242,7 +242,7 @@ func (ocf *OCF) Exec(c *cli.Context) error {
 // Used in OCF planned removal procedure
 func (ocf *OCF) Terminate() {
 	logger.InitLog.Infof("Terminating OCF...")
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
 	// TODO: forward registered UE contexts to target OCF in the same OCF set if there is one
 
@@ -258,8 +258,8 @@ func (ocf *OCF) Terminate() {
 
 	// send OCF status indication to ran to notify ran that this OCF will be unavailable
 	logger.InitLog.Infof("Send OCF Status Indication to Notify RANs due to OCF terminating")
-	unavailableGuamiList := ngap_message.BuildUnavailableGUAMIList(amfSelf.ServedGuamiList)
-	amfSelf.OcfRanPool.Range(func(key, value interface{}) bool {
+	unavailableGuamiList := ngap_message.BuildUnavailableGUAMIList(ocfSelf.ServedGuamiList)
+	ocfSelf.OcfRanPool.Range(func(key, value interface{}) bool {
 		ran := value.(*context.OcfRan)
 		ngap_message.SendOCFStatusIndication(ran, unavailableGuamiList)
 		return true
@@ -267,6 +267,6 @@ func (ocf *OCF) Terminate() {
 
 	ngap_service.Stop()
 
-	callback.SendOcfStatusChangeNotify((string)(models.StatusChange_UNAVAILABLE), amfSelf.ServedGuamiList)
+	callback.SendOcfStatusChangeNotify((string)(models.StatusChange_UNAVAILABLE), ocfSelf.ServedGuamiList)
 	logger.InitLog.Infof("OCF terminated")
 }

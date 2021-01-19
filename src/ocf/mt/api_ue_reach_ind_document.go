@@ -1,5 +1,5 @@
 /*
- * Namf_MT
+ * Nocf_MT
  *
  * OCF Mobile Termination Service
  *
@@ -16,7 +16,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// EnableUeReachability - Namf_MT EnableUEReachability service Operation
+// EnableUeReachability - Nocf_MT EnableUEReachability service Operation
 func HTTPEnableUeReachability(c *gin.Context) {
 	logger.MtLog.Warnf("Handle Enable Ue Reachability is not implemented.")
 	c.JSON(http.StatusOK, gin.H{})

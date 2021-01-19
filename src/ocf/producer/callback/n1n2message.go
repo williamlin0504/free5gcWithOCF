@@ -2,9 +2,9 @@ package callback
 
 import (
 	"context"
-	"free5gc/lib/openapi/Namf_Communication"
+	"free5gc/lib/openapi/Nocf_Communication"
 	"free5gc/lib/openapi/models"
-	amf_context "free5gc/src/ocf/context"
+	ocf_context "free5gc/src/ocf/context"
 	"free5gc/src/ocf/logger"
 	"strconv"
 
@@ -17,7 +17,7 @@ func init() {
 	HttpLog = logger.HttpLog
 }
 
-func SendN1N2TransferFailureNotification(ue *amf_context.OcfUe, cause models.N1N2MessageTransferCause) {
+func SendN1N2TransferFailureNotification(ue *ocf_context.OcfUe, cause models.N1N2MessageTransferCause) {
 	if ue.N1N2Message == nil {
 		return
 	}
@@ -25,8 +25,8 @@ func SendN1N2TransferFailureNotification(ue *amf_context.OcfUe, cause models.N1N
 	uri := n1n2Message.Request.JsonData.N1n2FailureTxfNotifURI
 	if n1n2Message.Status == models.N1N2MessageTransferCause_ATTEMPTING_TO_REACH_UE && uri != "" {
 
-		configuration := Namf_Communication.NewConfiguration()
-		client := Namf_Communication.NewAPIClient(configuration)
+		configuration := Nocf_Communication.NewConfiguration()
+		client := Nocf_Communication.NewAPIClient(configuration)
 
 		n1N2MsgTxfrFailureNotification := models.N1N2MsgTxfrFailureNotification{
 			Cause:          cause,
@@ -49,15 +49,15 @@ func SendN1N2TransferFailureNotification(ue *amf_context.OcfUe, cause models.N1N
 	}
 }
 
-func SendN1MessageNotify(ue *amf_context.OcfUe, n1class models.N1MessageClass, n1Msg []byte,
+func SendN1MessageNotify(ue *ocf_context.OcfUe, n1class models.N1MessageClass, n1Msg []byte,
 	registerContext *models.RegistrationContextContainer) {
 	ue.N1N2MessageSubscription.Range(func(key, value interface{}) bool {
 		subscriptionID := key.(int64)
 		subscription := value.(models.UeN1N2InfoSubscriptionCreateData)
 
 		if subscription.N1NotifyCallbackUri != "" && subscription.N1MessageClass == n1class {
-			configuration := Namf_Communication.NewConfiguration()
-			client := Namf_Communication.NewAPIClient(configuration)
+			configuration := Nocf_Communication.NewConfiguration()
+			client := Nocf_Communication.NewAPIClient(configuration)
 			n1MessageNotify := models.N1MessageNotify{
 				JsonData: &models.N1MessageNotification{
 					N1NotifySubscriptionId: strconv.Itoa(int(subscriptionID)),
@@ -88,9 +88,9 @@ func SendN1MessageNotify(ue *amf_context.OcfUe, n1class models.N1MessageClass, n
 
 // TS 29.518 5.2.2.3.5.2
 func SendN1MessageNotifyAtOCFReAllocation(
-	ue *amf_context.OcfUe, n1Msg []byte, registerContext *models.RegistrationContextContainer) {
-	configuration := Namf_Communication.NewConfiguration()
-	client := Namf_Communication.NewAPIClient(configuration)
+	ue *ocf_context.OcfUe, n1Msg []byte, registerContext *models.RegistrationContextContainer) {
+	configuration := Nocf_Communication.NewConfiguration()
+	client := Nocf_Communication.NewAPIClient(configuration)
 
 	n1MessageNotify := models.N1MessageNotify{
 		JsonData: &models.N1MessageNotification{
@@ -125,14 +125,14 @@ func SendN1MessageNotifyAtOCFReAllocation(
 	}
 }
 
-func SendN2InfoNotify(ue *amf_context.OcfUe, n2class models.N2InformationClass, n1Msg, n2Msg []byte) {
+func SendN2InfoNotify(ue *ocf_context.OcfUe, n2class models.N2InformationClass, n1Msg, n2Msg []byte) {
 	ue.N1N2MessageSubscription.Range(func(key, value interface{}) bool {
 		subscriptionID := key.(int64)
 		subscription := value.(models.UeN1N2InfoSubscriptionCreateData)
 
 		if subscription.N2NotifyCallbackUri != "" && subscription.N2InformationClass == n2class {
-			configuration := Namf_Communication.NewConfiguration()
-			client := Namf_Communication.NewAPIClient(configuration)
+			configuration := Nocf_Communication.NewConfiguration()
+			client := Nocf_Communication.NewAPIClient(configuration)
 
 			n2InformationNotify := models.N2InfoNotifyRequest{
 				JsonData: &models.N2InformationNotification{

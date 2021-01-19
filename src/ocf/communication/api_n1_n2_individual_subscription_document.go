@@ -1,5 +1,5 @@
 /*
- * Namf_Communication
+ * Nocf_Communication
  *
  * OCF Communication Service
  *
@@ -20,7 +20,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// N1N2MessageUnSubscribe - Namf_Communication N1N2 Message UnSubscribe (UE Specific) service Operation
+// N1N2MessageUnSubscribe - Nocf_Communication N1N2 Message UnSubscribe (UE Specific) service Operation
 func HTTPN1N2MessageUnSubscribe(c *gin.Context) {
 
 	req := http_wrapper.NewRequest(c.Request, nil)

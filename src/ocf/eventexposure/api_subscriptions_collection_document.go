@@ -1,5 +1,5 @@
 /*
- * Namf_EventExposure
+ * Nocf_EventExposure
  *
  * OCF Event Exposure Service
  *
@@ -20,7 +20,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// CreateSubscription - Namf_EventExposure Subscribe service Operation
+// CreateSubscription - Nocf_EventExposure Subscribe service Operation
 func HTTPCreateSubscription(c *gin.Context) {
 	var createEventSubscription models.OcfCreateEventSubscription
 

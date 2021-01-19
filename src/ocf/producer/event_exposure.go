@@ -31,7 +31,7 @@ func HandleCreateOCFEventSubscription(request *http_wrapper.Request) *http_wrapp
 func CreateOCFEventSubscriptionProcedure(createEventSubscription models.OcfCreateEventSubscription) (
 	*models.OcfCreatedEventSubscription, *models.ProblemDetails) {
 
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
 	createdEventSubscription := &models.OcfCreatedEventSubscription{}
 	subscription := createEventSubscription.Subscription
@@ -41,7 +41,7 @@ func CreateOCFEventSubscriptionProcedure(createEventSubscription models.OcfCreat
 	var immediateFlags []bool
 	var reportlist []models.OcfEventReport
 
-	id, err := amfSelf.EventSubscriptionIDGenerator.Allocate()
+	id, err := ocfSelf.EventSubscriptionIDGenerator.Allocate()
 	if err != nil {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusInternalServerError,
@@ -70,7 +70,7 @@ func CreateOCFEventSubscriptionProcedure(createEventSubscription models.OcfCreat
 	if subscription.AnyUE {
 		contextEventSubscription.IsAnyUe = true
 		ueEventSubscription.AnyUe = true
-		amfSelf.UePool.Range(func(key, value interface{}) bool {
+		ocfSelf.UePool.Range(func(key, value interface{}) bool {
 			ue := value.(*context.OcfUe)
 			ue.EventSubscriptionsInfo[newSubscriptionID] = new(context.OcfUeEventSubscription)
 			*ue.EventSubscriptionsInfo[newSubscriptionID] = ueEventSubscription
@@ -80,7 +80,7 @@ func CreateOCFEventSubscriptionProcedure(createEventSubscription models.OcfCreat
 	} else if subscription.GroupId != "" {
 		contextEventSubscription.IsGroupUe = true
 		ueEventSubscription.AnyUe = true
-		amfSelf.UePool.Range(func(key, value interface{}) bool {
+		ocfSelf.UePool.Range(func(key, value interface{}) bool {
 			ue := value.(*context.OcfUe)
 			if ue.GroupID == subscription.GroupId {
 				ue.EventSubscriptionsInfo[newSubscriptionID] = new(context.OcfUeEventSubscription)
@@ -91,7 +91,7 @@ func CreateOCFEventSubscriptionProcedure(createEventSubscription models.OcfCreat
 		})
 
 	} else {
-		if ue, ok := amfSelf.OcfUeFindBySupi(subscription.Supi); !ok {
+		if ue, ok := ocfSelf.OcfUeFindBySupi(subscription.Supi); !ok {
 			problemDetails := &models.ProblemDetails{
 				Status: http.StatusForbidden,
 				Cause:  "UE_NOT_SERVED_BY_OCF",
@@ -108,7 +108,7 @@ func CreateOCFEventSubscriptionProcedure(createEventSubscription models.OcfCreat
 	if subscription.Options != nil {
 		contextEventSubscription.Expiry = subscription.Options.Expiry
 	}
-	amfSelf.NewEventSubscription(newSubscriptionID, contextEventSubscription)
+	ocfSelf.NewEventSubscription(newSubscriptionID, contextEventSubscription)
 
 	// build response
 
@@ -117,7 +117,7 @@ func CreateOCFEventSubscriptionProcedure(createEventSubscription models.OcfCreat
 
 	// for immediate use
 	if subscription.AnyUE {
-		amfSelf.UePool.Range(func(key, value interface{}) bool {
+		ocfSelf.UePool.Range(func(key, value interface{}) bool {
 			ue := value.(*context.OcfUe)
 			if isImmediate {
 				subReports(ue, newSubscriptionID)
@@ -137,7 +137,7 @@ func CreateOCFEventSubscriptionProcedure(createEventSubscription models.OcfCreat
 			return true
 		})
 	} else if subscription.GroupId != "" {
-		amfSelf.UePool.Range(func(key, value interface{}) bool {
+		ocfSelf.UePool.Range(func(key, value interface{}) bool {
 			ue := value.(*context.OcfUe)
 			if isImmediate {
 				subReports(ue, newSubscriptionID)
@@ -159,7 +159,7 @@ func CreateOCFEventSubscriptionProcedure(createEventSubscription models.OcfCreat
 			return true
 		})
 	} else {
-		ue, _ := amfSelf.OcfUeFindBySupi(subscription.Supi)
+		ue, _ := ocfSelf.OcfUeFindBySupi(subscription.Supi)
 		if isImmediate {
 			subReports(ue, newSubscriptionID)
 		}
@@ -180,7 +180,7 @@ func CreateOCFEventSubscriptionProcedure(createEventSubscription models.OcfCreat
 		createdEventSubscription.ReportList = reportlist
 		// delete subscription
 		if !reportlist[0].State.Active {
-			amfSelf.DeleteEventSubscription(newSubscriptionID)
+			ocfSelf.DeleteEventSubscription(newSubscriptionID)
 		}
 	}
 
@@ -201,9 +201,9 @@ func HandleDeleteOCFEventSubscription(request *http_wrapper.Request) *http_wrapp
 }
 
 func DeleteOCFEventSubscriptionProcedure(subscriptionID string) *models.ProblemDetails {
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
-	subscription, ok := amfSelf.FindEventSubscription(subscriptionID)
+	subscription, ok := ocfSelf.FindEventSubscription(subscriptionID)
 	if !ok {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusNotFound,
@@ -213,11 +213,11 @@ func DeleteOCFEventSubscriptionProcedure(subscriptionID string) *models.ProblemD
 	}
 
 	for _, supi := range subscription.UeSupiList {
-		if ue, ok := amfSelf.OcfUeFindBySupi(supi); ok {
+		if ue, ok := ocfSelf.OcfUeFindBySupi(supi); ok {
 			delete(ue.EventSubscriptionsInfo, subscriptionID)
 		}
 	}
-	amfSelf.DeleteEventSubscription(subscriptionID)
+	ocfSelf.DeleteEventSubscription(subscriptionID)
 	return nil
 }
 
@@ -247,9 +247,9 @@ func ModifyOCFEventSubscriptionProcedure(
 	modifySubscriptionRequest models.ModifySubscriptionRequest) (
 	*models.OcfUpdatedEventSubscription, *models.ProblemDetails) {
 
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
-	contextSubscription, ok := amfSelf.FindEventSubscription(subscriptionID)
+	contextSubscription, ok := ocfSelf.FindEventSubscription(subscriptionID)
 	if !ok {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusNotFound,
@@ -263,7 +263,7 @@ func ModifyOCFEventSubscriptionProcedure(
 	} else if modifySubscriptionRequest.SubscriptionItemInner != nil {
 		subscription := &contextSubscription.EventSubscription
 		if !contextSubscription.IsAnyUe && !contextSubscription.IsGroupUe {
-			if _, ok := amfSelf.OcfUeFindBySupi(subscription.Supi); !ok {
+			if _, ok := ocfSelf.OcfUeFindBySupi(subscription.Supi); !ok {
 				problemDetails := &models.ProblemDetails{
 					Status: http.StatusForbidden,
 					Cause:  "UE_NOT_SERVED_BY_OCF",

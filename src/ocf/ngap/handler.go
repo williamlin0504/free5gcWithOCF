@@ -220,8 +220,8 @@ func HandleUplinkNasTransport(ran *context.OcfRan, message *ngapType.NGAPPDU) {
 		logger.NgapLog.Errorf("No UE Context[RanUeNgapID: %d]", rANUENGAPID.Value)
 		return
 	}
-	amfUe := ranUe.OcfUe
-	if amfUe == nil {
+	ocfUe := ranUe.OcfUe
+	if ocfUe == nil {
 		err := ranUe.Remove()
 		if err != nil {
 			logger.NgapLog.Errorf(err.Error())
@@ -481,8 +481,8 @@ func HandleUEContextReleaseComplete(ran *context.OcfRan, message *ngapType.NGAPP
 		printCriticalityDiagnostics(criticalityDiagnostics)
 	}
 
-	amfUe := ranUe.OcfUe
-	if amfUe == nil {
+	ocfUe := ranUe.OcfUe
+	if ocfUe == nil {
 		logger.NgapLog.Infof("Release UE Context : RanUe[OcfUeNgapId: %d]", ranUe.OcfUeNgapId)
 		err := ranUe.Remove()
 		if err != nil {
@@ -492,9 +492,9 @@ func HandleUEContextReleaseComplete(ran *context.OcfRan, message *ngapType.NGAPP
 	}
 	// TODO: OCF shall, if supported, store it and may use it for subsequent paging
 	if infoOnRecommendedCellsAndRANNodesForPaging != nil {
-		amfUe.InfoOnRecommendedCellsAndRanNodesForPaging = new(context.InfoOnRecommendedCellsAndRanNodesForPaging)
+		ocfUe.InfoOnRecommendedCellsAndRanNodesForPaging = new(context.InfoOnRecommendedCellsAndRanNodesForPaging)
 
-		recommendedCells := &amfUe.InfoOnRecommendedCellsAndRanNodesForPaging.RecommendedCells
+		recommendedCells := &ocfUe.InfoOnRecommendedCellsAndRanNodesForPaging.RecommendedCells
 		for _, item := range infoOnRecommendedCellsAndRANNodesForPaging.RecommendedCellsForPaging.RecommendedCellList.List {
 			recommendedCell := context.RecommendedCell{}
 
@@ -522,7 +522,7 @@ func HandleUEContextReleaseComplete(ran *context.OcfRan, message *ngapType.NGAPP
 			*recommendedCells = append(*recommendedCells, recommendedCell)
 		}
 
-		recommendedRanNodes := &amfUe.InfoOnRecommendedCellsAndRanNodesForPaging.RecommendedRanNodes
+		recommendedRanNodes := &ocfUe.InfoOnRecommendedCellsAndRanNodesForPaging.RecommendedRanNodes
 		ranNodeList := infoOnRecommendedCellsAndRANNodesForPaging.RecommendRANNodesForPaging.RecommendedRANNodeList.List
 		for _, item := range ranNodeList {
 			recommendedRanNode := context.RecommendRanNode{}
@@ -543,15 +543,15 @@ func HandleUEContextReleaseComplete(ran *context.OcfRan, message *ngapType.NGAPP
 
 	// for each pduSessionID invoke Nsmf_PDUSession_UpdateSMContext Request
 	var cause context.CauseAll
-	if tmp, exist := amfUe.ReleaseCause[ran.AnType]; exist {
+	if tmp, exist := ocfUe.ReleaseCause[ran.AnType]; exist {
 		cause = *tmp
 	}
-	if amfUe.State[ran.AnType].Is(context.Registered) {
+	if ocfUe.State[ran.AnType].Is(context.Registered) {
 		Ngaplog.Info("[NGAP] Rel Ue Context in GMM-Registered")
 		if pDUSessionResourceList != nil {
 			for _, pduSessionReourceItem := range pDUSessionResourceList.List {
 				pduSessionID := int32(pduSessionReourceItem.PDUSessionID.Value)
-				response, _, _, err := consumer.SendUpdateSmContextDeactivateUpCnxState(amfUe, pduSessionID, cause)
+				response, _, _, err := consumer.SendUpdateSmContextDeactivateUpCnxState(ocfUe, pduSessionID, cause)
 				if err != nil {
 					logger.NgapLog.Errorf("Send Update SmContextDeactivate UpCnxState Error[%s]", err.Error())
 				} else if response == nil {
@@ -562,24 +562,24 @@ func HandleUEContextReleaseComplete(ran *context.OcfRan, message *ngapType.NGAPP
 	}
 
 	// Remove UE N2 Connection
-	amfUe.ReleaseCause[ran.AnType] = nil
+	ocfUe.ReleaseCause[ran.AnType] = nil
 	switch ranUe.ReleaseAction {
 	case context.UeContextN2NormalRelease:
-		logger.NgapLog.Infof("Release UE[%s] Context : N2 Connection Release", amfUe.Supi)
-		// amfUe.DetachRanUe(ran.AnType)
+		logger.NgapLog.Infof("Release UE[%s] Context : N2 Connection Release", ocfUe.Supi)
+		// ocfUe.DetachRanUe(ran.AnType)
 		err := ranUe.Remove()
 		if err != nil {
 			logger.NgapLog.Errorln(err.Error())
 		}
 	case context.UeContextReleaseUeContext:
-		logger.NgapLog.Infof("Release UE[%s] Context : Release Ue Context", amfUe.Supi)
+		logger.NgapLog.Infof("Release UE[%s] Context : Release Ue Context", ocfUe.Supi)
 		err := ranUe.Remove()
 		if err != nil {
 			logger.NgapLog.Errorln(err.Error())
 		}
-		amfUe.Remove()
+		ocfUe.Remove()
 	case context.UeContextReleaseHandover:
-		logger.NgapLog.Infof("Release UE[%s] Context : Release for Handover", amfUe.Supi)
+		logger.NgapLog.Infof("Release UE[%s] Context : Release for Handover", ocfUe.Supi)
 		context.DetachSourceUeTargetUe(ranUe)
 		err := ranUe.Remove()
 		if err != nil {
@@ -670,9 +670,9 @@ func HandlePDUSessionResourceReleaseResponse(ran *context.OcfRan, message *ngapT
 		printCriticalityDiagnostics(criticalityDiagnostics)
 	}
 
-	amfUe := ranUe.OcfUe
-	if amfUe == nil {
-		Ngaplog.Error("amfUe is nil")
+	ocfUe := ranUe.OcfUe
+	if ocfUe == nil {
+		Ngaplog.Error("ocfUe is nil")
 		return
 	}
 	if pDUSessionResourceReleasedList != nil {
@@ -682,7 +682,7 @@ func HandlePDUSessionResourceReleaseResponse(ran *context.OcfRan, message *ngapT
 			pduSessionID := int32(item.PDUSessionID.Value)
 			transfer := item.PDUSessionResourceReleaseResponseTransfer
 
-			_, responseErr, problemDetail, err := consumer.SendUpdateSmContextN2Info(amfUe, pduSessionID,
+			_, responseErr, problemDetail, err := consumer.SendUpdateSmContextN2Info(ocfUe, pduSessionID,
 				models.N2SmInfoType_PDU_RES_REL_RSP, transfer)
 			// TODO: error handling
 			if err != nil {
@@ -843,7 +843,7 @@ func HandleLocationReportingFailureIndication(ran *context.OcfRan, message *ngap
 
 func HandleInitialUEMessage(ran *context.OcfRan, message *ngapType.NGAPPDU) {
 
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
 	var rANUENGAPID *ngapType.RANUENGAPID
 	var nASPDU *ngapType.NASPDU
@@ -952,36 +952,36 @@ func HandleInitialUEMessage(ran *context.OcfRan, message *ngapType.NGAPPDU) {
 		if fiveGSTMSI != nil {
 			Ngaplog.Debug("Receive 5G-S-TMSI")
 
-			servedGuami := amfSelf.ServedGuamiList[0]
+			servedGuami := ocfSelf.ServedGuamiList[0]
 
 			// <5G-S-TMSI> := <OCF Set ID><OCF Pointer><5G-TMSI>
 			// GUAMI := <MCC><MNC><OCF Region ID><OCF Set ID><OCF Pointer>
 			// 5G-GUTI := <GUAMI><5G-TMSI>
 			tmpReginID, _, _ := ngapConvert.OcfIdToNgap(servedGuami.OcfId)
-			amfID := ngapConvert.OcfIdToModels(tmpReginID, fiveGSTMSI.OCFSetID.Value, fiveGSTMSI.OCFPointer.Value)
+			ocfID := ngapConvert.OcfIdToModels(tmpReginID, fiveGSTMSI.OCFSetID.Value, fiveGSTMSI.OCFPointer.Value)
 
 			tmsi := hex.EncodeToString(fiveGSTMSI.FiveGTMSI.Value)
 
-			guti := servedGuami.PlmnId.Mcc + servedGuami.PlmnId.Mnc + amfID + tmsi
+			guti := servedGuami.PlmnId.Mcc + servedGuami.PlmnId.Mnc + ocfID + tmsi
 
-			// TODO: invoke Namf_Communication_UEContextTransfer if serving OCF has changed since
+			// TODO: invoke Nocf_Communication_UEContextTransfer if serving OCF has changed since
 			// last Registration Request procedure
 			// Described in TS 23.502 4.2.2.2.2 step 4 (without UDSF deployment)
 
-			if amfUe, ok := amfSelf.OcfUeFindByGuti(guti); !ok {
+			if ocfUe, ok := ocfSelf.OcfUeFindByGuti(guti); !ok {
 				Ngaplog.Warnf("Unknown UE [GUTI: %s]", guti)
 			} else {
 				Ngaplog.Tracef("find OcfUe [GUTI: %s]", guti)
 
-				if amfUe.CmConnect(ran.AnType) {
+				if ocfUe.CmConnect(ran.AnType) {
 					Ngaplog.Debug("Implicit Deregistration")
-					Ngaplog.Tracef("OcfUeNgapID[%d] RanUeNgapID[%d]", amfUe.RanUe[ran.AnType].OcfUeNgapId,
-						amfUe.RanUe[ran.AnType].RanUeNgapId)
-					amfUe.DetachRanUe(ran.AnType)
+					Ngaplog.Tracef("OcfUeNgapID[%d] RanUeNgapID[%d]", ocfUe.RanUe[ran.AnType].OcfUeNgapId,
+						ocfUe.RanUe[ran.AnType].RanUeNgapId)
+					ocfUe.DetachRanUe(ran.AnType)
 				}
 				// TODO: stop Implicit Deregistration timer
 				Ngaplog.Debugf("OcfUe Attach RanUe [RanUeNgapID: %d]", ranUe.RanUeNgapId)
-				amfUe.AttachRanUe(ranUe)
+				ocfUe.AttachRanUe(ranUe)
 			}
 		}
 	} else {
@@ -1095,9 +1095,9 @@ func HandlePDUSessionResourceSetupResponse(ran *context.OcfRan, message *ngapTyp
 
 	if ranUe != nil {
 		Ngaplog.Tracef("OcfUeNgapID[%d] RanUeNgapID[%d]", ranUe.OcfUeNgapId, ranUe.RanUeNgapId)
-		amfUe := ranUe.OcfUe
-		if amfUe == nil {
-			Ngaplog.Error("amfUe is nil")
+		ocfUe := ranUe.OcfUe
+		if ocfUe == nil {
+			Ngaplog.Error("ocfUe is nil")
 			return
 		}
 
@@ -1108,8 +1108,8 @@ func HandlePDUSessionResourceSetupResponse(ran *context.OcfRan, message *ngapTyp
 				pduSessionID := int32(item.PDUSessionID.Value)
 				transfer := item.PDUSessionResourceSetupResponseTransfer
 
-				// response, _, _, err := consumer.SendUpdateSmContextN2Info(amfUe, pduSessionID,
-				_, _, _, err := consumer.SendUpdateSmContextN2Info(amfUe, pduSessionID,
+				// response, _, _, err := consumer.SendUpdateSmContextN2Info(ocfUe, pduSessionID,
+				_, _, _, err := consumer.SendUpdateSmContextN2Info(ocfUe, pduSessionID,
 					models.N2SmInfoType_PDU_RES_SETUP_RSP, transfer)
 				if err != nil {
 					Ngaplog.Errorf("SendUpdateSmContextN2Info[PDUSessionResourceSetupResponseTransfer] Error:\n%s", err.Error())
@@ -1130,8 +1130,8 @@ func HandlePDUSessionResourceSetupResponse(ran *context.OcfRan, message *ngapTyp
 				pduSessionID := int32(item.PDUSessionID.Value)
 				transfer := item.PDUSessionResourceSetupUnsuccessfulTransfer
 
-				// response, _, _, err := consumer.SendUpdateSmContextN2Info(amfUe, pduSessionID,
-				_, _, _, err := consumer.SendUpdateSmContextN2Info(amfUe, pduSessionID,
+				// response, _, _, err := consumer.SendUpdateSmContextN2Info(ocfUe, pduSessionID,
+				_, _, _, err := consumer.SendUpdateSmContextN2Info(ocfUe, pduSessionID,
 					models.N2SmInfoType_PDU_RES_SETUP_FAIL, transfer)
 				if err != nil {
 					Ngaplog.Errorf("SendUpdateSmContextN2Info[PDUSessionResourceSetupUnsuccessfulTransfer] Error:\n%s", err.Error())
@@ -1225,9 +1225,9 @@ func HandlePDUSessionResourceModifyResponse(ran *context.OcfRan, message *ngapTy
 
 	if ranUe != nil {
 		Ngaplog.Tracef("OcfUeNgapID[%d] RanUeNgapID[%d]", ranUe.OcfUeNgapId, ranUe.RanUeNgapId)
-		amfUe := ranUe.OcfUe
-		if amfUe == nil {
-			Ngaplog.Error("amfUe is nil")
+		ocfUe := ranUe.OcfUe
+		if ocfUe == nil {
+			Ngaplog.Error("ocfUe is nil")
 			return
 		}
 
@@ -1238,8 +1238,8 @@ func HandlePDUSessionResourceModifyResponse(ran *context.OcfRan, message *ngapTy
 				pduSessionID := int32(item.PDUSessionID.Value)
 				transfer := item.PDUSessionResourceModifyResponseTransfer
 
-				// response, _, _, err := consumer.SendUpdateSmContextN2Info(amfUe, pduSessionID,
-				_, _, _, err := consumer.SendUpdateSmContextN2Info(amfUe, pduSessionID,
+				// response, _, _, err := consumer.SendUpdateSmContextN2Info(ocfUe, pduSessionID,
+				_, _, _, err := consumer.SendUpdateSmContextN2Info(ocfUe, pduSessionID,
 					models.N2SmInfoType_PDU_RES_MOD_RSP, *transfer)
 				if err != nil {
 					Ngaplog.Errorf("SendUpdateSmContextN2Info[PDUSessionResourceModifyResponseTransfer] Error:\n%s", err.Error())
@@ -1259,8 +1259,8 @@ func HandlePDUSessionResourceModifyResponse(ran *context.OcfRan, message *ngapTy
 				pduSessionID := int32(item.PDUSessionID.Value)
 				transfer := item.PDUSessionResourceModifyUnsuccessfulTransfer
 
-				// response, _, _, err := consumer.SendUpdateSmContextN2Info(amfUe, pduSessionID,
-				_, _, _, err := consumer.SendUpdateSmContextN2Info(amfUe, pduSessionID,
+				// response, _, _, err := consumer.SendUpdateSmContextN2Info(ocfUe, pduSessionID,
+				_, _, _, err := consumer.SendUpdateSmContextN2Info(ocfUe, pduSessionID,
 					models.N2SmInfoType_PDU_RES_MOD_FAIL, transfer)
 				if err != nil {
 					Ngaplog.Errorf("SendUpdateSmContextN2Info[PDUSessionResourceModifyUnsuccessfulTransfer] Error:\n%s", err.Error())
@@ -1355,9 +1355,9 @@ func HandlePDUSessionResourceNotify(ran *context.OcfRan, message *ngapType.NGAPP
 	}
 
 	Ngaplog.Tracef("OcfUeNgapID[%d] RanUeNgapID[%d]", ranUe.OcfUeNgapId, ranUe.RanUeNgapId)
-	amfUe := ranUe.OcfUe
-	if amfUe == nil {
-		Ngaplog.Error("amfUe is nil")
+	ocfUe := ranUe.OcfUe
+	if ocfUe == nil {
+		Ngaplog.Error("ocfUe is nil")
 		return
 	}
 
@@ -1371,7 +1371,7 @@ func HandlePDUSessionResourceNotify(ran *context.OcfRan, message *ngapType.NGAPP
 		pduSessionID := int32(item.PDUSessionID.Value)
 		transfer := item.PDUSessionResourceNotifyTransfer
 
-		response, errResponse, problemDetail, err := consumer.SendUpdateSmContextN2Info(amfUe, pduSessionID,
+		response, errResponse, problemDetail, err := consumer.SendUpdateSmContextN2Info(ocfUe, pduSessionID,
 			models.N2SmInfoType_PDU_RES_NTY, transfer)
 		if err != nil {
 			Ngaplog.Errorf("SendUpdateSmContextN2Info[PDUSessionResourceNotifyTransfer] Error:\n%s", err.Error())
@@ -1389,7 +1389,7 @@ func HandlePDUSessionResourceNotify(ran *context.OcfRan, message *ngapType.NGAPP
 					if n1Msg != nil {
 						pduSessionId := uint8(pduSessionID)
 						nasPdu, err =
-							gmm_message.BuildDLNASTransport(amfUe, nasMessage.PayloadContainerTypeN1SMInfo, n1Msg, pduSessionId, nil, nil, 0)
+							gmm_message.BuildDLNASTransport(ocfUe, nasMessage.PayloadContainerTypeN1SMInfo, n1Msg, pduSessionId, nil, nil, 0)
 						if err != nil {
 							logger.NgapLog.Warnf("GMM Message build DL NAS Transport filaed: %v", err)
 						}
@@ -1424,7 +1424,7 @@ func HandlePDUSessionResourceNotify(ran *context.OcfRan, message *ngapType.NGAPP
 			pduSessionID := int32(item.PDUSessionID.Value)
 			transfer := item.PDUSessionResourceNotifyReleasedTransfer
 
-			response, errResponse, problemDetail, err := consumer.SendUpdateSmContextN2Info(amfUe, pduSessionID,
+			response, errResponse, problemDetail, err := consumer.SendUpdateSmContextN2Info(ocfUe, pduSessionID,
 				models.N2SmInfoType_PDU_RES_NTY_REL, transfer)
 			if err != nil {
 				Ngaplog.Errorf("SendUpdateSmContextN2Info[PDUSessionResourceNotifyReleasedTransfer] Error:\n%s", err.Error())
@@ -1441,7 +1441,7 @@ func HandlePDUSessionResourceNotify(ran *context.OcfRan, message *ngapType.NGAPP
 						if n1Msg != nil {
 							pduSessionId := uint8(pduSessionID)
 							nasPdu, err = gmm_message.BuildDLNASTransport(
-								amfUe, nasMessage.PayloadContainerTypeN1SMInfo, n1Msg, pduSessionId, nil, nil, 0)
+								ocfUe, nasMessage.PayloadContainerTypeN1SMInfo, n1Msg, pduSessionId, nil, nil, 0)
 							if err != nil {
 								logger.NgapLog.Warnf("GMM Message build DL NAS Transport filaed: %v", err)
 							}
@@ -1578,8 +1578,8 @@ func HandlePDUSessionResourceModifyIndication(ran *context.OcfRan, message *ngap
 
 	Ngaplog.Tracef("UE Context OcfUeNgapID[%d] RanUeNgapID[%d]", ranUe.OcfUeNgapId, ranUe.RanUeNgapId)
 
-	amfUe := ranUe.OcfUe
-	if amfUe == nil {
+	ocfUe := ranUe.OcfUe
+	if ocfUe == nil {
 		Ngaplog.Error("OcfUe is nil")
 		return
 	}
@@ -1592,7 +1592,7 @@ func HandlePDUSessionResourceModifyIndication(ran *context.OcfRan, message *ngap
 		pduSessionID := item.PDUSessionID.Value
 		transfer := item.PDUSessionResourceModifyIndicationTransfer
 
-		response, errResponse, _, err := consumer.SendUpdateSmContextN2Info(amfUe, int32(pduSessionID),
+		response, errResponse, _, err := consumer.SendUpdateSmContextN2Info(ocfUe, int32(pduSessionID),
 			models.N2SmInfoType_PDU_RES_MOD_IND, transfer)
 
 		if err != nil {
@@ -1684,9 +1684,9 @@ func HandleInitialContextSetupResponse(ran *context.OcfRan, message *ngapType.NG
 		Ngaplog.Errorf("No UE Context[RanUeNgapID: %d]", rANUENGAPID.Value)
 		return
 	}
-	amfUe := ranUe.OcfUe
-	if amfUe == nil {
-		Ngaplog.Error("amfUe is nil")
+	ocfUe := ranUe.OcfUe
+	if ocfUe == nil {
+		Ngaplog.Error("ocfUe is nil")
 		return
 	}
 
@@ -1699,8 +1699,8 @@ func HandleInitialContextSetupResponse(ran *context.OcfRan, message *ngapType.NG
 			pduSessionID := int32(item.PDUSessionID.Value)
 			transfer := item.PDUSessionResourceSetupResponseTransfer
 
-			// response, _, _, err := consumer.SendUpdateSmContextN2Info(amfUe, pduSessionID,
-			_, _, _, err := consumer.SendUpdateSmContextN2Info(amfUe, pduSessionID,
+			// response, _, _, err := consumer.SendUpdateSmContextN2Info(ocfUe, pduSessionID,
+			_, _, _, err := consumer.SendUpdateSmContextN2Info(ocfUe, pduSessionID,
 				models.N2SmInfoType_PDU_RES_SETUP_RSP, transfer)
 			if err != nil {
 				Ngaplog.Errorf("SendUpdateSmContextN2Info[PDUSessionResourceSetupResponseTransfer] Error:\n%s", err.Error())
@@ -1721,8 +1721,8 @@ func HandleInitialContextSetupResponse(ran *context.OcfRan, message *ngapType.NG
 			pduSessionID := int32(item.PDUSessionID.Value)
 			transfer := item.PDUSessionResourceSetupUnsuccessfulTransfer
 
-			// response, _, _, err := consumer.SendUpdateSmContextN2Info(amfUe, pduSessionID,
-			_, _, _, err := consumer.SendUpdateSmContextN2Info(amfUe, pduSessionID,
+			// response, _, _, err := consumer.SendUpdateSmContextN2Info(ocfUe, pduSessionID,
+			_, _, _, err := consumer.SendUpdateSmContextN2Info(ocfUe, pduSessionID,
 				models.N2SmInfoType_PDU_RES_SETUP_FAIL, transfer)
 			if err != nil {
 				Ngaplog.Errorf("SendUpdateSmContextN2Info[PDUSessionResourceSetupUnsuccessfulTransfer] Error:\n%s", err.Error())
@@ -1737,7 +1737,7 @@ func HandleInitialContextSetupResponse(ran *context.OcfRan, message *ngapType.NG
 	}
 
 	if ranUe.Ran.AnType == models.AccessType_NON_3_GPP_ACCESS {
-		ngap_message.SendDownlinkNasTransport(ranUe, amfUe.RegistrationAcceptForNon3GPPAccess, nil)
+		ngap_message.SendDownlinkNasTransport(ranUe, ocfUe.RegistrationAcceptForNon3GPPAccess, nil)
 	}
 
 	if criticalityDiagnostics != nil {
@@ -1850,9 +1850,9 @@ func HandleInitialContextSetupFailure(ran *context.OcfRan, message *ngapType.NGA
 		Ngaplog.Errorf("No UE Context[RanUeNgapID: %d]", rANUENGAPID.Value)
 		return
 	}
-	amfUe := ranUe.OcfUe
-	if amfUe == nil {
-		Ngaplog.Error("amfUe is nil")
+	ocfUe := ranUe.OcfUe
+	if ocfUe == nil {
+		Ngaplog.Error("ocfUe is nil")
 		return
 	}
 
@@ -1863,8 +1863,8 @@ func HandleInitialContextSetupFailure(ran *context.OcfRan, message *ngapType.NGA
 			pduSessionID := int32(item.PDUSessionID.Value)
 			transfer := item.PDUSessionResourceSetupUnsuccessfulTransfer
 
-			// response, _, _, err := consumer.SendUpdateSmContextN2Info(amfUe, pduSessionID,
-			_, _, _, err := consumer.SendUpdateSmContextN2Info(amfUe, pduSessionID,
+			// response, _, _, err := consumer.SendUpdateSmContextN2Info(ocfUe, pduSessionID,
+			_, _, _, err := consumer.SendUpdateSmContextN2Info(ocfUe, pduSessionID,
 				models.N2SmInfoType_PDU_RES_SETUP_FAIL, transfer)
 			if err != nil {
 				Ngaplog.Errorf("SendUpdateSmContextN2Info[PDUSessionResourceSetupUnsuccessfulTransfer] Error:\n%s", err.Error())
@@ -1958,20 +1958,20 @@ func HandleUEContextReleaseRequest(ran *context.OcfRan, message *ngapType.NGAPPD
 		causeGroup, causeValue = printAndGetCause(cause)
 	}
 
-	amfUe := ranUe.OcfUe
-	if amfUe != nil {
+	ocfUe := ranUe.OcfUe
+	if ocfUe != nil {
 		causeAll := context.CauseAll{
 			NgapCause: &models.NgApCause{
 				Group: int32(causeGroup),
 				Value: int32(causeValue),
 			},
 		}
-		if amfUe.State[ran.AnType].Is(context.Registered) {
+		if ocfUe.State[ran.AnType].Is(context.Registered) {
 			Ngaplog.Info("[NGAP] Ue Context in GMM-Registered")
 			if pDUSessionResourceList != nil {
 				for _, pduSessionReourceItem := range pDUSessionResourceList.List {
 					pduSessionID := int32(pduSessionReourceItem.PDUSessionID.Value)
-					response, _, _, err := consumer.SendUpdateSmContextDeactivateUpCnxState(amfUe, pduSessionID, causeAll)
+					response, _, _, err := consumer.SendUpdateSmContextDeactivateUpCnxState(ocfUe, pduSessionID, causeAll)
 					if err != nil {
 						logger.NgapLog.Errorf("Send Update SmContextDeactivate UpCnxState Error[%s]", err.Error())
 					} else if response == nil {
@@ -1981,9 +1981,9 @@ func HandleUEContextReleaseRequest(ran *context.OcfRan, message *ngapType.NGAPPD
 			}
 		} else {
 			Ngaplog.Info("[NGAP] Ue Context in Non GMM-Registered")
-			for pduSessionId := range amfUe.SmContextList {
-				releaseData := consumer.BuildReleaseSmContextRequest(amfUe, &causeAll, "", nil)
-				detail, err := consumer.SendReleaseSmContextRequest(amfUe, pduSessionId, releaseData)
+			for pduSessionId := range ocfUe.SmContextList {
+				releaseData := consumer.BuildReleaseSmContextRequest(ocfUe, &causeAll, "", nil)
+				detail, err := consumer.SendReleaseSmContextRequest(ocfUe, pduSessionId, releaseData)
 				if err != nil {
 					logger.NgapLog.Errorf("Send ReleaseSmContextRequest Error[%s]", err.Error())
 				} else if detail != nil {
@@ -2339,25 +2339,25 @@ func HandleHandoverNotify(ran *context.OcfRan, message *ngapType.NGAPPDU) {
 	if userLocationInformation != nil {
 		targetUe.UpdateLocation(userLocationInformation)
 	}
-	amfUe := targetUe.OcfUe
-	if amfUe == nil {
+	ocfUe := targetUe.OcfUe
+	if ocfUe == nil {
 		Ngaplog.Error("OcfUe is nil")
 		return
 	}
 	sourceUe := targetUe.SourceUe
 	if sourceUe == nil {
 		// TODO: Send to S-OCF
-		// Desciibed in (23.502 4.9.1.3.3) [conditional] 6a.Namf_Communication_N2InfoNotify.
+		// Desciibed in (23.502 4.9.1.3.3) [conditional] 6a.Nocf_Communication_N2InfoNotify.
 		Ngaplog.Error("N2 Handover between OCF has not been implemented yet")
 	} else {
 		logger.NgapLog.Info("[OCF] Handover notification Finshed ")
 		for _, pduSessionid := range targetUe.SuccessPduSessionId {
-			_, _, _, err := consumer.SendUpdateSmContextN2HandoverComplete(amfUe, pduSessionid, "", nil)
+			_, _, _, err := consumer.SendUpdateSmContextN2HandoverComplete(ocfUe, pduSessionid, "", nil)
 			if err != nil {
 				Ngaplog.Errorf("Send UpdateSmContextN2HandoverComplete Error[%s]", err.Error())
 			}
 		}
-		amfUe.AttachRanUe(targetUe)
+		ocfUe.AttachRanUe(targetUe)
 		ngap_message.SendUEContextReleaseCommand(sourceUe, context.UeContextReleaseHandover, ngapType.CausePresentNas,
 			ngapType.CauseNasPresentNormalRelease)
 
@@ -2450,29 +2450,29 @@ func HandlePathSwitchRequest(ran *context.OcfRan, message *ngapType.NGAPPDU) {
 
 	Ngaplog.Tracef("OcfUeNgapID[%d] RanUeNgapID[%d]", ranUe.OcfUeNgapId, ranUe.RanUeNgapId)
 
-	amfUe := ranUe.OcfUe
-	if amfUe == nil {
+	ocfUe := ranUe.OcfUe
+	if ocfUe == nil {
 		Ngaplog.Error("OcfUe is nil")
 		ngap_message.SendPathSwitchRequestFailure(ran, sourceOCFUENGAPID.Value, rANUENGAPID.Value, nil, nil)
 		return
 	}
 
-	if amfUe.SecurityContextIsValid() {
+	if ocfUe.SecurityContextIsValid() {
 		// Update NH
-		amfUe.UpdateNH()
+		ocfUe.UpdateNH()
 	} else {
-		Ngaplog.Errorf("No Security Context : SUPI[%s]", amfUe.Supi)
+		Ngaplog.Errorf("No Security Context : SUPI[%s]", ocfUe.Supi)
 		ngap_message.SendPathSwitchRequestFailure(ran, sourceOCFUENGAPID.Value, rANUENGAPID.Value, nil, nil)
 		return
 	}
 
 	if uESecurityCapabilities != nil {
-		amfUe.UESecurityCapability.SetEA1_128_5G(uESecurityCapabilities.NRencryptionAlgorithms.Value.Bytes[0] & 0x80)
-		amfUe.UESecurityCapability.SetEA2_128_5G(uESecurityCapabilities.NRencryptionAlgorithms.Value.Bytes[0] & 0x40)
-		amfUe.UESecurityCapability.SetEA3_128_5G(uESecurityCapabilities.NRencryptionAlgorithms.Value.Bytes[0] & 0x20)
-		amfUe.UESecurityCapability.SetIA1_128_5G(uESecurityCapabilities.NRintegrityProtectionAlgorithms.Value.Bytes[0] & 0x80)
-		amfUe.UESecurityCapability.SetIA2_128_5G(uESecurityCapabilities.NRintegrityProtectionAlgorithms.Value.Bytes[0] & 0x40)
-		amfUe.UESecurityCapability.SetIA3_128_5G(uESecurityCapabilities.NRintegrityProtectionAlgorithms.Value.Bytes[0] & 0x20)
+		ocfUe.UESecurityCapability.SetEA1_128_5G(uESecurityCapabilities.NRencryptionAlgorithms.Value.Bytes[0] & 0x80)
+		ocfUe.UESecurityCapability.SetEA2_128_5G(uESecurityCapabilities.NRencryptionAlgorithms.Value.Bytes[0] & 0x40)
+		ocfUe.UESecurityCapability.SetEA3_128_5G(uESecurityCapabilities.NRencryptionAlgorithms.Value.Bytes[0] & 0x20)
+		ocfUe.UESecurityCapability.SetIA1_128_5G(uESecurityCapabilities.NRintegrityProtectionAlgorithms.Value.Bytes[0] & 0x80)
+		ocfUe.UESecurityCapability.SetIA2_128_5G(uESecurityCapabilities.NRintegrityProtectionAlgorithms.Value.Bytes[0] & 0x40)
+		ocfUe.UESecurityCapability.SetIA3_128_5G(uESecurityCapabilities.NRintegrityProtectionAlgorithms.Value.Bytes[0] & 0x20)
 		// not support any E-UTRA algorithms
 	}
 
@@ -2491,7 +2491,7 @@ func HandlePathSwitchRequest(ran *context.OcfRan, message *ngapType.NGAPPDU) {
 			pduSessionID := item.PDUSessionID.Value
 			transfer := item.PathSwitchRequestTransfer
 
-			response, errResponse, _, err := consumer.SendUpdateSmContextXnHandover(amfUe, int32(pduSessionID),
+			response, errResponse, _, err := consumer.SendUpdateSmContextXnHandover(ocfUe, int32(pduSessionID),
 				models.N2SmInfoType_PATH_SWITCH_REQ, transfer)
 			if err != nil {
 				Ngaplog.Errorf("SendUpdateSmContextXnHandover[PathSwitchRequestTransfer] Error:\n%s", err.Error())
@@ -2517,7 +2517,7 @@ func HandlePathSwitchRequest(ran *context.OcfRan, message *ngapType.NGAPPDU) {
 			pduSessionID := item.PDUSessionID.Value
 			transfer := item.PathSwitchRequestSetupFailedTransfer
 
-			response, errResponse, _, err := consumer.SendUpdateSmContextXnHandoverFailed(amfUe, int32(pduSessionID),
+			response, errResponse, _, err := consumer.SendUpdateSmContextXnHandoverFailed(ocfUe, int32(pduSessionID),
 				models.N2SmInfoType_PATH_SWITCH_SETUP_FAIL, transfer)
 			if err != nil {
 				Ngaplog.Errorf("SendUpdateSmContextXnHandoverFailed[PathSwitchRequestSetupFailedTransfer] Error:\n%s", err.Error())
@@ -2647,9 +2647,9 @@ func HandleHandoverRequestAcknowledge(ran *context.OcfRan, message *ngapType.NGA
 	}
 	Ngaplog.Debugf("Target Ue RanUeNgapID[%d] OcfUeNgapID[%d]", targetUe.RanUeNgapId, targetUe.OcfUeNgapId)
 
-	amfUe := targetUe.OcfUe
-	if amfUe == nil {
-		Ngaplog.Error("amfUe is nil")
+	ocfUe := targetUe.OcfUe
+	if ocfUe == nil {
+		Ngaplog.Error("ocfUe is nil")
 		return
 	}
 
@@ -2664,8 +2664,8 @@ func HandleHandoverRequestAcknowledge(ran *context.OcfRan, message *ngapType.NGA
 			pduSessionID := item.PDUSessionID.Value
 			transfer := item.HandoverRequestAcknowledgeTransfer
 			pduSessionId := int32(pduSessionID)
-			if _, exist := amfUe.SmContextList[pduSessionId]; exist {
-				response, errResponse, problemDetails, err := consumer.SendUpdateSmContextN2HandoverPrepared(amfUe,
+			if _, exist := ocfUe.SmContextList[pduSessionId]; exist {
+				response, errResponse, problemDetails, err := consumer.SendUpdateSmContextN2HandoverPrepared(ocfUe,
 					pduSessionId, models.N2SmInfoType_HANDOVER_REQ_ACK, transfer)
 				if err != nil {
 					Ngaplog.Errorf("Send HandoverRequestAcknowledgeTransfer error: %v", err)
@@ -2696,8 +2696,8 @@ func HandleHandoverRequestAcknowledge(ran *context.OcfRan, message *ngapType.NGA
 			pduSessionID := item.PDUSessionID.Value
 			transfer := item.HandoverResourceAllocationUnsuccessfulTransfer
 			pduSessionId := int32(pduSessionID)
-			if _, exist := amfUe.SmContextList[pduSessionId]; exist {
-				_, _, problemDetails, err := consumer.SendUpdateSmContextN2HandoverPrepared(amfUe, pduSessionId,
+			if _, exist := ocfUe.SmContextList[pduSessionId]; exist {
+				_, _, problemDetails, err := consumer.SendUpdateSmContextN2HandoverPrepared(ocfUe, pduSessionId,
 					models.N2SmInfoType_HANDOVER_RES_ALLOC_FAIL, transfer)
 				if err != nil {
 					Ngaplog.Errorf("Send HandoverResourceAllocationUnsuccessfulTransfer error: %v", err)
@@ -2711,7 +2711,7 @@ func HandleHandoverRequestAcknowledge(ran *context.OcfRan, message *ngapType.NGA
 
 	sourceUe := targetUe.SourceUe
 	if sourceUe == nil {
-		// TODO: Send Namf_Communication_CreateUEContext Response to S-OCF
+		// TODO: Send Nocf_Communication_CreateUEContext Response to S-OCF
 		Ngaplog.Error("handover between different Ue has not been implement yet")
 	} else {
 
@@ -2806,16 +2806,16 @@ func HandleHandoverFailure(ran *context.OcfRan, message *ngapType.NGAPPDU) {
 		// TODO: handle N2 Handover between OCF
 		Ngaplog.Error("N2 Handover between OCF has not been implemented yet")
 	} else {
-		amfUe := targetUe.OcfUe
-		if amfUe != nil {
-			for pduSessionId := range amfUe.SmContextList {
+		ocfUe := targetUe.OcfUe
+		if ocfUe != nil {
+			for pduSessionId := range ocfUe.SmContextList {
 				causeAll := context.CauseAll{
 					NgapCause: &models.NgApCause{
 						Group: int32(causePresent),
 						Value: int32(causeValue),
 					},
 				}
-				_, _, _, err := consumer.SendUpdateSmContextN2HandoverCanceled(amfUe, pduSessionId, causeAll)
+				_, _, _, err := consumer.SendUpdateSmContextN2HandoverCanceled(ocfUe, pduSessionId, causeAll)
 				if err != nil {
 					logger.NgapLog.Errorf("Send UpdateSmContextN2HandoverCanceled Error for PduSessionId[%d]", pduSessionId)
 				}
@@ -2948,9 +2948,9 @@ func HandleHandoverRequired(ran *context.OcfRan, message *ngapType.NGAPPDU) {
 		ngap_message.SendErrorIndication(ran, nil, nil, &cause, nil)
 		return
 	}
-	amfUe := sourceUe.OcfUe
-	if amfUe == nil {
-		logger.NgapLog.Error("Cannot find amfUE from sourceUE")
+	ocfUe := sourceUe.OcfUe
+	if ocfUe == nil {
+		logger.NgapLog.Error("Cannot find ocfUE from sourceUE")
 		return
 	}
 
@@ -2958,8 +2958,8 @@ func HandleHandoverRequired(ran *context.OcfRan, message *ngapType.NGAPPDU) {
 		logger.NgapLog.Errorf("targetID type[%d] is not supported", targetID.Present)
 		return
 	}
-	amfUe.OnGoing[sourceUe.Ran.AnType].Procedure = context.OnGoingProcedureN2Handover
-	if !amfUe.SecurityContextIsValid() {
+	ocfUe.OnGoing[sourceUe.Ran.AnType].Procedure = context.OnGoingProcedureN2Handover
+	if !ocfUe.SecurityContextIsValid() {
 		logger.NgapLog.Info("[OCF] Handover Preparation Failure [Authentication Failure]")
 		cause = &ngapType.Cause{
 			Present: ngapType.CausePresentNas,
@@ -2979,7 +2979,7 @@ func HandleHandoverRequired(ran *context.OcfRan, message *ngapType.NGAPPDU) {
 		logger.NgapLog.Error("Handover between different OCF has not been implemented yet")
 		return
 		// TODO: Send to T-OCF
-		// Described in (23.502 4.9.1.3.2) step 3.Namf_Communication_CreateUEContext Request
+		// Described in (23.502 4.9.1.3.2) step 3.Nocf_Communication_CreateUEContext Request
 
 	} else {
 		// Handover in same OCF
@@ -2992,8 +2992,8 @@ func HandleHandoverRequired(ran *context.OcfRan, message *ngapType.NGAPPDU) {
 		var pduSessionReqList ngapType.PDUSessionResourceSetupListHOReq
 		for _, pDUSessionResourceHoItem := range pDUSessionResourceListHORqd.List {
 			pduSessionId := int32(pDUSessionResourceHoItem.PDUSessionID.Value)
-			if smContext, exist := amfUe.SmContextList[pduSessionId]; exist {
-				response, _, _, err := consumer.SendUpdateSmContextN2HandoverPreparing(amfUe, pduSessionId,
+			if smContext, exist := ocfUe.SmContextList[pduSessionId]; exist {
+				response, _, _, err := consumer.SendUpdateSmContextN2HandoverPreparing(ocfUe, pduSessionId,
 					models.N2SmInfoType_HANDOVER_REQUIRED, pDUSessionResourceHoItem.HandoverRequiredTransfer, "", &targetId)
 				if err != nil {
 					logger.NgapLog.Errorf("consumer.SendUpdateSmContextN2HandoverPreparing Error: %+v", err)
@@ -3020,7 +3020,7 @@ func HandleHandoverRequired(ran *context.OcfRan, message *ngapType.NGAPPDU) {
 			return
 		}
 		// Update NH
-		amfUe.UpdateNH()
+		ocfUe.UpdateNH()
 		ngap_message.SendHandoverRequest(sourceUe, targetRan, *cause, pduSessionReqList,
 			*sourceToTargetTransparentContainer, false)
 	}
@@ -3109,21 +3109,21 @@ func HandleHandoverCancel(ran *context.OcfRan, message *ngapType.NGAPPDU) {
 	targetUe := sourceUe.TargetUe
 	if targetUe == nil {
 		// Described in (23.502 4.11.1.2.3) step 2
-		// Todo : send to T-OCF invoke Namf_UeContextReleaseRequest(targetUe)
+		// Todo : send to T-OCF invoke Nocf_UeContextReleaseRequest(targetUe)
 		Ngaplog.Error("N2 Handover between OCF has not been implemented yet")
 
 	} else {
 		logger.NgapLog.Tracef("Target : RAN_UE_NGAP_ID[%d] OCF_UE_NGAP_ID[%d]", targetUe.RanUeNgapId, targetUe.OcfUeNgapId)
-		amfUe := sourceUe.OcfUe
-		if amfUe != nil {
-			for pduSessionId := range amfUe.SmContextList {
+		ocfUe := sourceUe.OcfUe
+		if ocfUe != nil {
+			for pduSessionId := range ocfUe.SmContextList {
 				causeAll := context.CauseAll{
 					NgapCause: &models.NgApCause{
 						Group: int32(causePresent),
 						Value: int32(causeValue),
 					},
 				}
-				_, _, _, err := consumer.SendUpdateSmContextN2HandoverCanceled(amfUe, pduSessionId, causeAll)
+				_, _, _, err := consumer.SendUpdateSmContextN2HandoverCanceled(ocfUe, pduSessionId, causeAll)
 				if err != nil {
 					logger.NgapLog.Errorf("Send UpdateSmContextN2HandoverCanceled Error for PduSessionId[%d]", pduSessionId)
 				}
@@ -3196,8 +3196,8 @@ func HandleUplinkRanStatusTransfer(ran *context.OcfRan, message *ngapType.NGAPPD
 
 	Ngaplog.Tracef("UE Context OcfUeNgapID[%d] RanUeNgapID[%d]", ranUe.OcfUeNgapId, ranUe.RanUeNgapId)
 
-	amfUe := ranUe.OcfUe
-	if amfUe == nil {
+	ocfUe := ranUe.OcfUe
+	if ocfUe == nil {
 		Ngaplog.Error("OcfUe is nil")
 		return
 	}
@@ -3768,23 +3768,23 @@ func HandleUERadioCapabilityInfoIndication(ran *context.OcfRan, message *ngapTyp
 		return
 	}
 	Ngaplog.Tracef("RanUeNgapID[%d] OcfUeNgapID[%d]", ranUe.RanUeNgapId, ranUe.OcfUeNgapId)
-	amfUe := ranUe.OcfUe
+	ocfUe := ranUe.OcfUe
 
-	if amfUe == nil {
-		Ngaplog.Errorln("amfUe is nil")
+	if ocfUe == nil {
+		Ngaplog.Errorln("ocfUe is nil")
 		return
 	}
 	if uERadioCapability != nil {
-		amfUe.UeRadioCapability = hex.EncodeToString(uERadioCapability.Value)
+		ocfUe.UeRadioCapability = hex.EncodeToString(uERadioCapability.Value)
 	}
 	if uERadioCapabilityForPaging != nil {
-		amfUe.UeRadioCapabilityForPaging = &context.UERadioCapabilityForPaging{}
+		ocfUe.UeRadioCapabilityForPaging = &context.UERadioCapabilityForPaging{}
 		if uERadioCapabilityForPaging.UERadioCapabilityForPagingOfNR != nil {
-			amfUe.UeRadioCapabilityForPaging.NR = hex.EncodeToString(
+			ocfUe.UeRadioCapabilityForPaging.NR = hex.EncodeToString(
 				uERadioCapabilityForPaging.UERadioCapabilityForPagingOfNR.Value)
 		}
 		if uERadioCapabilityForPaging.UERadioCapabilityForPagingOfEUTRA != nil {
-			amfUe.UeRadioCapabilityForPaging.EUTRA = hex.EncodeToString(
+			ocfUe.UeRadioCapabilityForPaging.EUTRA = hex.EncodeToString(
 				uERadioCapabilityForPaging.UERadioCapabilityForPagingOfEUTRA.Value)
 		}
 	}

@@ -1,5 +1,5 @@
 /*
- * Namf_Communication
+ * Nocf_Communication
  *
  * OCF Communication Service
  *
@@ -49,7 +49,7 @@ func NewRouter() *gin.Engine {
 }
 
 func AddService(engine *gin.Engine) *gin.RouterGroup {
-	group := engine.Group("/namf-comm/v1")
+	group := engine.Group("/nocf-comm/v1")
 
 	for _, route := range routes {
 		switch route.Method {

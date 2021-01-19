@@ -13,19 +13,19 @@ import (
 	"free5gc/lib/openapi"
 	"free5gc/lib/openapi/Nausf_UEAuthentication"
 	"free5gc/lib/openapi/models"
-	amf_context "free5gc/src/ocf/context"
+	ocf_context "free5gc/src/ocf/context"
 	"free5gc/src/ocf/logger"
 )
 
-func SendUEAuthenticationAuthenticateRequest(ue *amf_context.OcfUe,
+func SendUEAuthenticationAuthenticateRequest(ue *ocf_context.OcfUe,
 	resynchronizationInfo *models.ResynchronizationInfo) (*models.UeAuthenticationCtx, *models.ProblemDetails, error) {
 	configuration := Nausf_UEAuthentication.NewConfiguration()
 	configuration.SetBasePath(ue.AusfUri)
 
 	client := Nausf_UEAuthentication.NewAPIClient(configuration)
 
-	amfSelf := amf_context.OCF_Self()
-	servedGuami := amfSelf.ServedGuamiList[0]
+	ocfSelf := ocf_context.OCF_Self()
+	servedGuami := ocfSelf.ServedGuamiList[0]
 
 	var authInfo models.AuthenticationInfo
 	authInfo.SupiOrSuci = ue.Suci
@@ -52,7 +52,7 @@ func SendUEAuthenticationAuthenticateRequest(ue *amf_context.OcfUe,
 	}
 }
 
-func SendAuth5gAkaConfirmRequest(ue *amf_context.OcfUe, resStar string) (
+func SendAuth5gAkaConfirmRequest(ue *ocf_context.OcfUe, resStar string) (
 	*models.ConfirmationDataResponse, *models.ProblemDetails, error) {
 
 	var ausfUri string
@@ -91,7 +91,7 @@ func SendAuth5gAkaConfirmRequest(ue *amf_context.OcfUe, resStar string) (
 	}
 }
 
-func SendEapAuthConfirmRequest(ue *amf_context.OcfUe, eapMsg nasType.EAPMessage) (
+func SendEapAuthConfirmRequest(ue *ocf_context.OcfUe, eapMsg nasType.EAPMessage) (
 	response *models.EapSession, problemDetails *models.ProblemDetails, err1 error) {
 
 	confirmUri, err := url.Parse(ue.AuthenticationCtx.Links["link"].Href)

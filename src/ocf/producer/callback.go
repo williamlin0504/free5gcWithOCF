@@ -41,9 +41,9 @@ func HandleSmContextStatusNotify(request *http_wrapper.Request) *http_wrapper.Re
 
 func SmContextStatusNotifyProcedure(guti string, pduSessionID int32,
 	smContextStatusNotification models.SmContextStatusNotification) *models.ProblemDetails {
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
-	ue, ok := amfSelf.OcfUeFindByGuti(guti)
+	ue, ok := ocfSelf.OcfUeFindByGuti(guti)
 	if !ok {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusNotFound,
@@ -117,9 +117,9 @@ func HandleAmPolicyControlUpdateNotifyUpdate(request *http_wrapper.Request) *htt
 
 func AmPolicyControlUpdateNotifyUpdateProcedure(polAssoID string,
 	policyUpdate models.PolicyUpdate) *models.ProblemDetails {
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
-	ue, ok := amfSelf.OcfUeFindByPolicyAssociationID(polAssoID)
+	ue, ok := ocfSelf.OcfUeFindByPolicyAssociationID(polAssoID)
 	if !ok {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusNotFound,
@@ -195,9 +195,9 @@ func HandleAmPolicyControlUpdateNotifyTerminate(request *http_wrapper.Request) *
 
 func AmPolicyControlUpdateNotifyTerminateProcedure(polAssoID string,
 	terminationNotification models.TerminationNotification) *models.ProblemDetails {
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
-	ue, ok := amfSelf.OcfUeFindByPolicyAssociationID(polAssoID)
+	ue, ok := ocfSelf.OcfUeFindByPolicyAssociationID(polAssoID)
 	if !ok {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusNotFound,
@@ -238,7 +238,7 @@ func HandleN1MessageNotify(request *http_wrapper.Request) *http_wrapper.Response
 func N1MessageNotifyProcedure(n1MessageNotify models.N1MessageNotify) *models.ProblemDetails {
 	logger.ProducerLog.Debugf("n1MessageNotify: %+v", n1MessageNotify)
 
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
 	registrationCtxtContainer := n1MessageNotify.JsonData.RegistrationCtxtContainer
 	if registrationCtxtContainer.UeContext == nil {
@@ -250,7 +250,7 @@ func N1MessageNotifyProcedure(n1MessageNotify models.N1MessageNotify) *models.Pr
 		return problemDetails
 	}
 
-	ran, ok := amfSelf.OcfRanFindByRanID(*registrationCtxtContainer.RanNodeId)
+	ran, ok := ocfSelf.OcfRanFindByRanID(*registrationCtxtContainer.RanNodeId)
 	if !ok {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusBadRequest,
@@ -261,32 +261,32 @@ func N1MessageNotifyProcedure(n1MessageNotify models.N1MessageNotify) *models.Pr
 	}
 
 	go func() {
-		var amfUe *context.OcfUe
+		var ocfUe *context.OcfUe
 		ueContext := registrationCtxtContainer.UeContext
 		if ueContext.Supi != "" {
-			amfUe = amfSelf.NewOcfUe(ueContext.Supi)
+			ocfUe = ocfSelf.NewOcfUe(ueContext.Supi)
 		} else {
-			amfUe = amfSelf.NewOcfUe("")
+			ocfUe = ocfSelf.NewOcfUe("")
 		}
-		amfUe.CopyDataFromUeContextModel(*ueContext)
+		ocfUe.CopyDataFromUeContextModel(*ueContext)
 
 		ranUe := ran.RanUeFindByRanUeNgapID(int64(registrationCtxtContainer.AnN2ApId))
 
 		ranUe.Location = *registrationCtxtContainer.UserLocation
-		amfUe.Location = *registrationCtxtContainer.UserLocation
+		ocfUe.Location = *registrationCtxtContainer.UserLocation
 		ranUe.UeContextRequest = registrationCtxtContainer.UeContextRequest
 		ranUe.OldOcfName = registrationCtxtContainer.InitialOcfName
 
 		if registrationCtxtContainer.AllowedNssai != nil {
 			allowedNssai := registrationCtxtContainer.AllowedNssai
-			amfUe.AllowedNssai[allowedNssai.AccessType] = allowedNssai.AllowedSnssaiList
+			ocfUe.AllowedNssai[allowedNssai.AccessType] = allowedNssai.AllowedSnssaiList
 		}
 
 		if len(registrationCtxtContainer.ConfiguredNssai) > 0 {
-			amfUe.ConfiguredNssai = registrationCtxtContainer.ConfiguredNssai
+			ocfUe.ConfiguredNssai = registrationCtxtContainer.ConfiguredNssai
 		}
 
-		amfUe.AttachRanUe(ranUe)
+		ocfUe.AttachRanUe(ranUe)
 
 		nas.HandleNAS(ranUe, ngapType.ProcedureCodeInitialUEMessage, n1MessageNotify.BinaryDataN1Message)
 	}()

@@ -1,5 +1,5 @@
 /*
- * Namf_Communication
+ * Nocf_Communication
  *
  * OCF Communication Service
  *
@@ -20,7 +20,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// OCFStatusChangeSubscribeModify - Namf_Communication OCF Status Change Subscribe Modify service Operation
+// OCFStatusChangeSubscribeModify - Nocf_Communication OCF Status Change Subscribe Modify service Operation
 func HTTPOCFStatusChangeSubscribeModify(c *gin.Context) {
 	var subscriptionData models.SubscriptionData
 
@@ -69,7 +69,7 @@ func HTTPOCFStatusChangeSubscribeModify(c *gin.Context) {
 	}
 }
 
-// OCFStatusChangeUnSubscribe - Namf_Communication OCF Status Change UnSubscribe service Operation
+// OCFStatusChangeUnSubscribe - Nocf_Communication OCF Status Change UnSubscribe service Operation
 func HTTPOCFStatusChangeUnSubscribe(c *gin.Context) {
 
 	req := http_wrapper.NewRequest(c.Request, nil)

@@ -48,10 +48,10 @@ func HandleOAMRegisteredUEContext(request *http_wrapper.Request) *http_wrapper.R
 
 func OAMRegisteredUEContextProcedure(supi string) (UEContexts, *models.ProblemDetails) {
 	var ueContexts UEContexts
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
 	if supi != "" {
-		if ue, ok := amfSelf.OcfUeFindBySupi(supi); ok {
+		if ue, ok := ocfSelf.OcfUeFindBySupi(supi); ok {
 			ueContext := buildUEContext(ue, models.AccessType__3_GPP_ACCESS)
 			if ueContext != nil {
 				ueContexts = append(ueContexts, *ueContext)
@@ -68,7 +68,7 @@ func OAMRegisteredUEContextProcedure(supi string) (UEContexts, *models.ProblemDe
 			return nil, problemDetails
 		}
 	} else {
-		amfSelf.UePool.Range(func(key, value interface{}) bool {
+		ocfSelf.UePool.Range(func(key, value interface{}) bool {
 			ue := value.(*context.OcfUe)
 			ueContext := buildUEContext(ue, models.AccessType__3_GPP_ACCESS)
 			if ueContext != nil {

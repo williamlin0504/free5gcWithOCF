@@ -47,11 +47,11 @@ func (ran *OcfRan) Remove() {
 func (ran *OcfRan) NewRanUe(ranUeNgapID int64) (*RanUe, error) {
 	ranUe := RanUe{}
 	self := OCF_Self()
-	amfUeNgapID, err := self.AllocateOcfUeNgapID()
+	ocfUeNgapID, err := self.AllocateOcfUeNgapID()
 	if err != nil {
 		return nil, fmt.Errorf("Allocate OCF UE NGAP ID error: %+v", err)
 	}
-	ranUe.OcfUeNgapId = amfUeNgapID
+	ranUe.OcfUeNgapId = ocfUeNgapID
 	ranUe.RanUeNgapId = ranUeNgapID
 	ranUe.Ran = ran
 

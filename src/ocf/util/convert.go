@@ -25,14 +25,14 @@ func SnssaiModelsToHex(snssai models.Snssai) string {
 	return sst + snssai.Sd
 }
 
-func SeperateOcfId(amfid string) (regionId, setId, ptrId string, err error) {
-	if len(amfid) != 6 {
-		err = fmt.Errorf("len of amfId[%s] != 6", amfid)
+func SeperateOcfId(ocfid string) (regionId, setId, ptrId string, err error) {
+	if len(ocfid) != 6 {
+		err = fmt.Errorf("len of ocfId[%s] != 6", ocfid)
 		return
 	}
 	// regionId: 16bits, setId: 10bits, ptrId: 6bits
-	regionId = amfid[:2]
-	byteArray, err1 := hex.DecodeString(amfid[2:])
+	regionId = ocfid[:2]
+	byteArray, err1 := hex.DecodeString(ocfid[2:])
 	if err1 != nil {
 		err = err1
 		return

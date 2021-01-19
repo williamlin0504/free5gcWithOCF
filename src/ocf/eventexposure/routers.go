@@ -1,5 +1,5 @@
 /*
- * Namf_EventExposure
+ * Nocf_EventExposure
  *
  * OCF Event Exposure Service
  *
@@ -41,7 +41,7 @@ func NewRouter() *gin.Engine {
 }
 
 func AddService(engine *gin.Engine) *gin.RouterGroup {
-	group := engine.Group("/namf-evts/v1")
+	group := engine.Group("/nocf-evts/v1")
 
 	for _, route := range routes {
 		switch route.Method {

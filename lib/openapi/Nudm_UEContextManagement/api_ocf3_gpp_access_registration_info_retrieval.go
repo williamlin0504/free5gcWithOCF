@@ -19,8 +19,6 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -38,10 +36,6 @@ OCF3GppAccessRegistrationInfoRetrievalApiService retrieve the OCF registration f
  * @param "SupportedFeatures" (optional.String) -
 @return models.Ocf3GppAccessRegistration
 */
-
-type GetParamOpts struct {
-	SupportedFeatures optional.String
-}
 
 func (a *OCF3GppAccessRegistrationInfoRetrievalApiService) Get(ctx context.Context, ueId string, localVarOptionals *GetParamOpts) (models.Ocf3GppAccessRegistration, *http.Response, error) {
 	var (

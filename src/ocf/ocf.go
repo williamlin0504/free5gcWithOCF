@@ -24,7 +24,7 @@ func main() {
 	app.Name = "ocf"
 	appLog.Infoln(app.Name)
 	appLog.Infoln("OCF version: ", version.GetVersion())
-	app.Usage = "-free5gccfg common configuration file -amfcfg ocf configuration file"
+	app.Usage = "-free5gccfg common configuration file -ocfcfg ocf configuration file"
 	app.Action = action
 	app.Flags = OCF.GetCliCmd()
 	if err := app.Run(os.Args); err != nil {

@@ -142,7 +142,7 @@ func HandlePDUSessionEstablishmentRequest(ue *context.OcfUe, anType models.Acces
 	var pduSession models.PduSessionContext
 	pduSession.PduSessionId = pduSessionID
 	pduSession.AccessType = anType
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 	if requestType == models.RequestType_INITIAL_REQUEST {
 
 		if sNssai == nil {
@@ -178,7 +178,7 @@ func HandlePDUSessionEstablishmentRequest(ue *context.OcfUe, anType models.Acces
 		pduSession.SNssai = sNssai
 		if dnn == "" {
 			// default DNN decided by OCF
-			dnn = amfSelf.SupportDnnLists[0]
+			dnn = ocfSelf.SupportDnnLists[0]
 		}
 		pduSession.Dnn = dnn
 
@@ -203,8 +203,8 @@ func HandlePDUSessionEstablishmentRequest(ue *context.OcfUe, anType models.Acces
 			updateData := models.SmContextUpdateData{
 				Release: true,
 				Cause:   models.Cause_REL_DUE_TO_DUPLICATE_SESSION_ID,
-				SmContextStatusUri: fmt.Sprintf("%s/namf-callback/v1/smContextStatus/%s/%d",
-					amfSelf.GetIPv4Uri(), ue.Guti, pduSessionID),
+				SmContextStatusUri: fmt.Sprintf("%s/nocf-callback/v1/smContextStatus/%s/%d",
+					ocfSelf.GetIPv4Uri(), ue.Guti, pduSessionID),
 			}
 			logger.GmmLog.Warningln("Duplicated PDU session ID")
 			response, _, _, err := consumer.SendUpdateSmContextRequest(ue, smContext.SmfUri,
@@ -317,15 +317,15 @@ func selectSmf(ue *context.OcfUe, anType models.AccessType, pduSession *models.P
 	var smfID string
 	var smfUri string
 
-	amfSelf := context.OCF_Self()
-	nrfUri := amfSelf.NrfUri // default NRF URI is pre-configured by OCF
+	ocfSelf := context.OCF_Self()
+	nrfUri := ocfSelf.NrfUri // default NRF URI is pre-configured by OCF
 
 	nsiInformation := ue.GetNsiInformationFromSnssai(anType, *pduSession.SNssai)
 	if nsiInformation == nil {
 		if ue.NssfUri == "" {
 			// TODO: Set a timeout of NSSF Selection or will starvation here
 			for {
-				if err := consumer.SearchNssfNSSelectionInstance(ue, amfSelf.NrfUri, models.NfType_NSSF,
+				if err := consumer.SearchNssfNSSelectionInstance(ue, ocfSelf.NrfUri, models.NfType_NSSF,
 					models.NfType_OCF, nil); err != nil {
 					logger.GmmLog.Errorf("OCF can not select an NSSF Instance by NRF[Error: %+v]", err)
 					time.Sleep(2 * time.Second)
@@ -587,7 +587,7 @@ func HandleRegistrationRequest(ue *context.OcfUe, anType models.AccessType, proc
 	util.StopT3565(ue)
 
 	var guamiFromUeGuti models.Guami
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
 	if ue == nil {
 		return fmt.Errorf("OcfUe is nil")
@@ -664,7 +664,7 @@ func HandleRegistrationRequest(ue *context.OcfUe, anType models.AccessType, proc
 		ue.Guti = guti
 		logger.GmmLog.Debugf("GUTI: %s", guti)
 
-		servedGuami := amfSelf.ServedGuamiList[0]
+		servedGuami := ocfSelf.ServedGuamiList[0]
 		if reflect.DeepEqual(guamiFromUeGuti, servedGuami) {
 			ue.ServingOcfChanged = false
 		} else {
@@ -701,7 +701,7 @@ func HandleRegistrationRequest(ue *context.OcfUe, anType models.AccessType, proc
 	ue.Tai = ue.RanUe[anType].Tai
 
 	// Check TAI
-	if !context.InTaiList(ue.Tai, amfSelf.SupportTaiLists) {
+	if !context.InTaiList(ue.Tai, ocfSelf.SupportTaiLists) {
 		gmm_message.SendRegistrationReject(ue.RanUe[anType], nasMessage.Cause5GMMTrackingAreaNotAllowed, "")
 		return fmt.Errorf("Registration Reject[Tracking area not allowed]")
 	}
@@ -714,7 +714,7 @@ func HandleRegistrationRequest(ue *context.OcfUe, anType models.AccessType, proc
 	}
 
 	// TODO (TS 23.502 4.2.2.2 step 4): if UE's 5g-GUTI is included & serving OCF has changed
-	// since last registration procedure, new OCF may invoke Namf_Communication_UEContextTransfer
+	// since last registration procedure, new OCF may invoke Nocf_Communication_UEContextTransfer
 	// to old OCF, including the complete registration request nas msg, to request UE's SUPI & UE Context
 	if ue.ServingOcfChanged {
 		var transferReason models.TransferReason
@@ -730,7 +730,7 @@ func HandleRegistrationRequest(ue *context.OcfUe, anType models.AccessType, proc
 		searchOpt := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{
 			Guami: optional.NewInterface(guamiFromUeGuti),
 		}
-		err := consumer.SearchOcfCommunicationInstance(ue, amfSelf.NrfUri, models.NfType_OCF, models.NfType_OCF, &searchOpt)
+		err := consumer.SearchOcfCommunicationInstance(ue, ocfSelf.NrfUri, models.NfType_OCF, models.NfType_OCF, &searchOpt)
 		if err != nil {
 			logger.GmmLog.Errorf("[GMM] %+v", err)
 			return err
@@ -760,7 +760,7 @@ func IdentityVerification(ue *context.OcfUe) bool {
 func HandleInitialRegistration(ue *context.OcfUe, anType models.AccessType) error {
 	logger.GmmLog.Infoln("[OCF] Handle InitialRegistration")
 
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
 	// update Kgnb/Kn3iwf
 	ue.UpdateSecurityContext(anType)
@@ -791,7 +791,7 @@ func HandleInitialRegistration(ue *context.OcfUe, anType models.AccessType) erro
 	// TODO: Negotiate DRX value if need (TS 23.501 5.4.5)
 	negotiateDRXParameters(ue, ue.RegistrationRequest.RequestedDRXParameters)
 
-	// TODO (step 10 optional): send Namf_Communication_RegistrationCompleteNotify to old OCF if need
+	// TODO (step 10 optional): send Nocf_Communication_RegistrationCompleteNotify to old OCF if need
 	if ue.ServingOcfChanged {
 		// If the OCF has changed the new OCF notifies the old OCF that the registration of the UE in the new OCF is completed
 		req := models.UeRegStatusUpdateReqData{
@@ -829,7 +829,7 @@ func HandleInitialRegistration(ue *context.OcfUe, anType models.AccessType) erro
 		Supi: optional.NewString(ue.Supi),
 	}
 	for {
-		resp, err := consumer.SendSearchNFInstances(amfSelf.NrfUri, models.NfType_PCF, models.NfType_OCF, &param)
+		resp, err := consumer.SendSearchNFInstances(ocfSelf.NrfUri, models.NfType_PCF, models.NfType_OCF, &param)
 		if err != nil {
 			logger.GmmLog.Error("OCF can not select an PCF by NRF")
 		} else {
@@ -883,17 +883,17 @@ func HandleInitialRegistration(ue *context.OcfUe, anType models.AccessType) erro
 	// 	TODO: send N2 OCF Mobility Request
 	// }
 
-	amfSelf.AllocateRegistrationArea(ue, anType)
+	ocfSelf.AllocateRegistrationArea(ue, anType)
 	logger.GmmLog.Debugf("Use original GUTI[%s]", ue.Guti)
 
 	assignLadnInfo(ue, anType)
 
-	amfSelf.AddOcfUeToUePool(ue, ue.Supi)
-	ue.T3502Value = amfSelf.T3502Value
+	ocfSelf.AddOcfUeToUePool(ue, ue.Supi)
+	ue.T3502Value = ocfSelf.T3502Value
 	if anType == models.AccessType__3_GPP_ACCESS {
-		ue.T3512Value = amfSelf.T3512Value
+		ue.T3512Value = ocfSelf.T3512Value
 	} else {
-		ue.Non3gppDeregistrationTimerValue = amfSelf.Non3gppDeregistrationTimerValue
+		ue.Non3gppDeregistrationTimerValue = ocfSelf.Non3gppDeregistrationTimerValue
 	}
 
 	if anType == models.AccessType__3_GPP_ACCESS {
@@ -916,7 +916,7 @@ func HandleInitialRegistration(ue *context.OcfUe, anType models.AccessType) erro
 func HandleMobilityAndPeriodicRegistrationUpdating(ue *context.OcfUe, anType models.AccessType) error {
 	logger.GmmLog.Infoln("[OCF] Handle MobilityAndPeriodicRegistrationUpdating")
 
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
 	if ue.RegistrationRequest.UpdateType5GS != nil {
 		if ue.RegistrationRequest.UpdateType5GS.GetNGRanRcu() == nasMessage.NGRanRadioCapabilityUpdateNeeded {
@@ -953,7 +953,7 @@ func HandleMobilityAndPeriodicRegistrationUpdating(ue *context.OcfUe, anType mod
 	// TODO: Negotiate DRX value if need (TS 23.501 5.4.5)
 	negotiateDRXParameters(ue, ue.RegistrationRequest.RequestedDRXParameters)
 
-	// TODO (step 10 optional): send Namf_Communication_RegistrationCompleteNotify to old OCF if need
+	// TODO (step 10 optional): send Nocf_Communication_RegistrationCompleteNotify to old OCF if need
 	// if ue.ServingOcfChanged {
 	// 	If the OCF has changed the new OCF notifies the old OCF that the registration of the UE in the new OCF is completed
 	// }
@@ -1197,7 +1197,7 @@ func HandleMobilityAndPeriodicRegistrationUpdating(ue *context.OcfUe, anType mod
 	// 	TODO: send N2 OCF Mobility Request
 	// }
 
-	amfSelf.AllocateRegistrationArea(ue, anType)
+	ocfSelf.AllocateRegistrationArea(ue, anType)
 	assignLadnInfo(ue, anType)
 
 	// TODO: GUTI reassignment if need (based on operator poilcy)
@@ -1281,14 +1281,14 @@ func negotiateDRXParameters(ue *context.OcfUe, requestedDRXParameters *nasType.R
 
 func communicateWithUDM(ue *context.OcfUe, accessType models.AccessType) error {
 	logger.GmmLog.Debugln("communicateWithUDM")
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
 	// UDM selection described in TS 23.501 6.3.8
 	// TODO: consider udm group id, Routing ID part of SUCI, GPSI or External Group ID (e.g., by the NEF)
 	param := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{
 		Supi: optional.NewString(ue.Supi),
 	}
-	resp, err := consumer.SendSearchNFInstances(amfSelf.NrfUri, models.NfType_UDM, models.NfType_OCF, &param)
+	resp, err := consumer.SendSearchNFInstances(ocfSelf.NrfUri, models.NfType_UDM, models.NfType_OCF, &param)
 	if err != nil {
 		return fmt.Errorf("OCF can not select an UDM by NRF")
 	}
@@ -1348,13 +1348,13 @@ func communicateWithUDM(ue *context.OcfUe, accessType models.AccessType) error {
 }
 
 func getSubscribedNssai(ue *context.OcfUe) {
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 	if ue.NudmSDMUri == "" {
 		param := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{
 			Supi: optional.NewString(ue.Supi),
 		}
 		for {
-			err := consumer.SearchUdmSdmInstance(ue, amfSelf.NrfUri, models.NfType_UDM, models.NfType_OCF, &param)
+			err := consumer.SearchUdmSdmInstance(ue, ocfSelf.NrfUri, models.NfType_UDM, models.NfType_OCF, &param)
 			if err != nil {
 				logger.GmmLog.Errorf("OCF can not select an Nudm_SDM Instance by NRF[Error: %+v]", err)
 				time.Sleep(2 * time.Second)
@@ -1373,7 +1373,7 @@ func getSubscribedNssai(ue *context.OcfUe) {
 
 // TS 23.502 4.2.2.2.3 Registration with OCF Re-allocation
 func handleRequestedNssai(ue *context.OcfUe, anType models.AccessType) error {
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
 	var requestedNssai []models.Snssai
 	if ue.RegistrationRequest.RequestedNSSAI != nil {
@@ -1399,7 +1399,7 @@ func handleRequestedNssai(ue *context.OcfUe, anType models.AccessType) error {
 		if needSliceSelection {
 			if ue.NssfUri == "" {
 				for {
-					err := consumer.SearchNssfNSSelectionInstance(ue, amfSelf.NrfUri, models.NfType_NSSF, models.NfType_OCF, nil)
+					err := consumer.SearchNssfNSSelectionInstance(ue, ocfSelf.NrfUri, models.NfType_NSSF, models.NfType_OCF, nil)
 					if err != nil {
 						logger.GmmLog.Errorf("OCF can not select an NSSF Instance by NRF[Error: %+v]", err)
 						time.Sleep(2 * time.Second)
@@ -1421,7 +1421,7 @@ func handleRequestedNssai(ue *context.OcfUe, anType models.AccessType) error {
 				return fmt.Errorf("Handle Requested Nssai of UE failed")
 			}
 
-			// Step 5: Initial OCF send Namf_Communication_RegistrationCompleteNotify to old OCF
+			// Step 5: Initial OCF send Nocf_Communication_RegistrationCompleteNotify to old OCF
 			req := models.UeRegStatusUpdateReqData{
 				TransferStatus: models.UeContextTransferStatus_NOT_TRANSFERRED,
 			}
@@ -1439,9 +1439,9 @@ func handleRequestedNssai(ue *context.OcfUe, anType models.AccessType) error {
 				if netwotkSliceInfo.TargetOcfSet != "" {
 					// TS 29.531
 					// TargetOcfSet format: ^[0-9]{3}-[0-9]{2-3}-[A-Fa-f0-9]{2}-[0-3][A-Fa-f0-9]{2}$
-					// mcc-mnc-amfRegionId(8 bit)-OcfSetId(10 bit)
+					// mcc-mnc-ocfRegionId(8 bit)-OcfSetId(10 bit)
 					targetOcfSetToken := strings.Split(netwotkSliceInfo.TargetOcfSet, "-")
-					guami := amfSelf.ServedGuamiList[0]
+					guami := ocfSelf.ServedGuamiList[0]
 					targetOcfPlmnId := models.PlmnId{
 						Mcc: targetOcfSetToken[0],
 						Mnc: targetOcfSetToken[1],
@@ -1462,18 +1462,18 @@ func handleRequestedNssai(ue *context.OcfUe, anType models.AccessType) error {
 				}
 			}
 
-			err = consumer.SearchOcfCommunicationInstance(ue, amfSelf.NrfUri,
+			err = consumer.SearchOcfCommunicationInstance(ue, ocfSelf.NrfUri,
 				models.NfType_OCF, models.NfType_OCF, &searchTargetOcfQueryParam)
 			if err == nil {
 				// Condition (A) Step 7: initial OCF find Target OCF via NRF ->
-				// Send Namf_Communication_N1MessageNotify to Target OCF
+				// Send Nocf_Communication_N1MessageNotify to Target OCF
 				ueContext := consumer.BuildUeContextModel(ue)
 				registerContext := models.RegistrationContextContainer{
 					UeContext:        &ueContext,
 					AnType:           anType,
 					AnN2ApId:         int32(ue.RanUe[anType].RanUeNgapId),
 					RanNodeId:        ue.RanUe[anType].Ran.RanId,
-					InitialOcfName:   amfSelf.Name,
+					InitialOcfName:   ocfSelf.Name,
 					UserLocation:     &ue.Location,
 					RrcEstCause:      ue.RanUe[anType].RRCEstablishmentCause,
 					UeContextRequest: ue.RanUe[anType].UeContextRequest,
@@ -1519,14 +1519,14 @@ func handleRequestedNssai(ue *context.OcfUe, anType models.AccessType) error {
 
 func assignLadnInfo(ue *context.OcfUe, accessType models.AccessType) {
 
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
 	ue.LadnInfo = nil
 	if ue.RegistrationRequest.LADNIndication != nil {
 		// request for LADN information
 		if ue.RegistrationRequest.LADNIndication.GetLen() == 0 {
 			if ue.HasWildCardSubscribedDNN() {
-				for _, ladn := range amfSelf.LadnPool {
+				for _, ladn := range ocfSelf.LadnPool {
 					if ue.TaiListInRegistrationArea(ladn.TaiLists, accessType) {
 						ue.LadnInfo = append(ue.LadnInfo, *ladn)
 					}
@@ -1534,7 +1534,7 @@ func assignLadnInfo(ue *context.OcfUe, accessType models.AccessType) {
 			} else {
 				for _, snssaiInfos := range ue.SmfSelectionData.SubscribedSnssaiInfos {
 					for _, dnnInfo := range snssaiInfos.DnnInfos {
-						if ladn, ok := amfSelf.LadnPool[dnnInfo.Dnn]; ok { // check if this dnn is a ladn
+						if ladn, ok := ocfSelf.LadnPool[dnnInfo.Dnn]; ok { // check if this dnn is a ladn
 							if ue.TaiListInRegistrationArea(ladn.TaiLists, accessType) {
 								ue.LadnInfo = append(ue.LadnInfo, *ladn)
 							}
@@ -1545,7 +1545,7 @@ func assignLadnInfo(ue *context.OcfUe, accessType models.AccessType) {
 		} else {
 			requestedLadnList := nasConvert.LadnToModels(ue.RegistrationRequest.LADNIndication.GetLADNDNNValue())
 			for _, requestedLadn := range requestedLadnList {
-				if ladn, ok := amfSelf.LadnPool[requestedLadn]; ok {
+				if ladn, ok := ocfSelf.LadnPool[requestedLadn]; ok {
 					if ue.TaiListInRegistrationArea(ladn.TaiLists, accessType) {
 						ue.LadnInfo = append(ue.LadnInfo, *ladn)
 					}
@@ -1556,7 +1556,7 @@ func assignLadnInfo(ue *context.OcfUe, accessType models.AccessType) {
 		for _, snssaiInfos := range ue.SmfSelectionData.SubscribedSnssaiInfos {
 			for _, dnnInfo := range snssaiInfos.DnnInfos {
 				if dnnInfo.Dnn != "*" {
-					if ladn, ok := amfSelf.LadnPool[dnnInfo.Dnn]; ok {
+					if ladn, ok := ocfSelf.LadnPool[dnnInfo.Dnn]; ok {
 						if ue.TaiListInRegistrationArea(ladn.TaiLists, accessType) {
 							ue.LadnInfo = append(ue.LadnInfo, *ladn)
 						}
@@ -1687,11 +1687,11 @@ func AuthenticationProcedure(ue *context.OcfUe, accessType models.AccessType) (b
 		return false, nil
 	}
 
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
 	// TODO: consider ausf group id, Routing ID part of SUCI
 	param := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{}
-	resp, err := consumer.SendSearchNFInstances(amfSelf.NrfUri, models.NfType_AUSF, models.NfType_OCF, &param)
+	resp, err := consumer.SendSearchNFInstances(ocfSelf.NrfUri, models.NfType_AUSF, models.NfType_OCF, &param)
 	if err != nil {
 		logger.GmmLog.Error("OCF can not select an AUSF by NRF")
 		return false, err
@@ -2081,8 +2081,8 @@ func HandleAuthenticationResponse(ue *context.OcfUe, accessType models.AccessTyp
 			ue.UnauthenticatedSupi = false
 			ue.Kseaf = response.Kseaf
 			ue.Supi = response.Supi
-			ue.DerivateKamf()
-			logger.GmmLog.Debugln("ue.DerivateKamf()", ue.Kamf)
+			ue.DerivateKocf()
+			logger.GmmLog.Debugln("ue.DerivateKocf()", ue.Kocf)
 			return GmmFSM.SendEvent(ue.State[accessType], AuthSuccessEvent, fsm.ArgsType{
 				ArgOcfUe:      ue,
 				ArgAccessType: accessType,
@@ -2115,7 +2115,7 @@ func HandleAuthenticationResponse(ue *context.OcfUe, accessType models.AccessTyp
 			ue.UnauthenticatedSupi = false
 			ue.Kseaf = response.KSeaf
 			ue.Supi = response.Supi
-			ue.DerivateKamf()
+			ue.DerivateKocf()
 			// TODO: select enc/int algorithm based on ue security capability & ocf's policy,
 			// then generate KnasEnc, KnasInt
 			return GmmFSM.SendEvent(ue.State[accessType], SecurityModeSuccessEvent, fsm.ArgsType{

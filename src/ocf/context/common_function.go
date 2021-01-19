@@ -59,12 +59,12 @@ func AttachSourceUeTargetUe(sourceUe, targetUe *RanUe) {
 		logger.ContextLog.Error("Target Ue is Nil")
 		return
 	}
-	amfUe := sourceUe.OcfUe
-	if amfUe == nil {
+	ocfUe := sourceUe.OcfUe
+	if ocfUe == nil {
 		logger.ContextLog.Error("OcfUe is Nil")
 		return
 	}
-	targetUe.OcfUe = amfUe
+	targetUe.OcfUe = ocfUe
 	targetUe.SourceUe = sourceUe
 	sourceUe.TargetUe = targetUe
 }

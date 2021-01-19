@@ -1,5 +1,5 @@
 /*
- * Namf_Communication
+ * Nocf_Communication
  *
  * OCF Communication Service
  *
@@ -22,7 +22,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// CreateUEContext - Namf_Communication CreateUEContext service Operation
+// CreateUEContext - Nocf_Communication CreateUEContext service Operation
 func HTTPCreateUEContext(c *gin.Context) {
 	var createUeContextRequest models.CreateUeContextRequest
 	createUeContextRequest.JsonData = new(models.UeContextCreateData)
@@ -96,7 +96,7 @@ func HTTPCreateUEContext(c *gin.Context) {
 	}
 }
 
-// EBIAssignment - Namf_Communication EBI Assignment service Operation
+// EBIAssignment - Nocf_Communication EBI Assignment service Operation
 func HTTPEBIAssignment(c *gin.Context) {
 	var assignEbiData models.AssignEbiData
 
@@ -144,7 +144,7 @@ func HTTPEBIAssignment(c *gin.Context) {
 	}
 }
 
-// RegistrationStatusUpdate - Namf_Communication RegistrationStatusUpdate service Operation
+// RegistrationStatusUpdate - Nocf_Communication RegistrationStatusUpdate service Operation
 func HTTPRegistrationStatusUpdate(c *gin.Context) {
 	var ueRegStatusUpdateReqData models.UeRegStatusUpdateReqData
 
@@ -192,7 +192,7 @@ func HTTPRegistrationStatusUpdate(c *gin.Context) {
 	}
 }
 
-// ReleaseUEContext - Namf_Communication ReleaseUEContext service Operation
+// ReleaseUEContext - Nocf_Communication ReleaseUEContext service Operation
 func HTTPReleaseUEContext(c *gin.Context) {
 	var ueContextRelease models.UeContextRelease
 
@@ -240,7 +240,7 @@ func HTTPReleaseUEContext(c *gin.Context) {
 	}
 }
 
-// UEContextTransfer - Namf_Communication UEContextTransfer service Operation
+// UEContextTransfer - Nocf_Communication UEContextTransfer service Operation
 func HTTPUEContextTransfer(c *gin.Context) {
 	var ueContextTransferRequest models.UeContextTransferRequest
 	ueContextTransferRequest.JsonData = new(models.UeContextTransferReqData)

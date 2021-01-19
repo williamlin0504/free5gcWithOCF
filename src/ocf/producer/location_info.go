@@ -24,9 +24,9 @@ func HandleProvideLocationInfoRequest(request *http_wrapper.Request) *http_wrapp
 
 func ProvideLocationInfoProcedure(requestLocInfo models.RequestLocInfo, ueContextID string) (
 	*models.ProvideLocInfo, *models.ProblemDetails) {
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
-	ue, ok := amfSelf.OcfUeFindByUeContextID(ueContextID)
+	ue, ok := ocfSelf.OcfUeFindByUeContextID(ueContextID)
 	if !ok {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusNotFound,

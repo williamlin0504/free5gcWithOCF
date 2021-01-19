@@ -1,5 +1,5 @@
 /*
- * Namf_Communication
+ * Nocf_Communication
  *
  * OCF Communication Service
  *
@@ -22,7 +22,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// N1N2MessageTransfer - Namf_Communication N1N2 Message Transfer (UE Specific) service Operation
+// N1N2MessageTransfer - Nocf_Communication N1N2 Message Transfer (UE Specific) service Operation
 func HTTPN1N2MessageTransfer(c *gin.Context) {
 	var n1n2MessageTransferRequest models.N1N2MessageTransferRequest
 	n1n2MessageTransferRequest.JsonData = new(models.N1N2MessageTransferReqData)

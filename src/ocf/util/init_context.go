@@ -15,7 +15,7 @@ import (
 
 func InitOcfContext(context *context.OCFContext) {
 	config := factory.OcfConfig
-	logger.UtilLog.Infof("amfconfig Info: Version[%s] Description[%s]", config.Info.Version, config.Info.Description)
+	logger.UtilLog.Infof("ocfconfig Info: Version[%s] Description[%s]", config.Info.Version, config.Info.Description)
 	configuration := config.Configuration
 	context.NfId = uuid.New().String()
 	if configuration.OcfName != "" {

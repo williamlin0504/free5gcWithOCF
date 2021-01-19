@@ -22,7 +22,7 @@ type Info struct {
 }
 
 type Configuration struct {
-	OcfName string `yaml:"amfName,omitempty"`
+	OcfName string `yaml:"ocfName,omitempty"`
 
 	NgapIpList []string `yaml:"ngapIpList,omitempty"`
 

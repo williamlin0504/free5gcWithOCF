@@ -13,7 +13,7 @@ import (
 
 func Encode(ue *context.OcfUe, msg *nas.Message) ([]byte, error) {
 	if ue == nil {
-		return nil, fmt.Errorf("amfUe is nil")
+		return nil, fmt.Errorf("ocfUe is nil")
 	}
 	if msg == nil {
 		return nil, fmt.Errorf("Nas Message is empty")
@@ -86,7 +86,7 @@ format is followed TS 24.501 9.1.1
 */
 func Decode(ue *context.OcfUe, accessType models.AccessType, payload []byte) (*nas.Message, error) {
 	if ue == nil {
-		return nil, fmt.Errorf("amfUe is nil")
+		return nil, fmt.Errorf("ocfUe is nil")
 	}
 	if payload == nil {
 		return nil, fmt.Errorf("Nas payload is empty")

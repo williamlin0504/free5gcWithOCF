@@ -205,7 +205,7 @@ func SendUEContextReleaseCommand(ue *context.RanUe, action context.RelAction, ca
 	SendToRanUe(ue, pkt)
 }
 
-func SendErrorIndication(ran *context.OcfRan, amfUeNgapId, ranUeNgapId *int64, cause *ngapType.Cause,
+func SendErrorIndication(ran *context.OcfRan, ocfUeNgapId, ranUeNgapId *int64, cause *ngapType.Cause,
 	criticalityDiagnostics *ngapType.CriticalityDiagnostics) {
 
 	ngaplog.Info("[OCF] Send Error Indication")
@@ -215,7 +215,7 @@ func SendErrorIndication(ran *context.OcfRan, amfUeNgapId, ranUeNgapId *int64, c
 		return
 	}
 
-	pkt, err := BuildErrorIndication(amfUeNgapId, ranUeNgapId, cause, criticalityDiagnostics)
+	pkt, err := BuildErrorIndication(ocfUeNgapId, ranUeNgapId, cause, criticalityDiagnostics)
 	if err != nil {
 		ngaplog.Errorf("Build ErrorIndication failed : %s", err.Error())
 		return
@@ -341,7 +341,7 @@ func SendPDUSessionResourceModifyRequest(ue *context.RanUe,
 }
 
 func SendInitialContextSetupRequest(
-	amfUe *context.OcfUe,
+	ocfUe *context.OcfUe,
 	anType models.AccessType,
 	nasPdu []byte,
 	pduSessionResourceSetupRequestList *ngapType.PDUSessionResourceSetupListCxtReq,
@@ -351,7 +351,7 @@ func SendInitialContextSetupRequest(
 
 	ngaplog.Info("[OCF] Send Initial Context Setup Request")
 
-	if amfUe == nil {
+	if ocfUe == nil {
 		ngaplog.Error("OcfUe is nil")
 		return
 	}
@@ -363,18 +363,18 @@ func SendInitialContextSetupRequest(
 		}
 	}
 
-	pkt, err := BuildInitialContextSetupRequest(amfUe, anType, nasPdu, pduSessionResourceSetupRequestList,
+	pkt, err := BuildInitialContextSetupRequest(ocfUe, anType, nasPdu, pduSessionResourceSetupRequestList,
 		rrcInactiveTransitionReportRequest, coreNetworkAssistanceInfo, emergencyFallbackIndicator)
 	if err != nil {
 		ngaplog.Errorf("Build InitialContextSetupRequest failed : %s", err.Error())
 		return
 	}
-	amfUe.RanUe[anType].SentInitialContextSetupRequest = true
-	NasSendToRan(amfUe, anType, pkt)
+	ocfUe.RanUe[anType].SentInitialContextSetupRequest = true
+	NasSendToRan(ocfUe, anType, pkt)
 }
 
 func SendUEContextModificationRequest(
-	amfUe *context.OcfUe,
+	ocfUe *context.OcfUe,
 	anType models.AccessType,
 	oldOcfUeNgapID *int64,
 	rrcInactiveTransitionReportRequest *ngapType.RRCInactiveTransitionReportRequest,
@@ -384,18 +384,18 @@ func SendUEContextModificationRequest(
 
 	ngaplog.Info("[OCF] Send UE Context Modification Request")
 
-	if amfUe == nil {
+	if ocfUe == nil {
 		ngaplog.Error("OcfUe is nil")
 		return
 	}
 
-	pkt, err := BuildUEContextModificationRequest(amfUe, anType, oldOcfUeNgapID, rrcInactiveTransitionReportRequest,
+	pkt, err := BuildUEContextModificationRequest(ocfUe, anType, oldOcfUeNgapID, rrcInactiveTransitionReportRequest,
 		coreNetworkAssistanceInfo, mobilityRestrictionList, emergencyFallbackIndicator)
 	if err != nil {
 		ngaplog.Errorf("Build UEContextModificationRequest failed : %s", err.Error())
 		return
 	}
-	NasSendToRan(amfUe, anType, pkt)
+	NasSendToRan(ocfUe, anType, pkt)
 }
 
 // pduSessionResourceHandoverList: provided by ocf and transfer is return from smf
@@ -447,12 +447,12 @@ func SendHandoverPreparationFailure(sourceUe *context.RanUe, cause ngapType.Caus
 		ngaplog.Error("SourceUe is nil")
 		return
 	}
-	amfUe := sourceUe.OcfUe
-	if amfUe == nil {
-		ngaplog.Error("amfUe is nil")
+	ocfUe := sourceUe.OcfUe
+	if ocfUe == nil {
+		ngaplog.Error("ocfUe is nil")
 		return
 	}
-	amfUe.OnGoing[sourceUe.Ran.AnType].Procedure = context.OnGoingProcedureNothing
+	ocfUe.OnGoing[sourceUe.Ran.AnType].Procedure = context.OnGoingProcedureNothing
 	pkt, err := BuildHandoverPreparationFailure(sourceUe, cause, criticalityDiagnostics)
 	if err != nil {
 		ngaplog.Errorf("Build HandoverPreparationFailure failed : %s", err.Error())
@@ -466,7 +466,7 @@ a Nsmf_PDUSession_CreateSMContext Response(N2 SM Information (PDU Session ID, ca
 // Cause is from SMF
 // pduSessionResourceSetupList provided by OCF, and the transfer data is from SMF
 // sourceToTargetTransparentContainer is received from S-RAN
-// nsci: new security context indicator, if amfUe has updated security context, set nsci to true, otherwise set to false
+// nsci: new security context indicator, if ocfUe has updated security context, set nsci to true, otherwise set to false
 // N2 handover in same OCF
 func SendHandoverRequest(sourceUe *context.RanUe, targetRan *context.OcfRan, cause ngapType.Cause,
 	pduSessionResourceSetupListHOReq ngapType.PDUSessionResourceSetupListHOReq,
@@ -478,9 +478,9 @@ func SendHandoverRequest(sourceUe *context.RanUe, targetRan *context.OcfRan, cau
 		ngaplog.Error("sourceUe is nil")
 		return
 	}
-	amfUe := sourceUe.OcfUe
-	if amfUe == nil {
-		ngaplog.Error("amfUe is nil")
+	ocfUe := sourceUe.OcfUe
+	if ocfUe == nil {
+		ngaplog.Error("ocfUe is nil")
 		return
 	}
 	if targetRan == nil {
@@ -572,7 +572,7 @@ func SendPathSwitchRequestAcknowledge(
 // criticalityDiagnostics: from received node when received not comprehended IE or missing IE
 func SendPathSwitchRequestFailure(
 	ran *context.OcfRan,
-	amfUeNgapId,
+	ocfUeNgapId,
 	ranUeNgapId int64,
 	pduSessionResourceReleasedList *ngapType.PDUSessionResourceReleasedListPSFail,
 	criticalityDiagnostics *ngapType.CriticalityDiagnostics) {
@@ -584,7 +584,7 @@ func SendPathSwitchRequestFailure(
 		return
 	}
 
-	pkt, err := BuildPathSwitchRequestFailure(amfUeNgapId, ranUeNgapId, pduSessionResourceReleasedList,
+	pkt, err := BuildPathSwitchRequestFailure(ocfUeNgapId, ranUeNgapId, pduSessionResourceReleasedList,
 		criticalityDiagnostics)
 	if err != nil {
 		ngaplog.Errorf("Build PathSwitchRequestFailure failed : %s", err.Error())
@@ -616,8 +616,8 @@ func SendDownlinkRanStatusTransfer(ue *context.RanUe, container ngapType.RANStat
 	SendToRanUe(ue, pkt)
 }
 
-// anType indicate amfUe send this msg for which accessType
-// Paging Priority: is included only if the OCF receives an Namf_Communication_N1N2MessageTransfer message
+// anType indicate ocfUe send this msg for which accessType
+// Paging Priority: is included only if the OCF receives an Nocf_Communication_N1N2MessageTransfer message
 // with an ARP value associated with
 // priority services (e.g., MPS, MCS), as configured by the operator. (TS 23.502 4.2.3.3, TS 23.501 5.22.3)
 // pagingOriginNon3GPP: TS 23.502 4.2.3.3 step 4b: If the UE is simultaneously registered over 3GPP and non-3GPP
@@ -684,11 +684,11 @@ func SendPaging(ue *context.OcfUe, ngapBuf []byte) {
 }
 
 // TS 23.502 4.2.2.2.3
-// anType: indicate amfUe send this msg for which accessType
-// amfUeNgapID: initial OCF get it from target OCF
+// anType: indicate ocfUe send this msg for which accessType
+// ocfUeNgapID: initial OCF get it from target OCF
 // ngapMessage: initial UE Message to reroute
 // allowedNSSAI: provided by OCF, and OCF get it from NSSF (4.2.2.2.3 step 4b)
-func SendRerouteNasRequest(ue *context.OcfUe, anType models.AccessType, amfUeNgapID *int64, ngapMessage []byte,
+func SendRerouteNasRequest(ue *context.OcfUe, anType models.AccessType, ocfUeNgapID *int64, ngapMessage []byte,
 	allowedNSSAI *ngapType.AllowedNSSAI) {
 
 	ngaplog.Info("[OCF] Send Reroute Nas Request")
@@ -703,7 +703,7 @@ func SendRerouteNasRequest(ue *context.OcfUe, anType models.AccessType, amfUeNga
 		return
 	}
 
-	pkt, err := BuildRerouteNasRequest(ue, anType, amfUeNgapID, ngapMessage, allowedNSSAI)
+	pkt, err := BuildRerouteNasRequest(ue, anType, ocfUeNgapID, ngapMessage, allowedNSSAI)
 	if err != nil {
 		ngaplog.Errorf("Build RerouteNasRequest failed : %s", err.Error())
 		return
@@ -780,14 +780,14 @@ func SendOCFStatusIndication(ran *context.OcfRan, unavailableGUAMIList ngapType.
 }
 
 // TS 23.501 5.19.5.2
-// amfOverloadResponse: the required behaviour of NG-RAN, provided by OCF
-// amfTrafficLoadReductionIndication(int 1~99): indicates the percentage of the type, set to 0 if does not need this ie
+// ocfOverloadResponse: the required behaviour of NG-RAN, provided by OCF
+// ocfTrafficLoadReductionIndication(int 1~99): indicates the percentage of the type, set to 0 if does not need this ie
 // of traffic relative to the instantaneous incoming rate at the NG-RAN node, provided by OCF
 // overloadStartNSSAIList: overload slices, provide by OCF
 func SendOverloadStart(
 	ran *context.OcfRan,
-	amfOverloadResponse *ngapType.OverloadResponse,
-	amfTrafficLoadReductionIndication int64,
+	ocfOverloadResponse *ngapType.OverloadResponse,
+	ocfTrafficLoadReductionIndication int64,
 	overloadStartNSSAIList *ngapType.OverloadStartNSSAIList) {
 
 	ngaplog.Info("[OCF] Send Overload Start")
@@ -797,8 +797,8 @@ func SendOverloadStart(
 		return
 	}
 
-	if amfTrafficLoadReductionIndication != 0 &&
-		(amfTrafficLoadReductionIndication < 1 || amfTrafficLoadReductionIndication > 99) {
+	if ocfTrafficLoadReductionIndication != 0 &&
+		(ocfTrafficLoadReductionIndication < 1 || ocfTrafficLoadReductionIndication > 99) {
 		ngaplog.Error("OcfTrafficLoadReductionIndication out of range (should be 1 ~ 99)")
 		return
 	}
@@ -808,7 +808,7 @@ func SendOverloadStart(
 		return
 	}
 
-	pkt, err := BuildOverloadStart(amfOverloadResponse, amfTrafficLoadReductionIndication, overloadStartNSSAIList)
+	pkt, err := BuildOverloadStart(ocfOverloadResponse, ocfTrafficLoadReductionIndication, overloadStartNSSAIList)
 	if err != nil {
 		ngaplog.Errorf("Build OverloadStart failed : %s", err.Error())
 		return
@@ -875,22 +875,22 @@ func SendDownlinkNonUEAssociatedNRPPATransport(ue *context.RanUe, nRPPaPDU ngapT
 	SendToRanUe(ue, pkt)
 }
 
-func SendDeactivateTrace(amfUe *context.OcfUe, anType models.AccessType) {
+func SendDeactivateTrace(ocfUe *context.OcfUe, anType models.AccessType) {
 
 	ngaplog.Info("[OCF] Send Deactivate Trace")
 
-	if amfUe == nil {
+	if ocfUe == nil {
 		ngaplog.Error("OcfUe is nil")
 		return
 	}
 
-	ranUe := amfUe.RanUe[anType]
+	ranUe := ocfUe.RanUe[anType]
 	if ranUe == nil {
 		ngaplog.Error("RanUe is nil")
 		return
 	}
 
-	pkt, err := BuildDeactivateTrace(amfUe, anType)
+	pkt, err := BuildDeactivateTrace(ocfUe, anType)
 	if err != nil {
 		ngaplog.Errorf("Build DeactivateTrace failed : %s", err.Error())
 		return

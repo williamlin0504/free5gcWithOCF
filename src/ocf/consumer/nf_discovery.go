@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"free5gc/lib/openapi/Nnrf_NFDiscovery"
 	"free5gc/lib/openapi/models"
-	amf_context "free5gc/src/ocf/context"
+	ocf_context "free5gc/src/ocf/context"
 	"free5gc/src/ocf/logger"
 	"free5gc/src/ocf/util"
 	"net/http"
@@ -26,7 +26,7 @@ func SendSearchNFInstances(nrfUri string, targetNfType, requestNfType models.NfT
 	return result, err
 }
 
-func SearchUdmSdmInstance(ue *amf_context.OcfUe, nrfUri string, targetNfType, requestNfType models.NfType,
+func SearchUdmSdmInstance(ue *ocf_context.OcfUe, nrfUri string, targetNfType, requestNfType models.NfType,
 	param *Nnrf_NFDiscovery.SearchNFInstancesParamOpts) error {
 
 	resp, localErr := SendSearchNFInstances(nrfUri, targetNfType, requestNfType, param)
@@ -52,7 +52,7 @@ func SearchUdmSdmInstance(ue *amf_context.OcfUe, nrfUri string, targetNfType, re
 	return nil
 }
 
-func SearchNssfNSSelectionInstance(ue *amf_context.OcfUe, nrfUri string, targetNfType, requestNfType models.NfType,
+func SearchNssfNSSelectionInstance(ue *ocf_context.OcfUe, nrfUri string, targetNfType, requestNfType models.NfType,
 	param *Nnrf_NFDiscovery.SearchNFInstancesParamOpts) error {
 
 	resp, localErr := SendSearchNFInstances(nrfUri, targetNfType, requestNfType, param)
@@ -76,7 +76,7 @@ func SearchNssfNSSelectionInstance(ue *amf_context.OcfUe, nrfUri string, targetN
 	return nil
 }
 
-func SearchOcfCommunicationInstance(ue *amf_context.OcfUe, nrfUri string, targetNfType,
+func SearchOcfCommunicationInstance(ue *ocf_context.OcfUe, nrfUri string, targetNfType,
 	requestNfType models.NfType, param *Nnrf_NFDiscovery.SearchNFInstancesParamOpts) (err error) {
 
 	resp, localErr := SendSearchNFInstances(nrfUri, targetNfType, requestNfType, param)
@@ -86,15 +86,15 @@ func SearchOcfCommunicationInstance(ue *amf_context.OcfUe, nrfUri string, target
 	}
 
 	// select the first OCF, TODO: select base on other info
-	var amfUri string
+	var ocfUri string
 	for _, nfProfile := range resp.NfInstances {
 		ue.TargetOcfProfile = &nfProfile
-		amfUri = util.SearchNFServiceUri(nfProfile, models.ServiceName_NOCF_COMM, models.NfServiceStatus_REGISTERED)
-		if amfUri != "" {
+		ocfUri = util.SearchNFServiceUri(nfProfile, models.ServiceName_NOCF_COMM, models.NfServiceStatus_REGISTERED)
+		if ocfUri != "" {
 			break
 		}
 	}
-	ue.TargetOcfUri = amfUri
+	ue.TargetOcfUri = ocfUri
 	if ue.TargetOcfUri == "" {
 		err = fmt.Errorf("OCF can not select an target OCF by NRF")
 	}

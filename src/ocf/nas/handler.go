@@ -7,7 +7,7 @@ import (
 )
 
 func HandleNAS(ue *context.RanUe, procedureCode int64, nasPdu []byte) {
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
 	if ue == nil {
 		logger.NasLog.Error("RanUe is nil")
@@ -20,7 +20,7 @@ func HandleNAS(ue *context.RanUe, procedureCode int64, nasPdu []byte) {
 	}
 
 	if ue.OcfUe == nil {
-		ue.OcfUe = amfSelf.NewOcfUe("")
+		ue.OcfUe = ocfSelf.NewOcfUe("")
 		ue.OcfUe.AttachRanUe(ue)
 	}
 

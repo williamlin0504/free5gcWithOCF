@@ -7,18 +7,18 @@ import (
 	"free5gc/lib/openapi/Nnssf_NSSelection"
 	"free5gc/lib/openapi/models"
 	"free5gc/src/nssf/logger"
-	amf_context "free5gc/src/ocf/context"
+	ocf_context "free5gc/src/ocf/context"
 
 	"github.com/antihax/optional"
 )
 
-func NSSelectionGetForRegistration(ue *amf_context.OcfUe, requestedNssai []models.Snssai) (
+func NSSelectionGetForRegistration(ue *ocf_context.OcfUe, requestedNssai []models.Snssai) (
 	*models.ProblemDetails, error) {
 	configuration := Nnssf_NSSelection.NewConfiguration()
 	configuration.SetBasePath(ue.NssfUri)
 	client := Nnssf_NSSelection.NewAPIClient(configuration)
 
-	amfSelf := amf_context.OCF_Self()
+	ocfSelf := ocf_context.OCF_Self()
 	sliceInfoForRegistration := models.SliceInfoForRegistration{
 		RequestedNssai:  requestedNssai,
 		SubscribedNssai: ue.SubscribedNssai,
@@ -33,7 +33,7 @@ func NSSelectionGetForRegistration(ue *amf_context.OcfUe, requestedNssai []model
 		}
 	}
 	res, httpResp, localErr := client.NetworkSliceInformationDocumentApi.NSSelectionGet(context.Background(),
-		models.NfType_OCF, amfSelf.NfId, &paramOpt)
+		models.NfType_OCF, ocfSelf.NfId, &paramOpt)
 	if localErr == nil {
 		ue.NetworkSliceInfo = &res
 		for _, allowedNssai := range res.AllowedNssaiList {
@@ -54,13 +54,13 @@ func NSSelectionGetForRegistration(ue *amf_context.OcfUe, requestedNssai []model
 	return nil, nil
 }
 
-func NSSelectionGetForPduSession(ue *amf_context.OcfUe, snssai models.Snssai) (
+func NSSelectionGetForPduSession(ue *ocf_context.OcfUe, snssai models.Snssai) (
 	*models.AuthorizedNetworkSliceInfo, *models.ProblemDetails, error) {
 	configuration := Nnssf_NSSelection.NewConfiguration()
 	configuration.SetBasePath(ue.NssfUri)
 	client := Nnssf_NSSelection.NewAPIClient(configuration)
 
-	amfSelf := amf_context.OCF_Self()
+	ocfSelf := ocf_context.OCF_Self()
 	sliceInfoForPduSession := models.SliceInfoForPduSession{
 		SNssai:            &snssai,
 		RoamingIndication: models.RoamingIndication_NON_ROAMING, // not support roaming
@@ -74,7 +74,7 @@ func NSSelectionGetForPduSession(ue *amf_context.OcfUe, snssai models.Snssai) (
 		SliceInfoRequestForPduSession: optional.NewInterface(string(e)),
 	}
 	res, httpResp, localErr := client.NetworkSliceInformationDocumentApi.NSSelectionGet(context.Background(),
-		models.NfType_OCF, amfSelf.NfId, &paramOpt)
+		models.NfType_OCF, ocfSelf.NfId, &paramOpt)
 	if localErr == nil {
 		return &res, nil, nil
 	} else if httpResp != nil {

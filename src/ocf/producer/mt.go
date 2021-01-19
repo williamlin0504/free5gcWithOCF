@@ -26,9 +26,9 @@ func HandleProvideDomainSelectionInfoRequest(request *http_wrapper.Request) *htt
 
 func ProvideDomainSelectionInfoProcedure(ueContextID string, infoClassQuery string, supportedFeaturesQuery string) (
 	*models.UeContextInfo, *models.ProblemDetails) {
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
-	ue, ok := amfSelf.OcfUeFindByUeContextID(ueContextID)
+	ue, ok := ocfSelf.OcfUeFindByUeContextID(ueContextID)
 	if !ok {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusNotFound,
