@@ -4188,6 +4188,9 @@ components:
     AmfId:
       pattern: ^[A-Fa-f0-9]{6}$
       type: string
+    OcfId:
+      pattern: ^[A-Fa-f0-9]{6}$
+      type: string
     ServiceName:
       enum:
       - nnrf-nfm

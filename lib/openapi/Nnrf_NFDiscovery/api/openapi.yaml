@@ -1763,6 +1763,9 @@ components:
     AmfId:
       pattern: ^[A-Fa-f0-9]{6}$
       type: string
+    OcfId:
+      pattern: ^[A-Fa-f0-9]{6}$
+      type: string
     Supi:
       pattern: ^(imsi-[0-9]{5,15}|nai-.+|.+)$
       type: string

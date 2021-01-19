@@ -10244,6 +10244,9 @@ components:
     AmfId:
       pattern: ^[A-Fa-f0-9]{6}$
       type: string
+    OcfId:
+      pattern: ^[A-Fa-f0-9]{6}$
+      type: string
     BackupAmfInfo:
       example:
         backupAmf: backupAmf
