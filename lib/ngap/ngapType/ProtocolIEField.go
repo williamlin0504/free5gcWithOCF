@@ -1295,8 +1295,10 @@ type DownlinkNASTransportIEs struct {
 const (
 	DownlinkNASTransportIEsPresentNothing int = iota /* No components present */
 	DownlinkNASTransportIEsPresentAMFUENGAPID
+	DownlinkNASTransportIEsPresentOCFUENGAPID
 	DownlinkNASTransportIEsPresentRANUENGAPID
 	DownlinkNASTransportIEsPresentOldAMF
+	DownlinkNASTransportIEsPresentOldOCF
 	DownlinkNASTransportIEsPresentRANPagingPriority
 	DownlinkNASTransportIEsPresentNASPDU
 	DownlinkNASTransportIEsPresentMobilityRestrictionList
@@ -1308,8 +1310,10 @@ const (
 type DownlinkNASTransportIEsValue struct {
 	Present                   int
 	AMFUENGAPID               *AMFUENGAPID               `aper:"referenceFieldValue:10"`
+	OCFUENGAPID               *OCFUENGAPID               `aper:"referenceFieldValue:151"`
 	RANUENGAPID               *RANUENGAPID               `aper:"referenceFieldValue:85"`
 	OldAMF                    *AMFName                   `aper:"referenceFieldValue:48"`
+	OldOCF                    *OCFName                   `aper:"referenceFieldValue:153"`
 	RANPagingPriority         *RANPagingPriority         `aper:"referenceFieldValue:83"`
 	NASPDU                    *NASPDU                    `aper:"referenceFieldValue:38"`
 	MobilityRestrictionList   *MobilityRestrictionList   `aper:"valueExt,referenceFieldValue:36"`

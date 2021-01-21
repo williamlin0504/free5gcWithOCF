@@ -158,3 +158,4 @@ const ProtocolIEIDOCFTNLAssociationToUpdateList int64 = 149
 const ProtocolIEIDOCFTrafficLoadReductionIndication int64 = 150
 const ProtocolIEIDOCFUENGAPID int64 = 151
 const ProtocolIEIDRelativeOCFCapacity int64 = 152
+const ProtocolIEIDOldOCF int64 = 153

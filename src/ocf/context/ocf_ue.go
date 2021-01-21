@@ -182,10 +182,10 @@ type OcfUe struct {
 }
 
 type OcfUeEventSubscription struct {
-	Timestamp         time.Time
-	AnyUe             bool
-	RemainReports     *int32
-	EventSubscription *models.OcfEventSubscription
+	Timestamp             time.Time
+	AnyUe                 bool
+	RemainReports         *int32
+	EventSubscription_OCF *models.OcfEventSubscription
 }
 type N1N2Message struct {
 	Request     models.N1N2MessageTransferRequest
