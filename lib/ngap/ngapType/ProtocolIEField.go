@@ -1417,8 +1417,10 @@ type NGSetupResponseIEs struct {
 const (
 	NGSetupResponseIEsPresentNothing int = iota /* No components present */
 	NGSetupResponseIEsPresentAMFName
+	NGSetupResponseIEsPresentOCFName
 	NGSetupResponseIEsPresentServedGUAMIList
 	NGSetupResponseIEsPresentRelativeAMFCapacity
+	NGSetupResponseIEsPresentRelativeOCFCapacity
 	NGSetupResponseIEsPresentPLMNSupportList
 	NGSetupResponseIEsPresentCriticalityDiagnostics
 )
@@ -1426,9 +1428,10 @@ const (
 type NGSetupResponseIEsValue struct {
 	Present                int
 	AMFName                *AMFName                `aper:"referenceFieldValue:1"`
-	OCFName                *OCFName                `aper:"referenceFieldValue:1"`
+	OCFName                *OCFName                `aper:"referenceFieldValue:142"`
 	ServedGUAMIList        *ServedGUAMIList        `aper:"referenceFieldValue:96"`
 	RelativeAMFCapacity    *RelativeAMFCapacity    `aper:"referenceFieldValue:86"`
+	RelativeOCFCapacity    *RelativeOCFCapacity    `aper:"referenceFieldValue:152"`
 	PLMNSupportList        *PLMNSupportList        `aper:"referenceFieldValue:80"`
 	CriticalityDiagnostics *CriticalityDiagnostics `aper:"valueExt,referenceFieldValue:19"`
 }

@@ -4,6 +4,7 @@ package ngapType
 
 type UEAssociatedLogicalNGConnectionItem struct {
 	AMFUENGAPID  *AMFUENGAPID                                                         `aper:"optional"`
+	OCFUENGAPID  *OCFUENGAPID                                                         `aper:"optional"`
 	RANUENGAPID  *RANUENGAPID                                                         `aper:"optional"`
 	IEExtensions *ProtocolExtensionContainerUEAssociatedLogicalNGConnectionItemExtIEs `aper:"optional"`
 }
