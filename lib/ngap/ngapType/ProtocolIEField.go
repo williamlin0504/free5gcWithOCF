@@ -974,6 +974,7 @@ type HandoverRequestIEs struct {
 const (
 	HandoverRequestIEsPresentNothing int = iota /* No components present */
 	HandoverRequestIEsPresentAMFUENGAPID
+	HandoverRequestIEsPresentOCFUENGAPID
 	HandoverRequestIEsPresentHandoverType
 	HandoverRequestIEsPresentCause
 	HandoverRequestIEsPresentUEAggregateMaximumBitRate
@@ -996,6 +997,7 @@ const (
 type HandoverRequestIEsValue struct {
 	Present                            int
 	AMFUENGAPID                        *AMFUENGAPID                        `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                        *OCFUENGAPID                        `aper:"referenceFieldValue:151"`
 	HandoverType                       *HandoverType                       `aper:"referenceFieldValue:29"`
 	Cause                              *Cause                              `aper:"referenceFieldValue:15,valueLB:0,valueUB:5"`
 	UEAggregateMaximumBitRate          *UEAggregateMaximumBitRate          `aper:"valueExt,referenceFieldValue:110"`
@@ -1116,6 +1118,7 @@ type PathSwitchRequestAcknowledgeIEs struct {
 const (
 	PathSwitchRequestAcknowledgeIEsPresentNothing int = iota /* No components present */
 	PathSwitchRequestAcknowledgeIEsPresentAMFUENGAPID
+	PathSwitchRequestAcknowledgeIEsPresentOCFUENGAPID
 	PathSwitchRequestAcknowledgeIEsPresentRANUENGAPID
 	PathSwitchRequestAcknowledgeIEsPresentUESecurityCapabilities
 	PathSwitchRequestAcknowledgeIEsPresentSecurityContext
@@ -1131,6 +1134,7 @@ const (
 type PathSwitchRequestAcknowledgeIEsValue struct {
 	Present                             int
 	AMFUENGAPID                         *AMFUENGAPID                         `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                         *OCFUENGAPID                         `aper:"referenceFieldValue:151"`
 	RANUENGAPID                         *RANUENGAPID                         `aper:"referenceFieldValue:85"`
 	UESecurityCapabilities              *UESecurityCapabilities              `aper:"valueExt,referenceFieldValue:119"`
 	SecurityContext                     *SecurityContext                     `aper:"valueExt,referenceFieldValue:93"`
@@ -1152,6 +1156,7 @@ type PathSwitchRequestFailureIEs struct {
 const (
 	PathSwitchRequestFailureIEsPresentNothing int = iota /* No components present */
 	PathSwitchRequestFailureIEsPresentAMFUENGAPID
+	PathSwitchRequestFailureIEsPresentOCFUENGAPID
 	PathSwitchRequestFailureIEsPresentRANUENGAPID
 	PathSwitchRequestFailureIEsPresentPDUSessionResourceReleasedListPSFail
 	PathSwitchRequestFailureIEsPresentCriticalityDiagnostics
@@ -1160,6 +1165,7 @@ const (
 type PathSwitchRequestFailureIEsValue struct {
 	Present                              int
 	AMFUENGAPID                          *AMFUENGAPID                          `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                          *OCFUENGAPID                          `aper:"referenceFieldValue:151"`
 	RANUENGAPID                          *RANUENGAPID                          `aper:"referenceFieldValue:85"`
 	PDUSessionResourceReleasedListPSFail *PDUSessionResourceReleasedListPSFail `aper:"referenceFieldValue:69"`
 	CriticalityDiagnostics               *CriticalityDiagnostics               `aper:"valueExt,referenceFieldValue:19"`
@@ -1236,6 +1242,7 @@ type DownlinkRANStatusTransferIEs struct {
 const (
 	DownlinkRANStatusTransferIEsPresentNothing int = iota /* No components present */
 	DownlinkRANStatusTransferIEsPresentAMFUENGAPID
+	DownlinkRANStatusTransferIEsPresentOCFUENGAPID
 	DownlinkRANStatusTransferIEsPresentRANUENGAPID
 	DownlinkRANStatusTransferIEsPresentRANStatusTransferTransparentContainer
 )
