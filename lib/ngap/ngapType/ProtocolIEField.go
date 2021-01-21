@@ -639,6 +639,7 @@ type InitialContextSetupRequestIEsValue struct {
 	OCFUENGAPID                        *OCFUENGAPID                        `aper:"referenceFieldValue:151"`
 	RANUENGAPID                        *RANUENGAPID                        `aper:"referenceFieldValue:85"`
 	OldAMF                             *AMFName                            `aper:"referenceFieldValue:48"`
+	OldOCF                             *OCFName                            `aper:"referenceFieldValue:153"`
 	UEAggregateMaximumBitRate          *UEAggregateMaximumBitRate          `aper:"valueExt,referenceFieldValue:110"`
 	CoreNetworkAssistanceInformation   *CoreNetworkAssistanceInformation   `aper:"valueExt,referenceFieldValue:18"`
 	GUAMI                              *GUAMI                              `aper:"valueExt,referenceFieldValue:28"`
@@ -790,6 +791,7 @@ const (
 	UEContextModificationRequestIEsPresentCoreNetworkAssistanceInformation
 	UEContextModificationRequestIEsPresentEmergencyFallbackIndicator
 	UEContextModificationRequestIEsPresentNewAMFUENGAPID
+	UEContextModificationRequestIEsPresentNewOCFUENGAPID
 	UEContextModificationRequestIEsPresentRRCInactiveTransitionReportRequest
 )
 
@@ -806,6 +808,7 @@ type UEContextModificationRequestIEsValue struct {
 	CoreNetworkAssistanceInformation   *CoreNetworkAssistanceInformation   `aper:"valueExt,referenceFieldValue:18"`
 	EmergencyFallbackIndicator         *EmergencyFallbackIndicator         `aper:"valueExt,referenceFieldValue:24"`
 	NewAMFUENGAPID                     *AMFUENGAPID                        `aper:"referenceFieldValue:40"`
+	NewOCFUENGAPID                     *OCFUENGAPID                        `aper:"referenceFieldValue:154"`
 	RRCInactiveTransitionReportRequest *RRCInactiveTransitionReportRequest `aper:"referenceFieldValue:91"`
 }
 
@@ -916,6 +919,7 @@ type HandoverCommandIEs struct {
 const (
 	HandoverCommandIEsPresentNothing int = iota /* No components present */
 	HandoverCommandIEsPresentAMFUENGAPID
+	HandoverCommandIEsPresentOCFUENGAPID
 	HandoverCommandIEsPresentRANUENGAPID
 	HandoverCommandIEsPresentHandoverType
 	HandoverCommandIEsPresentNASSecurityParametersFromNGRAN
@@ -928,6 +932,7 @@ const (
 type HandoverCommandIEsValue struct {
 	Present                              int
 	AMFUENGAPID                          *AMFUENGAPID                          `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                          *OCFUENGAPID                          `aper:"referenceFieldValue:151"`
 	RANUENGAPID                          *RANUENGAPID                          `aper:"referenceFieldValue:85"`
 	HandoverType                         *HandoverType                         `aper:"referenceFieldValue:29"`
 	NASSecurityParametersFromNGRAN       *NASSecurityParametersFromNGRAN       `aper:"referenceFieldValue:39"`
@@ -954,6 +959,7 @@ const (
 type HandoverPreparationFailureIEsValue struct {
 	Present                int
 	AMFUENGAPID            *AMFUENGAPID            `aper:"referenceFieldValue:10"`
+	OCFUENGAPID            *OCFUENGAPID            `aper:"referenceFieldValue:151"`
 	RANUENGAPID            *RANUENGAPID            `aper:"referenceFieldValue:85"`
 	Cause                  *Cause                  `aper:"referenceFieldValue:15,valueLB:0,valueUB:5"`
 	CriticalityDiagnostics *CriticalityDiagnostics `aper:"valueExt,referenceFieldValue:19"`
