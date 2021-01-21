@@ -89,7 +89,7 @@ func BuildUeContextModel(ue *ocf_context.OcfUe) (ueContext models.UeContext) {
 
 	for _, eventSub := range ue.EventSubscriptionsInfo {
 		if eventSub.EventSubscription_OCF != nil {
-			ueContext.EventSubscriptionList = append(ueContext.EventSubscriptionList, *eventSub.EventSubscription_OCF)
+			ueContext.EventSubscriptionList_OCF = append(ueContext.EventSubscriptionList_OCF, *eventSub.EventSubscription_OCF)
 		}
 	}
 
