@@ -296,6 +296,28 @@ type ProtocolIEContainerAMFStatusIndicationIEs struct {
 	List []AMFStatusIndicationIEs `aper:"sizeLB:0,sizeUB:65535"`
 }
 
+type ProtocolIEContainerOCFConfigurationUpdateIEs struct {
+	List []AMFConfigurationUpdateIEs `aper:"sizeLB:0,sizeUB:65535"`
+}
+
+/* Sequence of = 35, FULL Name = struct ProtocolIE_Container_6449P46 */
+/* AMFConfigurationUpdateAcknowledgeIEs */
+type ProtocolIEContainerOCFConfigurationUpdateAcknowledgeIEs struct {
+	List []AMFConfigurationUpdateAcknowledgeIEs `aper:"sizeLB:0,sizeUB:65535"`
+}
+
+/* Sequence of = 35, FULL Name = struct ProtocolIE_Container_6449P47 */
+/* AMFConfigurationUpdateFailureIEs */
+type ProtocolIEContainerOCFConfigurationUpdateFailureIEs struct {
+	List []AMFConfigurationUpdateFailureIEs `aper:"sizeLB:0,sizeUB:65535"`
+}
+
+/* Sequence of = 35, FULL Name = struct ProtocolIE_Container_6449P48 */
+/* AMFStatusIndicationIEs */
+type ProtocolIEContainerOCFStatusIndicationIEs struct {
+	List []AMFStatusIndicationIEs `aper:"sizeLB:0,sizeUB:65535"`
+}
+
 /* Sequence of = 35, FULL Name = struct ProtocolIE_Container_6449P49 */
 /* NGResetIEs */
 type ProtocolIEContainerNGResetIEs struct {
