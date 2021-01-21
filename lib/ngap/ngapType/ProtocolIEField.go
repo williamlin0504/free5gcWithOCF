@@ -611,8 +611,10 @@ type InitialContextSetupRequestIEs struct {
 const (
 	InitialContextSetupRequestIEsPresentNothing int = iota /* No components present */
 	InitialContextSetupRequestIEsPresentAMFUENGAPID
+	InitialContextSetupRequestIEsPresentOCFUENGAPID
 	InitialContextSetupRequestIEsPresentRANUENGAPID
 	InitialContextSetupRequestIEsPresentOldAMF
+	InitialContextSetupRequestIEsPresentOldOCF
 	InitialContextSetupRequestIEsPresentUEAggregateMaximumBitRate
 	InitialContextSetupRequestIEsPresentCoreNetworkAssistanceInformation
 	InitialContextSetupRequestIEsPresentGUAMI
@@ -634,6 +636,7 @@ const (
 type InitialContextSetupRequestIEsValue struct {
 	Present                            int
 	AMFUENGAPID                        *AMFUENGAPID                        `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                        *OCFUENGAPID                        `aper:"referenceFieldValue:151"`
 	RANUENGAPID                        *RANUENGAPID                        `aper:"referenceFieldValue:85"`
 	OldAMF                             *AMFName                            `aper:"referenceFieldValue:48"`
 	UEAggregateMaximumBitRate          *UEAggregateMaximumBitRate          `aper:"valueExt,referenceFieldValue:110"`
@@ -777,6 +780,7 @@ type UEContextModificationRequestIEs struct {
 const (
 	UEContextModificationRequestIEsPresentNothing int = iota /* No components present */
 	UEContextModificationRequestIEsPresentAMFUENGAPID
+	UEContextModificationRequestIEsPresentOCFUENGAPID
 	UEContextModificationRequestIEsPresentRANUENGAPID
 	UEContextModificationRequestIEsPresentRANPagingPriority
 	UEContextModificationRequestIEsPresentSecurityKey
@@ -792,6 +796,7 @@ const (
 type UEContextModificationRequestIEsValue struct {
 	Present                            int
 	AMFUENGAPID                        *AMFUENGAPID                        `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                        *OCFUENGAPID                        `aper:"referenceFieldValue:151"`
 	RANUENGAPID                        *RANUENGAPID                        `aper:"referenceFieldValue:85"`
 	RANPagingPriority                  *RANPagingPriority                  `aper:"referenceFieldValue:83"`
 	SecurityKey                        *SecurityKey                        `aper:"referenceFieldValue:94"`
