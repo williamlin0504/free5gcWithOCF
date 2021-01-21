@@ -391,6 +391,7 @@ type PDUSessionResourceSetupRequestIEs struct {
 const (
 	PDUSessionResourceSetupRequestIEsPresentNothing int = iota /* No components present */
 	PDUSessionResourceSetupRequestIEsPresentAMFUENGAPID
+	PDUSessionResourceSetupRequestIEsPresentOCFUENGAPID
 	PDUSessionResourceSetupRequestIEsPresentRANUENGAPID
 	PDUSessionResourceSetupRequestIEsPresentRANPagingPriority
 	PDUSessionResourceSetupRequestIEsPresentNASPDU
@@ -400,6 +401,7 @@ const (
 type PDUSessionResourceSetupRequestIEsValue struct {
 	Present                          int
 	AMFUENGAPID                      *AMFUENGAPID                      `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                      *OCFUENGAPID                      `aper:"referenceFieldValue:151"`
 	RANUENGAPID                      *RANUENGAPID                      `aper:"referenceFieldValue:85"`
 	RANPagingPriority                *RANPagingPriority                `aper:"referenceFieldValue:83"`
 	NASPDU                           *NASPDU                           `aper:"referenceFieldValue:38"`
@@ -489,6 +491,7 @@ type PDUSessionResourceModifyRequestIEs struct {
 const (
 	PDUSessionResourceModifyRequestIEsPresentNothing int = iota /* No components present */
 	PDUSessionResourceModifyRequestIEsPresentAMFUENGAPID
+	PDUSessionResourceModifyRequestIEsPresentOCFUENGAPID
 	PDUSessionResourceModifyRequestIEsPresentRANUENGAPID
 	PDUSessionResourceModifyRequestIEsPresentRANPagingPriority
 	PDUSessionResourceModifyRequestIEsPresentPDUSessionResourceModifyListModReq
@@ -497,6 +500,7 @@ const (
 type PDUSessionResourceModifyRequestIEsValue struct {
 	Present                            int
 	AMFUENGAPID                        *AMFUENGAPID                        `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                        *OCFUENGAPID                        `aper:"referenceFieldValue:151"`
 	RANUENGAPID                        *RANUENGAPID                        `aper:"referenceFieldValue:85"`
 	RANPagingPriority                  *RANPagingPriority                  `aper:"referenceFieldValue:83"`
 	PDUSessionResourceModifyListModReq *PDUSessionResourceModifyListModReq `aper:"referenceFieldValue:64"`
@@ -581,6 +585,7 @@ type PDUSessionResourceModifyConfirmIEs struct {
 const (
 	PDUSessionResourceModifyConfirmIEsPresentNothing int = iota /* No components present */
 	PDUSessionResourceModifyConfirmIEsPresentAMFUENGAPID
+	PDUSessionResourceModifyConfirmIEsPresentOCFUENGAPID
 	PDUSessionResourceModifyConfirmIEsPresentRANUENGAPID
 	PDUSessionResourceModifyConfirmIEsPresentPDUSessionResourceModifyListModCfm
 	PDUSessionResourceModifyConfirmIEsPresentPDUSessionResourceFailedToModifyListModCfm
@@ -590,6 +595,7 @@ const (
 type PDUSessionResourceModifyConfirmIEsValue struct {
 	Present                                    int
 	AMFUENGAPID                                *AMFUENGAPID                                `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                                *OCFUENGAPID                                `aper:"referenceFieldValue:151"`
 	RANUENGAPID                                *RANUENGAPID                                `aper:"referenceFieldValue:85"`
 	PDUSessionResourceModifyListModCfm         *PDUSessionResourceModifyListModCfm         `aper:"referenceFieldValue:62"`
 	PDUSessionResourceFailedToModifyListModCfm *PDUSessionResourceFailedToModifyListModCfm `aper:"referenceFieldValue:131"`
@@ -1647,6 +1653,7 @@ type ErrorIndicationIEs struct {
 const (
 	ErrorIndicationIEsPresentNothing int = iota /* No components present */
 	ErrorIndicationIEsPresentAMFUENGAPID
+	ErrorIndicationIEsPresentOCFUENGAPID
 	ErrorIndicationIEsPresentRANUENGAPID
 	ErrorIndicationIEsPresentCause
 	ErrorIndicationIEsPresentCriticalityDiagnostics
