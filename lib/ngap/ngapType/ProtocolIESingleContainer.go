@@ -6,6 +6,9 @@ package ngapType
 type ProtocolIESingleContainerAMFPagingTargetExtIEs struct {
 }
 
+type ProtocolIESingleContainerOCFPagingTargetExtIEs struct {
+}
+
 // Open type declare
 type ProtocolIESingleContainerBroadcastCancelledAreaListExtIEs struct {
 }

@@ -38,6 +38,28 @@ type ProtocolExtensionContainerAMFTNLAssociationToUpdateItemExtIEs struct {
 	List []AMFTNLAssociationToUpdateItemExtIEs `aper:"sizeLB:1,sizeUB:65535"`
 }
 
+type ProtocolExtensionContainerOCFTNLAssociationSetupItemExtIEs struct {
+	List []AMFTNLAssociationSetupItemExtIEs `aper:"sizeLB:1,sizeUB:65535"`
+}
+
+/* Sequence of = 35, FULL Name = struct ProtocolExtensionContainer_6500P3 */
+/* AMFTNLAssociationToAddItemExtIEs */
+type ProtocolExtensionContainerOCFTNLAssociationToAddItemExtIEs struct {
+	List []AMFTNLAssociationToAddItemExtIEs `aper:"sizeLB:1,sizeUB:65535"`
+}
+
+/* Sequence of = 35, FULL Name = struct ProtocolExtensionContainer_6500P4 */
+/* AMFTNLAssociationToRemoveItemExtIEs */
+type ProtocolExtensionContainerOCFTNLAssociationToRemoveItemExtIEs struct {
+	List []AMFTNLAssociationToRemoveItemExtIEs `aper:"sizeLB:1,sizeUB:65535"`
+}
+
+/* Sequence of = 35, FULL Name = struct ProtocolExtensionContainer_6500P5 */
+/* AMFTNLAssociationToUpdateItemExtIEs */
+type ProtocolExtensionContainerOCFTNLAssociationToUpdateItemExtIEs struct {
+	List []AMFTNLAssociationToUpdateItemExtIEs `aper:"sizeLB:1,sizeUB:65535"`
+}
+
 /* Sequence of = 35, FULL Name = struct ProtocolExtensionContainer_6500P6 */
 /* AreaOfInterestExtIEs */
 type ProtocolExtensionContainerAreaOfInterestExtIEs struct {
