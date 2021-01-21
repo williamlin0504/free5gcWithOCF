@@ -4,6 +4,7 @@ package ngapType
 
 type UENGAPIDPair struct {
 	AMFUENGAPID  AMFUENGAPID
+	OCFUENGAPID  OCFUENGAPID
 	RANUENGAPID  RANUENGAPID
 	IEExtensions *ProtocolExtensionContainerUENGAPIDPairExtIEs `aper:"optional"`
 }

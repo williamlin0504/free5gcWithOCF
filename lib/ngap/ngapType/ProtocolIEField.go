@@ -1177,6 +1177,7 @@ type HandoverCancelAcknowledgeIEs struct {
 const (
 	HandoverCancelAcknowledgeIEsPresentNothing int = iota /* No components present */
 	HandoverCancelAcknowledgeIEsPresentAMFUENGAPID
+	HandoverCancelAcknowledgeIEsPresentOCFUENGAPID
 	HandoverCancelAcknowledgeIEsPresentRANUENGAPID
 	HandoverCancelAcknowledgeIEsPresentCriticalityDiagnostics
 )
@@ -1184,6 +1185,7 @@ const (
 type HandoverCancelAcknowledgeIEsValue struct {
 	Present                int
 	AMFUENGAPID            *AMFUENGAPID            `aper:"referenceFieldValue:10"`
+	OCFUENGAPID            *OCFUENGAPID            `aper:"referenceFieldValue:10"`
 	RANUENGAPID            *RANUENGAPID            `aper:"referenceFieldValue:85"`
 	CriticalityDiagnostics *CriticalityDiagnostics `aper:"valueExt,referenceFieldValue:19"`
 }
@@ -1653,6 +1655,7 @@ const (
 type ErrorIndicationIEsValue struct {
 	Present                int
 	AMFUENGAPID            *AMFUENGAPID            `aper:"referenceFieldValue:10"`
+	OCFUENGAPID            *OCFUENGAPID            `aper:"referenceFieldValue:151"`
 	RANUENGAPID            *RANUENGAPID            `aper:"referenceFieldValue:85"`
 	Cause                  *Cause                  `aper:"referenceFieldValue:15,valueLB:0,valueUB:5"`
 	CriticalityDiagnostics *CriticalityDiagnostics `aper:"valueExt,referenceFieldValue:19"`
@@ -2145,6 +2148,7 @@ type UERadioCapabilityCheckRequestIEs struct {
 const (
 	UERadioCapabilityCheckRequestIEsPresentNothing int = iota /* No components present */
 	UERadioCapabilityCheckRequestIEsPresentAMFUENGAPID
+	UERadioCapabilityCheckRequestIEsPresentOCFUENGAPID
 	UERadioCapabilityCheckRequestIEsPresentRANUENGAPID
 	UERadioCapabilityCheckRequestIEsPresentUERadioCapability
 )
@@ -2152,6 +2156,7 @@ const (
 type UERadioCapabilityCheckRequestIEsValue struct {
 	Present           int
 	AMFUENGAPID       *AMFUENGAPID       `aper:"referenceFieldValue:10"`
+	OCFUENGAPID       *OCFUENGAPID       `aper:"referenceFieldValue:151"`
 	RANUENGAPID       *RANUENGAPID       `aper:"referenceFieldValue:85"`
 	UERadioCapability *UERadioCapability `aper:"referenceFieldValue:117"`
 }
