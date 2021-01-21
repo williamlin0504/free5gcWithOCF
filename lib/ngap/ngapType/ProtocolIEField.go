@@ -439,6 +439,7 @@ type PDUSessionResourceReleaseCommandIEs struct {
 const (
 	PDUSessionResourceReleaseCommandIEsPresentNothing int = iota /* No components present */
 	PDUSessionResourceReleaseCommandIEsPresentAMFUENGAPID
+	PDUSessionResourceReleaseCommandIEsPresentOCFUENGAPID
 	PDUSessionResourceReleaseCommandIEsPresentRANUENGAPID
 	PDUSessionResourceReleaseCommandIEsPresentRANPagingPriority
 	PDUSessionResourceReleaseCommandIEsPresentNASPDU
@@ -448,6 +449,7 @@ const (
 type PDUSessionResourceReleaseCommandIEsValue struct {
 	Present                               int
 	AMFUENGAPID                           *AMFUENGAPID                           `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                           *OCFUENGAPID                           `aper:"referenceFieldValue:10"`
 	RANUENGAPID                           *RANUENGAPID                           `aper:"referenceFieldValue:85"`
 	RANPagingPriority                     *RANPagingPriority                     `aper:"referenceFieldValue:83"`
 	NASPDU                                *NASPDU                                `aper:"referenceFieldValue:38"`
@@ -1424,6 +1426,7 @@ const (
 type NGSetupResponseIEsValue struct {
 	Present                int
 	AMFName                *AMFName                `aper:"referenceFieldValue:1"`
+	OCFName                *OCFName                `aper:"referenceFieldValue:1"`
 	ServedGUAMIList        *ServedGUAMIList        `aper:"referenceFieldValue:96"`
 	RelativeAMFCapacity    *RelativeAMFCapacity    `aper:"referenceFieldValue:86"`
 	PLMNSupportList        *PLMNSupportList        `aper:"referenceFieldValue:80"`
