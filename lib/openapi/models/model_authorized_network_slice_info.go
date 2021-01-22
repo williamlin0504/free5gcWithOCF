@@ -27,4 +27,10 @@ type AuthorizedNetworkSliceInfo struct {
 	SupportedFeatures string `json:"supportedFeatures,omitempty" bson:"supportedFeatures"`
 
 	NrfAmfSet string `json:"nrfAmfSet,omitempty" bson:"nrfAmfSet"`
+
+	TargetOcfSet string `json:"targetOcfSet,omitempty" bson:"targetOcfSet"`
+
+	CandidateOcfList []string `json:"candidateOcfList,omitempty" bson:"candidateOcfList"`
+
+	NrfOcfSet string `json:"nrfOcfSet,omitempty" bson:"nrfOcfSet"`
 }

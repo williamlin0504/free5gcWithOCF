@@ -86,6 +86,8 @@ type SearchNFInstancesParamOpts struct {
 	Tai                     optional.Interface
 	AmfRegionId             optional.String
 	AmfSetId                optional.String
+	OcfRegionId             optional.String
+	OcfSetId                optional.String
 	Guami                   optional.Interface
 	Supi                    optional.String
 	UeIpv4Address           optional.String
@@ -167,6 +169,12 @@ func (a *NFInstancesStoreApiService) SearchNFInstances(ctx context.Context, targ
 	}
 	if localVarOptionals != nil && localVarOptionals.AmfSetId.IsSet() {
 		localVarQueryParams.Add("amf-set-id", openapi.ParameterToString(localVarOptionals.AmfSetId.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.OcfRegionId.IsSet() {
+		localVarQueryParams.Add("ocf-region-id", openapi.ParameterToString(localVarOptionals.OcfRegionId.Value(), ""))
+	}
+	if localVarOptionals != nil && localVarOptionals.OcfSetId.IsSet() {
+		localVarQueryParams.Add("ocf-set-id", openapi.ParameterToString(localVarOptionals.OcfSetId.Value(), ""))
 	}
 	if localVarOptionals != nil && localVarOptionals.Guami.IsSet() {
 		localVarQueryParams.Add("guami", openapi.ParameterToString(localVarOptionals.Guami.Value(), ""))

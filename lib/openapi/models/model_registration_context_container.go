@@ -16,6 +16,7 @@ type RegistrationContextContainer struct {
 	AnN2ApId            int32              `json:"anN2ApId"`
 	RanNodeId           *GlobalRanNodeId   `json:"ranNodeId"`
 	InitialAmfName      string             `json:"initialAmfName"`
+	InitialOcfName      string             `json:"initialOcfName"`
 	UserLocation        *UserLocation      `json:"userLocation"`
 	RrcEstCause         string             `json:"rrcEstCause,omitempty"`
 	UeContextRequest    bool               `json:"ueContextRequest,omitempty"`
