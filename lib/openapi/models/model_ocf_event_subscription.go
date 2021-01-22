@@ -10,7 +10,7 @@
 package models
 
 type OcfEventSubscription struct {
-	EventList                     *[]OcfEvent   `json:"eventList,omitempty"`
+	EventListOCF                  *[]OcfEvent   `json:"eventList,omitempty"`
 	EventNotifyUri                string        `json:"eventNotifyUri"`
 	NotifyCorrelationId           string        `json:"notifyCorrelationId"`
 	NfId                          string        `json:"nfId"`

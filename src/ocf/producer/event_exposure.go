@@ -53,14 +53,14 @@ func CreateOCFEventSubscriptionProcedure(createEventSubscription models.OcfCreat
 
 	// store subscription in context
 	ueEventSubscription := context.OcfUeEventSubscription{}
-	ueEventSubscription.EventSubscription = &contextEventSubscription.EventSubscription
+	ueEventSubscription.EventSubscription_OCF = &contextEventSubscription.EventSubscription
 	ueEventSubscription.Timestamp = time.Now().UTC()
 
 	if subscription.Options != nil && subscription.Options.Trigger == models.OcfEventTrigger_CONTINUOUS {
 		ueEventSubscription.RemainReports = new(int32)
 		*ueEventSubscription.RemainReports = subscription.Options.MaxReports
 	}
-	for _, events := range *subscription.EventList {
+	for _, events := range *subscription.EventListOCF {
 		immediateFlags = append(immediateFlags, events.ImmediateFlag)
 		if events.ImmediateFlag {
 			isImmediate = true
@@ -124,7 +124,7 @@ func CreateOCFEventSubscriptionProcedure(createEventSubscription models.OcfCreat
 			}
 			for i, flag := range immediateFlags {
 				if flag {
-					report, ok := NewOcfEventReport(ue, (*subscription.EventList)[i].Type, newSubscriptionID)
+					report, ok := NewOcfEventReport(ue, (*subscription.EventListOCF)[i].Type, newSubscriptionID)
 					if ok {
 						reportlist = append(reportlist, report)
 					}
@@ -145,7 +145,7 @@ func CreateOCFEventSubscriptionProcedure(createEventSubscription models.OcfCreat
 			if ue.GroupID == subscription.GroupId {
 				for i, flag := range immediateFlags {
 					if flag {
-						report, ok := NewOcfEventReport(ue, (*subscription.EventList)[i].Type, newSubscriptionID)
+						report, ok := NewOcfEventReport(ue, (*subscription.EventListOCF)[i].Type, newSubscriptionID)
 						if ok {
 							reportlist = append(reportlist, report)
 						}
@@ -165,7 +165,7 @@ func CreateOCFEventSubscriptionProcedure(createEventSubscription models.OcfCreat
 		}
 		for i, flag := range immediateFlags {
 			if flag {
-				report, ok := NewOcfEventReport(ue, (*subscription.EventList)[i].Type, newSubscriptionID)
+				report, ok := NewOcfEventReport(ue, (*subscription.EventListOCF)[i].Type, newSubscriptionID)
 				if ok {
 					reportlist = append(reportlist, report)
 				}
@@ -280,21 +280,21 @@ func ModifyOCFEventSubscriptionProcedure(
 			}
 			return nil, problemDetails
 		}
-		lists := (*subscription.EventList)
-		len := len(*subscription.EventList)
+		lists := (*subscription.EventListOCF)
+		len := len(*subscription.EventListOCF)
 		switch op {
 		case "replace":
 			event := *modifySubscriptionRequest.SubscriptionItemInner.Value
 			if index < len {
-				(*subscription.EventList)[index] = event
+				(*subscription.EventListOCF)[index] = event
 			}
 		case "remove":
 			if index < len {
-				*subscription.EventList = append(lists[:index], lists[index+1:]...)
+				*subscription.EventListOCF = append(lists[:index], lists[index+1:]...)
 			}
 		case "add":
 			event := *modifySubscriptionRequest.SubscriptionItemInner.Value
-			*subscription.EventList = append(lists, event)
+			*subscription.EventListOCF = append(lists, event)
 		}
 	}
 
@@ -325,7 +325,7 @@ func NewOcfEventReport(ue *context.OcfUe, Type models.OcfEventType, subscription
 	report.Type = Type
 	report.TimeStamp = &ueSubscription.Timestamp
 	report.State = new(models.OcfEventState)
-	mode := ueSubscription.EventSubscription.Options
+	mode := ueSubscription.EventSubscription_OCF.Options
 	if mode == nil {
 		report.State.Active = true
 	} else if mode.Trigger == models.OcfEventTrigger_ONE_TIME {
@@ -343,7 +343,7 @@ func NewOcfEventReport(ue *context.OcfUe, Type models.OcfEventType, subscription
 	case models.OcfEventType_LOCATION_REPORT:
 		report.Location = &ue.Location
 	// case models.OcfEventType_PRESENCE_IN_AOI_REPORT:
-	// report.AreaList = (*subscription.EventList)[eventIndex].AreaList
+	// report.AreaList = (*subscription.EventListOCF)[eventIndex].AreaList
 	case models.OcfEventType_TIMEZONE_REPORT:
 		report.Timezone = ue.TimeZone
 	case models.OcfEventType_ACCESS_TYPE_REPORT:
