@@ -58,3 +58,5 @@ const ProcedureCodeUplinkRANConfigurationTransfer int64 = 48
 const ProcedureCodeUplinkRANStatusTransfer int64 = 49
 const ProcedureCodeUplinkUEAssociatedNRPPaTransport int64 = 50
 const ProcedureCodeWriteReplaceWarning int64 = 51
+const ProcedureCodeOCFConfigurationUpdate int64 = 52
+const ProcedureCodeOCFStatusIndication int64 = 53
