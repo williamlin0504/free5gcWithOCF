@@ -2634,7 +2634,7 @@ components:
           minItems: 1
           type: array
       required:
-      - event
+      - eventOCF
       - nfInstanceUri
       type: object
     NFStatus:
