@@ -2309,7 +2309,7 @@ const (
 type UETNLABindingReleaseRequestIEsValue struct {
 	Present     int
 	AMFUENGAPID *AMFUENGAPID `aper:"referenceFieldValue:10"`
-	AMFUENGAPID *OCFUENGAPID `aper:"referenceFieldValue:151"`
+	OCFUENGAPID *OCFUENGAPID `aper:"referenceFieldValue:151"`
 	RANUENGAPID *RANUENGAPID `aper:"referenceFieldValue:85"`
 }
 
