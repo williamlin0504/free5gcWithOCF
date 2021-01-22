@@ -34,7 +34,7 @@ func InitOcfContext(context *context.OCFContext) {
 		context.UriScheme = "http"
 	}
 	context.RegisterIPv4 = "127.0.0.1" // default localhost
-	context.SBIPort = 29518            // default port
+	context.SBIPort = 29519            // default port
 	if sbi != nil {
 		if sbi.RegisterIPv4 != "" {
 			context.RegisterIPv4 = sbi.RegisterIPv4
