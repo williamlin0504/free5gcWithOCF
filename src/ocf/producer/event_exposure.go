@@ -60,9 +60,9 @@ func CreateOCFEventSubscriptionProcedure(createEventSubscription models.OcfCreat
 		ueEventSubscription.RemainReports = new(int32)
 		*ueEventSubscription.RemainReports = subscription.Options.MaxReports
 	}
-	for _, events := range *subscription.EventListOCF {
-		immediateFlags = append(immediateFlags, events.ImmediateFlag)
-		if events.ImmediateFlag {
+	for _, eventsOCF := range *subscription.EventListOCF {
+		immediateFlags = append(immediateFlags, eventsOCF.ImmediateFlag)
+		if eventsOCF.ImmediateFlag {
 			isImmediate = true
 		}
 	}
@@ -284,17 +284,17 @@ func ModifyOCFEventSubscriptionProcedure(
 		len := len(*subscription.EventListOCF)
 		switch op {
 		case "replace":
-			event := *modifySubscriptionRequest.SubscriptionItemInner.Value
+			eventOCF := *modifySubscriptionRequest.SubscriptionItemInnerOCF.Value
 			if index < len {
-				(*subscription.EventListOCF)[index] = event
+				(*subscription.EventListOCF)[index] = eventOCF
 			}
 		case "remove":
 			if index < len {
 				*subscription.EventListOCF = append(lists[:index], lists[index+1:]...)
 			}
 		case "add":
-			event := *modifySubscriptionRequest.SubscriptionItemInner.Value
-			*subscription.EventListOCF = append(lists, event)
+			eventOCF := *modifySubscriptionRequest.SubscriptionItemInnerOCF.Value
+			*subscription.EventListOCF = append(lists, eventOCF)
 		}
 	}
 

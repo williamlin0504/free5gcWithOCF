@@ -6711,7 +6711,7 @@ components:
           $ref: '#/components/schemas/OcfEventMode'
       required:
       - eventNotifyUri
-      - events
+      - eventsOCF
       - nfId
       - notifyCorrelationId
       type: object
