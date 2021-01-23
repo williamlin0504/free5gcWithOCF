@@ -145,7 +145,7 @@ func (ocf *OCF) Start() {
 
 	addr := fmt.Sprintf("%s:%d", self.BindingIPv4, self.SBIPort)
 
-	ngap_service.Run(self.NgapIpList, 38412, ngap.Dispatch)
+	ngap_service.Run(self.NgapIpList, 38413, ngap.Dispatch)
 
 	// Register to NRF
 	var profile models.NfProfile
