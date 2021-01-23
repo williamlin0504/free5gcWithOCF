@@ -725,6 +725,74 @@ components:
               plmnId:
                 mnc: mnc
                 mcc: mcc
+          ocfInfo:
+            backupInfoOcfRemoval:
+            - plmnId:
+                mnc: mnc
+                mcc: mcc
+              ocfId: ocfId
+            - plmnId:
+                mnc: mnc
+                mcc: mcc
+              ocfId: ocfId
+            guamiList:
+            - plmnId:
+                mnc: mnc
+                mcc: mcc
+              ocfId: ocfId
+            - plmnId:
+                mnc: mnc
+                mcc: mcc
+              ocfId: ocfId
+            taiRangeList:
+            - tacRangeList:
+              - start: start
+                pattern: pattern
+                end: end
+              - start: start
+                pattern: pattern
+                end: end
+              plmnId:
+                mnc: mnc
+                mcc: mcc
+            - tacRangeList:
+              - start: start
+                pattern: pattern
+                end: end
+              - start: start
+                pattern: pattern
+                end: end
+              plmnId:
+                mnc: mnc
+                mcc: mcc
+            backupInfoOcfFailure:
+            - plmnId:
+                mnc: mnc
+                mcc: mcc
+              ocfId: ocfId
+            - plmnId:
+                mnc: mnc
+                mcc: mcc
+              ocfId: ocfId
+            ocfSetId: ocfSetId
+            ocfRegionId: ocfRegionId
+            n2InterfaceOcfInfo:
+              ipv4EndpointAddress:
+              - 198.51.100.1
+              - 198.51.100.1
+              ocfName: ocfName
+              ipv6EndpointAddress:
+              - 2001:db8:85a3::8a2e:370:7334
+              - 2001:db8:85a3::8a2e:370:7334
+            taiList:
+            - tac: tac
+              plmnId:
+                mnc: mnc
+                mcc: mcc
+            - tac: tac
+              plmnId:
+                mnc: mnc
+                mcc: mcc      
           smfInfo:
             accessType:
             - null

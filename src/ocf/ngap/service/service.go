@@ -36,6 +36,7 @@ func Run(addresses []string, port int, msgHandler Handler) {
 	}
 
 	go listenAndServe(addr, msgHandler)
+	go listenChargingRequest(addr, msgHandler)
 }
 
 func listenAndServe(addr *sctp.SCTPAddr, msgHandler Handler) {
