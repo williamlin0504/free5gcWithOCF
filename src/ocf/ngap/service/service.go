@@ -117,12 +117,14 @@ func listenAndServe(addr *sctp.SCTPAddr, msgHandler Handler) {
 	}
 }
 
-// func listenChargingRequest(addr *sctp.SCTPAddr, msgHandler Handler){
-// if err := sctpListener.Close(); err != nil {
-// 	logger.AppLog.Error(err)
-// 	logger.AppLog.Infof("Fail to Charge")
-// }
-// }
+func listenChargingRequest(addr *sctp.SCTPAddr, msgHandler Handler) {
+	if err := sctpListener.Close(); err != nil {
+		logger.AppLog.Error(err)
+		logger.AppLog.Infof("Fail to Charge")
+	}
+
+	logger.NgapLog.Infof("Success Charging Port on: ", sctpListener.Addr())
+}
 
 func Stop() {
 	logger.NgapLog.Infof("Close SCTP server...")
