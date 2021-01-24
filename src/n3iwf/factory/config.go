@@ -21,6 +21,7 @@ type Info struct {
 type Configuration struct {
 	N3IWFInfo        context.N3IWFNFInfo        `yaml:"N3IWFInformation"`
 	AMFSCTPAddresses []context.AMFSCTPAddresses `yaml:"AMFSCTPAddresses"`
+	OCFSCTPAddresses []context.OCFSCTPAddresses `yaml:"OCFSCTPAddresses"`
 
 	IKEBindAddr          string `yaml:"IKEBindAddress"`
 	IPSecGatewayAddr     string `yaml:"IPSecInterfaceAddress"`

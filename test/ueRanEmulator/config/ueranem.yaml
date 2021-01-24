@@ -1,7 +1,7 @@
 n2Amf:
   addr: 10.100.200.7
   port: 38412
-n2Amf:
+n2Ocf:
   addr: 10.100.200.7
   port: 38413
 n2Ran:

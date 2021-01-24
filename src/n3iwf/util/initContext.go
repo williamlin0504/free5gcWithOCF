@@ -67,6 +67,33 @@ func InitN3IWFContext() bool {
 		}
 	}
 
+	// OCF SCTP addresses
+	if len(factory.N3iwfConfig.Configuration.OCFSCTPAddresses) == 0 {
+		contextLog.Error("No OCF specified")
+		return false
+	} else {
+		for _, ocfAddress := range factory.N3iwfConfig.Configuration.OCFSCTPAddresses {
+			ocfSCTPAddr := new(sctp.SCTPAddr)
+			// IP addresses
+			for _, ipAddrStr := range ocfAddress.IPAddresses {
+				if ipAddr, err := net.ResolveIPAddr("ip", ipAddrStr); err != nil {
+					contextLog.Errorf("Resolve OCF IP address failed: %+v", err)
+					return false
+				} else {
+					ocfSCTPAddr.IPAddrs = append(ocfSCTPAddr.IPAddrs, *ipAddr)
+				}
+			}
+			// Port
+			if ocfAddress.Port == 0 {
+				ocfSCTPAddr.Port = 38413
+			} else {
+				ocfSCTPAddr.Port = ocfAddress.Port
+			}
+			// Append to context
+			n3iwfContext.OCFSCTPAddresses = append(n3iwfContext.OCFSCTPAddresses, ocfSCTPAddr)
+		}
+	}
+
 	// IKE bind address
 	if factory.N3iwfConfig.Configuration.IKEBindAddr == "" {
 		contextLog.Error("IKE bind address is empty")
