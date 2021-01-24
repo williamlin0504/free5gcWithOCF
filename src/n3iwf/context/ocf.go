@@ -33,9 +33,9 @@ type OCFTNLAssociationItem struct {
 type OCFOverloadContent struct {
 	Action     *ngapType.OverloadAction
 	TrafficInd *int64
-	NSSAIList  []SliceOverloadItem
+	NSSAIList  []SliceOverloadItemOCF
 }
-type SliceOverloadItem struct {
+type SliceOverloadItemOCF struct {
 	SNssaiList []ngapType.SNSSAI
 	Action     *ngapType.OverloadAction
 	TrafficInd *int64
@@ -95,7 +95,7 @@ func (ocf *N3IWFOCF) StartOverload(
 	}
 	if nssai != nil {
 		for _, item := range nssai.List {
-			sliceItem := SliceOverloadItem{}
+			sliceItem := SliceOverloadItemOCF{}
 			for _, item2 := range item.SliceOverloadList.List {
 				sliceItem.SNssaiList = append(sliceItem.SNssaiList, item2.SNSSAI)
 			}
