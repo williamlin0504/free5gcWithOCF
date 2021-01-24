@@ -36,7 +36,6 @@ func Run(addresses []string, port int, msgHandler Handler) {
 	}
 
 	go listenAndServe(addr, msgHandler)
-	go listenChargingRequest(addr, msgHandler)
 }
 
 func listenAndServe(addr *sctp.SCTPAddr, msgHandler Handler) {
@@ -49,7 +48,7 @@ func listenAndServe(addr *sctp.SCTPAddr, msgHandler Handler) {
 		sctpListener = listener
 	}
 
-	logger.NgapLog.Infof("Listen on %s", sctpListener.Addr())
+	logger.NgapLog.Infof("Access %s to start charging system", sctpListener.Addr())
 
 	for {
 		var conn *sctp.SCTPConn
@@ -116,15 +115,6 @@ func listenAndServe(addr *sctp.SCTPAddr, msgHandler Handler) {
 			connections.Delete(conn)
 		}()
 	}
-}
-
-func listenChargingRequest(addr *sctp.SCTPAddr, msgHandler Handler) {
-	if err := sctpListener.Close(); err != nil {
-		logger.AppLog.Error(err)
-		logger.AppLog.Infof("Fail to Charge")
-	}
-
-	logger.NgapLog.Infof("Success Charging Port on: ", sctpListener.Addr())
 }
 
 func Stop() {
