@@ -51,7 +51,7 @@ func init() {
 	}
 
 	ConsumerOCFStatusChangeSubscribeModfyTable[OCFStatusSubscriptionModfy200] = models.SubscriptionData{
-		OcfStatusUri: "https://127.0.0.1:29333/OCFStatusNotify/1",
+		OcfStatusUri: "https://127.0.0.1:29334/OCFStatusNotify/1",
 		GuamiList: []models.Guami{
 			{
 				PlmnId: &models.PlmnId{
