@@ -10,7 +10,7 @@
 package mt
 
 import (
-	"free5gc/src/ocf/logger"
+	"free5gcWithOCF/src/ocf/logger"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

@@ -3,26 +3,26 @@ module test
 go 1.14
 
 require (
-	github.com/free5gc/CommonConsumerTestData v1.0.0
-	github.com/free5gc/MongoDBLibrary v1.0.0
-	github.com/free5gc/UeauCommon v1.0.0
-	github.com/free5gc/amf v1.3.0
-	github.com/free5gc/aper v1.0.0
-	github.com/free5gc/ausf v1.3.0
-	github.com/free5gc/http2_util v1.0.0
-	github.com/free5gc/logger_util v1.0.0
-	github.com/free5gc/milenage v1.0.0
-	github.com/free5gc/n3iwf v1.3.0
-	github.com/free5gc/nas v1.0.0
-	github.com/free5gc/ngap v1.0.0
-	github.com/free5gc/nrf v1.3.0
-	github.com/free5gc/nssf v1.3.0
-	github.com/free5gc/openapi v1.0.0
-	github.com/free5gc/path_util v1.0.0
-	github.com/free5gc/pcf v1.3.0
-	github.com/free5gc/smf v1.3.0
-	github.com/free5gc/udm v1.3.0
-	github.com/free5gc/udr v1.3.0
+	github.com/free5gcWithOCF/CommonConsumerTestData v1.0.0
+	github.com/free5gcWithOCF/MongoDBLibrary v1.0.0
+	github.com/free5gcWithOCF/UeauCommon v1.0.0
+	github.com/free5gcWithOCF/amf v1.3.0
+	github.com/free5gcWithOCF/aper v1.0.0
+	github.com/free5gcWithOCF/ausf v1.3.0
+	github.com/free5gcWithOCF/http2_util v1.0.0
+	github.com/free5gcWithOCF/logger_util v1.0.0
+	github.com/free5gcWithOCF/milenage v1.0.0
+	github.com/free5gcWithOCF/n3iwf v1.3.0
+	github.com/free5gcWithOCF/nas v1.0.0
+	github.com/free5gcWithOCF/ngap v1.0.0
+	github.com/free5gcWithOCF/nrf v1.3.0
+	github.com/free5gcWithOCF/nssf v1.3.0
+	github.com/free5gcWithOCF/openapi v1.0.0
+	github.com/free5gcWithOCF/path_util v1.0.0
+	github.com/free5gcWithOCF/pcf v1.3.0
+	github.com/free5gcWithOCF/smf v1.3.0
+	github.com/free5gcWithOCF/udm v1.3.0
+	github.com/free5gcWithOCF/udr v1.3.0
 	git.cs.nctu.edu.tw/calee/sctp v1.1.0
 	github.com/Djarvur/go-err113 v0.1.0 // indirect
 	github.com/aws/aws-sdk-go v1.36.24 // indirect
@@ -67,13 +67,13 @@ require (
 )
 
 replace (
-	github.com/free5gc/amf => ../NFs/amf
-	github.com/free5gc/ausf => ../NFs/ausf
-	github.com/free5gc/n3iwf => ../NFs/n3iwf
-	github.com/free5gc/nrf => ../NFs/nrf
-	github.com/free5gc/nssf => ../NFs/nssf
-	github.com/free5gc/pcf => ../NFs/pcf
-	github.com/free5gc/smf => ../NFs/smf
-	github.com/free5gc/udm => ../NFs/udm
-	github.com/free5gc/udr => ../NFs/udr
+	github.com/free5gcWithOCF/amf => ../NFs/amf
+	github.com/free5gcWithOCF/ausf => ../NFs/ausf
+	github.com/free5gcWithOCF/n3iwf => ../NFs/n3iwf
+	github.com/free5gcWithOCF/nrf => ../NFs/nrf
+	github.com/free5gcWithOCF/nssf => ../NFs/nssf
+	github.com/free5gcWithOCF/pcf => ../NFs/pcf
+	github.com/free5gcWithOCF/smf => ../NFs/smf
+	github.com/free5gcWithOCF/udm => ../NFs/udm
+	github.com/free5gcWithOCF/udr => ../NFs/udr
 )

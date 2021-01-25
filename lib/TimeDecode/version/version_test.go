@@ -1,7 +1,7 @@
 package version_test
 
 import (
-	"free5gc/lib/TimeDecode/version"
+	"free5gcWithOCF/lib/TimeDecode/version"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

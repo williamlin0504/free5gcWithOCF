@@ -2,7 +2,7 @@ package service
 
 import (
 	"encoding/hex"
-	"free5gc/src/ocf/logger"
+	"free5gcWithOCF/src/ocf/logger"
 	"io"
 	"net"
 	"sync"

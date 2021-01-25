@@ -11,8 +11,8 @@ package Nocf_Communication
 
 import (
 	"context"
-	"free5gc/lib/openapi"
-	"free5gc/lib/openapi/models"
+	"free5gcWithOCF/lib/openapi"
+	"free5gcWithOCF/lib/openapi/models"
 	"io/ioutil"
 	"net/http"
 	"net/url"

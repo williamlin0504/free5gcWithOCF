@@ -1,8 +1,8 @@
 package util
 
 import (
-	"free5gc/src/ocf/context"
-	"free5gc/src/ocf/logger"
+	"free5gcWithOCF/src/ocf/context"
+	"free5gcWithOCF/src/ocf/logger"
 )
 
 func StopT3513(ue *context.OcfUe) {

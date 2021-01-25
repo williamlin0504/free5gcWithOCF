@@ -1,7 +1,7 @@
 package TestGenAuthData
 
 import (
-	"free5gc/lib/openapi/models"
+	"free5gcWithOCF/lib/openapi/models"
 )
 
 type milenageTestSet struct {
@@ -23,7 +23,7 @@ type milenageTestSet struct {
 const (
 	SUCCESS_CASE                 = "success"
 	FAILURE_CASE                 = "failure"
-	SUCCESS_SERVING_NETWORK_NAME = "free5gc"
+	SUCCESS_SERVING_NETWORK_NAME = "free5gcWithOCF"
 	TESTSET_SERVING_NETWORK_NAME = "WLAN"
 )
 

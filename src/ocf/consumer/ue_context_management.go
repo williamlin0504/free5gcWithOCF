@@ -3,10 +3,10 @@ package consumer
 import (
 	"context"
 
-	"free5gc/lib/openapi"
-	"free5gc/lib/openapi/Nudm_UEContextManagement"
-	"free5gc/lib/openapi/models"
-	ocf_context "free5gc/src/ocf/context"
+	"free5gcWithOCF/lib/openapi"
+	"free5gcWithOCF/lib/openapi/Nudm_UEContextManagement"
+	"free5gcWithOCF/lib/openapi/models"
+	ocf_context "free5gcWithOCF/src/ocf/context"
 )
 
 func UeCmRegistration(ue *ocf_context.OcfUe, accessType models.AccessType, initialRegistrationInd bool) (

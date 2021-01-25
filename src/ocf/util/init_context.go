@@ -6,11 +6,11 @@ import (
 
 	"github.com/google/uuid"
 
-	"free5gc/lib/nas/security"
-	"free5gc/lib/openapi/models"
-	"free5gc/src/ocf/context"
-	"free5gc/src/ocf/factory"
-	"free5gc/src/ocf/logger"
+	"free5gcWithOCF/lib/nas/security"
+	"free5gcWithOCF/lib/openapi/models"
+	"free5gcWithOCF/src/ocf/context"
+	"free5gcWithOCF/src/ocf/factory"
+	"free5gcWithOCF/src/ocf/logger"
 )
 
 func InitOcfContext(context *context.OCFContext) {

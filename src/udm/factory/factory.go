@@ -10,7 +10,7 @@ import (
 
 	"gopkg.in/yaml.v2"
 
-	"free5gc/src/udm/logger"
+	"free5gcWithOCF/src/udm/logger"
 )
 
 var UdmConfig Config

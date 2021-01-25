@@ -5,10 +5,10 @@ import (
 
 	"github.com/antihax/optional"
 
-	"free5gc/lib/openapi"
-	"free5gc/lib/openapi/Nudm_SubscriberDataManagement"
-	"free5gc/lib/openapi/models"
-	ocf_context "free5gc/src/ocf/context"
+	"free5gcWithOCF/lib/openapi"
+	"free5gcWithOCF/lib/openapi/Nudm_SubscriberDataManagement"
+	"free5gcWithOCF/lib/openapi/models"
+	ocf_context "free5gcWithOCF/src/ocf/context"
 )
 
 func PutUpuAck(ue *ocf_context.OcfUe, upuMacIue string) error {

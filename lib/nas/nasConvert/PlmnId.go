@@ -4,8 +4,8 @@ import (
 	"encoding/hex"
 	"strconv"
 
-	"free5gc/lib/nas/logger"
-	"free5gc/lib/openapi/models"
+	"free5gcWithOCF/lib/nas/logger"
+	"free5gcWithOCF/lib/openapi/models"
 )
 
 func PlmnIDToNas(plmnID models.PlmnId) []uint8 {

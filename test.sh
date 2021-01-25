@@ -76,7 +76,7 @@ then
     LOCALDUMP=$!
 fi
 
-cd src/upf/build && ${EXEC_UPFNS} ./bin/free5gc-upfd -f config/upfcfg.test.yaml &
+cd src/upf/build && ${EXEC_UPFNS} ./bin/free5gcWithOCF-upfd -f config/upfcfg.test.yaml &
 sleep 2
 
 if [[ "$1" == "TestNon3GPP" ]]
@@ -123,7 +123,7 @@ else
 fi
 
 sleep 3
-sudo killall -15 free5gc-upfd
+sudo killall -15 free5gcWithOCF-upfd
 sleep 1
 
 if [ ${DUMP_NS} ]

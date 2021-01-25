@@ -5,11 +5,11 @@ import (
 
 	"github.com/google/uuid"
 
-	"free5gc/lib/openapi"
-	"free5gc/lib/openapi/models"
-	"free5gc/src/pcf/context"
-	"free5gc/src/pcf/factory"
-	"free5gc/src/pcf/logger"
+	"free5gcWithOCF/lib/openapi"
+	"free5gcWithOCF/lib/openapi/models"
+	"free5gcWithOCF/src/pcf/context"
+	"free5gcWithOCF/src/pcf/factory"
+	"free5gcWithOCF/src/pcf/logger"
 )
 
 // Init PCF Context from config flie

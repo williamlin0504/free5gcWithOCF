@@ -2,10 +2,10 @@ package callback
 
 import (
 	"context"
-	"free5gc/lib/openapi/Nocf_Communication"
-	"free5gc/lib/openapi/models"
-	ocf_context "free5gc/src/ocf/context"
-	"free5gc/src/ocf/logger"
+	"free5gcWithOCF/lib/openapi/Nocf_Communication"
+	"free5gcWithOCF/lib/openapi/models"
+	ocf_context "free5gcWithOCF/src/ocf/context"
+	"free5gcWithOCF/src/ocf/logger"
 	"strconv"
 
 	"github.com/sirupsen/logrus"

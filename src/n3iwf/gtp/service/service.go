@@ -6,8 +6,8 @@ import (
 	"net"
 	"syscall"
 
-	n3iwf_context "free5gc/src/n3iwf/context"
-	"free5gc/src/n3iwf/logger"
+	n3iwf_context "free5gcWithOCF/src/n3iwf/context"
+	"free5gcWithOCF/src/n3iwf/logger"
 
 	"github.com/sirupsen/logrus"
 	gtpv1 "github.com/wmnsk/go-gtp/v1"

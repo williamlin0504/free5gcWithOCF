@@ -2,7 +2,7 @@ package pfcp
 
 import (
 	"fmt"
-	"free5gc/lib/tlv"
+	"free5gcWithOCF/lib/tlv"
 )
 
 func (m *Message) Marshal() ([]byte, error) {

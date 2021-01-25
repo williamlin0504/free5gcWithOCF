@@ -9,12 +9,12 @@ import (
 
 	"github.com/antihax/optional"
 
-	"free5gc/lib/nas/nasType"
-	"free5gc/lib/openapi"
-	"free5gc/lib/openapi/Nausf_UEAuthentication"
-	"free5gc/lib/openapi/models"
-	ocf_context "free5gc/src/ocf/context"
-	"free5gc/src/ocf/logger"
+	"free5gcWithOCF/lib/nas/nasType"
+	"free5gcWithOCF/lib/openapi"
+	"free5gcWithOCF/lib/openapi/Nausf_UEAuthentication"
+	"free5gcWithOCF/lib/openapi/models"
+	ocf_context "free5gcWithOCF/src/ocf/context"
+	"free5gcWithOCF/src/ocf/logger"
 )
 
 func SendUEAuthenticationAuthenticateRequest(ue *ocf_context.OcfUe,

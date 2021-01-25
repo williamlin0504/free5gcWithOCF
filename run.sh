@@ -3,7 +3,7 @@
 PID_LIST=()
 
 cd src/upf/build
-sudo -E ./bin/free5gc-upfd &
+sudo -E ./bin/free5gcWithOCF-upfd &
 PID_LIST+=($!)
 
 sleep 1

@@ -10,8 +10,8 @@
 package accesstoken
 
 import (
-	"free5gc/lib/logger_util"
-	"free5gc/src/nrf/logger"
+	"free5gcWithOCF/lib/logger_util"
+	"free5gcWithOCF/src/nrf/logger"
 	"net/http"
 	"strings"
 

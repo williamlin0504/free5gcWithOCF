@@ -15,16 +15,16 @@ import (
 	"github.com/vishvananda/netlink"
 	"golang.org/x/sys/unix"
 
-	"github.com/free5gc/CommonConsumerTestData/UDM/TestGenAuthData"
-	"github.com/free5gc/n3iwf/context"
-	"github.com/free5gc/n3iwf/ike/handler"
-	"github.com/free5gc/n3iwf/ike/message"
-	"github.com/free5gc/nas"
-	"github.com/free5gc/nas/nasMessage"
-	"github.com/free5gc/nas/nasTestpacket"
-	"github.com/free5gc/nas/nasType"
-	"github.com/free5gc/nas/security"
-	"github.com/free5gc/openapi/models"
+	"github.com/free5gcWithOCF/CommonConsumerTestData/UDM/TestGenAuthData"
+	"github.com/free5gcWithOCF/n3iwf/context"
+	"github.com/free5gcWithOCF/n3iwf/ike/handler"
+	"github.com/free5gcWithOCF/n3iwf/ike/message"
+	"github.com/free5gcWithOCF/nas"
+	"github.com/free5gcWithOCF/nas/nasMessage"
+	"github.com/free5gcWithOCF/nas/nasTestpacket"
+	"github.com/free5gcWithOCF/nas/nasType"
+	"github.com/free5gcWithOCF/nas/security"
+	"github.com/free5gcWithOCF/openapi/models"
 )
 
 func createIKEChildSecurityAssociation(chosenSecurityAssociation *message.SecurityAssociation) (*context.ChildSecurityAssociation, error) {

@@ -2,9 +2,9 @@ package context
 
 import (
 	"fmt"
-	"free5gc/lib/idgenerator"
-	"free5gc/lib/openapi/models"
-	"free5gc/src/ocf/logger"
+	"free5gcWithOCF/lib/idgenerator"
+	"free5gcWithOCF/lib/openapi/models"
+	"free5gcWithOCF/src/ocf/logger"
 	"math"
 	"net"
 	"reflect"

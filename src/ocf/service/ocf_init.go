@@ -13,26 +13,26 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 
-	"free5gc/lib/http2_util"
-	"free5gc/lib/logger_util"
-	"free5gc/lib/openapi/models"
-	"free5gc/lib/path_util"
-	"free5gc/src/app"
-	"free5gc/src/ocf/communication"
-	"free5gc/src/ocf/consumer"
-	"free5gc/src/ocf/context"
-	"free5gc/src/ocf/eventexposure"
-	"free5gc/src/ocf/factory"
-	"free5gc/src/ocf/httpcallback"
-	"free5gc/src/ocf/location"
-	"free5gc/src/ocf/logger"
-	"free5gc/src/ocf/mt"
-	"free5gc/src/ocf/ngap"
-	ngap_message "free5gc/src/ocf/ngap/message"
-	ngap_service "free5gc/src/ocf/ngap/service"
-	"free5gc/src/ocf/oam"
-	"free5gc/src/ocf/producer/callback"
-	"free5gc/src/ocf/util"
+	"free5gcWithOCF/lib/http2_util"
+	"free5gcWithOCF/lib/logger_util"
+	"free5gcWithOCF/lib/openapi/models"
+	"free5gcWithOCF/lib/path_util"
+	"free5gcWithOCF/src/app"
+	"free5gcWithOCF/src/ocf/communication"
+	"free5gcWithOCF/src/ocf/consumer"
+	"free5gcWithOCF/src/ocf/context"
+	"free5gcWithOCF/src/ocf/eventexposure"
+	"free5gcWithOCF/src/ocf/factory"
+	"free5gcWithOCF/src/ocf/httpcallback"
+	"free5gcWithOCF/src/ocf/location"
+	"free5gcWithOCF/src/ocf/logger"
+	"free5gcWithOCF/src/ocf/mt"
+	"free5gcWithOCF/src/ocf/ngap"
+	ngap_message "free5gcWithOCF/src/ocf/ngap/message"
+	ngap_service "free5gcWithOCF/src/ocf/ngap/service"
+	"free5gcWithOCF/src/ocf/oam"
+	"free5gcWithOCF/src/ocf/producer/callback"
+	"free5gcWithOCF/src/ocf/util"
 )
 
 type OCF struct{}
@@ -48,7 +48,7 @@ var config Config
 
 var ocfCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  "free5gccfg",
+		Name:  "free5gcWithOCFcfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
@@ -76,7 +76,7 @@ func (*OCF) Initialize(c *cli.Context) {
 	if config.ocfcfg != "" {
 		factory.InitConfigFactory(config.ocfcfg)
 	} else {
-		DefaultOcfConfigPath := path_util.Gofree5gcPath("free5gc/config/ocfcfg.conf")
+		DefaultOcfConfigPath := path_util.Gofree5gcWithOCFPath("free5gcWithOCF/config/ocfcfg.conf")
 		factory.InitConfigFactory(DefaultOcfConfigPath)
 	}
 

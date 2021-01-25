@@ -1,9 +1,9 @@
 package context
 
 import (
-	"free5gc/lib/pfcp/pfcpType"
-	"free5gc/src/smf/factory"
-	"free5gc/src/smf/logger"
+	"free5gcWithOCF/lib/pfcp/pfcpType"
+	"free5gcWithOCF/src/smf/factory"
+	"free5gcWithOCF/src/smf/logger"
 	"net"
 	"reflect"
 )

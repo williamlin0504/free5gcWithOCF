@@ -3,10 +3,10 @@
 package util
 
 import (
-	"free5gc/lib/path_util"
+	"free5gcWithOCF/lib/path_util"
 )
 
-var AusfLogPath = path_util.Gofree5gcPath("free5gc/ausfsslkey.log")
-var AusfPemPath = path_util.Gofree5gcPath("free5gc/support/TLS/ausf.pem")
-var AusfKeyPath = path_util.Gofree5gcPath("free5gc/support/TLS/ausf.key")
-var DefaultAusfConfigPath = path_util.Gofree5gcPath("free5gc/config/ausfcfg.conf")
+var AusfLogPath = path_util.Gofree5gcWithOCFPath("free5gcWithOCF/ausfsslkey.log")
+var AusfPemPath = path_util.Gofree5gcWithOCFPath("free5gcWithOCF/support/TLS/ausf.pem")
+var AusfKeyPath = path_util.Gofree5gcWithOCFPath("free5gcWithOCF/support/TLS/ausf.key")
+var DefaultAusfConfigPath = path_util.Gofree5gcWithOCFPath("free5gcWithOCF/config/ausfcfg.conf")

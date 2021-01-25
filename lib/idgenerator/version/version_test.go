@@ -1,7 +1,7 @@
 package version_test
 
 import (
-	"free5gc/lib/idgenerator/version"
+	"free5gcWithOCF/lib/idgenerator/version"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

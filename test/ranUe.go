@@ -7,14 +7,14 @@ import (
 	"github.com/calee0219/fatal"
 	"golang.org/x/net/ipv4"
 
-	"github.com/free5gc/CommonConsumerTestData/UDM/TestGenAuthData"
-	"github.com/free5gc/CommonConsumerTestData/UDR/TestRegistrationProcedure"
-	"github.com/free5gc/UeauCommon"
-	"github.com/free5gc/milenage"
-	"github.com/free5gc/nas/nasMessage"
-	"github.com/free5gc/nas/nasType"
-	"github.com/free5gc/nas/security"
-	"github.com/free5gc/openapi/models"
+	"github.com/free5gcWithOCF/CommonConsumerTestData/UDM/TestGenAuthData"
+	"github.com/free5gcWithOCF/CommonConsumerTestData/UDR/TestRegistrationProcedure"
+	"github.com/free5gcWithOCF/UeauCommon"
+	"github.com/free5gcWithOCF/milenage"
+	"github.com/free5gcWithOCF/nas/nasMessage"
+	"github.com/free5gcWithOCF/nas/nasType"
+	"github.com/free5gcWithOCF/nas/security"
+	"github.com/free5gcWithOCF/openapi/models"
 )
 
 type RanUeContext struct {

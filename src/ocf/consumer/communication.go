@@ -4,12 +4,12 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"free5gc/lib/nas/nasMessage"
-	"free5gc/lib/openapi"
-	"free5gc/lib/openapi/Nocf_Communication"
-	"free5gc/lib/openapi/models"
-	ocf_context "free5gc/src/ocf/context"
-	"free5gc/src/ocf/logger"
+	"free5gcWithOCF/lib/nas/nasMessage"
+	"free5gcWithOCF/lib/openapi"
+	"free5gcWithOCF/lib/openapi/Nocf_Communication"
+	"free5gcWithOCF/lib/openapi/models"
+	ocf_context "free5gcWithOCF/src/ocf/context"
+	"free5gcWithOCF/src/ocf/logger"
 )
 
 func BuildUeContextCreateData(ue *ocf_context.OcfUe, targetRanId models.NgRanTargetId,

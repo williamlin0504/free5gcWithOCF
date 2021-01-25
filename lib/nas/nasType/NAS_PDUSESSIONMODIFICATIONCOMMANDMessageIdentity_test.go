@@ -1,8 +1,8 @@
 package nasType_test
 
 import (
-	"free5gc/lib/nas"
-	"free5gc/lib/nas/nasType"
+	"free5gcWithOCF/lib/nas"
+	"free5gcWithOCF/lib/nas/nasType"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

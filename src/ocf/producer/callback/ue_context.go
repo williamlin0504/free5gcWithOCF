@@ -3,9 +3,9 @@ package callback
 import (
 	"context"
 	"fmt"
-	"free5gc/lib/openapi/Nocf_Communication"
-	"free5gc/lib/openapi/models"
-	ocf_context "free5gc/src/ocf/context"
+	"free5gcWithOCF/lib/openapi/Nocf_Communication"
+	"free5gcWithOCF/lib/openapi/models"
+	ocf_context "free5gcWithOCF/src/ocf/context"
 )
 
 func SendN2InfoNotifyN2Handover(ue *ocf_context.OcfUe, releaseList []int32) error {

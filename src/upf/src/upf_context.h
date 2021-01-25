@@ -111,7 +111,7 @@ typedef struct {
     // Use spin lock to protect data write
     pthread_spinlock_t buffLock;
     // TODO: read from config
-    // no reason, just want to bigger than /tmp/free5gc_unix_sock
+    // no reason, just want to bigger than /tmp/free5gcWithOCF_unix_sock
 #define MAX_SOCK_PATH_LEN 64
     char            buffSockPath[MAX_SOCK_PATH_LEN];
     // Buffering socket for recv packet from kernel

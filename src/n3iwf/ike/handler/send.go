@@ -1,7 +1,7 @@
 package handler
 
 import (
-	ike_message "free5gc/src/n3iwf/ike/message"
+	ike_message "free5gcWithOCF/src/n3iwf/ike/message"
 	"net"
 )
 

@@ -2,7 +2,7 @@ package context
 
 import (
 	"fmt"
-	"free5gc/lib/pfcp/pfcpType"
+	"free5gcWithOCF/lib/pfcp/pfcpType"
 )
 
 type PFCPSessionResponseStatus int

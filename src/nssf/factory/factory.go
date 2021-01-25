@@ -11,7 +11,7 @@ import (
 
 	"gopkg.in/yaml.v2"
 
-	"free5gc/src/nssf/logger"
+	"free5gcWithOCF/src/nssf/logger"
 )
 
 var NssfConfig Config

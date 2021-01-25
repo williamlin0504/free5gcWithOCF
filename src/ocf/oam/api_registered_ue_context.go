@@ -1,11 +1,11 @@
 package oam
 
 import (
-	"free5gc/lib/http_wrapper"
-	"free5gc/lib/openapi"
-	"free5gc/lib/openapi/models"
-	"free5gc/src/ocf/logger"
-	"free5gc/src/ocf/producer"
+	"free5gcWithOCF/lib/http_wrapper"
+	"free5gcWithOCF/lib/openapi"
+	"free5gcWithOCF/lib/openapi/models"
+	"free5gcWithOCF/src/ocf/logger"
+	"free5gcWithOCF/src/ocf/producer"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

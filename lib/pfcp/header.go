@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"errors"
-	"free5gc/lib/pfcp/logger"
+	"free5gcWithOCF/lib/pfcp/logger"
 )
 
 const PfcpVersion uint8 = 1

@@ -1,7 +1,7 @@
 package flowdesc_test
 
 import (
-	"free5gc/lib/flowdesc"
+	"free5gcWithOCF/lib/flowdesc"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

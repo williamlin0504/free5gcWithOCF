@@ -1,10 +1,10 @@
 package main
 
 import (
-	"free5gc/src/app"
-	"free5gc/src/udr/logger"
-	udr_service "free5gc/src/udr/service"
-	"free5gc/src/udr/version"
+	"free5gcWithOCF/src/app"
+	"free5gcWithOCF/src/udr/logger"
+	udr_service "free5gcWithOCF/src/udr/service"
+	"free5gcWithOCF/src/udr/version"
 	"os"
 
 	"github.com/sirupsen/logrus"
@@ -24,7 +24,7 @@ func main() {
 	app.Name = "udr"
 	appLog.Infoln(app.Name)
 	appLog.Infoln("UDR version: ", version.GetVersion())
-	app.Usage = "-free5gccfg common configuration file -udrcfg udr configuration file"
+	app.Usage = "-free5gcWithOCFcfg common configuration file -udrcfg udr configuration file"
 	app.Action = action
 	app.Flags = UDR.GetCliCmd()
 	if err := app.Run(os.Args); err != nil {
@@ -33,7 +33,7 @@ func main() {
 }
 
 func action(c *cli.Context) {
-	app.AppInitializeWillInitialize(c.String("free5gccfg"))
+	app.AppInitializeWillInitialize(c.String("free5gcWithOCFcfg"))
 	UDR.Initialize(c)
 	UDR.Start()
 }

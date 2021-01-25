@@ -12,19 +12,19 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/urfave/cli"
 
-	"github.com/free5gc/CommonConsumerTestData/UDM/TestGenAuthData"
-	"github.com/free5gc/MongoDBLibrary"
-	amf_service "github.com/free5gc/amf/service"
-	ausf_service "github.com/free5gc/ausf/service"
-	"github.com/free5gc/nas/security"
-	"github.com/free5gc/ngap"
-	nrf_service "github.com/free5gc/nrf/service"
-	nssf_service "github.com/free5gc/nssf/service"
-	"github.com/free5gc/path_util"
-	pcf_service "github.com/free5gc/pcf/service"
-	smf_service "github.com/free5gc/smf/service"
-	udm_service "github.com/free5gc/udm/service"
-	udr_service "github.com/free5gc/udr/service"
+	"github.com/free5gcWithOCF/CommonConsumerTestData/UDM/TestGenAuthData"
+	"github.com/free5gcWithOCF/MongoDBLibrary"
+	amf_service "github.com/free5gcWithOCF/amf/service"
+	ausf_service "github.com/free5gcWithOCF/ausf/service"
+	"github.com/free5gcWithOCF/nas/security"
+	"github.com/free5gcWithOCF/ngap"
+	nrf_service "github.com/free5gcWithOCF/nrf/service"
+	nssf_service "github.com/free5gcWithOCF/nssf/service"
+	"github.com/free5gcWithOCF/path_util"
+	pcf_service "github.com/free5gcWithOCF/pcf/service"
+	smf_service "github.com/free5gcWithOCF/smf/service"
+	udm_service "github.com/free5gcWithOCF/udm/service"
+	udr_service "github.com/free5gcWithOCF/udr/service"
 
 	"test"
 	"test/app"
@@ -54,10 +54,10 @@ func init() {
 
 	if initFlag {
 		//app.AppInitializeWillInitialize("")
-		flagSet := flag.NewFlagSet("free5gc", 0)
+		flagSet := flag.NewFlagSet("free5gcWithOCF", 0)
 		flagSet.String("smfcfg", "", "SMF Config Path")
 		cli := cli.NewContext(nil, flagSet, nil)
-		err := cli.Set("smfcfg", path_util.Free5gcPath("free5gc/config/test/smfcfg.test.yaml"))
+		err := cli.Set("smfcfg", path_util.Free5gcPath("free5gcWithOCF/config/test/smfcfg.test.yaml"))
 		if err != nil {
 			log.Fatal("SMF test config error")
 			return
@@ -69,7 +69,7 @@ func init() {
 			time.Sleep(200 * time.Millisecond)
 		}
 	} else {
-		MongoDBLibrary.SetMongoDB("free5gc", "mongodb://127.0.0.1:27017")
+		MongoDBLibrary.SetMongoDB("free5gcWithOCF", "mongodb://127.0.0.1:27017")
 		fmt.Println("MongoDB Set")
 	}
 
@@ -93,7 +93,7 @@ func TestNGSetup(t *testing.T) {
 	assert.Nil(t, err)
 
 	// send NGSetupRequest Msg
-	sendMsg, err = test.GetNGSetupRequest([]byte("\x00\x01\x02"), 24, "free5gc")
+	sendMsg, err = test.GetNGSetupRequest([]byte("\x00\x01\x02"), 24, "free5gcWithOCF")
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)

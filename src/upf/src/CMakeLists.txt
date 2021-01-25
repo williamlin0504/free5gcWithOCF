@@ -14,7 +14,7 @@ add_executable(${PROJECT_NAME} ${SRC_FILES})
 set_target_properties(
     ${PROJECT_NAME}
     PROPERTIES
-        OUTPUT_NAME "${BUILD_BIN_DIR}/free5gc-upfd"
+        OUTPUT_NAME "${BUILD_BIN_DIR}/free5gcWithOCF-upfd"
         SUFFIX ""
 )
 

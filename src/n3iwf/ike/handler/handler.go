@@ -10,11 +10,11 @@ import (
 	"errors"
 	"net"
 
-	"free5gc/lib/ngap/ngapType"
-	"free5gc/src/n3iwf/context"
-	ike_message "free5gc/src/n3iwf/ike/message"
-	"free5gc/src/n3iwf/logger"
-	ngap_message "free5gc/src/n3iwf/ngap/message"
+	"free5gcWithOCF/lib/ngap/ngapType"
+	"free5gcWithOCF/src/n3iwf/context"
+	ike_message "free5gcWithOCF/src/n3iwf/ike/message"
+	"free5gcWithOCF/src/n3iwf/logger"
+	ngap_message "free5gcWithOCF/src/n3iwf/ngap/message"
 
 	"github.com/sirupsen/logrus"
 	"golang.org/x/sys/unix"
