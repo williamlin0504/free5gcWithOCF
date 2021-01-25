@@ -58,6 +58,8 @@ func listenAndServe(localAddr, remoteAddr *sctp.SCTPAddr, errChan chan<- error) 
 
 		if i != 2 {
 			ngapLog.Info("Retry to connect AMF after 1 second...")
+			ngapLog.Debugf("[SCTP] AMF SCTP address: %+v", remoteAddr.String())
+			errChan <- errors.New("Failed to connect to AMF.")
 			time.Sleep(1 * time.Second)
 		} else {
 			ngapLog.Debugf("[SCTP] AMF SCTP address: %+v", remoteAddr.String())
