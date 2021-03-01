@@ -45,9 +45,7 @@ done
 shift $(($OPTIND - 1))
 
 TEST_POOL="TestRegistration"
-echo "Test 1"
 if [[ ! "$1" =~ $TEST_POOL ]]
-echo "Test 2"
 then
     echo "Usage: $0 [ ${TEST_POOL//|/ | } ]"
     exit 1
