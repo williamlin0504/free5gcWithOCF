@@ -16,7 +16,7 @@ require (
 	github.com/free5gc/logger_util v1.0.0
 	github.com/free5gc/nas v1.0.0
 	github.com/free5gc/ngap v1.0.0
-	github.com/william0504/openapi
+	github.com/william0504/openapi v1.2.3
 	github.com/free5gc/path_util v1.0.0
 	github.com/free5gc/version v1.0.0
 	github.com/gin-contrib/cors v1.3.1
