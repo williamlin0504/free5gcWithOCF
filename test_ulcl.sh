@@ -59,7 +59,7 @@ elif [ $OS == "Fedora" ]; then
 fi
 PATH=$PATH:$GOPATH/bin:$GOROOT/bin
 
-cp config/test/smfcfg.ulcl.test.conf config/test/smfcfg.test.conf
+cp config/test/smfcfg.ulcl.test.yaml config/test/smfcfg.test.yaml
 
 UPFNS="UPFns"
 
@@ -72,10 +72,10 @@ sudo ip addr add 60.60.0.1 dev lo
 sudo ip addr add 10.200.200.1/24 dev veth0
 sudo ip addr add 10.200.200.2/24 dev veth0
 
-sudo ip link add free5gcWithOCF-br type bridge
-sudo ip link set free5gcWithOCF-br up
+sudo ip link add free5gc-br type bridge
+sudo ip link set free5gc-br up
 sudo ip link set br-veth0 up
-sudo ip link set br-veth0 master free5gcWithOCF-br
+sudo ip link set br-veth0 master free5gc-br
 
 sudo iptables -I FORWARD 1 -j ACCEPT
 
@@ -92,7 +92,7 @@ for i in $(seq -f "%02g" 1 $UPF_NUM); do
     sudo ip netns exec "${UPFNS}${i}" ip addr add "60.60.0.1${i}" dev lo
     sudo ip netns exec "${UPFNS}${i}" ip addr add "10.200.200.1${i}/24" dev "veth${i}"
 
-    sudo ip link set "br-veth${i}" master free5gcWithOCF-br
+    sudo ip link set "br-veth${i}" master free5gc-br
 
     if [ ${DUMP_NS} ]; then
         sudo ip netns exec "${UPFNS}${i}" tcpdump -i any -w "${UPFNS}${i}.pcap" &
@@ -100,21 +100,21 @@ for i in $(seq -f "%02g" 1 $UPF_NUM); do
         TCPDUMP_PID_[${i}]=$(sudo ip netns pids "${UPFNS}${i}")
     fi
 
-    sed -i -e "s/10.200.200.10./10.200.200.1${i}/g" ./src/upf/build/config/upfcfg.ulcl.yaml
+    sed -i -e "s/10.200.200.10./10.200.200.1${i}/g" ./NFs/upf/build/config/upfcfg.ulcl.yaml
     if [ ${i} -eq 02 ]; then
-        sed -i -e "s/internet/intranet/g" ./src/upf/build/config/upfcfg.ulcl.yaml
+        sed -i -e "s/internet/intranet/g" ./NFs/upf/build/config/upfcfg.ulcl.yaml
     else
-        sed -i -e "s/intranet/internet/g" ./src/upf/build/config/upfcfg.ulcl.yaml
+        sed -i -e "s/intranet/internet/g" ./NFs/upf/build/config/upfcfg.ulcl.yaml
     fi
-    cd src/upf/build && sudo -E ip netns exec "${UPFNS}${i}" ./bin/free5gcWithOCF-upfd -f config/upfcfg.ulcl.yaml &
+    cd NFs/upf/build && sudo -E ip netns exec "${UPFNS}${i}" ./bin/free5gc-upfd -f config/upfcfg.ulcl.yaml &
     sleep 1
 done
 
-cd src/test
+cd test
 $GOROOT/bin/go test -v -vet=off -run $1
 
 sleep 3
-sudo killall -15 free5gcWithOCF-upfd
+sudo killall -15 free5gc-upfd
 sleep 1
 
 cd ../..
@@ -125,7 +125,7 @@ done
 
 sudo ip addr del 60.60.0.1/32 dev lo
 sudo ip link del veth0
-sudo ip link del free5gcWithOCF-br
+sudo ip link del free5gc-br
 
 sudo iptables -D FORWARD -j ACCEPT
 
@@ -137,4 +137,3 @@ for i in $(seq -f "%02g" 1 $UPF_NUM); do
   sudo ip netns del "${UPFNS}${i}"
   sudo ip link del "br-veth${i}"
 done
-

@@ -1,11 +1,11 @@
 package test
 
 import (
-	"github.com/free5gcWithOCF/nas"
-	"github.com/free5gcWithOCF/nas/nasMessage"
-	"github.com/free5gcWithOCF/ngap"
-	// Nausf_UEAU_Client "github.com/free5gcWithOCF/openapi/Nausf_UEAuthentication"
-	// "github.com/free5gcWithOCF/openapi/models"
+	"github.com/free5gc/nas"
+	"github.com/free5gc/nas/nasMessage"
+	"github.com/free5gc/ngap"
+	// Nausf_UEAU_Client "github.com/free5gc/openapi/Nausf_UEAuthentication"
+	// "github.com/free5gc/openapi/models"
 
 	"test/ngapTestpacket"
 )

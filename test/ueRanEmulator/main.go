@@ -14,13 +14,13 @@ import (
 	"github.com/urfave/cli"
 	"gopkg.in/yaml.v2"
 
-	"github.com/free5gcWithOCF/nas"
-	"github.com/free5gcWithOCF/nas/nasMessage"
-	"github.com/free5gcWithOCF/nas/nasTestpacket"
-	"github.com/free5gcWithOCF/nas/nasType"
-	"github.com/free5gcWithOCF/nas/security"
-	"github.com/free5gcWithOCF/ngap"
-	"github.com/free5gcWithOCF/openapi/models"
+	"github.com/free5gc/nas"
+	"github.com/free5gc/nas/nasMessage"
+	"github.com/free5gc/nas/nasTestpacket"
+	"github.com/free5gc/nas/nasType"
+	"github.com/free5gc/nas/security"
+	"github.com/free5gc/ngap"
+	"github.com/free5gc/openapi/models"
 )
 
 type n2Amf struct {
@@ -168,7 +168,7 @@ func ueRanEmulator() error {
 	fmt.Printf("[UERANEM] Connect to UPF successfully\n")
 
 	// send NGSetupRequest Msg
-	sendMsg, err = test.GetNGSetupRequest([]byte("\x00\x01\x02"), 24, "free5gcWithOCF")
+	sendMsg, err = test.GetNGSetupRequest([]byte("\x00\x01\x02"), 24, "free5gc")
 	if err != nil {
 		err = fmt.Errorf("GetNGSetupRequest: %v", err)
 		return err

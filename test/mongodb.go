@@ -6,8 +6,8 @@ import (
 	"github.com/calee0219/fatal"
 	"go.mongodb.org/mongo-driver/bson"
 
-	"github.com/free5gcWithOCF/MongoDBLibrary"
-	"github.com/free5gcWithOCF/openapi/models"
+	"github.com/free5gc/MongoDBLibrary"
+	"github.com/free5gc/openapi/models"
 )
 
 func toBsonM(data interface{}) bson.M {

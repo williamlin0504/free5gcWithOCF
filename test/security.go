@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/free5gcWithOCF/nas"
-	"github.com/free5gcWithOCF/nas/security"
+	"github.com/free5gc/nas"
+	"github.com/free5gc/nas/security"
 )
 
 func NASEncode(ue *RanUeContext, msg *nas.Message, securityContextAvailable bool, newSecurityContext bool) (

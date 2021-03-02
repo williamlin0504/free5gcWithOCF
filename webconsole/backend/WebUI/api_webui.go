@@ -4,23 +4,26 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
-	"free5gcWithOCF/lib/MongoDBLibrary"
-	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/webconsole/backend/logger"
-	"free5gcWithOCF/webconsole/backend/webui_context"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 
-	"github.com/gin-gonic/gin"
+	"github.com/free5gc/MongoDBLibrary"
+	"github.com/free5gc/openapi/models"
+	"github.com/free5gc/webconsole/backend/logger"
+	"github.com/free5gc/webconsole/backend/webui_context"
 )
 
-const authSubsDataColl = "subscriptionData.authenticationData.authenticationSubscription"
-const amDataColl = "subscriptionData.provisionedData.amData"
-const smDataColl = "subscriptionData.provisionedData.smData"
-const smfSelDataColl = "subscriptionData.provisionedData.smfSelectionSubscriptionData"
-const amPolicyDataColl = "policyData.ues.amData"
-const smPolicyDataColl = "policyData.ues.smData"
+const (
+	authSubsDataColl = "subscriptionData.authenticationData.authenticationSubscription"
+	amDataColl       = "subscriptionData.provisionedData.amData"
+	smDataColl       = "subscriptionData.provisionedData.smData"
+	smfSelDataColl   = "subscriptionData.provisionedData.smfSelectionSubscriptionData"
+	amPolicyDataColl = "policyData.ues.amData"
+	smPolicyDataColl = "policyData.ues.smData"
+	flowRuleDataColl = "policyData.ues.flowRule"
+)
 
 var httpsClient *http.Client
 
@@ -37,7 +40,18 @@ func mapToByte(data map[string]interface{}) (ret []byte) {
 	return
 }
 
+func sliceToByte(data []map[string]interface{}) (ret []byte) {
+	ret, _ = json.Marshal(data)
+	return
+}
+
 func toBsonM(data interface{}) (ret bson.M) {
+	tmp, _ := json.Marshal(data)
+	json.Unmarshal(tmp, &ret)
+	return
+}
+
+func toBsonA(data interface{}) (ret bson.A) {
 	tmp, _ := json.Marshal(data)
 	json.Unmarshal(tmp, &ret)
 	return
@@ -118,31 +132,62 @@ func GetSampleJSON(c *gin.Context) {
 		},
 	}
 
-	smDataData := models.SessionManagementSubscriptionData{
-		SingleNssai: &models.Snssai{
-			Sst: 1,
-			Sd:  "010203",
-		},
-		DnnConfigurations: map[string]models.DnnConfiguration{
-			"internet": models.DnnConfiguration{
-				PduSessionTypes: &models.PduSessionTypes{
-					DefaultSessionType:  models.PduSessionType_IPV4,
-					AllowedSessionTypes: []models.PduSessionType{models.PduSessionType_IPV4},
-				},
-				SscModes: &models.SscModes{
-					DefaultSscMode:  models.SscMode__1,
-					AllowedSscModes: []models.SscMode{models.SscMode__1},
-				},
-				SessionAmbr: &models.Ambr{
-					Downlink: "1000 Kbps",
-					Uplink:   "1000 Kbps",
-				},
-				Var5gQosProfile: &models.SubscribedDefaultQos{
-					Var5qi: 9,
-					Arp: &models.Arp{
+	smDataData := []models.SessionManagementSubscriptionData{
+		{
+			SingleNssai: &models.Snssai{
+				Sst: 1,
+				Sd:  "010203",
+			},
+			DnnConfigurations: map[string]models.DnnConfiguration{
+				"internet": {
+					PduSessionTypes: &models.PduSessionTypes{
+						DefaultSessionType:  models.PduSessionType_IPV4,
+						AllowedSessionTypes: []models.PduSessionType{models.PduSessionType_IPV4},
+					},
+					SscModes: &models.SscModes{
+						DefaultSscMode:  models.SscMode__1,
+						AllowedSscModes: []models.SscMode{models.SscMode__1},
+					},
+					SessionAmbr: &models.Ambr{
+						Downlink: "1000 Kbps",
+						Uplink:   "1000 Kbps",
+					},
+					Var5gQosProfile: &models.SubscribedDefaultQos{
+						Var5qi: 9,
+						Arp: &models.Arp{
+							PriorityLevel: 8,
+						},
 						PriorityLevel: 8,
 					},
-					PriorityLevel: 8,
+				},
+			},
+		},
+		{
+			SingleNssai: &models.Snssai{
+				Sst: 1,
+				Sd:  "112233",
+			},
+			DnnConfigurations: map[string]models.DnnConfiguration{
+				"internet": {
+					PduSessionTypes: &models.PduSessionTypes{
+						DefaultSessionType:  models.PduSessionType_IPV4,
+						AllowedSessionTypes: []models.PduSessionType{models.PduSessionType_IPV4},
+					},
+					SscModes: &models.SscModes{
+						DefaultSscMode:  models.SscMode__1,
+						AllowedSscModes: []models.SscMode{models.SscMode__1},
+					},
+					SessionAmbr: &models.Ambr{
+						Downlink: "1000 Kbps",
+						Uplink:   "1000 Kbps",
+					},
+					Var5gQosProfile: &models.SubscribedDefaultQos{
+						Var5qi: 9,
+						Arp: &models.Arp{
+							PriorityLevel: 8,
+						},
+						PriorityLevel: 8,
+					},
 				},
 			},
 		},
@@ -169,7 +214,7 @@ func GetSampleJSON(c *gin.Context) {
 
 	amPolicyData := models.AmPolicyData{
 		SubscCats: []string{
-			"free5gcWithOCF",
+			"free5gc",
 		},
 	}
 
@@ -227,7 +272,7 @@ func GetSubscribers(c *gin.Context) {
 	for _, amData := range amDataList {
 		ueId := amData["ueId"]
 		servingPlmnId := amData["servingPlmnId"]
-		var tmp = SubsListIE{
+		tmp := SubsListIE{
 			PlmnID: servingPlmnId.(string),
 			UeId:   ueId.(string),
 		}
@@ -253,7 +298,7 @@ func GetSubscriberByID(c *gin.Context) {
 
 	authSubsDataInterface := MongoDBLibrary.RestfulAPIGetOne(authSubsDataColl, filterUeIdOnly)
 	amDataDataInterface := MongoDBLibrary.RestfulAPIGetOne(amDataColl, filter)
-	smDataDataInterface := MongoDBLibrary.RestfulAPIGetOne(smDataColl, filter)
+	smDataDataInterface := MongoDBLibrary.RestfulAPIGetMany(smDataColl, filter)
 	smfSelDataInterface := MongoDBLibrary.RestfulAPIGetOne(smfSelDataColl, filter)
 	amPolicyDataInterface := MongoDBLibrary.RestfulAPIGetOne(amPolicyDataColl, filterUeIdOnly)
 	smPolicyDataInterface := MongoDBLibrary.RestfulAPIGetOne(smPolicyDataColl, filterUeIdOnly)
@@ -262,8 +307,8 @@ func GetSubscriberByID(c *gin.Context) {
 	json.Unmarshal(mapToByte(authSubsDataInterface), &authSubsData)
 	var amDataData models.AccessAndMobilitySubscriptionData
 	json.Unmarshal(mapToByte(amDataDataInterface), &amDataData)
-	var smDataData models.SessionManagementSubscriptionData
-	json.Unmarshal(mapToByte(smDataDataInterface), &smDataData)
+	var smDataData []models.SessionManagementSubscriptionData
+	json.Unmarshal(sliceToByte(smDataDataInterface), &smDataData)
 	var smfSelData models.SmfSelectionSubscriptionData
 	json.Unmarshal(mapToByte(smfSelDataInterface), &smfSelData)
 	var amPolicyData models.AmPolicyData
@@ -306,9 +351,15 @@ func PostSubscriberByID(c *gin.Context) {
 	amDataBsonM := toBsonM(subsData.AccessAndMobilitySubscriptionData)
 	amDataBsonM["ueId"] = ueId
 	amDataBsonM["servingPlmnId"] = servingPlmnId
-	smDataBsonM := toBsonM(subsData.SessionManagementSubscriptionData)
-	smDataBsonM["ueId"] = ueId
-	smDataBsonM["servingPlmnId"] = servingPlmnId
+
+	smDatasBsonA := make([]interface{}, 0, len(subsData.SessionManagementSubscriptionData))
+	for _, smSubsData := range subsData.SessionManagementSubscriptionData {
+		smDataBsonM := toBsonM(smSubsData)
+		smDataBsonM["ueId"] = ueId
+		smDataBsonM["servingPlmnId"] = servingPlmnId
+		smDatasBsonA = append(smDatasBsonA, smDataBsonM)
+	}
+
 	smfSelSubsBsonM := toBsonM(subsData.SmfSelectionSubscriptionData)
 	smfSelSubsBsonM["ueId"] = ueId
 	smfSelSubsBsonM["servingPlmnId"] = servingPlmnId
@@ -317,12 +368,21 @@ func PostSubscriberByID(c *gin.Context) {
 	smPolicyDataBsonM := toBsonM(subsData.SmPolicyData)
 	smPolicyDataBsonM["ueId"] = ueId
 
+	flowRulesBsonA := make([]interface{}, 0, len(subsData.FlowRules))
+	for _, flowRule := range subsData.FlowRules {
+		flowRuleBsonM := toBsonM(flowRule)
+		flowRuleBsonM["ueId"] = ueId
+		flowRuleBsonM["servingPlmnId"] = servingPlmnId
+		flowRulesBsonA = append(flowRulesBsonA, flowRuleBsonM)
+	}
+
 	MongoDBLibrary.RestfulAPIPost(authSubsDataColl, filterUeIdOnly, authSubsBsonM)
 	MongoDBLibrary.RestfulAPIPost(amDataColl, filter, amDataBsonM)
-	MongoDBLibrary.RestfulAPIPost(smDataColl, filter, smDataBsonM)
+	MongoDBLibrary.RestfulAPIPostMany(smDataColl, filter, smDatasBsonA)
 	MongoDBLibrary.RestfulAPIPost(smfSelDataColl, filter, smfSelSubsBsonM)
 	MongoDBLibrary.RestfulAPIPost(amPolicyDataColl, filterUeIdOnly, amPolicyDataBsonM)
 	MongoDBLibrary.RestfulAPIPost(smPolicyDataColl, filterUeIdOnly, smPolicyDataBsonM)
+	MongoDBLibrary.RestfulAPIPostMany(flowRuleDataColl, filter, flowRulesBsonA)
 
 	c.JSON(http.StatusCreated, gin.H{})
 }
@@ -348,9 +408,17 @@ func PutSubscriberByID(c *gin.Context) {
 	amDataBsonM := toBsonM(subsData.AccessAndMobilitySubscriptionData)
 	amDataBsonM["ueId"] = ueId
 	amDataBsonM["servingPlmnId"] = servingPlmnId
-	smDataBsonM := toBsonM(subsData.SessionManagementSubscriptionData)
-	smDataBsonM["ueId"] = ueId
-	smDataBsonM["servingPlmnId"] = servingPlmnId
+
+	// Replace all data with new one
+	MongoDBLibrary.RestfulAPIDeleteMany(smDataColl, filter)
+	for _, data := range subsData.SessionManagementSubscriptionData {
+		smDataBsonM := toBsonM(data)
+		smDataBsonM["ueId"] = ueId
+		smDataBsonM["servingPlmnId"] = servingPlmnId
+		filterSmData := bson.M{"ueId": ueId, "servingPlmnId": servingPlmnId, "snssai": data.SingleNssai}
+		MongoDBLibrary.RestfulAPIPutOne(smDataColl, filterSmData, smDataBsonM)
+	}
+
 	smfSelSubsBsonM := toBsonM(subsData.SmfSelectionSubscriptionData)
 	smfSelSubsBsonM["ueId"] = ueId
 	smfSelSubsBsonM["servingPlmnId"] = servingPlmnId
@@ -361,7 +429,6 @@ func PutSubscriberByID(c *gin.Context) {
 
 	MongoDBLibrary.RestfulAPIPutOne(authSubsDataColl, filterUeIdOnly, authSubsBsonM)
 	MongoDBLibrary.RestfulAPIPutOne(amDataColl, filter, amDataBsonM)
-	MongoDBLibrary.RestfulAPIPutOne(smDataColl, filter, smDataBsonM)
 	MongoDBLibrary.RestfulAPIPutOne(smfSelDataColl, filter, smfSelSubsBsonM)
 	MongoDBLibrary.RestfulAPIPutOne(amPolicyDataColl, filterUeIdOnly, amPolicyDataBsonM)
 	MongoDBLibrary.RestfulAPIPutOne(smPolicyDataColl, filterUeIdOnly, smPolicyDataBsonM)
@@ -390,9 +457,17 @@ func PatchSubscriberByID(c *gin.Context) {
 	amDataBsonM := toBsonM(subsData.AccessAndMobilitySubscriptionData)
 	amDataBsonM["ueId"] = ueId
 	amDataBsonM["servingPlmnId"] = servingPlmnId
-	smDataBsonM := toBsonM(subsData.SessionManagementSubscriptionData)
-	smDataBsonM["ueId"] = ueId
-	smDataBsonM["servingPlmnId"] = servingPlmnId
+
+	// Replace all data with new one
+	MongoDBLibrary.RestfulAPIDeleteMany(smDataColl, filter)
+	for _, data := range subsData.SessionManagementSubscriptionData {
+		smDataBsonM := toBsonM(data)
+		smDataBsonM["ueId"] = ueId
+		smDataBsonM["servingPlmnId"] = servingPlmnId
+		filterSmData := bson.M{"ueId": ueId, "servingPlmnId": servingPlmnId, "snssai": data.SingleNssai}
+		MongoDBLibrary.RestfulAPIMergePatch(smDataColl, filterSmData, smDataBsonM)
+	}
+
 	smfSelSubsBsonM := toBsonM(subsData.SmfSelectionSubscriptionData)
 	smfSelSubsBsonM["ueId"] = ueId
 	smfSelSubsBsonM["servingPlmnId"] = servingPlmnId
@@ -403,7 +478,6 @@ func PatchSubscriberByID(c *gin.Context) {
 
 	MongoDBLibrary.RestfulAPIMergePatch(authSubsDataColl, filterUeIdOnly, authSubsBsonM)
 	MongoDBLibrary.RestfulAPIMergePatch(amDataColl, filter, amDataBsonM)
-	MongoDBLibrary.RestfulAPIMergePatch(smDataColl, filter, smDataBsonM)
 	MongoDBLibrary.RestfulAPIMergePatch(smfSelDataColl, filter, smfSelSubsBsonM)
 	MongoDBLibrary.RestfulAPIMergePatch(amPolicyDataColl, filterUeIdOnly, amPolicyDataBsonM)
 	MongoDBLibrary.RestfulAPIMergePatch(smPolicyDataColl, filterUeIdOnly, smPolicyDataBsonM)
@@ -424,7 +498,8 @@ func DeleteSubscriberByID(c *gin.Context) {
 
 	MongoDBLibrary.RestfulAPIDeleteOne(authSubsDataColl, filterUeIdOnly)
 	MongoDBLibrary.RestfulAPIDeleteOne(amDataColl, filter)
-	MongoDBLibrary.RestfulAPIDeleteOne(smDataColl, filter)
+	MongoDBLibrary.RestfulAPIDeleteMany(smDataColl, filter)
+	MongoDBLibrary.RestfulAPIDeleteMany(flowRuleDataColl, filter)
 	MongoDBLibrary.RestfulAPIDeleteOne(smfSelDataColl, filter)
 	MongoDBLibrary.RestfulAPIDeleteOne(amPolicyDataColl, filterUeIdOnly)
 	MongoDBLibrary.RestfulAPIDeleteOne(smPolicyDataColl, filterUeIdOnly)

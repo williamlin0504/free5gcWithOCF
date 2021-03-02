@@ -1,11 +1,12 @@
 package WebUI
 
 import (
-	"free5gcWithOCF/lib/logger_util"
-	"free5gcWithOCF/webconsole/backend/logger"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+
+	"github.com/free5gc/logger_util"
+	"github.com/free5gc/webconsole/backend/logger"
 )
 
 // Route is the information for every URI.

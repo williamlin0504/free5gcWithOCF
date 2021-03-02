@@ -7,16 +7,18 @@ import (
 	formatter "github.com/antonfisher/nested-logrus-formatter"
 	"github.com/sirupsen/logrus"
 
-	"free5gcWithOCF/lib/logger_conf"
-	"free5gcWithOCF/lib/logger_util"
+	"github.com/free5gc/logger_conf"
+	"github.com/free5gc/logger_util"
 )
 
-var log *logrus.Logger
-var AppLog *logrus.Entry
-var InitLog *logrus.Entry
-var WebUILog *logrus.Entry
-var ContextLog *logrus.Entry
-var GinLog *logrus.Entry
+var (
+	log        *logrus.Logger
+	AppLog     *logrus.Entry
+	InitLog    *logrus.Entry
+	WebUILog   *logrus.Entry
+	ContextLog *logrus.Entry
+	GinLog     *logrus.Entry
+)
 
 func init() {
 	log = logrus.New()
@@ -30,13 +32,13 @@ func init() {
 		FieldsOrder:     []string{"component", "category"},
 	}
 
-	free5gcWithOCFLogHook, err := logger_util.NewFileHook(logger_conf.Free5gcLogFile, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
+	free5gcLogHook, err := logger_util.NewFileHook(logger_conf.Free5gcLogFile, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0o666)
 	if err == nil {
-		log.Hooks.Add(free5gcWithOCFLogHook)
+		log.Hooks.Add(free5gcLogHook)
 	}
 
 	selfLogHook, err := logger_util.NewFileHook(
-		logger_conf.Free5gcLogDir+"webconsole.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
+		logger_conf.Free5gcLogDir+"webconsole.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0o666)
 	if err == nil {
 		log.Hooks.Add(selfLogHook)
 	}
@@ -52,6 +54,6 @@ func SetLogLevel(level logrus.Level) {
 	log.SetLevel(level)
 }
 
-func SetReportCaller(bool bool) {
-	log.SetReportCaller(bool)
+func SetReportCaller(set bool) {
+	log.SetReportCaller(set)
 }

@@ -7,13 +7,13 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/free5gcWithOCF/aper"
-	"github.com/free5gcWithOCF/nas"
-	"github.com/free5gcWithOCF/nas/nasMessage"
-	"github.com/free5gcWithOCF/nas/nasTestpacket"
-	"github.com/free5gcWithOCF/nas/nasType"
-	"github.com/free5gcWithOCF/ngap"
-	"github.com/free5gcWithOCF/ngap/ngapType"
+	"github.com/free5gc/aper"
+	"github.com/free5gc/nas"
+	"github.com/free5gc/nas/nasMessage"
+	"github.com/free5gc/nas/nasTestpacket"
+	"github.com/free5gc/nas/nasType"
+	"github.com/free5gc/ngap"
+	"github.com/free5gc/ngap/ngapType"
 
 	"test/ngapTestpacket"
 )
