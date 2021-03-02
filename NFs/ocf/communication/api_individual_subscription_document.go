@@ -17,8 +17,8 @@ import (
 	"github.com/free5gc/http_wrapper"
 	"github.com/free5gc/ocf/logger"
 	"github.com/free5gc/ocf/producer"
-	"github.com/free5gc/openapi"
-	"github.com/free5gc/openapi/models"
+	"github.com/williamlin0504/openapi"
+	"github.com/williamlin0504/openapi/models"
 )
 
 // OCFStatusChangeSubscribeModify - Nocf_Communication OCF Status Change Subscribe Modify service Operation
