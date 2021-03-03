@@ -29,9 +29,9 @@ func init() {
 func HandleNGSetupResponse(sctpAddr string, conn *sctp.SCTPConn, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle NG Setup Response")
 
-	var amfName *ngapType.OCFName
+	var amfName *ngapType.AMFName
 	var servedGUAMIList *ngapType.ServedGUAMIList
-	var relativeOCFCapacity *ngapType.RelativeOCFCapacity
+	var relativeOCFCapacity *ngapType.RelativeAMFCapacity
 	var plmnSupportList *ngapType.PLMNSupportList
 	var criticalityDiagnostics *ngapType.CriticalityDiagnostics
 
@@ -58,9 +58,9 @@ func HandleNGSetupResponse(sctpAddr string, conn *sctp.SCTPConn, message *ngapTy
 
 	for _, ie := range ngSetupResponse.ProtocolIEs.List {
 		switch ie.Id.Value {
-		case ngapType.ProtocolIEIDOCFName:
+		case ngapType.ProtocolIEIDAMFName:
 			ngapLog.Traceln("[NGAP] Decode IE OCFName")
-			amfName = ie.Value.OCFName
+			amfName = ie.Value.AMFName
 			if amfName == nil {
 				ngapLog.Errorf("OCFName is nil")
 				item := buildCriticalityDiagnosticsIEItem(
@@ -76,9 +76,9 @@ func HandleNGSetupResponse(sctpAddr string, conn *sctp.SCTPConn, message *ngapTy
 					ngapType.CriticalityPresentReject, ie.Id.Value, ngapType.TypeOfErrorPresentMissing)
 				iesCriticalityDiagnostics.List = append(iesCriticalityDiagnostics.List, item)
 			}
-		case ngapType.ProtocolIEIDRelativeOCFCapacity:
-			ngapLog.Traceln("[NGAP] Decode IE RelativeOCFCapacity")
-			relativeOCFCapacity = ie.Value.RelativeOCFCapacity
+		case ngapType.ProtocolIEIDRelativeAMFCapacity:
+			ngapLog.Traceln("[NGAP] Decode IE RelativeAMFCapacity")
+			relativeAMFCapacity = ie.Value.RelativeAMFCapacity
 		case ngapType.ProtocolIEIDPLMNSupportList:
 			ngapLog.Traceln("[NGAP] Decode IE PLMNSupportList")
 			plmnSupportList = ie.Value.PLMNSupportList
