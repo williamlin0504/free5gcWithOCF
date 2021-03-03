@@ -12,13 +12,13 @@ import (
 )
 
 const (
-	OcfUeNgapIdUnspecified int64 = 0xffffffffff
+	AmfUeNgapIdUnspecified int64 = 0xffffffffff
 )
 
 type OCFUe struct {
 	/* UE identity*/
 	RanUeNgapId           int64
-	OcfUeNgapId           int64
+	AmfUeNgapId           int64
 	IPAddrv4              string
 	IPAddrv6              string
 	PortNumber            int32
@@ -28,7 +28,7 @@ type OCFUe struct {
 	IPSecInnerIP          string
 
 	/* Relative Context */
-	OCF *OCF
+	AMF *OCFAMF
 
 	/* PDU Session */
 	PduSessionList map[int64]*PDUSession // pduSessionId as key
@@ -185,13 +185,13 @@ type UDPSocketInfo struct {
 
 func (ue *OCFUe) init(ranUeNgapId int64) {
 	ue.RanUeNgapId = ranUeNgapId
-	ue.OcfUeNgapId = OcfUeNgapIdUnspecified
+	ue.AmfUeNgapId = AmfUeNgapIdUnspecified
 	ue.PduSessionList = make(map[int64]*PDUSession)
 }
 
 func (ue *OCFUe) Remove() {
-	// remove from OCF context
-	ue.DetachOCF()
+	// remove from AMF context
+	ue.DetachAMF()
 	// remove from OCF context
 	ocfSelf := OCFSelf()
 	ocfSelf.DeleteOcfUe(ue.RanUeNgapId)
@@ -263,18 +263,18 @@ func (ue *OCFUe) CreateIKEChildSecurityAssociation(
 	return childSecurityAssociation, nil
 }
 
-func (ue *OCFUe) AttachOCF(sctpAddr string) bool {
-	if amf, ok := ocfContext.OCFPoolLoad(sctpAddr); ok {
+func (ue *OCFUe) AttachAMF(sctpAddr string) bool {
+	if amf, ok := ocfContext.AMFPoolLoad(sctpAddr); ok {
 		amf.OcfUeList[ue.RanUeNgapId] = ue
-		ue.OCF = amf
+		ue.AMF = amf
 		return true
 	} else {
 		return false
 	}
 }
-func (ue *OCFUe) DetachOCF() {
-	if ue.OCF == nil {
+func (ue *OCFUe) DetachAMF() {
+	if ue.AMF == nil {
 		return
 	}
-	delete(ue.OCF.OcfUeList, ue.RanUeNgapId)
+	delete(ue.AMF.OcfUeList, ue.RanUeNgapId)
 }

@@ -9,7 +9,7 @@ import (
 	"git.cs.nctu.edu.tw/calee/sctp"
 )
 
-type AMF struct {
+type OCFAMF struct {
 	SCTPAddr              string
 	SCTPConn              *sctp.SCTPConn
 	AMFName               *ngapType.AMFName
@@ -20,7 +20,7 @@ type AMF struct {
 	// Overload related
 	AMFOverloadContent *AMFOverloadContent
 	// Relative Context
-	AmfUeList map[int64]*AmfUe // ranUeNgapId as key
+	OcfUeList map[int64]*OCFUe // ranUeNgapId as key
 }
 
 type AMFTNLAssociationItem struct {
@@ -41,46 +41,46 @@ type SliceOverloadItem struct {
 	TrafficInd *int64
 }
 
-func (amf *AMF) init(sctpAddr string, conn *sctp.SCTPConn) {
+func (amf *OCFAMF) init(sctpAddr string, conn *sctp.SCTPConn) {
 	amf.SCTPAddr = sctpAddr
 	amf.SCTPConn = conn
 	amf.AMFTNLAssociationList = make(map[string]*AMFTNLAssociationItem)
-	amf.AmfUeList = make(map[int64]*AmfUe)
+	amf.OcfUeList = make(map[int64]*OCFUe)
 }
 
-func (amf *AMF) FindUeByAmfUeNgapID(id int64) *AmfUe {
-	for _, amfUe := range amf.AmfUeList {
-		if amfUe.AmfUeNgapId == id {
-			return amfUe
+func (amf *OCFAMF) FindUeByAmfUeNgapID(id int64) *OCFUe {
+	for _, ocfUe := range amf.OcfUeList {
+		if ocfUe.AmfUeNgapId == id {
+			return ocfUe
 		}
 	}
 	return nil
 }
 
-func (amf *AMF) RemoveAllRelatedUe() {
-	for _, ue := range amf.AmfUeList {
+func (amf *OCFAMF) RemoveAllRelatedUe() {
+	for _, ue := range amf.OcfUeList {
 		ue.Remove()
 	}
 }
 
-func (amf *AMF) AddAMFTNLAssociationItem(info ngapType.CPTransportLayerInformation) *AMFTNLAssociationItem {
+func (amf *OCFAMF) AddAMFTNLAssociationItem(info ngapType.CPTransportLayerInformation) *AMFTNLAssociationItem {
 	item := &AMFTNLAssociationItem{}
 	item.Ipv4, item.Ipv6 = ngapConvert.IPAddressToString(*info.EndpointIPAddress)
 	amf.AMFTNLAssociationList[item.Ipv4+item.Ipv6] = item
 	return item
 }
 
-func (amf *AMF) FindAMFTNLAssociationItem(info ngapType.CPTransportLayerInformation) *AMFTNLAssociationItem {
+func (amf *OCFAMF) FindAMFTNLAssociationItem(info ngapType.CPTransportLayerInformation) *AMFTNLAssociationItem {
 	v4, v6 := ngapConvert.IPAddressToString(*info.EndpointIPAddress)
 	return amf.AMFTNLAssociationList[v4+v6]
 }
 
-func (amf *AMF) DeleteAMFTNLAssociationItem(info ngapType.CPTransportLayerInformation) {
+func (amf *OCFAMF) DeleteAMFTNLAssociationItem(info ngapType.CPTransportLayerInformation) {
 	v4, v6 := ngapConvert.IPAddressToString(*info.EndpointIPAddress)
 	delete(amf.AMFTNLAssociationList, v4+v6)
 }
 
-func (amf *AMF) StartOverload(
+func (amf *OCFAMF) StartOverload(
 	resp *ngapType.OverloadResponse, trafloadInd *ngapType.TrafficLoadReductionIndication,
 	nssai *ngapType.OverloadStartNSSAIList) *AMFOverloadContent {
 	if resp == nil && trafloadInd == nil && nssai == nil {
@@ -111,13 +111,13 @@ func (amf *AMF) StartOverload(
 	amf.AMFOverloadContent = &content
 	return amf.AMFOverloadContent
 }
-func (amf *AMF) StopOverload() {
+func (amf *OCFAMF) StopOverload() {
 	amf.AMFOverloadContent = nil
 }
 
 // FindAvalibleAMFByCompareGUAMI compares the incoming GUAMI with AMF served GUAMI
 // and return if this AMF is avalible for UE
-func (amf *AMF) FindAvalibleAMFByCompareGUAMI(ueSpecifiedGUAMI *ngapType.GUAMI) bool {
+func (amf *OCFAMF) FindAvalibleAMFByCompareGUAMI(ueSpecifiedGUAMI *ngapType.GUAMI) bool {
 	for _, amfServedGUAMI := range amf.ServedGUAMIList.List {
 		codedAMFServedGUAMI, err := aper.MarshalWithParams(&amfServedGUAMI.GUAMI, "valueExt")
 		if err != nil {
