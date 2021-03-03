@@ -11,6 +11,5 @@ package models
 
 type SubscriptionData struct {
 	OcfStatusUri string  `json:"ocfStatusUri"`
-	OcfStatusUri string  `json:"ocfStatusUri"`
 	GuamiList    []Guami `json:"guamiList,omitempty"`
 }

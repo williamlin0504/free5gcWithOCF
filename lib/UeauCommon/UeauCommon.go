@@ -16,7 +16,6 @@ const (
 	FC_FOR_KOCF_DERIVATION               = "6D"
 	FC_FOR_KGNB_KN3IWF_DERIVATION        = "6E"
 	FC_FOR_NH_DERIVATION                 = "6F"
-	FC_FOR_KOCF_DERIVATION               = "6G"
 	FC_FOR_ALGORITHM_KEY_DERIVATION      = "69"
 )
 

@@ -12,11 +12,8 @@ package models
 type SeafData struct {
 	NgKsi                *NgKsi  `json:"ngKsi"`
 	KeyOcf               *KeyOcf `json:"keyOcf"`
-	KeyOcf               *KeyOcf `json:"keyOcf"`
 	Nh                   string  `json:"nh,omitempty"`
 	Ncc                  int32   `json:"ncc,omitempty"`
-	KeyOcfChangeInd      bool    `json:"keyOcfChangeInd,omitempty"`
-	KeyOcfHDerivationInd bool    `json:"keyOcfHDerivationInd,omitempty"`
 	KeyOcfChangeInd      bool    `json:"keyOcfChangeInd,omitempty"`
 	KeyOcfHDerivationInd bool    `json:"keyOcfHDerivationInd,omitempty"`
 }
