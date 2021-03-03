@@ -128,7 +128,7 @@ func (ranUe *RanUe) UpdateLocation(userLocationInformation *ngapType.UserLocatio
 		return
 	}
 
-	amfSelf := OCF_Self()
+	ocfSelf := OCF_Self()
 	curTime := time.Now().UTC()
 	switch userLocationInformation.Present {
 	case ngapType.UserLocationInformationPresentUserLocationInformationEUTRA:
@@ -223,8 +223,8 @@ func (ranUe *RanUe) UpdateLocation(userLocationInformation *ngapType.UserLocatio
 		// N3GPP TAI is operator-specific
 		// TODO: define N3GPP TAI
 		ranUe.Location.N3gaLocation.N3gppTai = &models.Tai{
-			PlmnId: amfSelf.SupportTaiLists[0].PlmnId,
-			Tac:    amfSelf.SupportTaiLists[0].Tac,
+			PlmnId: ocfSelf.SupportTaiLists[0].PlmnId,
+			Tac:    ocfSelf.SupportTaiLists[0].Tac,
 		}
 		ranUe.Tai = deepcopy.Copy(*ranUe.Location.N3gaLocation.N3gppTai).(models.Tai)
 

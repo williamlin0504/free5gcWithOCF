@@ -102,7 +102,7 @@ type OcfUe struct {
 	AuthFailureCauseSynchFailureTimes int
 	ABBA                              []uint8
 	Kseaf                             string
-	Kamf                              string
+	Kocf                              string
 	/* context about PCF */
 	PcfId                        string
 	PcfUri                       string
@@ -377,8 +377,8 @@ func (ue *OcfUe) SecurityContextIsValid() bool {
 	return ue.SecurityContextAvailable && ue.NgKsi.Ksi != nasMessage.NasKeySetIdentifierNoKeyIsAvailable && !ue.MacFailed
 }
 
-// Kamf Derivation function defined in TS 33.501 Annex A.7
-func (ue *OcfUe) DerivateKamf() {
+// Kocf Derivation function defined in TS 33.501 Annex A.7
+func (ue *OcfUe) DerivateKocf() {
 
 	supiRegexp, err := regexp.Compile("(?:imsi|supi)-([0-9]{5,15})")
 	if err != nil {
@@ -401,8 +401,8 @@ func (ue *OcfUe) DerivateKamf() {
 		logger.ContextLog.Error(err)
 		return
 	}
-	KamfBytes := UeauCommon.GetKDFValue(KseafDecode, UeauCommon.FC_FOR_KOCF_DERIVATION, P0, L0, P1, L1)
-	ue.Kamf = hex.EncodeToString(KamfBytes)
+	KocfBytes := UeauCommon.GetKDFValue(KseafDecode, UeauCommon.FC_FOR_KOCF_DERIVATION, P0, L0, P1, L1)
+	ue.Kocf = hex.EncodeToString(KocfBytes)
 }
 
 // Algorithm key Derivation function defined in TS 33.501 Annex A.9
@@ -414,12 +414,12 @@ func (ue *OcfUe) DerivateAlgKey() {
 	P1 := []byte{ue.CipheringAlg}
 	L1 := UeauCommon.KDFLen(P1)
 
-	KamfBytes, err := hex.DecodeString(ue.Kamf)
+	KocfBytes, err := hex.DecodeString(ue.Kocf)
 	if err != nil {
 		logger.ContextLog.Error(err)
 		return
 	}
-	kenc := UeauCommon.GetKDFValue(KamfBytes, UeauCommon.FC_FOR_ALGORITHM_KEY_DERIVATION, P0, L0, P1, L1)
+	kenc := UeauCommon.GetKDFValue(KocfBytes, UeauCommon.FC_FOR_ALGORITHM_KEY_DERIVATION, P0, L0, P1, L1)
 	copy(ue.KnasEnc[:], kenc[16:32])
 
 	// Integrity Key
@@ -428,7 +428,7 @@ func (ue *OcfUe) DerivateAlgKey() {
 	P1 = []byte{ue.IntegrityAlg}
 	L1 = UeauCommon.KDFLen(P1)
 
-	kint := UeauCommon.GetKDFValue(KamfBytes, UeauCommon.FC_FOR_ALGORITHM_KEY_DERIVATION, P0, L0, P1, L1)
+	kint := UeauCommon.GetKDFValue(KocfBytes, UeauCommon.FC_FOR_ALGORITHM_KEY_DERIVATION, P0, L0, P1, L1)
 	copy(ue.KnasInt[:], kint[16:32])
 }
 
@@ -445,12 +445,12 @@ func (ue *OcfUe) DerivateAnKey(anType models.AccessType) {
 	P1 := []byte{accessType}
 	L1 := UeauCommon.KDFLen(P1)
 
-	KamfBytes, err := hex.DecodeString(ue.Kamf)
+	KocfBytes, err := hex.DecodeString(ue.Kocf)
 	if err != nil {
 		logger.ContextLog.Error(err)
 		return
 	}
-	key := UeauCommon.GetKDFValue(KamfBytes, UeauCommon.FC_FOR_KGNB_KN3IWF_DERIVATION, P0, L0, P1, L1)
+	key := UeauCommon.GetKDFValue(KocfBytes, UeauCommon.FC_FOR_KGNB_KN3IWF_DERIVATION, P0, L0, P1, L1)
 	switch accessType {
 	case security.AccessType3GPP:
 		ue.Kgnb = key
@@ -465,12 +465,12 @@ func (ue *OcfUe) DerivateNH(syncInput []byte) {
 	P0 := syncInput
 	L0 := UeauCommon.KDFLen(P0)
 
-	KamfBytes, err := hex.DecodeString(ue.Kamf)
+	KocfBytes, err := hex.DecodeString(ue.Kocf)
 	if err != nil {
 		logger.ContextLog.Error(err)
 		return
 	}
-	ue.NH = UeauCommon.GetKDFValue(KamfBytes, UeauCommon.FC_FOR_NH_DERIVATION, P0, L0)
+	ue.NH = UeauCommon.GetKDFValue(KocfBytes, UeauCommon.FC_FOR_NH_DERIVATION, P0, L0)
 }
 
 func (ue *OcfUe) UpdateSecurityContext(anType models.AccessType) {
@@ -615,7 +615,7 @@ func (ue *OcfUe) CopyDataFromUeContextModel(ueContext models.UeContext) {
 		ue.NgKsi = *seafData.NgKsi
 		if seafData.KeyOcf != nil {
 			if seafData.KeyOcf.KeyType == models.KeyOcfType_KOCF {
-				ue.Kamf = seafData.KeyOcf.KeyVal
+				ue.Kocf = seafData.KeyOcf.KeyVal
 			}
 		}
 		if nh, err := hex.DecodeString(seafData.Nh); err != nil {

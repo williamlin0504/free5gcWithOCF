@@ -1,5 +1,5 @@
 /*
- * Namf_Communication
+ * Nocf_Communication
  *
  * OCF Communication Service
  *
@@ -16,7 +16,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// NonUeN2InfoUnSubscribe - Namf_Communication Non UE N2 Info UnSubscribe service Operation
+// NonUeN2InfoUnSubscribe - Nocf_Communication Non UE N2 Info UnSubscribe service Operation
 func HTTPNonUeN2InfoUnSubscribe(c *gin.Context) {
 	logger.CommLog.Warnf("Handle Non Ue N2 Info UnSubscribe is not implemented.")
 	c.JSON(http.StatusOK, gin.H{})

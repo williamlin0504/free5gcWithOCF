@@ -28,10 +28,10 @@ func HandleOCFStatusChangeSubscribeRequest(request *http_wrapper.Request) *http_
 
 func OCFStatusChangeSubscribeProcedure(subscriptionDataReq models.SubscriptionData) (
 	subscriptionDataRsp models.SubscriptionData, locationHeader string, problemDetails *models.ProblemDetails) {
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
 	for _, guami := range subscriptionDataReq.GuamiList {
-		for _, servedGumi := range amfSelf.ServedGuamiList {
+		for _, servedGumi := range ocfSelf.ServedGuamiList {
 			if reflect.DeepEqual(guami, servedGumi) {
 				//OCF status is available
 				subscriptionDataRsp.GuamiList = append(subscriptionDataRsp.GuamiList, guami)
@@ -40,7 +40,7 @@ func OCFStatusChangeSubscribeProcedure(subscriptionDataReq models.SubscriptionDa
 	}
 
 	if subscriptionDataRsp.GuamiList != nil {
-		newSubscriptionID := amfSelf.NewOCFStatusSubscription(subscriptionDataReq)
+		newSubscriptionID := ocfSelf.NewOCFStatusSubscription(subscriptionDataReq)
 		locationHeader = subscriptionDataReq.OcfStatusUri + "/" + newSubscriptionID
 		logger.CommLog.Infof("new OCF Status Subscription[%s]", newSubscriptionID)
 		return
@@ -68,16 +68,16 @@ func HandleOCFStatusChangeUnSubscribeRequest(request *http_wrapper.Request) *htt
 }
 
 func OCFStatusChangeUnSubscribeProcedure(subscriptionID string) (problemDetails *models.ProblemDetails) {
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
-	if _, ok := amfSelf.FindOCFStatusSubscription(subscriptionID); !ok {
+	if _, ok := ocfSelf.FindOCFStatusSubscription(subscriptionID); !ok {
 		problemDetails = &models.ProblemDetails{
 			Status: http.StatusNotFound,
 			Cause:  "SUBSCRIPTION_NOT_FOUND",
 		}
 	} else {
 		logger.CommLog.Debugf("Delete OCF status subscription[%s]", subscriptionID)
-		amfSelf.DeleteOCFStatusSubscription(subscriptionID)
+		ocfSelf.DeleteOCFStatusSubscription(subscriptionID)
 	}
 	return
 }
@@ -100,9 +100,9 @@ func HandleOCFStatusChangeSubscribeModify(request *http_wrapper.Request) *http_w
 
 func OCFStatusChangeSubscribeModifyProcedure(subscriptionID string, subscriptionData models.SubscriptionData) (
 	*models.SubscriptionData, *models.ProblemDetails) {
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
-	if currentSubscriptionData, ok := amfSelf.FindOCFStatusSubscription(subscriptionID); !ok {
+	if currentSubscriptionData, ok := ocfSelf.FindOCFStatusSubscription(subscriptionID); !ok {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusForbidden,
 			Cause:  "Forbidden",
@@ -116,7 +116,7 @@ func OCFStatusChangeSubscribeModifyProcedure(subscriptionID string, subscription
 		currentSubscriptionData.GuamiList = append(currentSubscriptionData.GuamiList, subscriptionData.GuamiList...)
 		currentSubscriptionData.OcfStatusUri = subscriptionData.OcfStatusUri
 
-		amfSelf.OCFStatusSubscriptions.Store(subscriptionID, currentSubscriptionData)
+		ocfSelf.OCFStatusSubscriptions.Store(subscriptionID, currentSubscriptionData)
 		return currentSubscriptionData, nil
 	}
 }

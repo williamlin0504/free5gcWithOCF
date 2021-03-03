@@ -1,5 +1,5 @@
 /*
- * Namf_MT
+ * Nocf_MT
  *
  * OCF Mobile Termination Service
  *
@@ -20,7 +20,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// ProvideDomainSelectionInfo - Namf_MT Provide Domain Selection Info service Operation
+// ProvideDomainSelectionInfo - Nocf_MT Provide Domain Selection Info service Operation
 func HTTPProvideDomainSelectionInfo(c *gin.Context) {
 
 	req := http_wrapper.NewRequest(c.Request, nil)

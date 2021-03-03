@@ -14,10 +14,10 @@ import (
 	"time"
 )
 
-var amfContext = OCFContext{}
+var ocfContext = OCFContext{}
 var tmsiGenerator *idgenerator.IDGenerator = nil
-var amfUeNGAPIDGenerator *idgenerator.IDGenerator = nil
-var amfStatusSubscriptionIDGenerator *idgenerator.IDGenerator = nil
+var ocfUeNGAPIDGenerator *idgenerator.IDGenerator = nil
+var ocfStatusSubscriptionIDGenerator *idgenerator.IDGenerator = nil
 
 func init() {
 	OCF_Self().LadnPool = make(map[string]*LADN)
@@ -30,8 +30,8 @@ func init() {
 	OCF_Self().NfService = make(map[models.ServiceName]models.NfService)
 	OCF_Self().NetworkName.Full = "free5GC"
 	tmsiGenerator = idgenerator.NewGenerator(1, math.MaxInt32)
-	amfStatusSubscriptionIDGenerator = idgenerator.NewGenerator(1, math.MaxInt32)
-	amfUeNGAPIDGenerator = idgenerator.NewGenerator(1, MaxValueOfOcfUeNgapId)
+	ocfStatusSubscriptionIDGenerator = idgenerator.NewGenerator(1, math.MaxInt32)
+	ocfUeNGAPIDGenerator = idgenerator.NewGenerator(1, MaxValueOfOcfUeNgapId)
 }
 
 type OCFContext struct {
@@ -103,7 +103,7 @@ func (context *OCFContext) TmsiAllocate() int32 {
 }
 
 func (context *OCFContext) AllocateOcfUeNgapID() (int64, error) {
-	return amfUeNGAPIDGenerator.Allocate()
+	return ocfUeNGAPIDGenerator.Allocate()
 }
 
 func (context *OCFContext) AllocateGutiToUe(ue *OcfUe) {
@@ -133,7 +133,7 @@ func (context *OCFContext) AllocateRegistrationArea(ue *OcfUe, anType models.Acc
 }
 
 func (context *OCFContext) NewOCFStatusSubscription(subscriptionData models.SubscriptionData) (subscriptionID string) {
-	id, err := amfStatusSubscriptionIDGenerator.Allocate()
+	id, err := ocfStatusSubscriptionIDGenerator.Allocate()
 	if err != nil {
 		logger.ContextLog.Errorf("Allocate subscriptionID error: %+v", err)
 		return ""
@@ -159,7 +159,7 @@ func (context *OCFContext) DeleteOCFStatusSubscription(subscriptionID string) {
 	if id, err := strconv.ParseInt(subscriptionID, 10, 64); err != nil {
 		logger.ContextLog.Error(err)
 	} else {
-		amfStatusSubscriptionIDGenerator.FreeID(id)
+		ocfStatusSubscriptionIDGenerator.FreeID(id)
 	}
 }
 
@@ -259,24 +259,24 @@ func (context *OCFContext) OcfRanFindByRanID(ranNodeID models.GlobalRanNodeId) (
 	var ran *OcfRan
 	var ok bool
 	context.OcfRanPool.Range(func(key, value interface{}) bool {
-		amfRan := value.(*OcfRan)
-		switch amfRan.RanPresent {
+		ocfRan := value.(*OcfRan)
+		switch ocfRan.RanPresent {
 		case RanPresentGNbId:
-			logger.ContextLog.Infof("aaa: %+v\n", amfRan.RanId.GNbId)
-			if amfRan.RanId.GNbId.GNBValue == ranNodeID.GNbId.GNBValue {
-				ran = amfRan
+			logger.ContextLog.Infof("aaa: %+v\n", ocfRan.RanId.GNbId)
+			if ocfRan.RanId.GNbId.GNBValue == ranNodeID.GNbId.GNBValue {
+				ran = ocfRan
 				ok = true
 				return false
 			}
 		case RanPresentNgeNbId:
-			if amfRan.RanId.NgeNbId == ranNodeID.NgeNbId {
-				ran = amfRan
+			if ocfRan.RanId.NgeNbId == ranNodeID.NgeNbId {
+				ran = ocfRan
 				ok = true
 				return false
 			}
 		case RanPresentN3IwfId:
-			if amfRan.RanId.N3IwfId == ranNodeID.N3IwfId {
-				ran = amfRan
+			if ocfRan.RanId.N3IwfId == ranNodeID.N3IwfId {
+				ran = ocfRan
 				ok = true
 				return false
 			}
@@ -323,8 +323,8 @@ func (context *OCFContext) OcfUeFindByPolicyAssociationID(polAssoId string) (ue 
 	return
 }
 
-func (context *OCFContext) RanUeFindByOcfUeNgapID(amfUeNgapID int64) *RanUe {
-	if value, ok := context.RanUePool.Load(amfUeNgapID); ok {
+func (context *OCFContext) RanUeFindByOcfUeNgapID(ocfUeNgapID int64) *RanUe {
+	if value, ok := context.RanUePool.Load(ocfUeNgapID); ok {
 		return value.(*RanUe)
 	} else {
 		return nil
@@ -403,5 +403,5 @@ func (context *OCFContext) Reset() {
 
 // Create new OCF context
 func OCF_Self() *OCFContext {
-	return &amfContext
+	return &ocfContext
 }

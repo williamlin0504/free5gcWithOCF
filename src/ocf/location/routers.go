@@ -1,5 +1,5 @@
 /*
- * Namf_Location
+ * Nocf_Location
  *
  * OCF Location Service
  *
@@ -41,7 +41,7 @@ func NewRouter() *gin.Engine {
 }
 
 func AddService(engine *gin.Engine) *gin.RouterGroup {
-	group := engine.Group("/namf-loc/v1")
+	group := engine.Group("/nocf-loc/v1")
 
 	for _, route := range routes {
 		switch route.Method {

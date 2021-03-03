@@ -18,12 +18,12 @@ func init() {
 
 func Dispatch(conn net.Conn, msg []byte) {
 	var ran *context.OcfRan
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
-	ran, ok := amfSelf.OcfRanFindByConn(conn)
+	ran, ok := ocfSelf.OcfRanFindByConn(conn)
 	if !ok {
 		Ngaplog.Infof("Create a new NG connection for: %s", conn.RemoteAddr().String())
-		ran = amfSelf.NewOcfRan(conn)
+		ran = ocfSelf.NewOcfRan(conn)
 	}
 
 	if len(msg) == 0 {

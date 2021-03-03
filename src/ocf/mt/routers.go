@@ -1,5 +1,5 @@
 /*
- * Namf_MT
+ * Nocf_MT
  *
  * OCF Mobile Termination Service
  *
@@ -41,7 +41,7 @@ func NewRouter() *gin.Engine {
 }
 
 func AddService(engine *gin.Engine) *gin.RouterGroup {
-	group := engine.Group("/namf-mt/v1")
+	group := engine.Group("/nocf-mt/v1")
 
 	for _, route := range routes {
 		switch route.Method {

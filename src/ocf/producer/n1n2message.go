@@ -70,13 +70,13 @@ func N1N2MessageTransferProcedure(ueContextID string, reqUri string,
 	var ok bool
 	var smContext *context.SmContext
 
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 	requestData := n1n2MessageTransferRequest.JsonData
 	n2Info := n1n2MessageTransferRequest.BinaryDataN2Information
 	n1Msg := n1n2MessageTransferRequest.BinaryDataN1Message
 	anType := models.AccessType__3_GPP_ACCESS
 
-	if ue, ok = amfSelf.OcfUeFindByUeContextID(ueContextID); !ok {
+	if ue, ok = ocfSelf.OcfUeFindByUeContextID(ueContextID); !ok {
 		problemDetails = &models.ProblemDetails{
 			Status: http.StatusNotFound,
 			Cause:  "CONTEXT_NOT_FOUND",
@@ -342,9 +342,9 @@ func HandleN1N2MessageTransferStatusRequest(request *http_wrapper.Request) *http
 
 func N1N2MessageTransferStatusProcedure(ueContextID string, reqUri string) (models.N1N2MessageTransferCause,
 	*models.ProblemDetails) {
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
-	ue, ok := amfSelf.OcfUeFindByUeContextID(ueContextID)
+	ue, ok := ocfSelf.OcfUeFindByUeContextID(ueContextID)
 	if !ok {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusNotFound,
@@ -353,7 +353,7 @@ func N1N2MessageTransferStatusProcedure(ueContextID string, reqUri string) (mode
 		return "", problemDetails
 	}
 
-	resourceUri := amfSelf.GetIPv4Uri() + reqUri
+	resourceUri := ocfSelf.GetIPv4Uri() + reqUri
 	n1n2Message := ue.N1N2Message
 	if n1n2Message == nil || n1n2Message.ResourceUri != resourceUri {
 		problemDetails := &models.ProblemDetails{
@@ -385,9 +385,9 @@ func N1N2MessageSubscribeProcedure(ueContextID string,
 	ueN1N2InfoSubscriptionCreateData models.UeN1N2InfoSubscriptionCreateData) (
 	*models.UeN1N2InfoSubscriptionCreatedData, *models.ProblemDetails) {
 
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
-	ue, ok := amfSelf.OcfUeFindByUeContextID(ueContextID)
+	ue, ok := ocfSelf.OcfUeFindByUeContextID(ueContextID)
 	if !ok {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusNotFound,
@@ -427,9 +427,9 @@ func HandleN1N2MessageUnSubscribeRequest(request *http_wrapper.Request) *http_wr
 }
 
 func N1N2MessageUnSubscribeProcedure(ueContextID string, subscriptionID string) *models.ProblemDetails {
-	amfSelf := context.OCF_Self()
+	ocfSelf := context.OCF_Self()
 
-	ue, ok := amfSelf.OcfUeFindByUeContextID(ueContextID)
+	ue, ok := ocfSelf.OcfUeFindByUeContextID(ueContextID)
 	if !ok {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusNotFound,

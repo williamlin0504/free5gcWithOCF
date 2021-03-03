@@ -499,11 +499,11 @@ func BuildRegistrationAccept(
 		registrationAccept.GUTI5G.SetIei(nasMessage.RegistrationAcceptGUTI5GType)
 	}
 
-	amfSelf := context.OCF_Self()
-	if len(amfSelf.PlmnSupportList) > 1 {
+	ocfSelf := context.OCF_Self()
+	if len(ocfSelf.PlmnSupportList) > 1 {
 		registrationAccept.EquivalentPlmns = nasType.NewEquivalentPlmns(nasMessage.RegistrationAcceptEquivalentPlmnsType)
 		var buf []uint8
-		for _, plmnSupportItem := range amfSelf.PlmnSupportList {
+		for _, plmnSupportItem := range ocfSelf.PlmnSupportList {
 			buf = append(buf, nasConvert.PlmnIDToNas(plmnSupportItem.PlmnId)...)
 		}
 		registrationAccept.EquivalentPlmns.SetLen(uint8(len(buf)))
@@ -744,15 +744,15 @@ func BuildConfigurationUpdateCommand(ue *context.OcfUe, anType models.AccessType
 		configurationUpdateCommand.ServiceAreaList.SetPartialServiceAreaList(partialServiceAreaList)
 	}
 
-	amfSelf := context.OCF_Self()
-	if amfSelf.NetworkName.Full != "" {
-		fullNetworkName := nasConvert.FullNetworkNameToNas(amfSelf.NetworkName.Full)
+	ocfSelf := context.OCF_Self()
+	if ocfSelf.NetworkName.Full != "" {
+		fullNetworkName := nasConvert.FullNetworkNameToNas(ocfSelf.NetworkName.Full)
 		configurationUpdateCommand.FullNameForNetwork = &fullNetworkName
 		configurationUpdateCommand.FullNameForNetwork.SetIei(nasMessage.ConfigurationUpdateCommandFullNameForNetworkType)
 	}
 
-	if amfSelf.NetworkName.Short != "" {
-		shortNetworkName := nasConvert.ShortNetworkNameToNas(amfSelf.NetworkName.Short)
+	if ocfSelf.NetworkName.Short != "" {
+		shortNetworkName := nasConvert.ShortNetworkNameToNas(ocfSelf.NetworkName.Short)
 		configurationUpdateCommand.ShortNameForNetwork = &shortNetworkName
 		configurationUpdateCommand.ShortNameForNetwork.SetIei(nasMessage.ConfigurationUpdateCommandShortNameForNetworkType)
 	}

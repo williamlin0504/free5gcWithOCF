@@ -1,5 +1,5 @@
 /*
- * Namf_Location
+ * Nocf_Location
  *
  * OCF Location Service
  *
@@ -20,7 +20,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// ProvideLocationInfo - Namf_Location ProvideLocationInfo service Operation
+// ProvideLocationInfo - Nocf_Location ProvideLocationInfo service Operation
 func HTTPProvideLocationInfo(c *gin.Context) {
 	var requestLocInfo models.RequestLocInfo
 
@@ -69,7 +69,7 @@ func HTTPProvideLocationInfo(c *gin.Context) {
 	}
 }
 
-// ProvidePositioningInfo - Namf_Location ProvidePositioningInfo service Operation
+// ProvidePositioningInfo - Nocf_Location ProvidePositioningInfo service Operation
 func HTTPProvidePositioningInfo(c *gin.Context) {
 	logger.LocationLog.Warnf("Handle Provide Positioning Info is not implemented.")
 	c.JSON(http.StatusOK, gin.H{})

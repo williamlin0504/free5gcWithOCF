@@ -1,5 +1,5 @@
 /*
- * Namf_EventExposure
+ * Nocf_EventExposure
  *
  * OCF Event Exposure Service
  *
@@ -20,7 +20,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// DeleteSubscription - Namf_EventExposure Unsubscribe service Operation
+// DeleteSubscription - Nocf_EventExposure Unsubscribe service Operation
 func HTTPDeleteSubscription(c *gin.Context) {
 	req := http_wrapper.NewRequest(c.Request, nil)
 	req.Params["subscriptionId"] = c.Param("subscriptionId")
@@ -45,7 +45,7 @@ func HTTPDeleteSubscription(c *gin.Context) {
 	}
 }
 
-// ModifySubscription - Namf_EventExposure Subscribe Modify service Operation
+// ModifySubscription - Nocf_EventExposure Subscribe Modify service Operation
 func HTTPModifySubscription(c *gin.Context) {
 	var modifySubscriptionRequest models.ModifySubscriptionRequest
 
