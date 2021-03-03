@@ -24,7 +24,7 @@ var ocfContext = OCFContext{}
 
 type OCFContext struct {
 	NFInfo           OCFNFInfo
-	OCFSCTPAddresses []*sctp.SCTPAddr
+	AMFSCTPAddresses []*sctp.SCTPAddr
 
 	// ID generator
 	RANUENGAPIDGenerator *idgenerator.IDGenerator
@@ -32,8 +32,8 @@ type OCFContext struct {
 
 	// Pools
 	UePool                 sync.Map // map[int64]*OCFUe, RanUeNgapID as key
-	OCFPool                sync.Map // map[string]*OCF, SCTPAddr as key
-	OCFReInitAvailableList sync.Map // map[string]bool, SCTPAddr as key
+	AMFPool                sync.Map // map[string]*OCFAMF, SCTPAddr as key
+	AMFReInitAvailableList sync.Map // map[string]bool, SCTPAddr as key
 	IKESA                  sync.Map // map[uint64]*IKESecurityAssociation, SPI as key
 	ChildSA                sync.Map // map[uint32]*ChildSecurityAssociation, SPI as key
 	GTPConnectionWithUPF   sync.Map // map[string]*gtpv1.UPlaneConn, UPF address as key
@@ -103,36 +103,36 @@ func (context *OCFContext) UePoolLoad(ranUeNgapId int64) (*OCFUe, bool) {
 	}
 }
 
-func (context *OCFContext) NewOcfOcf(sctpAddr string, conn *sctp.SCTPConn) *OCF {
-	amf := new(OCF)
+func (context *OCFContext) NewOcfAmf(sctpAddr string, conn *sctp.SCTPConn) *OCFAMF {
+	amf := new(OCFAMF)
 	amf.init(sctpAddr, conn)
-	if item, loaded := context.OCFPool.LoadOrStore(sctpAddr, amf); loaded {
-		contextLog.Warn("[Context] NewOcfOcf(): OCF entry already exists.")
-		return item.(*OCF)
+	if item, loaded := context.AMFPool.LoadOrStore(sctpAddr, amf); loaded {
+		contextLog.Warn("[Context] NewOcfAmf(): AMF entry already exists.")
+		return item.(*OCFAMF)
 	} else {
 		return amf
 	}
 }
 
-func (context *OCFContext) DeleteOcfOcf(sctpAddr string) {
-	context.OCFPool.Delete(sctpAddr)
+func (context *OCFContext) DeleteOcfAmf(sctpAddr string) {
+	context.AMFPool.Delete(sctpAddr)
 }
 
-func (context *OCFContext) OCFPoolLoad(sctpAddr string) (*OCF, bool) {
-	amf, ok := context.OCFPool.Load(sctpAddr)
+func (context *OCFContext) AMFPoolLoad(sctpAddr string) (*OCFAMF, bool) {
+	amf, ok := context.AMFPool.Load(sctpAddr)
 	if ok {
-		return amf.(*OCF), ok
+		return amf.(*OCFAMF), ok
 	} else {
 		return nil, ok
 	}
 }
 
-func (context *OCFContext) DeleteOCFReInitAvailableFlag(sctpAddr string) {
-	context.OCFReInitAvailableList.Delete(sctpAddr)
+func (context *OCFContext) DeleteAMFReInitAvailableFlag(sctpAddr string) {
+	context.AMFReInitAvailableList.Delete(sctpAddr)
 }
 
-func (context *OCFContext) OCFReInitAvailableListLoad(sctpAddr string) (bool, bool) {
-	flag, ok := context.OCFReInitAvailableList.Load(sctpAddr)
+func (context *OCFContext) AMFReInitAvailableListLoad(sctpAddr string) (bool, bool) {
+	flag, ok := context.AMFReInitAvailableList.Load(sctpAddr)
 	if ok {
 		return flag.(bool), ok
 	} else {
@@ -140,8 +140,8 @@ func (context *OCFContext) OCFReInitAvailableListLoad(sctpAddr string) (bool, bo
 	}
 }
 
-func (context *OCFContext) OCFReInitAvailableListStore(sctpAddr string, flag bool) {
-	context.OCFReInitAvailableList.Store(sctpAddr, flag)
+func (context *OCFContext) AMFReInitAvailableListStore(sctpAddr string, flag bool) {
+	context.AMFReInitAvailableList.Store(sctpAddr, flag)
 }
 
 func (context *OCFContext) NewIKESecurityAssociation() *IKESecurityAssociation {
@@ -255,18 +255,18 @@ func (context *OCFContext) AllocatedUETEIDLoad(teid uint32) (*OCFUe, bool) {
 	}
 }
 
-func (context *OCFContext) OCFSelection(ueSpecifiedGUAMI *ngapType.GUAMI) *OCF {
-	var availableOCF *OCF
-	context.OCFPool.Range(func(key, value interface{}) bool {
-		amf := value.(*OCF)
-		if amf.FindAvalibleOCFByCompareGUAMI(ueSpecifiedGUAMI) {
-			availableOCF = amf
+func (context *OCFContext) AMFSelection(ueSpecifiedGUAMI *ngapType.GUAMI) *OCFAMF {
+	var availableAMF *OCFAMF
+	context.AMFPool.Range(func(key, value interface{}) bool {
+		amf := value.(*OCFAMF)
+		if amf.FindAvalibleAMFByCompareGUAMI(ueSpecifiedGUAMI) {
+			availableAMF = amf
 			return false
 		} else {
 			return true
 		}
 	})
-	return availableOCF
+	return availableAMF
 }
 
 func generateRandomIPinRange(subnet *net.IPNet) net.IP {
