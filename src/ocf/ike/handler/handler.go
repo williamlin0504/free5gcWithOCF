@@ -673,7 +673,7 @@ func HandleIKEAUTH(udpConn *net.UDPConn, ocfAddr, ueAddr *net.UDPAddr, message *
 		SendIKEMessageToUE(udpConn, ocfAddr, ueAddr, responseIKEMessage)
 
 	case EAPSignalling:
-		// If success, OCF will send an UPLinkNASTransport to OCF
+		// If success, OCF will send an UPLinkNASTransport to AMF
 		if eap != nil {
 			if eap.Code != ike_message.EAPCodeResponse {
 				ikeLog.Error("[IKE][EAP] Received an EAP payload with code other than response. Drop the payload.")
@@ -747,10 +747,10 @@ func HandleIKEAUTH(udpConn *net.UDPConn, ocfAddr, ueAddr *net.UDPAddr, message *
 
 			// Send Initial UE Message or Uplink NAS Transport
 			if anParameters != nil {
-				// OCF selection
+				// AMF selection
 				selectedAMF := ocfSelf.AMFSelection(anParameters.GUAMI)
 				if selectedAMF == nil {
-					ikeLog.Warn("[IKE] No avalible OCF for this UE")
+					ikeLog.Warn("[IKE] No avalible AMF for this UE")
 					return
 				}
 
@@ -1218,7 +1218,7 @@ func HandleIKEAUTH(udpConn *net.UDPConn, ocfAddr, ueAddr *net.UDPAddr, message *
 					SendIKEMessageToUE(udpConn, ocfAddr, ueAddr, ikeMessage)
 					break
 				} else {
-					// Send Initial Context Setup Response to OCF
+					// Send Initial Context Setup Response to AMF
 					ngap_message.SendInitialContextSetupResponse(thisUE.AMF, thisUE,
 						thisUE.TemporaryPDUSessionSetupData.SetupListCxtRes,
 						thisUE.TemporaryPDUSessionSetupData.FailedListCxtRes, nil)
@@ -1226,7 +1226,7 @@ func HandleIKEAUTH(udpConn *net.UDPConn, ocfAddr, ueAddr *net.UDPAddr, message *
 				}
 			}
 		} else {
-			// Send Initial Context Setup Response to OCF
+			// Send Initial Context Setup Response to AMF
 			ngap_message.SendInitialContextSetupResponse(thisUE.AMF, thisUE, nil, nil, nil)
 		}
 	}
@@ -1609,7 +1609,7 @@ func HandleCREATECHILDSA(udpConn *net.UDPConn, ocfAddr, ueAddr *net.UDPAddr, mes
 			SendIKEMessageToUE(udpConn, ocfAddr, ueAddr, ikeMessage)
 			break
 		} else {
-			// Send Response to OCF
+			// Send Response to AMF
 			ngapProcedure := temporaryPDUSessionSetupData.NGAPProcedureCode.Value
 			if ngapProcedure == ngapType.ProcedureCodeInitialContextSetup {
 				ngap_message.SendInitialContextSetupResponse(thisUE.AMF, thisUE,

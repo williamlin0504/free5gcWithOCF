@@ -57,11 +57,11 @@ func listenAndServe(localAddr, remoteAddr *sctp.SCTPAddr, errChan chan<- error) 
 		}
 
 		if i != 2 {
-			ngapLog.Info("Retry to connect OCF after 1 second...")
+			ngapLog.Info("Retry to connect AMF after 1 second...")
 			time.Sleep(1 * time.Second)
 		} else {
-			ngapLog.Debugf("[SCTP] OCF SCTP address: %+v", remoteAddr.String())
-			errChan <- errors.New("Failed to connect to OCF.")
+			ngapLog.Debugf("[SCTP] AMF SCTP address: %+v", remoteAddr.String())
+			errChan <- errors.New("Failed to connect to AMF.")
 			return
 		}
 	}
@@ -112,7 +112,7 @@ func listenAndServe(localAddr, remoteAddr *sctp.SCTPAddr, errChan chan<- error) 
 		n, info, err := conn.SCTPRead(data)
 
 		if err != nil {
-			ngapLog.Debugf("[SCTP] OCF SCTP address: %+v", conn.RemoteAddr().String())
+			ngapLog.Debugf("[SCTP] AMF SCTP address: %+v", conn.RemoteAddr().String())
 			if err == io.EOF || err == io.ErrUnexpectedEOF {
 				ngapLog.Warn("[SCTP] Close connection.")
 				errConn := conn.Close()

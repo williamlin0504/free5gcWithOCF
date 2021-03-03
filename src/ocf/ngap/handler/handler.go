@@ -31,7 +31,7 @@ func HandleNGSetupResponse(sctpAddr string, conn *sctp.SCTPConn, message *ngapTy
 
 	var amfName *ngapType.AMFName
 	var servedGUAMIList *ngapType.ServedGUAMIList
-	var relativeOCFCapacity *ngapType.RelativeAMFCapacity
+	var relativeAMFCapacity *ngapType.RelativeAMFCapacity
 	var plmnSupportList *ngapType.PLMNSupportList
 	var criticalityDiagnostics *ngapType.CriticalityDiagnostics
 
@@ -59,10 +59,10 @@ func HandleNGSetupResponse(sctpAddr string, conn *sctp.SCTPConn, message *ngapTy
 	for _, ie := range ngSetupResponse.ProtocolIEs.List {
 		switch ie.Id.Value {
 		case ngapType.ProtocolIEIDAMFName:
-			ngapLog.Traceln("[NGAP] Decode IE OCFName")
+			ngapLog.Traceln("[NGAP] Decode IE AMFName")
 			amfName = ie.Value.AMFName
 			if amfName == nil {
-				ngapLog.Errorf("OCFName is nil")
+				ngapLog.Errorf("AMFName is nil")
 				item := buildCriticalityDiagnosticsIEItem(
 					ngapType.CriticalityPresentReject, ie.Id.Value, ngapType.TypeOfErrorPresentMissing)
 				iesCriticalityDiagnostics.List = append(iesCriticalityDiagnostics.List, item)
@@ -95,7 +95,7 @@ func HandleNGSetupResponse(sctpAddr string, conn *sctp.SCTPConn, message *ngapTy
 	}
 
 	if len(iesCriticalityDiagnostics.List) != 0 {
-		ngapLog.Traceln("[NGAP] Sending error indication to OCF, because some mandatory IEs were not included")
+		ngapLog.Traceln("[NGAP] Sending error indication to AMF, because some mandatory IEs were not included")
 
 		cause := buildCause(ngapType.CausePresentProtocol, ngapType.CauseProtocolPresentAbstractSyntaxErrorReject)
 
@@ -111,18 +111,18 @@ func HandleNGSetupResponse(sctpAddr string, conn *sctp.SCTPConn, message *ngapTy
 		return
 	}
 
-	amfInfo := ocfSelf.NewOcfOcf(sctpAddr, conn)
+	amfInfo := ocfSelf.NewOcfAmf(sctpAddr, conn)
 
 	if amfName != nil {
-		amfInfo.OCFName = amfName
+		amfInfo.AMFName = amfName
 	}
 
 	if servedGUAMIList != nil {
 		amfInfo.ServedGUAMIList = servedGUAMIList
 	}
 
-	if relativeOCFCapacity != nil {
-		amfInfo.RelativeOCFCapacity = relativeOCFCapacity
+	if relativeAMFCapacity != nil {
+		amfInfo.RelativeAMFCapacity = relativeAMFCapacity
 	}
 
 	if plmnSupportList != nil {
@@ -185,7 +185,7 @@ func HandleNGSetupFailure(sctpAddr string, conn *sctp.SCTPConn, message *ngapTyp
 
 	if len(iesCriticalityDiagnostics.List) > 0 {
 		// TODO: Send error indication
-		ngapLog.Traceln("[NGAP] Sending error indication to OCF, because some mandatory IEs were not included")
+		ngapLog.Traceln("[NGAP] Sending error indication to AMF, because some mandatory IEs were not included")
 
 		cause = buildCause(ngapType.CausePresentProtocol, ngapType.CauseProtocolPresentAbstractSyntaxErrorReject)
 
@@ -231,17 +231,17 @@ func HandleNGSetupFailure(sctpAddr string, conn *sctp.SCTPConn, message *ngapTyp
 	}
 
 	if waitingTime != 0 {
-		ngapLog.Infof("Wait at lease  %ds to reinitialize with same OCF[%s]", waitingTime, sctpAddr)
-		ocfSelf.OCFReInitAvailableListStore(sctpAddr, false)
+		ngapLog.Infof("Wait at lease  %ds to reinitialize with same AMF[%s]", waitingTime, sctpAddr)
+		ocfSelf.AMFReInitAvailableListStore(sctpAddr, false)
 		time.AfterFunc(time.Duration(waitingTime)*time.Second, func() {
-			ocfSelf.OCFReInitAvailableListStore(sctpAddr, true)
+			ocfSelf.AMFReInitAvailableListStore(sctpAddr, true)
 			ngap_message.SendNGSetupRequest(conn)
 		})
 		return
 	}
 }
 
-func HandleNGReset(amf *context.OCF, message *ngapType.NGAPPDU) {
+func HandleNGReset(amf *context.OCFAMF, message *ngapType.NGAPPDU) {
 
 	ngapLog.Infoln("[OCF] Handle NG Reset")
 
@@ -253,7 +253,7 @@ func HandleNGReset(amf *context.OCF, message *ngapType.NGAPPDU) {
 	ocfSelf := context.OCFSelf()
 
 	if amf == nil {
-		ngapLog.Error("OCF Context is nil")
+		ngapLog.Error("AMF Context is nil")
 		return
 	}
 
@@ -326,14 +326,14 @@ func HandleNGReset(amf *context.OCF, message *ngapType.NGAPPDU) {
 				ngapLog.Tracef("RanUeNgapID[%d]", ueAssociatedLogicalNGConnectionItem.RANUENGAPID.Value)
 				ue, _ = ocfSelf.UePoolLoad(ueAssociatedLogicalNGConnectionItem.RANUENGAPID.Value)
 			} else if ueAssociatedLogicalNGConnectionItem.AmfUENGAPID != nil {
-				ngapLog.Tracef("OcfUeNgapID[%d]", ueAssociatedLogicalNGConnectionItem.AmfUENGAPID.Value)
-				ue = amf.FindUeByOcfUeNgapID(ueAssociatedLogicalNGConnectionItem.AmfUENGAPID.Value)
+				ngapLog.Tracef("AmfUENGAPID[%d]", ueAssociatedLogicalNGConnectionItem.AmfUENGAPID.Value)
+				ue = amf.FindUeByAmfUENGAPID(ueAssociatedLogicalNGConnectionItem.AmfUENGAPID.Value)
 			}
 
 			if ue == nil {
 				ngapLog.Warn("Cannot not find UE Context")
 				if ueAssociatedLogicalNGConnectionItem.AmfUENGAPID != nil {
-					ngapLog.Warnf("OcfUeNgapID[%d]", ueAssociatedLogicalNGConnectionItem.AmfUENGAPID.Value)
+					ngapLog.Warnf("AmfUENGAPID[%d]", ueAssociatedLogicalNGConnectionItem.AmfUENGAPID.Value)
 				}
 				if ueAssociatedLogicalNGConnectionItem.RANUENGAPID != nil {
 					ngapLog.Warnf("RanUeNgapID[%d]", ueAssociatedLogicalNGConnectionItem.RANUENGAPID.Value)
@@ -349,7 +349,7 @@ func HandleNGReset(amf *context.OCF, message *ngapType.NGAPPDU) {
 	}
 }
 
-func HandleNGResetAcknowledge(amf *context.OCF, message *ngapType.NGAPPDU) {
+func HandleNGResetAcknowledge(amf *context.OCFAMF, message *ngapType.NGAPPDU) {
 
 	ngapLog.Infoln("[OCF] Handle NG Reset Acknowledge")
 
@@ -357,7 +357,7 @@ func HandleNGResetAcknowledge(amf *context.OCF, message *ngapType.NGAPPDU) {
 	var criticalityDiagnostics *ngapType.CriticalityDiagnostics
 
 	if amf == nil {
-		ngapLog.Error("OCF Context is nil")
+		ngapLog.Error("AMF Context is nil")
 		return
 	}
 
@@ -393,12 +393,12 @@ func HandleNGResetAcknowledge(amf *context.OCF, message *ngapType.NGAPPDU) {
 		ngapLog.Tracef("%d UE association(s) has been reset", len(uEAssociatedLogicalNGConnectionList.List))
 		for i, item := range uEAssociatedLogicalNGConnectionList.List {
 			if item.AmfUENGAPID != nil && item.RANUENGAPID != nil {
-				ngapLog.Tracef("%d: OcfUeNgapID[%d] RanUeNgapID[%d]",
+				ngapLog.Tracef("%d: AmfUENGAPID[%d] RanUeNgapID[%d]",
 					i+1, item.AmfUENGAPID.Value, item.RANUENGAPID.Value)
 			} else if item.AmfUENGAPID != nil {
-				ngapLog.Tracef("%d: OcfUeNgapID[%d] RanUeNgapID[unknown]", i+1, item.AmfUENGAPID.Value)
+				ngapLog.Tracef("%d: AmfUENGAPID[%d] RanUeNgapID[unknown]", i+1, item.AmfUENGAPID.Value)
 			} else if item.RANUENGAPID != nil {
-				ngapLog.Tracef("%d: OcfUeNgapID[unknown] RanUeNgapID[%d]", i+1, item.RANUENGAPID.Value)
+				ngapLog.Tracef("%d: AmfUENGAPID[unknown] RanUeNgapID[%d]", i+1, item.RANUENGAPID.Value)
 			}
 		}
 	}
@@ -408,12 +408,12 @@ func HandleNGResetAcknowledge(amf *context.OCF, message *ngapType.NGAPPDU) {
 	}
 }
 
-func HandleInitialContextSetupRequest(amf *context.OCF, message *ngapType.NGAPPDU) {
+func HandleInitialContextSetupRequest(amf *context.OCFAMF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle Initial Context Setup Request")
 
 	var AmfUENGAPID *ngapType.AmfUENGAPID
 	var ranUeNgapID *ngapType.RANUENGAPID
-	var oldOCF *ngapType.OCFName
+	var oldAMF *ngapType.AMFName
 	var ueAggregateMaximumBitRate *ngapType.UEAggregateMaximumBitRate
 	var coreNetworkAssistanceInformation *ngapType.CoreNetworkAssistanceInformation
 	var guami *ngapType.GUAMI
@@ -469,9 +469,9 @@ func HandleInitialContextSetupRequest(amf *context.OCF, message *ngapType.NGAPPD
 					ngapType.CriticalityPresentReject, ie.Id.Value, ngapType.TypeOfErrorPresentMissing)
 				iesCriticalityDiagnostics.List = append(iesCriticalityDiagnostics.List, item)
 			}
-		case ngapType.ProtocolIEIDOldOCF:
-			ngapLog.Traceln("[NGAP] Decode IE OldOCF")
-			oldOCF = ie.Value.OldOCF
+		case ngapType.ProtocolIEIDOldAMF:
+			ngapLog.Traceln("[NGAP] Decode IE OldAMF")
+			oldAMF = ie.Value.OldAMF
 		case ngapType.ProtocolIEIDUEAggregateMaximumBitRate:
 			ngapLog.Traceln("[NGAP] Decode IE UEAggregateMaximumBitRate")
 			ueAggregateMaximumBitRate = ie.Value.UEAggregateMaximumBitRate
@@ -548,7 +548,7 @@ func HandleInitialContextSetupRequest(amf *context.OCF, message *ngapType.NGAPPD
 	}
 
 	if len(iesCriticalityDiagnostics.List) > 0 {
-		ngapLog.Traceln("[NGAP] Sending unsuccessful outcome to OCF, because some mandatory IEs were not included")
+		ngapLog.Traceln("[NGAP] Sending unsuccessful outcome to AMF, because some mandatory IEs were not included")
 		cause := buildCause(ngapType.CausePresentProtocol,
 			ngapType.CauseProtocolPresentAbstractSyntaxErrorFalselyConstructedMessage)
 
@@ -668,8 +668,8 @@ func HandleInitialContextSetupRequest(amf *context.OCF, message *ngapType.NGAPPD
 		}
 	}
 
-	if oldOCF != nil {
-		ngapLog.Debugf("Old OCF: %s\n", oldOCF.Value)
+	if oldAMF != nil {
+		ngapLog.Debugf("Old AMF: %s\n", oldAMF.Value)
 	}
 
 	if guami != nil {
@@ -965,16 +965,16 @@ func handlePDUSessionResourceSetupRequestTransfer(ue *context.OCFUe, pduSession 
 	return true, nil
 }
 
-func HandleUEContextModificationRequest(amf *context.OCF, message *ngapType.NGAPPDU) {
+func HandleUEContextModificationRequest(amf *context.OCFAMF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle UE Context Modification Request")
 
 	if amf == nil {
-		ngapLog.Error("Corresponding OCF context not found")
+		ngapLog.Error("Corresponding AMF context not found")
 		return
 	}
 
 	var AmfUENGAPID *ngapType.AmfUENGAPID
-	var newOcfUeNgapID *ngapType.AmfUENGAPID
+	var newAmfUENGAPID *ngapType.AmfUENGAPID
 	var ranUeNgapID *ngapType.RANUENGAPID
 	var ueAggregateMaximumBitRate *ngapType.UEAggregateMaximumBitRate
 	var ueSecurityCapabilities *ngapType.UESecurityCapabilities
@@ -1042,7 +1042,7 @@ func HandleUEContextModificationRequest(amf *context.OCF, message *ngapType.NGAP
 			ngapLog.Warnln("Not Supported IE [EmergencyFallbackIndicator]")
 		case ngapType.ProtocolIEIDNewAmfUENGAPID:
 			ngapLog.Traceln("[NGAP] Decode IE NewAmfUENGAPID")
-			newOcfUeNgapID = ie.Value.NewAmfUENGAPID
+			newAmfUENGAPID = ie.Value.NewAmfUENGAPID
 		}
 	}
 
@@ -1069,9 +1069,9 @@ func HandleUEContextModificationRequest(amf *context.OCF, message *ngapType.NGAP
 		}
 	}
 
-	if newOcfUeNgapID != nil {
-		ngapLog.Debugf("New OcfUeNgapID[%d]\n", newOcfUeNgapID.Value)
-		ocfUe.AmfUENGAPID = newOcfUeNgapID.Value
+	if newAmfUENGAPID != nil {
+		ngapLog.Debugf("New AmfUENGAPID[%d]\n", newAmfUENGAPID.Value)
+		ocfUe.AmfUENGAPID = newAmfUENGAPID.Value
 	}
 
 	if ueAggregateMaximumBitRate != nil {
@@ -1096,11 +1096,11 @@ func HandleUEContextModificationRequest(amf *context.OCF, message *ngapType.NGAP
 	ngap_message.SendUEContextModificationResponse(amf, ocfUe, nil)
 }
 
-func HandleUEContextReleaseCommand(amf *context.OCF, message *ngapType.NGAPPDU) {
+func HandleUEContextReleaseCommand(amf *context.OCFAMF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle UE Context Release Command")
 
 	if amf == nil {
-		ngapLog.Error("Corresponding OCF context not found")
+		ngapLog.Error("Corresponding AMF context not found")
 		return
 	}
 
@@ -1155,14 +1155,14 @@ func HandleUEContextReleaseCommand(amf *context.OCF, message *ngapType.NGAPPDU) 
 		var ok bool
 		ocfUe, ok = ocfSelf.UePoolLoad(ueNgapIDs.UENGAPIDPair.RANUENGAPID.Value)
 		if !ok {
-			ocfUe = amf.FindUeByOcfUeNgapID(ueNgapIDs.UENGAPIDPair.AmfUENGAPID.Value)
+			ocfUe = amf.FindUeByAmfUENGAPID(ueNgapIDs.UENGAPIDPair.AmfUENGAPID.Value)
 		}
 	case ngapType.UENGAPIDsPresentAmfUENGAPID:
-		// TODO: find UE according to specific OCF
+		// TODO: find UE according to specific AMF
 		// The implementation here may have error when OCF need to
-		// connect multiple OCFs.
-		// Use UEpool in OCF context can solve this problem
-		ocfUe = amf.FindUeByOcfUeNgapID(ueNgapIDs.AmfUENGAPID.Value)
+		// connect multiple AMFs.
+		// Use UEpool in AMF context can solve this problem
+		ocfUe = amf.FindUeByAmfUENGAPID(ueNgapIDs.AmfUENGAPID.Value)
 	}
 
 	if ocfUe == nil {
@@ -1180,17 +1180,17 @@ func HandleUEContextReleaseCommand(amf *context.OCF, message *ngapType.NGAPPDU) 
 	ngap_message.SendUEContextReleaseComplete(amf, ocfUe, nil)
 }
 
-func HandleDownlinkNASTransport(amf *context.OCF, message *ngapType.NGAPPDU) {
+func HandleDownlinkNASTransport(amf *context.OCFAMF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle Downlink NAS Transport")
 
 	if amf == nil {
-		ngapLog.Error("Corresponding OCF context not found")
+		ngapLog.Error("Corresponding AMF context not found")
 		return
 	}
 
 	var AmfUENGAPID *ngapType.AmfUENGAPID
 	var ranUeNgapID *ngapType.RANUENGAPID
-	var oldOCF *ngapType.OCFName
+	var oldAMF *ngapType.AMFName
 	var nasPDU *ngapType.NASPDU
 	var indexToRFSP *ngapType.IndexToRFSP
 	var ueAggregateMaximumBitRate *ngapType.UEAggregateMaximumBitRate
@@ -1237,9 +1237,9 @@ func HandleDownlinkNASTransport(amf *context.OCF, message *ngapType.NGAPPDU) {
 					ngapType.CriticalityPresentReject, ie.Id.Value, ngapType.TypeOfErrorPresentMissing)
 				iesCriticalityDiagnostics.List = append(iesCriticalityDiagnostics.List, item)
 			}
-		case ngapType.ProtocolIEIDOldOCF:
-			ngapLog.Traceln("[NGAP] Decode IE OldOCF")
-			oldOCF = ie.Value.OldOCF
+		case ngapType.ProtocolIEIDOldAMF:
+			ngapLog.Traceln("[NGAP] Decode IE OldAMF")
+			oldAMF = ie.Value.OldAMF
 		case ngapType.ProtocolIEIDNASPDU:
 			ngapLog.Traceln("[NGAP] Decode IE NASPDU")
 			nasPDU = ie.Value.NASPDU
@@ -1286,8 +1286,8 @@ func HandleDownlinkNASTransport(amf *context.OCF, message *ngapType.NGAPPDU) {
 		}
 	}
 
-	if oldOCF != nil {
-		ngapLog.Debugf("Old OCF: %s\n", oldOCF.Value)
+	if oldAMF != nil {
+		ngapLog.Debugf("Old AMF: %s\n", oldAMF.Value)
 	}
 
 	if indexToRFSP != nil {
@@ -1370,11 +1370,11 @@ func HandleDownlinkNASTransport(amf *context.OCF, message *ngapType.NGAPPDU) {
 	}
 }
 
-func HandlePDUSessionResourceSetupRequest(amf *context.OCF, message *ngapType.NGAPPDU) {
+func HandlePDUSessionResourceSetupRequest(amf *context.OCFAMF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle PDU Session Resource Setup Request")
 
 	if amf == nil {
-		ngapLog.Error("Corresponding OCF context not found")
+		ngapLog.Error("Corresponding AMF context not found")
 		return
 	}
 
@@ -1440,8 +1440,8 @@ func HandlePDUSessionResourceSetupRequest(amf *context.OCF, message *ngapType.NG
 	}
 
 	if len(iesCriticalityDiagnostics.List) > 0 {
-		// TODO: Send error indication to OCF
-		ngapLog.Errorln("Sending error indication to OCF")
+		// TODO: Send error indication to AMF
+		ngapLog.Errorln("Sending error indication to AMF")
 		return
 	}
 
@@ -1687,7 +1687,7 @@ func HandlePDUSessionResourceSetupRequest(amf *context.OCF, message *ngapType.NG
 					ocfUe.IKEConnection.UEAddr, ikeMessage)
 				break
 			} else {
-				// Send PDU Session Resource Setup Response to OCF
+				// Send PDU Session Resource Setup Response to AMF
 				ngap_message.SendPDUSessionResourceSetupResponse(amf, ocfUe,
 					ocfUe.TemporaryPDUSessionSetupData.SetupListSURes, ocfUe.TemporaryPDUSessionSetupData.FailedListSURes, nil)
 				break
@@ -1697,11 +1697,11 @@ func HandlePDUSessionResourceSetupRequest(amf *context.OCF, message *ngapType.NG
 
 }
 
-func HandlePDUSessionResourceModifyRequest(amf *context.OCF, message *ngapType.NGAPPDU) {
+func HandlePDUSessionResourceModifyRequest(amf *context.OCFAMF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle PDU Session Resource Modify Request")
 
 	if amf == nil {
-		ngapLog.Error("Corresponding OCF context not found")
+		ngapLog.Error("Corresponding AMF context not found")
 		return
 	}
 
@@ -1978,7 +1978,7 @@ func handlePDUSessionResourceModifyRequestTransfer(
 	return success, responseTransfer
 }
 
-func HandlePDUSessionResourceModifyConfirm(amf *context.OCF, message *ngapType.NGAPPDU) {
+func HandlePDUSessionResourceModifyConfirm(amf *context.OCFAMF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle PDU Session Resource Modify Confirm")
 
 	var AmfUENGAPID *ngapType.AmfUENGAPID
@@ -1990,7 +1990,7 @@ func HandlePDUSessionResourceModifyConfirm(amf *context.OCF, message *ngapType.N
 	// var iesCriticalityDiagnostics ngapType.CriticalityDiagnosticsIEList
 
 	if amf == nil {
-		ngapLog.Error("OCF Context is nil")
+		ngapLog.Error("AMF Context is nil")
 		return
 	}
 
@@ -2050,7 +2050,7 @@ func HandlePDUSessionResourceModifyConfirm(amf *context.OCF, message *ngapType.N
 				return
 			}
 		} else {
-			ue = amf.FindUeByOcfUeNgapID(AmfUENGAPID.Value)
+			ue = amf.FindUeByAmfUENGAPID(AmfUENGAPID.Value)
 			if ue == nil {
 				ngapLog.Errorf("Inconsistent remote UE NGAP ID, AmfUENGAPID: %d, ue.AmfUENGAPID: %d",
 					AmfUENGAPID.Value, ue.AmfUENGAPID)
@@ -2107,7 +2107,7 @@ func HandlePDUSessionResourceModifyConfirm(amf *context.OCF, message *ngapType.N
 
 }
 
-func HandlePDUSessionResourceReleaseCommand(amf *context.OCF, message *ngapType.NGAPPDU) {
+func HandlePDUSessionResourceReleaseCommand(amf *context.OCFAMF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle PDU Session Resource Release Command")
 	var AmfUENGAPID *ngapType.AmfUENGAPID
 	var rANUENGAPID *ngapType.RANUENGAPID
@@ -2118,7 +2118,7 @@ func HandlePDUSessionResourceReleaseCommand(amf *context.OCF, message *ngapType.
 	var iesCriticalityDiagnostics ngapType.CriticalityDiagnosticsIEList
 
 	if amf == nil {
-		ngapLog.Error("OCF Context is nil")
+		ngapLog.Error("AMF Context is nil")
 		return
 	}
 
@@ -2237,7 +2237,7 @@ func HandlePDUSessionResourceReleaseCommand(amf *context.OCF, message *ngapType.
 
 }
 
-func HandleErrorIndication(amf *context.OCF, message *ngapType.NGAPPDU) {
+func HandleErrorIndication(amf *context.OCFAMF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle Error Indication")
 
 	var AmfUENGAPID *ngapType.AmfUENGAPID
@@ -2246,7 +2246,7 @@ func HandleErrorIndication(amf *context.OCF, message *ngapType.NGAPPDU) {
 	var criticalityDiagnostics *ngapType.CriticalityDiagnostics
 
 	if amf == nil {
-		ngapLog.Error("Corresponding OCF context not found")
+		ngapLog.Error("Corresponding AMF context not found")
 		return
 	}
 	if message == nil {
@@ -2268,7 +2268,7 @@ func HandleErrorIndication(amf *context.OCF, message *ngapType.NGAPPDU) {
 		switch ie.Id.Value {
 		case ngapType.ProtocolIEIDAmfUENGAPID:
 			AmfUENGAPID = ie.Value.AmfUENGAPID
-			ngapLog.Trace("[NGAP] Decode IE OcfUeNgapID")
+			ngapLog.Trace("[NGAP] Decode IE AmfUENGAPID")
 		case ngapType.ProtocolIEIDRANUENGAPID:
 			rANUENGAPID = ie.Value.RANUENGAPID
 			ngapLog.Trace("[NGAP] Decode IE RanUeNgapID")
@@ -2293,7 +2293,7 @@ func HandleErrorIndication(amf *context.OCF, message *ngapType.NGAPPDU) {
 
 	if (AmfUENGAPID != nil) && (rANUENGAPID != nil) {
 		ngapLog.Trace("UE-associated procedure error")
-		ngapLog.Warnf("OCF UE NGAP ID is defined, value = %d", AmfUENGAPID.Value)
+		ngapLog.Warnf("AMF UE NGAP ID is defined, value = %d", AmfUENGAPID.Value)
 		ngapLog.Warnf("RAN UE NGAP ID is defined, value = %d", rANUENGAPID.Value)
 	}
 
@@ -2308,7 +2308,7 @@ func HandleErrorIndication(amf *context.OCF, message *ngapType.NGAPPDU) {
 	// TODO: handle error based on cause/criticalityDiagnostics
 }
 
-func HandleUERadioCapabilityCheckRequest(amf *context.OCF, message *ngapType.NGAPPDU) {
+func HandleUERadioCapabilityCheckRequest(amf *context.OCFAMF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle UE Radio Capability Check Request")
 	var AmfUENGAPID *ngapType.AmfUENGAPID
 	var rANUENGAPID *ngapType.RANUENGAPID
@@ -2317,7 +2317,7 @@ func HandleUERadioCapabilityCheckRequest(amf *context.OCF, message *ngapType.NGA
 	var iesCriticalityDiagnostics ngapType.CriticalityDiagnosticsIEList
 
 	if amf == nil {
-		ngapLog.Error("OCF Context is nil")
+		ngapLog.Error("AMF Context is nil")
 		return
 	}
 
@@ -2387,20 +2387,20 @@ func HandleUERadioCapabilityCheckRequest(amf *context.OCF, message *ngapType.NGA
 
 }
 
-func HandleOCFConfigurationUpdate(amf *context.OCF, message *ngapType.NGAPPDU) {
+func HandleAMFConfigurationUpdate(amf *context.OCFAMF, message *ngapType.NGAPPDU) {
 
-	ngapLog.Infoln("[OCF] Handle OCF Configuration Updaet")
+	ngapLog.Infoln("[OCF] Handle AMF Configuration Updaet")
 
-	var aMFName *ngapType.OCFName
+	var aMFName *ngapType.AMFName
 	var servedGUAMIList *ngapType.ServedGUAMIList
-	var relativeOCFCapacity *ngapType.RelativeOCFCapacity
+	var relativeAMFCapacity *ngapType.RelativeAMFCapacity
 	var pLMNSupportList *ngapType.PLMNSupportList
-	var aMFTNLAssociationToAddList *ngapType.OCFTNLAssociationToAddList
-	var aMFTNLAssociationToRemoveList *ngapType.OCFTNLAssociationToRemoveList
-	var aMFTNLAssociationToUpdateList *ngapType.OCFTNLAssociationToUpdateList
+	var aMFTNLAssociationToAddList *ngapType.AMFTNLAssociationToAddList
+	var aMFTNLAssociationToRemoveList *ngapType.AMFTNLAssociationToRemoveList
+	var aMFTNLAssociationToUpdateList *ngapType.AMFTNLAssociationToUpdateList
 
 	if amf == nil {
-		ngapLog.Error("OCF Context is nil")
+		ngapLog.Error("AMF Context is nil")
 		return
 	}
 
@@ -2415,7 +2415,7 @@ func HandleOCFConfigurationUpdate(amf *context.OCF, message *ngapType.NGAPPDU) {
 		return
 	}
 
-	aMFConfigurationUpdate := initiatingMessage.Value.OCFConfigurationUpdate
+	aMFConfigurationUpdate := initiatingMessage.Value.AMFConfigurationUpdate
 	if aMFConfigurationUpdate == nil {
 		ngapLog.Error("aMFConfigurationUpdate is nil")
 		return
@@ -2423,70 +2423,70 @@ func HandleOCFConfigurationUpdate(amf *context.OCF, message *ngapType.NGAPPDU) {
 
 	for _, ie := range aMFConfigurationUpdate.ProtocolIEs.List {
 		switch ie.Id.Value {
-		case ngapType.ProtocolIEIDOCFName:
-			ngapLog.Traceln("[NGAP] Decode IE OCFName")
-			aMFName = ie.Value.OCFName
+		case ngapType.ProtocolIEIDAMFName:
+			ngapLog.Traceln("[NGAP] Decode IE AMFName")
+			aMFName = ie.Value.AMFName
 		case ngapType.ProtocolIEIDServedGUAMIList:
 			ngapLog.Traceln("[NGAP] Decode IE ServedGUAMIList")
 			servedGUAMIList = ie.Value.ServedGUAMIList
-		case ngapType.ProtocolIEIDRelativeOCFCapacity:
-			ngapLog.Traceln("[NGAP] Decode IE RelativeOCFCapacity")
-			relativeOCFCapacity = ie.Value.RelativeOCFCapacity
+		case ngapType.ProtocolIEIDRelativeAMFCapacity:
+			ngapLog.Traceln("[NGAP] Decode IE RelativeAMFCapacity")
+			relativeAMFCapacity = ie.Value.RelativeAMFCapacity
 		case ngapType.ProtocolIEIDPLMNSupportList:
 			ngapLog.Traceln("[NGAP] Decode IE PLMNSupportList")
 			pLMNSupportList = ie.Value.PLMNSupportList
-		case ngapType.ProtocolIEIDOCFTNLAssociationToAddList:
-			ngapLog.Traceln("[NGAP] Decode IE OCFTNLAssociationToAddList")
-			aMFTNLAssociationToAddList = ie.Value.OCFTNLAssociationToAddList
-		case ngapType.ProtocolIEIDOCFTNLAssociationToRemoveList:
-			ngapLog.Traceln("[NGAP] Decode IE OCFTNLAssociationToRemoveList")
-			aMFTNLAssociationToRemoveList = ie.Value.OCFTNLAssociationToRemoveList
-		case ngapType.ProtocolIEIDOCFTNLAssociationToUpdateList:
-			ngapLog.Traceln("[NGAP] Decode IE OCFTNLAssociationToUpdateList")
-			aMFTNLAssociationToUpdateList = ie.Value.OCFTNLAssociationToUpdateList
+		case ngapType.ProtocolIEIDAMFTNLAssociationToAddList:
+			ngapLog.Traceln("[NGAP] Decode IE AMFTNLAssociationToAddList")
+			aMFTNLAssociationToAddList = ie.Value.AMFTNLAssociationToAddList
+		case ngapType.ProtocolIEIDAMFTNLAssociationToRemoveList:
+			ngapLog.Traceln("[NGAP] Decode IE AMFTNLAssociationToRemoveList")
+			aMFTNLAssociationToRemoveList = ie.Value.AMFTNLAssociationToRemoveList
+		case ngapType.ProtocolIEIDAMFTNLAssociationToUpdateList:
+			ngapLog.Traceln("[NGAP] Decode IE AMFTNLAssociationToUpdateList")
+			aMFTNLAssociationToUpdateList = ie.Value.AMFTNLAssociationToUpdateList
 		}
 	}
 
 	if aMFName != nil {
-		amf.OCFName = aMFName
+		amf.AMFName = aMFName
 	}
 	if servedGUAMIList != nil {
 		amf.ServedGUAMIList = servedGUAMIList
 	}
 
-	if relativeOCFCapacity != nil {
-		amf.RelativeOCFCapacity = relativeOCFCapacity
+	if relativeAMFCapacity != nil {
+		amf.RelativeAMFCapacity = relativeAMFCapacity
 	}
 
 	if pLMNSupportList != nil {
 		amf.PLMNSupportList = pLMNSupportList
 	}
 
-	successList := []ngapType.OCFTNLAssociationSetupItem{}
+	successList := []ngapType.AMFTNLAssociationSetupItem{}
 	if aMFTNLAssociationToAddList != nil {
-		// TODO: Establish TNL Association with OCF
+		// TODO: Establish TNL Association with AMF
 		for _, item := range aMFTNLAssociationToAddList.List {
-			tnlItem := amf.AddOCFTNLAssociationItem(item.OCFTNLAssociationAddress)
+			tnlItem := amf.AddAMFTNLAssociationItem(item.AMFTNLAssociationAddress)
 			tnlItem.TNLAddressWeightFactor = &item.TNLAddressWeightFactor.Value
 			if item.TNLAssociationUsage != nil {
 				tnlItem.TNLAssociationUsage = item.TNLAssociationUsage
 			}
-			setupItem := ngapType.OCFTNLAssociationSetupItem{
-				OCFTNLAssociationAddress: item.OCFTNLAssociationAddress,
+			setupItem := ngapType.AMFTNLAssociationSetupItem{
+				AMFTNLAssociationAddress: item.AMFTNLAssociationAddress,
 			}
 			successList = append(successList, setupItem)
 		}
 	}
 	if aMFTNLAssociationToRemoveList != nil {
-		// TODO: Remove TNL Association with OCF
+		// TODO: Remove TNL Association with AMF
 		for _, item := range aMFTNLAssociationToRemoveList.List {
-			amf.DeleteOCFTNLAssociationItem(item.OCFTNLAssociationAddress)
+			amf.DeleteAMFTNLAssociationItem(item.AMFTNLAssociationAddress)
 		}
 	}
 	if aMFTNLAssociationToUpdateList != nil {
-		// TODO: Update TNL Association with OCF
+		// TODO: Update TNL Association with AMF
 		for _, item := range aMFTNLAssociationToUpdateList.List {
-			tnlItem := amf.FindOCFTNLAssociationItem(item.OCFTNLAssociationAddress)
+			tnlItem := amf.FindAMFTNLAssociationItem(item.AMFTNLAssociationAddress)
 			if tnlItem == nil {
 				continue
 			}
@@ -2505,16 +2505,16 @@ func HandleOCFConfigurationUpdate(amf *context.OCF, message *ngapType.NGAPPDU) {
 			List: successList,
 		}
 	}
-	ngap_message.SendOCFConfigurationUpdateAcknowledge(amf, setupList, nil, nil)
+	ngap_message.SendAMFConfigurationUpdateAcknowledge(amf, setupList, nil, nil)
 }
 
-func HandleRANConfigurationUpdateAcknowledge(amf *context.OCF, message *ngapType.NGAPPDU) {
+func HandleRANConfigurationUpdateAcknowledge(amf *context.OCFAMF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle RAN Configuration Update Acknowledge")
 
 	var criticalityDiagnostics *ngapType.CriticalityDiagnostics
 
 	if amf == nil {
-		ngapLog.Error("OCF Context is nil")
+		ngapLog.Error("AMF Context is nil")
 		return
 	}
 
@@ -2549,7 +2549,7 @@ func HandleRANConfigurationUpdateAcknowledge(amf *context.OCF, message *ngapType
 
 }
 
-func HandleRANConfigurationUpdateFailure(amf *context.OCF, message *ngapType.NGAPPDU) {
+func HandleRANConfigurationUpdateFailure(amf *context.OCFAMF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle RAN Configuration Update Failure")
 
 	var cause *ngapType.Cause
@@ -2559,7 +2559,7 @@ func HandleRANConfigurationUpdateFailure(amf *context.OCF, message *ngapType.NGA
 	ocfSelf := context.OCFSelf()
 
 	if amf == nil {
-		ngapLog.Error("OCF Context is nil")
+		ngapLog.Error("AMF Context is nil")
 		return
 	}
 
@@ -2622,12 +2622,12 @@ func HandleRANConfigurationUpdateFailure(amf *context.OCF, message *ngapType.NGA
 	}
 
 	if waitingTime != 0 {
-		ngapLog.Infof("Wait at lease  %ds to resend RAN Configuration Update to same OCF[%s]",
+		ngapLog.Infof("Wait at lease  %ds to resend RAN Configuration Update to same AMF[%s]",
 			waitingTime, amf.SCTPAddr)
-		ocfSelf.OCFReInitAvailableListStore(amf.SCTPAddr, false)
+		ocfSelf.AMFReInitAvailableListStore(amf.SCTPAddr, false)
 		time.AfterFunc(time.Duration(waitingTime)*time.Second, func() {
 			ngapLog.Infof("Re-send Ran Configuration Update Message when waiting time expired")
-			ocfSelf.OCFReInitAvailableListStore(amf.SCTPAddr, true)
+			ocfSelf.AMFReInitAvailableListStore(amf.SCTPAddr, true)
 			ngap_message.SendRANConfigurationUpdate(amf)
 		})
 		return
@@ -2643,8 +2643,8 @@ func HandleDownlinkRANStatusTransfer(message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle Downlink RAN Status Transfer")
 }
 
-func HandleOCFStatusIndication(message *ngapType.NGAPPDU) {
-	ngapLog.Infoln("[OCF] Handle OCF Status Indication")
+func HandleAMFStatusIndication(message *ngapType.NGAPPDU) {
+	ngapLog.Infoln("[OCF] Handle AMF Status Indication")
 }
 
 func HandleLocationReportingControl(message *ngapType.NGAPPDU) {
@@ -2655,7 +2655,7 @@ func HandleUETNLAReleaseRequest(message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle UE TNLA Release Request")
 }
 
-func HandleOverloadStart(amf *context.OCF, message *ngapType.NGAPPDU) {
+func HandleOverloadStart(amf *context.OCFAMF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle Overload Start")
 
 	var aMFOverloadResponse *ngapType.OverloadResponse
@@ -2663,7 +2663,7 @@ func HandleOverloadStart(amf *context.OCF, message *ngapType.NGAPPDU) {
 	var overloadStartNSSAIList *ngapType.OverloadStartNSSAIList
 
 	if amf == nil {
-		ngapLog.Error("OCF Context is nil")
+		ngapLog.Error("AMF Context is nil")
 		return
 	}
 
@@ -2686,12 +2686,12 @@ func HandleOverloadStart(amf *context.OCF, message *ngapType.NGAPPDU) {
 
 	for _, ie := range overloadStart.ProtocolIEs.List {
 		switch ie.Id.Value {
-		case ngapType.ProtocolIEIDOCFOverloadResponse:
-			ngapLog.Traceln("[NGAP] Decode IE OCFOverloadResponse")
-			aMFOverloadResponse = ie.Value.OCFOverloadResponse
-		case ngapType.ProtocolIEIDOCFTrafficLoadReductionIndication:
-			ngapLog.Traceln("[NGAP] Decode IE OCFTrafficLoadReductionIndication")
-			aMFTrafficLoadReductionIndication = ie.Value.OCFTrafficLoadReductionIndication
+		case ngapType.ProtocolIEIDAMFOverloadResponse:
+			ngapLog.Traceln("[NGAP] Decode IE AMFOverloadResponse")
+			aMFOverloadResponse = ie.Value.AMFOverloadResponse
+		case ngapType.ProtocolIEIDAMFTrafficLoadReductionIndication:
+			ngapLog.Traceln("[NGAP] Decode IE AMFTrafficLoadReductionIndication")
+			aMFTrafficLoadReductionIndication = ie.Value.AMFTrafficLoadReductionIndication
 		case ngapType.ProtocolIEIDOverloadStartNSSAIList:
 			ngapLog.Traceln("[NGAP] Decode IE OverloadStartNSSAIList")
 			overloadStartNSSAIList = ie.Value.OverloadStartNSSAIList
@@ -2702,12 +2702,12 @@ func HandleOverloadStart(amf *context.OCF, message *ngapType.NGAPPDU) {
 
 }
 
-func HandleOverloadStop(amf *context.OCF, message *ngapType.NGAPPDU) {
+func HandleOverloadStop(amf *context.OCFAMF, message *ngapType.NGAPPDU) {
 
 	ngapLog.Infoln("[OCF] Handle Overload Stop")
 
 	if amf == nil {
-		ngapLog.Error("OCF Context is nil")
+		ngapLog.Error("AMF Context is nil")
 		return
 	}
 	// TODO: remove restrict about overload action

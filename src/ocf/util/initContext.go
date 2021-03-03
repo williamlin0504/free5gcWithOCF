@@ -40,9 +40,9 @@ func InitOCFContext() bool {
 		return false
 	}
 
-	// OCF SCTP addresses
+	// AMF SCTP addresses
 	if len(factory.OcfConfig.Configuration.AMFSCTPAddresses) == 0 {
-		contextLog.Error("No OCF specified")
+		contextLog.Error("No AMF specified")
 		return false
 	} else {
 		for _, amfAddress := range factory.OcfConfig.Configuration.AMFSCTPAddresses {
@@ -50,7 +50,7 @@ func InitOCFContext() bool {
 			// IP addresses
 			for _, ipAddrStr := range amfAddress.IPAddresses {
 				if ipAddr, err := net.ResolveIPAddr("ip", ipAddrStr); err != nil {
-					contextLog.Errorf("Resolve OCF IP address failed: %+v", err)
+					contextLog.Errorf("Resolve AMF IP address failed: %+v", err)
 					return false
 				} else {
 					amfSCTPAddr.IPAddrs = append(amfSCTPAddr.IPAddrs, *ipAddr)

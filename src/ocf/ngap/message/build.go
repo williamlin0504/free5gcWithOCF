@@ -254,7 +254,7 @@ func BuildInitialContextSetupResponse(
 	initialContextSetupResponse := successfulOutcome.Value.InitialContextSetupResponse
 	initialContextSetupResponseIEs := &initialContextSetupResponse.ProtocolIEs
 
-	// OCF UE NGAP ID
+	// AMF UE NGAP ID
 	ie := ngapType.InitialContextSetupResponseIEs{}
 	ie.Id.Value = ngapType.ProtocolIEIDAmfUENGAPID
 	ie.Criticality.Value = ngapType.CriticalityPresentIgnore
@@ -330,7 +330,7 @@ func BuildInitialContextSetupFailure(
 	initialContextSetupFailure := unsuccessfulOutcome.Value.InitialContextSetupFailure
 	initialContextSetupFailureIEs := &initialContextSetupFailure.ProtocolIEs
 
-	// OCF UE NGAP ID
+	// AMF UE NGAP ID
 	ie := ngapType.InitialContextSetupFailureIEs{}
 	ie.Id.Value = ngapType.ProtocolIEIDAmfUENGAPID
 	ie.Criticality.Value = ngapType.CriticalityPresentIgnore
@@ -400,7 +400,7 @@ func BuildUEContextModificationResponse(
 	uEContextModificationResponse := successfulOutcome.Value.UEContextModificationResponse
 	uEContextModificationResponseIEs := &uEContextModificationResponse.ProtocolIEs
 
-	// OCF UE NGAP ID
+	// AMF UE NGAP ID
 	ie := ngapType.UEContextModificationResponseIEs{}
 	ie.Id.Value = ngapType.ProtocolIEIDAmfUENGAPID
 	ie.Criticality.Value = ngapType.CriticalityPresentIgnore
@@ -450,7 +450,7 @@ func BuildUEContextModificationFailure(ue *context.OCFUe, cause ngapType.Cause,
 	uEContextModificationFailure := unsuccessfulOutcome.Value.UEContextModificationFailure
 	uEContextModificationFailureIEs := &uEContextModificationFailure.ProtocolIEs
 
-	// OCF UE NGAP ID
+	// AMF UE NGAP ID
 	ie := ngapType.UEContextModificationFailureIEs{}
 	ie.Id.Value = ngapType.ProtocolIEIDAmfUENGAPID
 	ie.Criticality.Value = ngapType.CriticalityPresentIgnore
@@ -508,7 +508,7 @@ func BuildUEContextReleaseComplete(ue *context.OCFUe,
 	uEContextReleaseComplete := successfulOutcome.Value.UEContextReleaseComplete
 	uEContextReleaseCompleteIEs := &uEContextReleaseComplete.ProtocolIEs
 
-	// OCF UE NGAP ID
+	// AMF UE NGAP ID
 	ie := ngapType.UEContextReleaseCompleteIEs{}
 	ie.Id.Value = ngapType.ProtocolIEIDAmfUENGAPID
 	ie.Criticality.Value = ngapType.CriticalityPresentIgnore
@@ -540,6 +540,13 @@ func BuildUEContextReleaseComplete(ue *context.OCFUe,
 	ie.Value.UserLocationInformation = new(ngapType.UserLocationInformation)
 
 	userLocationInformation := ie.Value.UserLocationInformation
+	userLocationInformation.Present = ngapType.UserLocationInformationPresentUserLocationInformationOCF
+	userLocationInformation.UserLocationInformationOCF = new(ngapType.UserLocationInformationOCF)
+
+	userLocationInfoOCF := userLocationInformation.UserLocationInformationOCF
+	userLocationInfoOCF.IPAddress = ngapConvert.IPAddressToNgap(ue.IPAddrv4, ue.IPAddrv6)
+	userLocationInfoOCF.PortNumber = ngapConvert.PortNumberToNgap(ue.PortNumber)
+
 	userLocationInformation.Present = ngapType.UserLocationInformationPresentUserLocationInformationOCF
 	userLocationInformation.UserLocationInformationOCF = new(ngapType.UserLocationInformationOCF)
 
@@ -595,7 +602,7 @@ func BuildUEContextReleaseRequest(ue *context.OCFUe, cause ngapType.Cause) ([]by
 	uEContextReleaseRequest := initiatingMessage.Value.UEContextReleaseRequest
 	uEContextReleaseRequestIEs := &uEContextReleaseRequest.ProtocolIEs
 
-	// OCF UE NGAP ID
+	// AMF UE NGAP ID
 	ie := ngapType.UEContextReleaseRequestIEs{}
 	ie.Id.Value = ngapType.ProtocolIEIDAmfUENGAPID
 	ie.Criticality.Value = ngapType.CriticalityPresentReject
@@ -748,7 +755,7 @@ func BuildInitialUEMessage(ue *context.OCFUe, nasPdu []byte,
 		}
 		initialUEMessageIEs.List = append(initialUEMessageIEs.List, ie)
 	}
-	// OCFSetID
+	// AMFSetID
 	if len(ue.Guti) != 0 {
 		ie := ngapType.InitialUEMessageIEs{}
 		ie.Id.Value = ngapType.ProtocolIEIDAMFSetID
@@ -757,8 +764,8 @@ func BuildInitialUEMessage(ue *context.OCFUe, nasPdu []byte,
 		ie.Value.AMFSetID = new(ngapType.AMFSetID)
 
 		aMFSetID := ie.Value.AMFSetID
-		// <MCC><MNC><OCF Region ID><OCF Set ID><OCF Pointer><5G-TMSI>
-		// <MCC><MNC> is 3 bytes, <OCF Region ID><OCF Set ID><OCF Pointer> is 3 bytes
+		// <MCC><MNC><AMF Region ID><AMF Set ID><AMF Pointer><5G-TMSI>
+		// <MCC><MNC> is 3 bytes, <AMF Region ID><AMF Set ID><AMF Pointer> is 3 bytes
 		// 1 byte is 2 characters
 		var amfID string
 		if len(ue.Guti) == 19 { // MNC is 2 char
@@ -812,7 +819,7 @@ func BuildUplinkNASTransport(ue *context.OCFUe, nasPdu []byte) ([]byte, error) {
 	uplinkNasTransport := initiatingMessage.Value.UplinkNASTransport
 	uplinkNasTransportIEs := &uplinkNasTransport.ProtocolIEs
 
-	// OCF UE NGAP ID
+	// AMF UE NGAP ID
 	ie := ngapType.UplinkNASTransportIEs{}
 	ie.Id.Value = ngapType.ProtocolIEIDAmfUENGAPID
 	ie.Criticality.Value = ngapType.CriticalityPresentReject
@@ -958,7 +965,7 @@ func BuildPDUSessionResourceSetupResponse(
 	pduSessionResourceSetupResponse := successfulOutcome.Value.PDUSessionResourceSetupResponse
 	pduSessionResourceSetupResponseIEs := &pduSessionResourceSetupResponse.ProtocolIEs
 
-	// OCF UE NGAP ID
+	// AMF UE NGAP ID
 	ie := ngapType.PDUSessionResourceSetupResponseIEs{}
 	ie.Id.Value = ngapType.ProtocolIEIDAmfUENGAPID
 	ie.Criticality.Value = ngapType.CriticalityPresentIgnore
@@ -1034,7 +1041,7 @@ func BuildPDUSessionResourceModifyResponse(
 	pduSessionResourceModifyResponse := successfulOutcome.Value.PDUSessionResourceModifyResponse
 	pduSessionResourceModifyResponseIEs := &pduSessionResourceModifyResponse.ProtocolIEs
 
-	// OCF UE NGAP ID
+	// AMF UE NGAP ID
 	ie := ngapType.PDUSessionResourceModifyResponseIEs{}
 	ie.Id.Value = ngapType.ProtocolIEIDAmfUENGAPID
 	ie.Criticality.Value = ngapType.CriticalityPresentIgnore
@@ -1373,7 +1380,7 @@ func BuildErrorIndication(
 
 	if AmfUENGAPID != nil && ranUENGAPID != nil {
 
-		// OCF UE NGAP ID
+		// AMF UE NGAP ID
 		ie := ngapType.ErrorIndicationIEs{}
 		ie.Id.Value = ngapType.ProtocolIEIDAmfUENGAPID
 		ie.Criticality.Value = ngapType.CriticalityPresentIgnore
@@ -1519,7 +1526,7 @@ func BuildAMFConfigurationUpdateAcknowledge(
 
 		aMFConfigurationUpdateAcknowledgeIEs.List = append(aMFConfigurationUpdateAcknowledgeIEs.List, ie)
 	}
-	// OCFTNLAssociationFailedToSetupList
+	// AMFTNLAssociationFailedToSetupList
 	if failList != nil {
 		ie := ngapType.AMFConfigurationUpdateAcknowledgeIEs{}
 		ie.Id.Value = ngapType.ProtocolIEIDAMFTNLAssociationFailedToSetupList

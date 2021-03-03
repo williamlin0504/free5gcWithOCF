@@ -18,10 +18,10 @@ func init() {
 }
 
 func Dispatch(conn *sctp.SCTPConn, msg []byte) {
-	// OCF SCTP address
+	// AMF SCTP address
 	sctpAddr := conn.RemoteAddr().String()
-	// OCF context
-	amf, _ := context.OCFSelf().OCFPoolLoad(sctpAddr)
+	// AMF context
+	amf, _ := context.OCFSelf().AMFPoolLoad(sctpAddr)
 	// Decode
 	pdu, err := ngap.Decoder(msg)
 	if err != nil {
@@ -58,14 +58,14 @@ func Dispatch(conn *sctp.SCTPConn, msg []byte) {
 			handler.HandleErrorIndication(amf, pdu)
 		case ngapType.ProcedureCodeUERadioCapabilityCheck:
 			handler.HandleUERadioCapabilityCheckRequest(amf, pdu)
-		case ngapType.ProcedureCodeOCFConfigurationUpdate:
-			handler.HandleOCFConfigurationUpdate(amf, pdu)
+		case ngapType.ProcedureCodeAMFConfigurationUpdate:
+			handler.HandleAMFConfigurationUpdate(amf, pdu)
 		case ngapType.ProcedureCodeDownlinkRANConfigurationTransfer:
 			handler.HandleDownlinkRANConfigurationTransfer(pdu)
 		case ngapType.ProcedureCodeDownlinkRANStatusTransfer:
 			handler.HandleDownlinkRANStatusTransfer(pdu)
-		case ngapType.ProcedureCodeOCFStatusIndication:
-			handler.HandleOCFStatusIndication(pdu)
+		case ngapType.ProcedureCodeAMFStatusIndication:
+			handler.HandleAMFStatusIndication(pdu)
 		case ngapType.ProcedureCodeLocationReportingControl:
 			handler.HandleLocationReportingControl(pdu)
 		case ngapType.ProcedureCodeUETNLABindingRelease:
