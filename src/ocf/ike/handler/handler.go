@@ -748,8 +748,8 @@ func HandleIKEAUTH(udpConn *net.UDPConn, ocfAddr, ueAddr *net.UDPAddr, message *
 			// Send Initial UE Message or Uplink NAS Transport
 			if anParameters != nil {
 				// OCF selection
-				selectedOCF := ocfSelf.OCFSelection(anParameters.GUAMI)
-				if selectedOCF == nil {
+				selectedAMF := ocfSelf.AMFSelection(anParameters.GUAMI)
+				if selectedAMF == nil {
 					ikeLog.Warn("[IKE] No avalible OCF for this UE")
 					return
 				}
@@ -760,7 +760,7 @@ func HandleIKEAUTH(udpConn *net.UDPConn, ocfAddr, ueAddr *net.UDPAddr, message *
 				// Relative context
 				ikeSecurityAssociation.ThisUE = ue
 				ue.OCFIKESecurityAssociation = ikeSecurityAssociation
-				ue.OCF = selectedOCF
+				ue.AMF = selectedAMF
 
 				// Store some information in conext
 				ikeSecurityAssociation.MessageID = message.MessageID
@@ -775,10 +775,10 @@ func HandleIKEAUTH(udpConn *net.UDPConn, ocfAddr, ueAddr *net.UDPAddr, message *
 				ue.RRCEstablishmentCause = int16(anParameters.EstablishmentCause.Value)
 
 				// Send Initial UE Message
-				ngap_message.SendInitialUEMessage(selectedOCF, ue, nasPDU)
+				ngap_message.SendInitialUEMessage(selectedAMF, ue, nasPDU)
 			} else {
 				ue := ikeSecurityAssociation.ThisUE
-				amf := ue.OCF
+				amf := ue.AMF
 
 				// Store some information in context
 				ikeSecurityAssociation.MessageID = message.MessageID
@@ -1219,7 +1219,7 @@ func HandleIKEAUTH(udpConn *net.UDPConn, ocfAddr, ueAddr *net.UDPAddr, message *
 					break
 				} else {
 					// Send Initial Context Setup Response to OCF
-					ngap_message.SendInitialContextSetupResponse(thisUE.OCF, thisUE,
+					ngap_message.SendInitialContextSetupResponse(thisUE.AMF, thisUE,
 						thisUE.TemporaryPDUSessionSetupData.SetupListCxtRes,
 						thisUE.TemporaryPDUSessionSetupData.FailedListCxtRes, nil)
 					break
@@ -1227,7 +1227,7 @@ func HandleIKEAUTH(udpConn *net.UDPConn, ocfAddr, ueAddr *net.UDPAddr, message *
 			}
 		} else {
 			// Send Initial Context Setup Response to OCF
-			ngap_message.SendInitialContextSetupResponse(thisUE.OCF, thisUE, nil, nil, nil)
+			ngap_message.SendInitialContextSetupResponse(thisUE.AMF, thisUE, nil, nil, nil)
 		}
 	}
 }
@@ -1612,11 +1612,11 @@ func HandleCREATECHILDSA(udpConn *net.UDPConn, ocfAddr, ueAddr *net.UDPAddr, mes
 			// Send Response to OCF
 			ngapProcedure := temporaryPDUSessionSetupData.NGAPProcedureCode.Value
 			if ngapProcedure == ngapType.ProcedureCodeInitialContextSetup {
-				ngap_message.SendInitialContextSetupResponse(thisUE.OCF, thisUE,
+				ngap_message.SendInitialContextSetupResponse(thisUE.AMF, thisUE,
 					temporaryPDUSessionSetupData.SetupListCxtRes,
 					temporaryPDUSessionSetupData.FailedListCxtRes, nil)
 			} else {
-				ngap_message.SendPDUSessionResourceSetupResponse(thisUE.OCF, thisUE,
+				ngap_message.SendPDUSessionResourceSetupResponse(thisUE.AMF, thisUE,
 					temporaryPDUSessionSetupData.SetupListSURes,
 					temporaryPDUSessionSetupData.FailedListSURes, nil)
 			}
