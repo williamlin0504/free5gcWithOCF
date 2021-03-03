@@ -2933,10 +2933,12 @@ components:
           mnc: mnc
           mcc: mcc
         n3IwfId: n3IwfId
+        ocfId: ocfId
         ngeNbId: ngeNbId
       oneOf:
       - required:
         - n3IwfId
+        - ocfId
       - required:
         - gNbId
       - required:
@@ -2955,6 +2957,8 @@ components:
       - plmnId
       type: object
     N3IwfId:
+      type: string
+    OcfId:
       type: string
     GNbId:
       example:

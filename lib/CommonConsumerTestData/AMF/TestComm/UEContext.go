@@ -50,6 +50,7 @@ func init() {
 						Mnc: "93",
 					},
 					N3IwfId: "123",
+					OcfId:   "456",
 					GNbId: &models.GNbId{
 						BitLength: 123,
 						GNBValue:  "string",

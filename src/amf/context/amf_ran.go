@@ -13,6 +13,7 @@ const (
 	RanPresentGNbId   = 1
 	RanPresentNgeNbId = 2
 	RanPresentN3IwfId = 3
+	RanPresentOcfId   = 4
 )
 
 type AmfRan struct {

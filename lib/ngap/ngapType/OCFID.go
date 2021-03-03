@@ -6,7 +6,7 @@ import "free5gcWithOCF/lib/aper"
 
 const (
 	OCFIDPresentNothing int = iota /* No components present */
-	OCFIDPresentN3IWFID
+	OCFIDPresentOCFID
 	OCFIDPresentChoiceExtensions
 )
 
