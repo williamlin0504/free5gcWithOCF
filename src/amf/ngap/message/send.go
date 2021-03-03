@@ -1,13 +1,13 @@
 package message
 
 import (
-	"free5gcWithOCF/lib/aper"
-	"free5gcWithOCF/lib/ngap/ngapType"
-	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/src/amf/context"
-	"free5gcWithOCF/src/amf/logger"
-	"free5gcWithOCF/src/amf/producer/callback"
-	"free5gcWithOCF/src/amf/util"
+	"free5gc/lib/aper"
+	"free5gc/lib/ngap/ngapType"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/amf/context"
+	"free5gc/src/amf/logger"
+	"free5gc/src/amf/producer/callback"
+	"free5gc/src/amf/util"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -205,7 +205,7 @@ func SendUEContextReleaseCommand(ue *context.RanUe, action context.RelAction, ca
 	SendToRanUe(ue, pkt)
 }
 
-func SendErrorIndication(ran *context.AmfRan, AmfUENGAPID, ranUeNgapId *int64, cause *ngapType.Cause,
+func SendErrorIndication(ran *context.AmfRan, amfUeNgapId, ranUeNgapId *int64, cause *ngapType.Cause,
 	criticalityDiagnostics *ngapType.CriticalityDiagnostics) {
 
 	ngaplog.Info("[AMF] Send Error Indication")
@@ -215,7 +215,7 @@ func SendErrorIndication(ran *context.AmfRan, AmfUENGAPID, ranUeNgapId *int64, c
 		return
 	}
 
-	pkt, err := BuildErrorIndication(AmfUENGAPID, ranUeNgapId, cause, criticalityDiagnostics)
+	pkt, err := BuildErrorIndication(amfUeNgapId, ranUeNgapId, cause, criticalityDiagnostics)
 	if err != nil {
 		ngaplog.Errorf("Build ErrorIndication failed : %s", err.Error())
 		return
@@ -376,7 +376,7 @@ func SendInitialContextSetupRequest(
 func SendUEContextModificationRequest(
 	amfUe *context.AmfUe,
 	anType models.AccessType,
-	oldAmfUENGAPID *int64,
+	oldAmfUeNgapID *int64,
 	rrcInactiveTransitionReportRequest *ngapType.RRCInactiveTransitionReportRequest,
 	coreNetworkAssistanceInfo *ngapType.CoreNetworkAssistanceInformation,
 	mobilityRestrictionList *ngapType.MobilityRestrictionList,
@@ -389,7 +389,7 @@ func SendUEContextModificationRequest(
 		return
 	}
 
-	pkt, err := BuildUEContextModificationRequest(amfUe, anType, oldAmfUENGAPID, rrcInactiveTransitionReportRequest,
+	pkt, err := BuildUEContextModificationRequest(amfUe, anType, oldAmfUeNgapID, rrcInactiveTransitionReportRequest,
 		coreNetworkAssistanceInfo, mobilityRestrictionList, emergencyFallbackIndicator)
 	if err != nil {
 		ngaplog.Errorf("Build UEContextModificationRequest failed : %s", err.Error())
@@ -510,8 +510,8 @@ func SendHandoverRequest(sourceUe *context.RanUe, targetRan *context.AmfRan, cau
 		targetUe = targetUeTmp
 	}
 
-	ngaplog.Tracef("Source : AMF_UE_NGAP_ID[%d], RAN_UE_NGAP_ID[%d]", sourceUe.AmfUENGAPID, sourceUe.RanUeNgapId)
-	ngaplog.Tracef("Target : AMF_UE_NGAP_ID[%d], RAN_UE_NGAP_ID[Unknown]", targetUe.AmfUENGAPID)
+	ngaplog.Tracef("Source : AMF_UE_NGAP_ID[%d], RAN_UE_NGAP_ID[%d]", sourceUe.AmfUeNgapId, sourceUe.RanUeNgapId)
+	ngaplog.Tracef("Target : AMF_UE_NGAP_ID[%d], RAN_UE_NGAP_ID[Unknown]", targetUe.AmfUeNgapId)
 	context.AttachSourceUeTargetUe(sourceUe, targetUe)
 
 	pkt, err := BuildHandoverRequest(targetUe, cause, pduSessionResourceSetupListHOReq,
@@ -572,7 +572,7 @@ func SendPathSwitchRequestAcknowledge(
 // criticalityDiagnostics: from received node when received not comprehended IE or missing IE
 func SendPathSwitchRequestFailure(
 	ran *context.AmfRan,
-	AmfUENGAPID,
+	amfUeNgapId,
 	ranUeNgapId int64,
 	pduSessionResourceReleasedList *ngapType.PDUSessionResourceReleasedListPSFail,
 	criticalityDiagnostics *ngapType.CriticalityDiagnostics) {
@@ -584,7 +584,7 @@ func SendPathSwitchRequestFailure(
 		return
 	}
 
-	pkt, err := BuildPathSwitchRequestFailure(AmfUENGAPID, ranUeNgapId, pduSessionResourceReleasedList,
+	pkt, err := BuildPathSwitchRequestFailure(amfUeNgapId, ranUeNgapId, pduSessionResourceReleasedList,
 		criticalityDiagnostics)
 	if err != nil {
 		ngaplog.Errorf("Build PathSwitchRequestFailure failed : %s", err.Error())
@@ -685,10 +685,10 @@ func SendPaging(ue *context.AmfUe, ngapBuf []byte) {
 
 // TS 23.502 4.2.2.2.3
 // anType: indicate amfUe send this msg for which accessType
-// AmfUENGAPID: initial AMF get it from target AMF
+// amfUeNgapID: initial AMF get it from target AMF
 // ngapMessage: initial UE Message to reroute
 // allowedNSSAI: provided by AMF, and AMF get it from NSSF (4.2.2.2.3 step 4b)
-func SendRerouteNasRequest(ue *context.AmfUe, anType models.AccessType, AmfUENGAPID *int64, ngapMessage []byte,
+func SendRerouteNasRequest(ue *context.AmfUe, anType models.AccessType, amfUeNgapID *int64, ngapMessage []byte,
 	allowedNSSAI *ngapType.AllowedNSSAI) {
 
 	ngaplog.Info("[AMF] Send Reroute Nas Request")
@@ -703,7 +703,7 @@ func SendRerouteNasRequest(ue *context.AmfUe, anType models.AccessType, AmfUENGA
 		return
 	}
 
-	pkt, err := BuildRerouteNasRequest(ue, anType, AmfUENGAPID, ngapMessage, allowedNSSAI)
+	pkt, err := BuildRerouteNasRequest(ue, anType, amfUeNgapID, ngapMessage, allowedNSSAI)
 	if err != nil {
 		ngaplog.Errorf("Build RerouteNasRequest failed : %s", err.Error())
 		return

@@ -11,15 +11,14 @@ package communication
 
 import (
 	"fmt"
-	"free5gcWithOCF/lib/http_wrapper"
-	"free5gcWithOCF/lib/openapi"
-	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/src/amf/logger"
-	"free5gcWithOCF/src/amf/producer"
+	"free5gc/lib/http_wrapper"
+	"free5gc/lib/openapi"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/amf/logger"
+	"free5gc/src/amf/producer"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
-
-	"github.com/gin-gonic/gin"
 )
 
 // CreateUEContext - Namf_Communication CreateUEContext service Operation

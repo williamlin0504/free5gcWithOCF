@@ -2,9 +2,9 @@ package context
 
 import (
 	"fmt"
-	"free5gcWithOCF/lib/idgenerator"
-	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/src/amf/logger"
+	"free5gc/lib/idgenerator"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/amf/logger"
 	"math"
 	"net"
 	"reflect"
@@ -16,7 +16,7 @@ import (
 
 var amfContext = AMFContext{}
 var tmsiGenerator *idgenerator.IDGenerator = nil
-var AmfUENGAPIDGenerator *idgenerator.IDGenerator = nil
+var amfUeNGAPIDGenerator *idgenerator.IDGenerator = nil
 var amfStatusSubscriptionIDGenerator *idgenerator.IDGenerator = nil
 
 func init() {
@@ -31,14 +31,14 @@ func init() {
 	AMF_Self().NetworkName.Full = "free5GC"
 	tmsiGenerator = idgenerator.NewGenerator(1, math.MaxInt32)
 	amfStatusSubscriptionIDGenerator = idgenerator.NewGenerator(1, math.MaxInt32)
-	AmfUENGAPIDGenerator = idgenerator.NewGenerator(1, MaxValueOfAmfUENGAPID)
+	amfUeNGAPIDGenerator = idgenerator.NewGenerator(1, MaxValueOfAmfUeNgapId)
 }
 
 type AMFContext struct {
 	EventSubscriptionIDGenerator    *idgenerator.IDGenerator
 	EventSubscriptions              sync.Map
 	UePool                          sync.Map         // map[supi]*AmfUe
-	RanUePool                       sync.Map         // map[AmfUENGAPID]*RanUe
+	RanUePool                       sync.Map         // map[AmfUeNgapID]*RanUe
 	AmfRanPool                      sync.Map         // map[net.Conn]*AmfRan
 	LadnPool                        map[string]*LADN // dnn as key
 	SupportTaiLists                 []models.Tai
@@ -102,8 +102,8 @@ func (context *AMFContext) TmsiAllocate() int32 {
 	return int32(tmsi)
 }
 
-func (context *AMFContext) AllocateAmfUENGAPID() (int64, error) {
-	return AmfUENGAPIDGenerator.Allocate()
+func (context *AMFContext) AllocateAmfUeNgapID() (int64, error) {
+	return amfUeNGAPIDGenerator.Allocate()
 }
 
 func (context *AMFContext) AllocateGutiToUe(ue *AmfUe) {
@@ -323,8 +323,8 @@ func (context *AMFContext) AmfUeFindByPolicyAssociationID(polAssoId string) (ue 
 	return
 }
 
-func (context *AMFContext) RanUeFindByAmfUENGAPID(AmfUENGAPID int64) *RanUe {
-	if value, ok := context.RanUePool.Load(AmfUENGAPID); ok {
+func (context *AMFContext) RanUeFindByAmfUeNgapID(amfUeNgapID int64) *RanUe {
+	if value, ok := context.RanUePool.Load(amfUeNgapID); ok {
 		return value.(*RanUe)
 	} else {
 		return nil
