@@ -547,6 +547,13 @@ func BuildUEContextReleaseComplete(ue *context.N3IWFUe,
 	userLocationInfoN3IWF.IPAddress = ngapConvert.IPAddressToNgap(ue.IPAddrv4, ue.IPAddrv6)
 	userLocationInfoN3IWF.PortNumber = ngapConvert.PortNumberToNgap(ue.PortNumber)
 
+	userLocationInformation.Present = ngapType.UserLocationInformationPresentUserLocationInformationOCF
+	userLocationInformation.UserLocationInformationOCF = new(ngapType.UserLocationInformationOCF)
+
+	userLocationInfoOCF := userLocationInformation.UserLocationInformationOCF
+	userLocationInfoOCF.IPAddress = ngapConvert.IPAddressToNgap(ue.IPAddrv4, ue.IPAddrv6)
+	userLocationInfoOCF.PortNumber = ngapConvert.PortNumberToNgap(ue.PortNumber)
+
 	uEContextReleaseCompleteIEs.List = append(uEContextReleaseCompleteIEs.List, ie)
 
 	// PDU Session Resource List

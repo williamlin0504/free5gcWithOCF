@@ -2550,6 +2550,20 @@ type UserLocationInformationN3IWFExtIEsExtensionValue struct {
 	Present int
 }
 
+type UserLocationInformationOCFExtIEs struct {
+	Id             ProtocolExtensionID
+	Criticality    Criticality
+	ExtensionValue UserLocationInformationOCFExtIEsExtensionValue `aper:"openType,referenceFieldName:Id"`
+}
+
+const (
+	UserLocationInformationOCFExtIEsPresentNothing int = iota /* No components present */
+)
+
+type UserLocationInformationOCFExtIEsExtensionValue struct {
+	Present int
+}
+
 type UserLocationInformationNRExtIEs struct {
 	Id             ProtocolExtensionID
 	Criticality    Criticality

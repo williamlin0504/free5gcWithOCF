@@ -1094,6 +1094,12 @@ type ProtocolExtensionContainerUserLocationInformationN3IWFExtIEs struct {
 	List []UserLocationInformationN3IWFExtIEs `aper:"sizeLB:1,sizeUB:65535"`
 }
 
+/* Sequence of = 35, FULL Name = struct ProtocolExtensionContainer_6500P180 */
+/* UserLocationInformationOCFExtIEs */
+type ProtocolExtensionContainerUserLocationInformationOCFExtIEs struct {
+	List []UserLocationInformationOCFExtIEs `aper:"sizeLB:1,sizeUB:65535"`
+}
+
 /* Sequence of = 35, FULL Name = struct ProtocolExtensionContainer_6500P181 */
 /* UserLocationInformationNRExtIEs */
 type ProtocolExtensionContainerUserLocationInformationNRExtIEs struct {
