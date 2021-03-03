@@ -44,7 +44,7 @@ do
 done
 shift $(($OPTIND - 1))
 
-TEST_POOL="TestRegistration|TestServiceRequest|TestXnHandover|TestN2Handover|TestDeregistration|TestPDUSessionReleaseRequest|TestPaging"
+TEST_POOL="TestRegistration"
 if [[ ! "$1" =~ $TEST_POOL ]]
 then
     echo "Usage: $0 [ ${TEST_POOL//|/ | } ]"
@@ -77,6 +77,8 @@ sudo ip link set free5gc-br up
 sudo ip link set br-veth0 up
 sudo ip link set br-veth0 master free5gc-br
 
+sudo iptables -I FORWARD 1 -j ACCEPT
+
 # Setup network namespace
 for i in $(seq -f "%02g" 1 $UPF_NUM); do
     sudo ip netns add "${UPFNS}${i}"
@@ -94,6 +96,7 @@ for i in $(seq -f "%02g" 1 $UPF_NUM); do
 
     if [ ${DUMP_NS} ]; then
         sudo ip netns exec "${UPFNS}${i}" tcpdump -i any -w "${UPFNS}${i}.pcap" &
+        sleep 1
         TCPDUMP_PID_[${i}]=$(sudo ip netns pids "${UPFNS}${i}")
     fi
 
@@ -105,14 +108,12 @@ for i in $(seq -f "%02g" 1 $UPF_NUM); do
     fi
     cd src/upf/build && sudo -E ip netns exec "${UPFNS}${i}" ./bin/free5gc-upfd -f config/upfcfg.ulcl.yaml &
     sleep 1
-
-    sudo ip netns exec "${UPFNS}${i}" ip link set dev upfgtp0 mtu 1500
 done
 
 cd src/test
 $GOROOT/bin/go test -v -vet=off -run $1
 
-sleep 1
+sleep 3
 sudo killall -15 free5gc-upfd
 sleep 1
 
@@ -126,14 +127,14 @@ sudo ip addr del 60.60.0.1/32 dev lo
 sudo ip link del veth0
 sudo ip link del free5gc-br
 
+sudo iptables -D FORWARD -j ACCEPT
+
 for i in $(seq -f "%02g" 1 $UPF_NUM); do
-    if [ ${DUMP_NS} ]; then
-        sudo ip netns exec "${UPFNS}${i}" kill -SIGINT ${TCPDUMP_PID_[$i]}
-    fi
+  if [ ${DUMP_NS} ]; then
+      sudo ip netns exec "${UPFNS}${i}" kill -SIGINT ${TCPDUMP_PID_[$i]}
+  fi
 
-    sudo ip netns del "${UPFNS}${i}"
-    sudo ip link del "br-veth${i}"
+  sudo ip netns del "${UPFNS}${i}"
+  sudo ip link del "br-veth${i}"
 done
-
-cp config/test/smfcfg.single.test.conf config/test/smfcfg.ulcl.test.conf
 
