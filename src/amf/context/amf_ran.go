@@ -86,4 +86,10 @@ func (ran *AmfRan) SetRanId(ranNodeId *ngapType.GlobalRANNodeID) {
 	} else {
 		ran.AnType = models.AccessType__3_GPP_ACCESS
 	}
+
+	if ranNodeId.Present == ngapType.GlobalRANNodeIDPresentGlobalOCFID {
+		ran.AnType = models.AccessType_NON_3_GPP_ACCESS
+	} else {
+		ran.AnType = models.AccessType__3_GPP_ACCESS
+	}
 }
