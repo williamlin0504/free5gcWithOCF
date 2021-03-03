@@ -1489,7 +1489,7 @@ func BuildUERadioCapabilityCheckResponse(
 }
 
 func BuildOCFConfigurationUpdateAcknowledge(
-	setupList *ngapType.OCFTNLAssociationSetupList,
+	setupList *ngapType.AMFTNLAssociationSetupList,
 	failList *ngapType.TNLAssociationList,
 	diagnostics *ngapType.CriticalityDiagnostics) ([]byte, error) {
 
@@ -1506,15 +1506,15 @@ func BuildOCFConfigurationUpdateAcknowledge(
 
 	aMFConfigurationUpdateAcknowledge := successfulOutcome.Value.OCFConfigurationUpdateAcknowledge
 	aMFConfigurationUpdateAcknowledgeIEs := &aMFConfigurationUpdateAcknowledge.ProtocolIEs
-	// OCFTNLAssociationSetupList
+	// AMFTNLAssociationSetupList
 	if setupList != nil {
 		ie := ngapType.OCFConfigurationUpdateAcknowledgeIEs{}
-		ie.Id.Value = ngapType.ProtocolIEIDOCFTNLAssociationSetupList
+		ie.Id.Value = ngapType.ProtocolIEIDAMFTNLAssociationSetupList
 		ie.Criticality.Value = ngapType.CriticalityPresentIgnore
-		ie.Value.Present = ngapType.OCFConfigurationUpdateAcknowledgeIEsPresentOCFTNLAssociationSetupList
-		ie.Value.OCFTNLAssociationSetupList = new(ngapType.OCFTNLAssociationSetupList)
+		ie.Value.Present = ngapType.OCFConfigurationUpdateAcknowledgeIEsPresentAMFTNLAssociationSetupList
+		ie.Value.AMFTNLAssociationSetupList = new(ngapType.AMFTNLAssociationSetupList)
 
-		aMFTNLAssociationSetupList := ie.Value.OCFTNLAssociationSetupList
+		aMFTNLAssociationSetupList := ie.Value.AMFTNLAssociationSetupList
 		*aMFTNLAssociationSetupList = *setupList
 
 		aMFConfigurationUpdateAcknowledgeIEs.List = append(aMFConfigurationUpdateAcknowledgeIEs.List, ie)

@@ -2499,9 +2499,9 @@ func HandleOCFConfigurationUpdate(amf *context.OCF, message *ngapType.NGAPPDU) {
 		}
 	}
 
-	var setupList *ngapType.OCFTNLAssociationSetupList
+	var setupList *ngapType.AMFTNLAssociationSetupList
 	if len(successList) > 0 {
-		setupList = &ngapType.OCFTNLAssociationSetupList{
+		setupList = &ngapType.AMFTNLAssociationSetupList{
 			List: successList,
 		}
 	}
