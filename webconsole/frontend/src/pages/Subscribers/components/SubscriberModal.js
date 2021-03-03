@@ -1,61 +1,7 @@
-import React, { Component } from 'react';
-import { Modal } from "react-bootstrap";
+import React, {Component} from 'react';
+import {Modal} from "react-bootstrap";
 import Form from "react-jsonschema-form";
 import PropTypes from 'prop-types';
-import _ from 'lodash';
-
-let snssaiToString = (snssai) => snssai.sst.toString(16).padStart(2, '0').toUpperCase() + snssai.sd
-
-function smDatasFromSliceConfiguration(sliceConfiguration) {
-  return _.map(sliceConfiguration, slice => {
-    return {
-      "singleNssai": {
-        "sst": slice.snssai.sst,
-        "sd": slice.snssai.sd
-      },
-      "dnnConfigurations": _.fromPairs(_.map(slice.dnnConfigurations, dnnConfig => [
-        // key
-        dnnConfig.dnn,
-        // value
-        {
-          "sscModes": {
-            "defaultSscMode": "SSC_MODE_1",
-            "allowedSscModes": ["SSC_MODE_2", "SSC_MODE_3"]
-          },
-          "pduSessionTypes": {
-            "defaultSessionType": "IPV4",
-            "allowedSessionTypes": ["IPV4"]
-          },
-          "sessionAmbr": {
-            "uplink": dnnConfig.uplinkAmbr,
-            "downlink": dnnConfig.downlinkAmbr
-          },
-          "5gQosProfile": {
-            "5qi": dnnConfig["5qi"],
-            "arp": {
-              "priorityLevel": 8
-            },
-            "priorityLevel": 8
-          }
-        }
-      ]))
-    }
-  })
-}
-
-function flowRulesFromSliceConfiguration(sliceConfigurations) {
-  var flowRules = []
-  sliceConfigurations.forEach(slice => {
-    slice.dnnConfigurations.forEach(dnn => {
-      if (dnn.flowRules !== undefined) {
-        dnn.flowRules.forEach(flowRule => {
-          flowRules.push(Object.assign({ snssai: snssaiToString(slice.snssai), dnn: dnn.dnn }, flowRule))
-        })
-      }
-    })
-  })
-  return flowRules
-}
 
 class SubscriberModal extends Component {
   static propTypes = {
@@ -96,13 +42,11 @@ class SubscriberModal extends Component {
       plmnID: {
         type: "string",
         title: "PLMN ID",
-        pattern: "^[0-9]{5,6}$",
         default: "20893",
       },
       ueId: {
         type: "string",
         title: "SUPI (IMSI)",
-        pattern: "^[0-9]{10,15}$",
         default: "208930000000003",
       },
       authenticationMethod: {
@@ -114,7 +58,6 @@ class SubscriberModal extends Component {
       K: {
         type: "string",
         title: "K",
-        pattern: "^[A-Fa-f0-9]{32}$",
         default: "8baf473f2f8fd09487cccbd7097c6862",
       },
       OPOPcSelect: {
@@ -126,166 +69,68 @@ class SubscriberModal extends Component {
       OPOPc: {
         type: "string",
         title: "Operator Code Value",
-        pattern: "^[A-Fa-f0-9]{32}$",
         default: "8e27b6af0e692e750f32667a3b14605d",
       },
-      sliceConfigurations: {
+      defaultSingleNssais: {
         type: "array",
-        title: "S-NSSAI Configuration",
-        items: { $ref: "#/definitions/SliceConfiguration" },
+        title: "NSSAI - Default",
+        items: {
+          type: "object",
+          required: [
+            "sd",
+            "sst",
+          ],
+          properties: {
+            "sst": {
+              "type": "integer",
+              "title": "SST",
+            },
+            "sd": {
+              "type": "string",
+              "title": "SD",
+            },
+          }
+        },
         default: [
           {
-            snssai: {
-              "sst": 1,
-              "sd": "010203",
-              "isDefault": true,
-            },
-            dnnConfigurations: [
-              {
-                dnn: "internet",
-                uplinkAmbr: "200 Mbps",
-                downlinkAmbr: "100 Mbps",
-                "5qi": 9,
-              },
-              {
-                dnn: "internet2",
-                uplinkAmbr: "200 Mbps",
-                downlinkAmbr: "100 Mbps",
-                "5qi": 9,
-              }
-            ]
+            "sst": 1,
+            "sd": "010203",
           },
           {
-            snssai: {
-              "sst": 1,
-              "sd": "112233",
-              "isDefault": true,
-            },
-            dnnConfigurations: [
-              {
-                dnn: "internet",
-                uplinkAmbr: "200 Mbps",
-                downlinkAmbr: "100 Mbps",
-                "5qi": 9,
-              },
-              {
-                dnn: "internet2",
-                uplinkAmbr: "200 Mbps",
-                downlinkAmbr: "100 Mbps",
-                "5qi": 9,
-              }
-            ]
+            "sst": 1,
+            "sd": "112233",
           },
         ],
       },
-    },
-    definitions: {
-      Snssai: {
-        type: "object",
-        required: ["sst", "sd"],
-        properties: {
-          sst: {
-            type: "integer",
-            title: "SST",
-            minimum: 0,
-            maximum: 255,
-          },
-          sd: {
-            type: "string",
-            title: "SD",
-            pattern: "^[A-Fa-f0-9]{6}$",
-          },
-          isDefault: {
-            type: "boolean",
-            title: "Default S-NSSAI",
-            default: false,
-          },
-        },
-      },
-      SliceConfiguration: {
-        type: "object",
-        properties: {
-          snssai: {
-            $ref: "#/definitions/Snssai"
-          },
-          dnnConfigurations: {
-            type: "array",
-            title: "DNN Configurations",
-            items: { $ref: "#/definitions/DnnConfiguration" },
-          }
-        }
-      },
-      DnnConfiguration: {
-        type: "object",
-        required: ["dnn", "uplinkAmbr", "downlinkAmbr"],
-        properties: {
-          dnn: {
-            type: "string",
-            title: "Data Network Name"
-          },
-          uplinkAmbr: {
-            $ref: "#/definitions/bitRate",
-            title: "Uplink AMBR",
-            default: "1000 Kbps"
-          },
-          downlinkAmbr: {
-            $ref: "#/definitions/bitRate",
-            title: "Downlink AMBR",
-            default: "1000 Kbps"
-          },
-          "5qi": {
-            type: "integer",
-            minimum: 0,
-            maximum: 255,
-            title: "Default 5QI"
-          },
-          flowRules: {
-            type: "array",
-            items: { $ref: "#/definitions/FlowInformation" },
-            maxItems: 1,
-            title: "Flow Rules"
+      singleNssais: {
+        type: "array",
+        title: "NSSAI - Single",
+        items: {
+          type: "object",
+          required: ["sst", "sd"],
+          properties: {
+            "sst": {
+              "type": "integer",
+              "title": "SST",
+            },
+            "sd": {
+              "type": "string",
+              "title": "SD",
+            },
           }
         },
+        default: [
+          {
+            "sst": 1,
+            "sd": "010203",
+          },
+          {
+            "sst": 1,
+            "sd": "112233",
+          },
+        ],
       },
-      FlowInformation: {
-        type: "object",
-        properties: {
-          filter: {
-            $ref: "#/definitions/IPFilter",
-            title: "IP Filter"
-          },
-          "5qi": {
-            type: "integer",
-            minimum: 0,
-            maximum: 255,
-            title: "5QI"
-          },
-          gbrUL: {
-            $ref: "#/definitions/bitRate",
-            title: "Uplink GBR",
-          },
-          gbrDL: {
-            $ref: "#/definitions/bitRate",
-            title: "Downlink GBR",
-          },
-          mbrUL: {
-            $ref: "#/definitions/bitRate",
-            title: "Uplink MBR",
-          },
-          mbrDL: {
-            $ref: "#/definitions/bitRate",
-            title: "Downlink MBR",
-          },
-        }
-      },
-      IPFilter: {
-        type: "string",
-      },
-      bitRate: {
-        type: "string",
-        pattern: "^[0-9]+(\\.[0-9]+)? (bps|Kbps|Mbps|Gbps|Tbps)$"
-      },
-    },
+    }
   };
 
   uiSchema = {
@@ -295,29 +140,23 @@ class SubscriberModal extends Component {
     authenticationMethod: {
       "ui:widget": "select",
     },
-    SliceConfiurations: {
-      "ui:options": {
-        "orderable": false
-      },
-      "isDefault": {
-        "ui:widget": "radio",
-      },
-      "dnnConfigurations": {
-        "ui:options": {
-          "orderable": false
+
+    defaultSingleNssais:{
+            "ui:options": {
+              "orderable": false
+          }
         },
-        "flowRules": {
+
+        singleNssais:{
           "ui:options": {
             "orderable": false
-          },
         }
       }
-    }
   };
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps !== this.props) {
-      this.setState({ editMode: !!this.props.subscriber });
+      this.setState({editMode: !!this.props.subscriber});
 
       if (this.props.subscriber) {
         const subscriber = this.props.subscriber;
@@ -330,7 +169,7 @@ class SubscriberModal extends Component {
           K: subscriber['AuthenticationSubscription']["permanentKey"]["permanentKeyValue"],
           OPOPcSelect: isOp ? "OP" : "OPc",
           OPOPc: isOp ? subscriber['AuthenticationSubscription']["milenage"]["op"]["opValue"] :
-            subscriber['AuthenticationSubscription']["opc"]["opcValue"],
+                        subscriber['AuthenticationSubscription']["opc"]["opcValue"],
         };
 
         this.updateFormData(formData).then();
@@ -407,51 +246,110 @@ class SubscriberModal extends Component {
           "msisdn-0900000000"
         ],
         "nssai": {
-          "defaultSingleNssais": _(formData["sliceConfigurations"])
-            .map(slice => slice.snssai)
-            .filter(snssai => !!snssai.isDefault),
-          "singleNssais": _(formData["sliceConfigurations"])
-            .map(slice => slice.snssai)
-            .filter(snssai => !snssai.isDefault),
+          "defaultSingleNssais": [
+            {
+              "sd": "010203",
+              "sst": 1
+            },
+            {
+              "sd": "112233",
+              "sst": 1
+            }
+          ],
+          "singleNssais": [
+            {
+              "sd": "010203",
+              "sst": 1
+            },
+            {
+              "sd": "112233",
+              "sst": 1
+            }
+          ]
         },
         "subscribedUeAmbr": {
           "downlink": "2 Gbps",
-          "uplink": "1 Gbps",
+          "uplink": "1 Gbps"
         },
       },
-      "SessionManagementSubscriptionData": smDatasFromSliceConfiguration(formData["sliceConfigurations"]),
+      "SessionManagementSubscriptionData": {
+        "singleNssai": {
+          "sst": 1,
+          "sd": "010203"
+        },
+        "dnnConfigurations": {
+          "internet": {
+            "sscModes": {
+              "defaultSscMode": "SSC_MODE_1",
+              "allowedSscModes": ["SSC_MODE_1", "SSC_MODE_2", "SSC_MODE_3"]
+            },
+            "pduSessionTypes": {
+              "defaultSessionType": "IPV4",
+              "allowedSessionTypes": ["IPV4"]
+            },
+            "sessionAmbr": {
+              "uplink": "2 Gbps",
+              "downlink": "1 Gbps"
+            },
+            "5gQosProfile": {
+              "5qi": 9,
+              "arp": {
+                "priorityLevel": 8
+              },
+              "priorityLevel": 8
+            }
+          }
+        }
+      },
       "SmfSelectionSubscriptionData": {
-        "DnnInfosubscribedSnssaiInfos": _.fromPairs(
-          _.map(formData["sliceConfigurations"], slice => [snssaiToString(slice.snssai),
-          {
+        "subscribedSnssaiInfos": {
+          "01010203": {
             "dnnInfos": [
               {
-                "dnn": "internet",
-              },
+                "dnn": "internet"
+              }
             ]
-          }]))
+          },
+          "01112233": {
+            "dnnInfos": [
+              {
+                "dnn": "internet"
+              }
+            ]
+          }
+        },
       },
       "AmPolicyData": {
         "subscCats": [
-          "free5gc",
+          "free5gc"
         ]
       },
       "SmPolicyData": {
-        "smPolicySnssaiData": _.fromPairs(
-          _.map(formData["sliceConfigurations"], slice => [snssaiToString(slice.snssai),
-          {
+        "smPolicySnssaiData": {
+          "01010203": {
             "snssai": {
-              "sst": slice.snssai.sst,
-              "sd": slice.snssai.sd
+              "sst": 1,
+              "sd": "010203"
             },
             "smPolicyDnnData": {
               "internet": {
                 "dnn": "internet"
-              },
+              }
+            }
+          },
+          "01112233": {
+            "snssai": {
+              "sst": 1,
+              "sd": "112233"
             },
-          }]))
-      },
-      "FlowRules": flowRulesFromSliceConfiguration(formData["sliceConfigurations"])
+            "smPolicyDnnData": {
+              "internet": {
+                "dnn": "internet"
+              }
+            }
+          }
+        }
+      }
     };
 
     this.props.onSubmit(subscriberData);
@@ -483,6 +381,9 @@ class SubscriberModal extends Component {
     );
 
   }
+
+
+ 
 }
 
 export default SubscriberModal;

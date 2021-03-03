@@ -1,14 +1,12 @@
 package main
 
 import (
-	"os"
-
+	"free5gc/src/app"
+	"free5gc/webconsole/backend/logger"
+	"free5gc/webconsole/backend/webui_service"
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
-
-	"github.com/free5gc/version"
-	"github.com/free5gc/webconsole/backend/logger"
-	"github.com/free5gc/webconsole/backend/webui_service"
+	"os"
 )
 
 var WEBUI = &webui_service.WEBUI{}
@@ -23,7 +21,6 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "webui"
 	appLog.Infoln(app.Name)
-	appLog.Infoln("webconsole version: ", version.GetVersion())
 	app.Usage = "-free5gccfg common configuration file -webuicfg webui configuration file"
 	app.Action = action
 	app.Flags = WEBUI.GetCliCmd()
@@ -33,6 +30,7 @@ func main() {
 }
 
 func action(c *cli.Context) {
+	app.AppInitializeWillInitialize(c.String("free5gccfg"))
 	WEBUI.Initialize(c)
 	WEBUI.Start()
 }

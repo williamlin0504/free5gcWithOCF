@@ -6,14 +6,9 @@
 
 package factory
 
-import (
-	"github.com/free5gc/logger_util"
-)
-
 type Config struct {
-	Info          *Info               `yaml:"info"`
-	Configuration *Configuration      `yaml:"configuration"`
-	Logger        *logger_util.Logger `yaml:"logger"`
+	Info          *Info          `yaml:"info"`
+	Configuration *Configuration `yaml:"configuration"`
 }
 
 type Info struct {
