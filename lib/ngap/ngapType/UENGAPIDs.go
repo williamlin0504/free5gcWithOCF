@@ -5,13 +5,13 @@ package ngapType
 const (
 	UENGAPIDsPresentNothing int = iota /* No components present */
 	UENGAPIDsPresentUENGAPIDPair
-	UENGAPIDsPresentAMFUENGAPID
+	UENGAPIDsPresentAmfUENGAPID
 	UENGAPIDsPresentChoiceExtensions
 )
 
 type UENGAPIDs struct {
 	Present          int
 	UENGAPIDPair     *UENGAPIDPair `aper:"valueExt"`
-	AMFUENGAPID      *AMFUENGAPID
+	AmfUENGAPID      *AmfUENGAPID
 	ChoiceExtensions *ProtocolIESingleContainerUENGAPIDsExtIEs
 }

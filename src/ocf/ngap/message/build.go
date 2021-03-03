@@ -256,13 +256,13 @@ func BuildInitialContextSetupResponse(
 
 	// OCF UE NGAP ID
 	ie := ngapType.InitialContextSetupResponseIEs{}
-	ie.Id.Value = ngapType.ProtocolIEIDAMFUENGAPID
+	ie.Id.Value = ngapType.ProtocolIEIDAmfUENGAPID
 	ie.Criticality.Value = ngapType.CriticalityPresentIgnore
-	ie.Value.Present = ngapType.InitialContextSetupResponseIEsPresentAMFUENGAPID
-	ie.Value.AMFUENGAPID = new(ngapType.AMFUENGAPID)
+	ie.Value.Present = ngapType.InitialContextSetupResponseIEsPresentAmfUENGAPID
+	ie.Value.AmfUENGAPID = new(ngapType.AmfUENGAPID)
 
-	aMFUENGAPID := ie.Value.AMFUENGAPID
-	aMFUENGAPID.Value = ue.AmFUENGAPID
+	AmfUENGAPID := ie.Value.AmfUENGAPID
+	AmfUENGAPID.Value = ue.AmfUENGAPID
 
 	initialContextSetupResponseIEs.List = append(initialContextSetupResponseIEs.List, ie)
 
@@ -332,13 +332,13 @@ func BuildInitialContextSetupFailure(
 
 	// OCF UE NGAP ID
 	ie := ngapType.InitialContextSetupFailureIEs{}
-	ie.Id.Value = ngapType.ProtocolIEIDAMFUENGAPID
+	ie.Id.Value = ngapType.ProtocolIEIDAmfUENGAPID
 	ie.Criticality.Value = ngapType.CriticalityPresentIgnore
-	ie.Value.Present = ngapType.InitialContextSetupFailureIEsPresentAMFUENGAPID
-	ie.Value.AMFUENGAPID = new(ngapType.AMFUENGAPID)
+	ie.Value.Present = ngapType.InitialContextSetupFailureIEsPresentAmfUENGAPID
+	ie.Value.AmfUENGAPID = new(ngapType.AmfUENGAPID)
 
-	aMFUENGAPID := ie.Value.AMFUENGAPID
-	aMFUENGAPID.Value = ue.AmFUENGAPID
+	AmfUENGAPID := ie.Value.AmfUENGAPID
+	AmfUENGAPID.Value = ue.AmfUENGAPID
 
 	initialContextSetupFailureIEs.List = append(initialContextSetupFailureIEs.List, ie)
 
@@ -402,13 +402,13 @@ func BuildUEContextModificationResponse(
 
 	// OCF UE NGAP ID
 	ie := ngapType.UEContextModificationResponseIEs{}
-	ie.Id.Value = ngapType.ProtocolIEIDAMFUENGAPID
+	ie.Id.Value = ngapType.ProtocolIEIDAmfUENGAPID
 	ie.Criticality.Value = ngapType.CriticalityPresentIgnore
-	ie.Value.Present = ngapType.UEContextModificationResponseIEsPresentAMFUENGAPID
-	ie.Value.AMFUENGAPID = new(ngapType.AMFUENGAPID)
+	ie.Value.Present = ngapType.UEContextModificationResponseIEsPresentAmfUENGAPID
+	ie.Value.AmfUENGAPID = new(ngapType.AmfUENGAPID)
 
-	aMFUENGAPID := ie.Value.AMFUENGAPID
-	aMFUENGAPID.Value = ue.AmFUENGAPID
+	AmfUENGAPID := ie.Value.AmfUENGAPID
+	AmfUENGAPID.Value = ue.AmfUENGAPID
 
 	uEContextModificationResponseIEs.List = append(uEContextModificationResponseIEs.List, ie)
 
@@ -452,13 +452,13 @@ func BuildUEContextModificationFailure(ue *context.OCFUe, cause ngapType.Cause,
 
 	// OCF UE NGAP ID
 	ie := ngapType.UEContextModificationFailureIEs{}
-	ie.Id.Value = ngapType.ProtocolIEIDAMFUENGAPID
+	ie.Id.Value = ngapType.ProtocolIEIDAmfUENGAPID
 	ie.Criticality.Value = ngapType.CriticalityPresentIgnore
-	ie.Value.Present = ngapType.UEContextModificationFailureIEsPresentAMFUENGAPID
-	ie.Value.AMFUENGAPID = new(ngapType.AMFUENGAPID)
+	ie.Value.Present = ngapType.UEContextModificationFailureIEsPresentAmfUENGAPID
+	ie.Value.AmfUENGAPID = new(ngapType.AmfUENGAPID)
 
-	aMFUENGAPID := ie.Value.AMFUENGAPID
-	aMFUENGAPID.Value = ue.AmFUENGAPID
+	AmfUENGAPID := ie.Value.AmfUENGAPID
+	AmfUENGAPID.Value = ue.AmfUENGAPID
 
 	uEContextModificationFailureIEs.List = append(uEContextModificationFailureIEs.List, ie)
 
@@ -510,13 +510,13 @@ func BuildUEContextReleaseComplete(ue *context.OCFUe,
 
 	// OCF UE NGAP ID
 	ie := ngapType.UEContextReleaseCompleteIEs{}
-	ie.Id.Value = ngapType.ProtocolIEIDAMFUENGAPID
+	ie.Id.Value = ngapType.ProtocolIEIDAmfUENGAPID
 	ie.Criticality.Value = ngapType.CriticalityPresentIgnore
-	ie.Value.Present = ngapType.UEContextReleaseCompleteIEsPresentAMFUENGAPID
-	ie.Value.AMFUENGAPID = new(ngapType.AMFUENGAPID)
+	ie.Value.Present = ngapType.UEContextReleaseCompleteIEsPresentAmfUENGAPID
+	ie.Value.AmfUENGAPID = new(ngapType.AmfUENGAPID)
 
-	aMFUENGAPID := ie.Value.AMFUENGAPID
-	aMFUENGAPID.Value = ue.AmFUENGAPID
+	AmfUENGAPID := ie.Value.AmfUENGAPID
+	AmfUENGAPID.Value = ue.AmfUENGAPID
 
 	uEContextReleaseCompleteIEs.List = append(uEContextReleaseCompleteIEs.List, ie)
 
@@ -597,13 +597,13 @@ func BuildUEContextReleaseRequest(ue *context.OCFUe, cause ngapType.Cause) ([]by
 
 	// OCF UE NGAP ID
 	ie := ngapType.UEContextReleaseRequestIEs{}
-	ie.Id.Value = ngapType.ProtocolIEIDAMFUENGAPID
+	ie.Id.Value = ngapType.ProtocolIEIDAmfUENGAPID
 	ie.Criticality.Value = ngapType.CriticalityPresentReject
-	ie.Value.Present = ngapType.UEContextReleaseRequestIEsPresentAMFUENGAPID
-	ie.Value.AMFUENGAPID = new(ngapType.AMFUENGAPID)
+	ie.Value.Present = ngapType.UEContextReleaseRequestIEsPresentAmfUENGAPID
+	ie.Value.AmfUENGAPID = new(ngapType.AmfUENGAPID)
 
-	aMFUENGAPID := ie.Value.AMFUENGAPID
-	aMFUENGAPID.Value = ue.AmFUENGAPID
+	AmfUENGAPID := ie.Value.AmfUENGAPID
+	AmfUENGAPID.Value = ue.AmfUENGAPID
 
 	uEContextReleaseRequestIEs.List = append(uEContextReleaseRequestIEs.List, ie)
 
@@ -814,13 +814,13 @@ func BuildUplinkNASTransport(ue *context.OCFUe, nasPdu []byte) ([]byte, error) {
 
 	// OCF UE NGAP ID
 	ie := ngapType.UplinkNASTransportIEs{}
-	ie.Id.Value = ngapType.ProtocolIEIDAMFUENGAPID
+	ie.Id.Value = ngapType.ProtocolIEIDAmfUENGAPID
 	ie.Criticality.Value = ngapType.CriticalityPresentReject
-	ie.Value.Present = ngapType.UplinkNASTransportIEsPresentAMFUENGAPID
-	ie.Value.AMFUENGAPID = new(ngapType.AMFUENGAPID)
+	ie.Value.Present = ngapType.UplinkNASTransportIEsPresentAmfUENGAPID
+	ie.Value.AmfUENGAPID = new(ngapType.AmfUENGAPID)
 
-	aMFUENGAPID := ie.Value.AMFUENGAPID
-	aMFUENGAPID.Value = ue.AmFUENGAPID
+	AmfUENGAPID := ie.Value.AmfUENGAPID
+	AmfUENGAPID.Value = ue.AmfUENGAPID
 
 	uplinkNasTransportIEs.List = append(uplinkNasTransportIEs.List, ie)
 
@@ -879,16 +879,16 @@ func BuildNASNonDeliveryIndication(ue *context.OCFUe, nasPdu []byte, cause ngapT
 
 	nASNonDeliveryIndication := initiatingMessage.Value.NASNonDeliveryIndication
 	nASNonDeliveryIndicationIEs := &nASNonDeliveryIndication.ProtocolIEs
-	// AMFUENGAPID
+	// AmfUENGAPID
 	{
 		ie := ngapType.NASNonDeliveryIndicationIEs{}
-		ie.Id.Value = ngapType.ProtocolIEIDAMFUENGAPID
+		ie.Id.Value = ngapType.ProtocolIEIDAmfUENGAPID
 		ie.Criticality.Value = ngapType.CriticalityPresentReject
-		ie.Value.Present = ngapType.NASNonDeliveryIndicationIEsPresentAMFUENGAPID
-		ie.Value.AMFUENGAPID = new(ngapType.AMFUENGAPID)
+		ie.Value.Present = ngapType.NASNonDeliveryIndicationIEsPresentAmfUENGAPID
+		ie.Value.AmfUENGAPID = new(ngapType.AmfUENGAPID)
 
-		aMFUENGAPID := ie.Value.AMFUENGAPID
-		aMFUENGAPID.Value = ue.AmFUENGAPID
+		AmfUENGAPID := ie.Value.AmfUENGAPID
+		AmfUENGAPID.Value = ue.AmfUENGAPID
 
 		nASNonDeliveryIndicationIEs.List = append(nASNonDeliveryIndicationIEs.List, ie)
 	}
@@ -960,13 +960,13 @@ func BuildPDUSessionResourceSetupResponse(
 
 	// OCF UE NGAP ID
 	ie := ngapType.PDUSessionResourceSetupResponseIEs{}
-	ie.Id.Value = ngapType.ProtocolIEIDAMFUENGAPID
+	ie.Id.Value = ngapType.ProtocolIEIDAmfUENGAPID
 	ie.Criticality.Value = ngapType.CriticalityPresentIgnore
-	ie.Value.Present = ngapType.PDUSessionResourceSetupResponseIEsPresentAMFUENGAPID
-	ie.Value.AMFUENGAPID = new(ngapType.AMFUENGAPID)
+	ie.Value.Present = ngapType.PDUSessionResourceSetupResponseIEsPresentAmfUENGAPID
+	ie.Value.AmfUENGAPID = new(ngapType.AmfUENGAPID)
 
-	aMFUENGAPID := ie.Value.AMFUENGAPID
-	aMFUENGAPID.Value = ue.AmFUENGAPID
+	AmfUENGAPID := ie.Value.AmfUENGAPID
+	AmfUENGAPID.Value = ue.AmfUENGAPID
 
 	pduSessionResourceSetupResponseIEs.List = append(pduSessionResourceSetupResponseIEs.List, ie)
 
@@ -1036,11 +1036,11 @@ func BuildPDUSessionResourceModifyResponse(
 
 	// OCF UE NGAP ID
 	ie := ngapType.PDUSessionResourceModifyResponseIEs{}
-	ie.Id.Value = ngapType.ProtocolIEIDAMFUENGAPID
+	ie.Id.Value = ngapType.ProtocolIEIDAmfUENGAPID
 	ie.Criticality.Value = ngapType.CriticalityPresentIgnore
-	ie.Value.Present = ngapType.PDUSessionResourceModifyResponseIEsPresentAMFUENGAPID
-	ie.Value.AMFUENGAPID = &ngapType.AMFUENGAPID{
-		Value: ue.AmFUENGAPID,
+	ie.Value.Present = ngapType.PDUSessionResourceModifyResponseIEsPresentAmfUENGAPID
+	ie.Value.AmfUENGAPID = &ngapType.AmfUENGAPID{
+		Value: ue.AmfUENGAPID,
 	}
 	pduSessionResourceModifyResponseIEs.List = append(pduSessionResourceModifyResponseIEs.List, ie)
 
@@ -1119,16 +1119,16 @@ func BuildPDUSessionResourceModifyIndication(
 
 	pDUSessionResourceModifyIndication := initiatingMessage.Value.PDUSessionResourceModifyIndication
 	pDUSessionResourceModifyIndicationIEs := &pDUSessionResourceModifyIndication.ProtocolIEs
-	// AMFUENGAPID
+	// AmfUENGAPID
 	{
 		ie := ngapType.PDUSessionResourceModifyIndicationIEs{}
-		ie.Id.Value = ngapType.ProtocolIEIDAMFUENGAPID
+		ie.Id.Value = ngapType.ProtocolIEIDAmfUENGAPID
 		ie.Criticality.Value = ngapType.CriticalityPresentReject
-		ie.Value.Present = ngapType.PDUSessionResourceModifyIndicationIEsPresentAMFUENGAPID
-		ie.Value.AMFUENGAPID = new(ngapType.AMFUENGAPID)
+		ie.Value.Present = ngapType.PDUSessionResourceModifyIndicationIEsPresentAmfUENGAPID
+		ie.Value.AmfUENGAPID = new(ngapType.AmfUENGAPID)
 
-		aMFUENGAPID := ie.Value.AMFUENGAPID
-		aMFUENGAPID.Value = ue.AmFUENGAPID
+		AmfUENGAPID := ie.Value.AmfUENGAPID
+		AmfUENGAPID.Value = ue.AmfUENGAPID
 
 		pDUSessionResourceModifyIndicationIEs.List = append(pDUSessionResourceModifyIndicationIEs.List, ie)
 	}
@@ -1181,16 +1181,16 @@ func BuildPDUSessionResourceNotify(
 
 	pDUSessionResourceNotify := initiatingMessage.Value.PDUSessionResourceNotify
 	pDUSessionResourceNotifyIEs := &pDUSessionResourceNotify.ProtocolIEs
-	// AMFUENGAPID
+	// AmfUENGAPID
 	{
 		ie := ngapType.PDUSessionResourceNotifyIEs{}
-		ie.Id.Value = ngapType.ProtocolIEIDAMFUENGAPID
+		ie.Id.Value = ngapType.ProtocolIEIDAmfUENGAPID
 		ie.Criticality.Value = ngapType.CriticalityPresentReject
-		ie.Value.Present = ngapType.PDUSessionResourceNotifyIEsPresentAMFUENGAPID
-		ie.Value.AMFUENGAPID = new(ngapType.AMFUENGAPID)
+		ie.Value.Present = ngapType.PDUSessionResourceNotifyIEsPresentAmfUENGAPID
+		ie.Value.AmfUENGAPID = new(ngapType.AmfUENGAPID)
 
-		aMFUENGAPID := ie.Value.AMFUENGAPID
-		aMFUENGAPID.Value = ue.AmFUENGAPID
+		AmfUENGAPID := ie.Value.AmfUENGAPID
+		AmfUENGAPID.Value = ue.AmfUENGAPID
 
 		pDUSessionResourceNotifyIEs.List = append(pDUSessionResourceNotifyIEs.List, ie)
 	}
@@ -1275,16 +1275,16 @@ func BuildPDUSessionResourceReleaseResponse(
 
 	pDUSessionResourceReleaseResponse := successfulOutcome.Value.PDUSessionResourceReleaseResponse
 	pDUSessionResourceReleaseResponseIEs := &pDUSessionResourceReleaseResponse.ProtocolIEs
-	// AMFUENGAPID
+	// AmfUENGAPID
 	{
 		ie := ngapType.PDUSessionResourceReleaseResponseIEs{}
-		ie.Id.Value = ngapType.ProtocolIEIDAMFUENGAPID
+		ie.Id.Value = ngapType.ProtocolIEIDAmfUENGAPID
 		ie.Criticality.Value = ngapType.CriticalityPresentIgnore
-		ie.Value.Present = ngapType.PDUSessionResourceReleaseResponseIEsPresentAMFUENGAPID
-		ie.Value.AMFUENGAPID = new(ngapType.AMFUENGAPID)
+		ie.Value.Present = ngapType.PDUSessionResourceReleaseResponseIEsPresentAmfUENGAPID
+		ie.Value.AmfUENGAPID = new(ngapType.AmfUENGAPID)
 
-		aMFUENGAPID := ie.Value.AMFUENGAPID
-		aMFUENGAPID.Value = ue.AmFUENGAPID
+		AmfUENGAPID := ie.Value.AmfUENGAPID
+		AmfUENGAPID.Value = ue.AmfUENGAPID
 
 		pDUSessionResourceReleaseResponseIEs.List = append(pDUSessionResourceReleaseResponseIEs.List, ie)
 	}
@@ -1352,7 +1352,7 @@ func BuildPDUSessionResourceReleaseResponse(
 }
 
 func BuildErrorIndication(
-	amfUENGAPID *int64,
+	AmfUENGAPID *int64,
 	ranUENGAPID *int64,
 	cause *ngapType.Cause,
 	criticalityDiagnostics *ngapType.CriticalityDiagnostics) ([]byte, error) {
@@ -1371,14 +1371,14 @@ func BuildErrorIndication(
 	errorIndication := initiatingMessage.Value.ErrorIndication
 	errorIndicationIEs := &errorIndication.ProtocolIEs
 
-	if amfUENGAPID != nil && ranUENGAPID != nil {
+	if AmfUENGAPID != nil && ranUENGAPID != nil {
 
 		// OCF UE NGAP ID
 		ie := ngapType.ErrorIndicationIEs{}
-		ie.Id.Value = ngapType.ProtocolIEIDAMFUENGAPID
+		ie.Id.Value = ngapType.ProtocolIEIDAmfUENGAPID
 		ie.Criticality.Value = ngapType.CriticalityPresentIgnore
-		ie.Value.Present = ngapType.ErrorIndicationIEsPresentAMFUENGAPID
-		ie.Value.AMFUENGAPID = &ngapType.AMFUENGAPID{Value: *amfUENGAPID}
+		ie.Value.Present = ngapType.ErrorIndicationIEsPresentAmfUENGAPID
+		ie.Value.AmfUENGAPID = &ngapType.AmfUENGAPID{Value: *AmfUENGAPID}
 		errorIndicationIEs.List = append(errorIndicationIEs.List, ie)
 
 		// RAN UE NGAP ID
@@ -1435,16 +1435,16 @@ func BuildUERadioCapabilityCheckResponse(
 
 	uERadioCapabilityCheckResponse := successfulOutcome.Value.UERadioCapabilityCheckResponse
 	uERadioCapabilityCheckResponseIEs := &uERadioCapabilityCheckResponse.ProtocolIEs
-	// AMFUENGAPID
+	// AmfUENGAPID
 	{
 		ie := ngapType.UERadioCapabilityCheckResponseIEs{}
-		ie.Id.Value = ngapType.ProtocolIEIDAMFUENGAPID
+		ie.Id.Value = ngapType.ProtocolIEIDAmfUENGAPID
 		ie.Criticality.Value = ngapType.CriticalityPresentIgnore
-		ie.Value.Present = ngapType.UERadioCapabilityCheckResponseIEsPresentAMFUENGAPID
-		ie.Value.AMFUENGAPID = new(ngapType.AMFUENGAPID)
+		ie.Value.Present = ngapType.UERadioCapabilityCheckResponseIEsPresentAmfUENGAPID
+		ie.Value.AmfUENGAPID = new(ngapType.AmfUENGAPID)
 
-		aMFUENGAPID := ie.Value.AMFUENGAPID
-		aMFUENGAPID.Value = ue.AmFUENGAPID
+		AmfUENGAPID := ie.Value.AmfUENGAPID
+		AmfUENGAPID.Value = ue.AmfUENGAPID
 		uERadioCapabilityCheckResponseIEs.List = append(uERadioCapabilityCheckResponseIEs.List, ie)
 	}
 	// RANUENGAPID

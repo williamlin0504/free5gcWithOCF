@@ -26,7 +26,7 @@ const (
 type RanUe struct {
 	/* UE identity*/
 	RanUeNgapId int64
-	AmfUeNgapId int64
+	AmfUENGAPID int64
 
 	/* HandOver Info*/
 	HandOverType        ngapType.HandoverType
@@ -83,7 +83,7 @@ func (ranUe *RanUe) Remove() error {
 		}
 	}
 	self := AMF_Self()
-	self.RanUePool.Delete(ranUe.AmfUeNgapId)
+	self.RanUePool.Delete(ranUe.AmfUENGAPID)
 	return nil
 }
 

@@ -48,9 +48,9 @@ func (amf *OCFAMF) init(sctpAddr string, conn *sctp.SCTPConn) {
 	amf.OcfUeList = make(map[int64]*OCFUe)
 }
 
-func (amf *OCFAMF) FindUeByAmfUeNgapID(id int64) *OCFUe {
+func (amf *OCFAMF) FindUeByAmfUENGAPID(id int64) *OCFUe {
 	for _, ocfUe := range amf.OcfUeList {
-		if ocfUe.AmfUeNgapId == id {
+		if ocfUe.AmfUENGAPID == id {
 			return ocfUe
 		}
 	}

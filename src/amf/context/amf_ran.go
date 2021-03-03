@@ -48,16 +48,16 @@ func (ran *AmfRan) Remove() {
 func (ran *AmfRan) NewRanUe(ranUeNgapID int64) (*RanUe, error) {
 	ranUe := RanUe{}
 	self := AMF_Self()
-	amfUeNgapID, err := self.AllocateAmfUeNgapID()
+	AmfUENGAPID, err := self.AllocateAmfUENGAPID()
 	if err != nil {
 		return nil, fmt.Errorf("Allocate AMF UE NGAP ID error: %+v", err)
 	}
-	ranUe.AmfUeNgapId = amfUeNgapID
+	ranUe.AmfUENGAPID = AmfUENGAPID
 	ranUe.RanUeNgapId = ranUeNgapID
 	ranUe.Ran = ran
 
 	ran.RanUeList = append(ran.RanUeList, &ranUe)
-	self.RanUePool.Store(ranUe.AmfUeNgapId, &ranUe)
+	self.RanUePool.Store(ranUe.AmfUENGAPID, &ranUe)
 	return &ranUe, nil
 }
 

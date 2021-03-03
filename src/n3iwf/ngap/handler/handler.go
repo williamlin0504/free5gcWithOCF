@@ -325,15 +325,15 @@ func HandleNGReset(amf *context.N3IWFAMF, message *ngapType.NGAPPDU) {
 			if ueAssociatedLogicalNGConnectionItem.RANUENGAPID != nil {
 				ngapLog.Tracef("RanUeNgapID[%d]", ueAssociatedLogicalNGConnectionItem.RANUENGAPID.Value)
 				ue, _ = n3iwfSelf.UePoolLoad(ueAssociatedLogicalNGConnectionItem.RANUENGAPID.Value)
-			} else if ueAssociatedLogicalNGConnectionItem.AMFUENGAPID != nil {
-				ngapLog.Tracef("AmfUeNgapID[%d]", ueAssociatedLogicalNGConnectionItem.AMFUENGAPID.Value)
-				ue = amf.FindUeByAmfUeNgapID(ueAssociatedLogicalNGConnectionItem.AMFUENGAPID.Value)
+			} else if ueAssociatedLogicalNGConnectionItem.AmfUENGAPID != nil {
+				ngapLog.Tracef("AmfUENGAPID[%d]", ueAssociatedLogicalNGConnectionItem.AmfUENGAPID.Value)
+				ue = amf.FindUeByAmfUENGAPID(ueAssociatedLogicalNGConnectionItem.AmfUENGAPID.Value)
 			}
 
 			if ue == nil {
 				ngapLog.Warn("Cannot not find UE Context")
-				if ueAssociatedLogicalNGConnectionItem.AMFUENGAPID != nil {
-					ngapLog.Warnf("AmfUeNgapID[%d]", ueAssociatedLogicalNGConnectionItem.AMFUENGAPID.Value)
+				if ueAssociatedLogicalNGConnectionItem.AmfUENGAPID != nil {
+					ngapLog.Warnf("AmfUENGAPID[%d]", ueAssociatedLogicalNGConnectionItem.AmfUENGAPID.Value)
 				}
 				if ueAssociatedLogicalNGConnectionItem.RANUENGAPID != nil {
 					ngapLog.Warnf("RanUeNgapID[%d]", ueAssociatedLogicalNGConnectionItem.RANUENGAPID.Value)
@@ -392,13 +392,13 @@ func HandleNGResetAcknowledge(amf *context.N3IWFAMF, message *ngapType.NGAPPDU) 
 	if uEAssociatedLogicalNGConnectionList != nil {
 		ngapLog.Tracef("%d UE association(s) has been reset", len(uEAssociatedLogicalNGConnectionList.List))
 		for i, item := range uEAssociatedLogicalNGConnectionList.List {
-			if item.AMFUENGAPID != nil && item.RANUENGAPID != nil {
-				ngapLog.Tracef("%d: AmfUeNgapID[%d] RanUeNgapID[%d]",
-					i+1, item.AMFUENGAPID.Value, item.RANUENGAPID.Value)
-			} else if item.AMFUENGAPID != nil {
-				ngapLog.Tracef("%d: AmfUeNgapID[%d] RanUeNgapID[unknown]", i+1, item.AMFUENGAPID.Value)
+			if item.AmfUENGAPID != nil && item.RANUENGAPID != nil {
+				ngapLog.Tracef("%d: AmfUENGAPID[%d] RanUeNgapID[%d]",
+					i+1, item.AmfUENGAPID.Value, item.RANUENGAPID.Value)
+			} else if item.AmfUENGAPID != nil {
+				ngapLog.Tracef("%d: AmfUENGAPID[%d] RanUeNgapID[unknown]", i+1, item.AmfUENGAPID.Value)
 			} else if item.RANUENGAPID != nil {
-				ngapLog.Tracef("%d: AmfUeNgapID[unknown] RanUeNgapID[%d]", i+1, item.RANUENGAPID.Value)
+				ngapLog.Tracef("%d: AmfUENGAPID[unknown] RanUeNgapID[%d]", i+1, item.RANUENGAPID.Value)
 			}
 		}
 	}
@@ -411,7 +411,7 @@ func HandleNGResetAcknowledge(amf *context.N3IWFAMF, message *ngapType.NGAPPDU) 
 func HandleInitialContextSetupRequest(amf *context.N3IWFAMF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[N3IWF] Handle Initial Context Setup Request")
 
-	var amfUeNgapID *ngapType.AMFUENGAPID
+	var AmfUENGAPID *ngapType.AmfUENGAPID
 	var ranUeNgapID *ngapType.RANUENGAPID
 	var oldAMF *ngapType.AMFName
 	var ueAggregateMaximumBitRate *ngapType.UEAggregateMaximumBitRate
@@ -451,11 +451,11 @@ func HandleInitialContextSetupRequest(amf *context.N3IWFAMF, message *ngapType.N
 
 	for _, ie := range initialContextSetupRequest.ProtocolIEs.List {
 		switch ie.Id.Value {
-		case ngapType.ProtocolIEIDAMFUENGAPID:
-			ngapLog.Traceln("[NGAP] Decode IE AMFUENGAPID")
-			amfUeNgapID = ie.Value.AMFUENGAPID
-			if amfUeNgapID == nil {
-				ngapLog.Errorf("AMFUENGAPID is nil")
+		case ngapType.ProtocolIEIDAmfUENGAPID:
+			ngapLog.Traceln("[NGAP] Decode IE AmfUENGAPID")
+			AmfUENGAPID = ie.Value.AmfUENGAPID
+			if AmfUENGAPID == nil {
+				ngapLog.Errorf("AmfUENGAPID is nil")
 				item := buildCriticalityDiagnosticsIEItem(
 					ngapType.CriticalityPresentReject, ie.Id.Value, ngapType.TypeOfErrorPresentMissing)
 				iesCriticalityDiagnostics.List = append(iesCriticalityDiagnostics.List, item)
@@ -568,7 +568,7 @@ func HandleInitialContextSetupRequest(amf *context.N3IWFAMF, message *ngapType.N
 		return
 	}
 
-	if (amfUeNgapID != nil) && (ranUeNgapID != nil) {
+	if (AmfUENGAPID != nil) && (ranUeNgapID != nil) {
 		// Find UE context
 		var ok bool
 		n3iwfUe, ok = n3iwfSelf.UePoolLoad(ranUeNgapID.Value)
@@ -578,7 +578,7 @@ func HandleInitialContextSetupRequest(amf *context.N3IWFAMF, message *ngapType.N
 			// Cause: Unknown local UE NGAP ID
 			return
 		} else {
-			if n3iwfUe.AmfUeNgapId != amfUeNgapID.Value {
+			if n3iwfUe.AmfUENGAPID != AmfUENGAPID.Value {
 				// TODO: build cause and handle error
 				// Cause: Inconsistent remote UE NGAP ID
 				return
@@ -586,7 +586,7 @@ func HandleInitialContextSetupRequest(amf *context.N3IWFAMF, message *ngapType.N
 		}
 	}
 
-	n3iwfUe.AmfUeNgapId = amfUeNgapID.Value
+	n3iwfUe.AmfUENGAPID = AmfUENGAPID.Value
 	n3iwfUe.RanUeNgapId = ranUeNgapID.Value
 
 	if pduSessionResourceSetupListCxtReq != nil {
@@ -973,8 +973,8 @@ func HandleUEContextModificationRequest(amf *context.N3IWFAMF, message *ngapType
 		return
 	}
 
-	var amfUeNgapID *ngapType.AMFUENGAPID
-	var newAmfUeNgapID *ngapType.AMFUENGAPID
+	var AmfUENGAPID *ngapType.AmfUENGAPID
+	var newAmfUENGAPID *ngapType.AmfUENGAPID
 	var ranUeNgapID *ngapType.RANUENGAPID
 	var ueAggregateMaximumBitRate *ngapType.UEAggregateMaximumBitRate
 	var ueSecurityCapabilities *ngapType.UESecurityCapabilities
@@ -1004,11 +1004,11 @@ func HandleUEContextModificationRequest(amf *context.N3IWFAMF, message *ngapType
 
 	for _, ie := range ueContextModificationRequest.ProtocolIEs.List {
 		switch ie.Id.Value {
-		case ngapType.ProtocolIEIDAMFUENGAPID:
-			ngapLog.Traceln("[NGAP] Decode IE AMFUENGAPID")
-			amfUeNgapID = ie.Value.AMFUENGAPID
-			if amfUeNgapID == nil {
-				ngapLog.Errorf("AMFUENGAPID is nil")
+		case ngapType.ProtocolIEIDAmfUENGAPID:
+			ngapLog.Traceln("[NGAP] Decode IE AmfUENGAPID")
+			AmfUENGAPID = ie.Value.AmfUENGAPID
+			if AmfUENGAPID == nil {
+				ngapLog.Errorf("AmfUENGAPID is nil")
 				item := buildCriticalityDiagnosticsIEItem(
 					ngapType.CriticalityPresentReject, ie.Id.Value, ngapType.TypeOfErrorPresentMissing)
 				iesCriticalityDiagnostics.List = append(iesCriticalityDiagnostics.List, item)
@@ -1040,9 +1040,9 @@ func HandleUEContextModificationRequest(amf *context.N3IWFAMF, message *ngapType
 		case ngapType.ProtocolIEIDEmergencyFallbackIndicator:
 			ngapLog.Traceln("[NGAP] Decode IE EmergencyFallbackIndicator")
 			ngapLog.Warnln("Not Supported IE [EmergencyFallbackIndicator]")
-		case ngapType.ProtocolIEIDNewAMFUENGAPID:
-			ngapLog.Traceln("[NGAP] Decode IE NewAMFUENGAPID")
-			newAmfUeNgapID = ie.Value.NewAMFUENGAPID
+		case ngapType.ProtocolIEIDNewAmfUENGAPID:
+			ngapLog.Traceln("[NGAP] Decode IE NewAmfUENGAPID")
+			newAmfUENGAPID = ie.Value.NewAmfUENGAPID
 		}
 	}
 
@@ -1051,7 +1051,7 @@ func HandleUEContextModificationRequest(amf *context.N3IWFAMF, message *ngapType
 		return
 	}
 
-	if (amfUeNgapID != nil) && (ranUeNgapID != nil) {
+	if (AmfUENGAPID != nil) && (ranUeNgapID != nil) {
 		// Find UE context
 		var ok bool
 		n3iwfUe, ok = n3iwfSelf.UePoolLoad(ranUeNgapID.Value)
@@ -1061,7 +1061,7 @@ func HandleUEContextModificationRequest(amf *context.N3IWFAMF, message *ngapType
 			// Cause: Unknown local UE NGAP ID
 			return
 		} else {
-			if n3iwfUe.AmfUeNgapId != amfUeNgapID.Value {
+			if n3iwfUe.AmfUENGAPID != AmfUENGAPID.Value {
 				// TODO: build cause and handle error
 				// Cause: Inconsistent remote UE NGAP ID
 				return
@@ -1069,9 +1069,9 @@ func HandleUEContextModificationRequest(amf *context.N3IWFAMF, message *ngapType
 		}
 	}
 
-	if newAmfUeNgapID != nil {
-		ngapLog.Debugf("New AmfUeNgapID[%d]\n", newAmfUeNgapID.Value)
-		n3iwfUe.AmfUeNgapId = newAmfUeNgapID.Value
+	if newAmfUENGAPID != nil {
+		ngapLog.Debugf("New AmfUENGAPID[%d]\n", newAmfUENGAPID.Value)
+		n3iwfUe.AmfUENGAPID = newAmfUENGAPID.Value
 	}
 
 	if ueAggregateMaximumBitRate != nil {
@@ -1155,14 +1155,14 @@ func HandleUEContextReleaseCommand(amf *context.N3IWFAMF, message *ngapType.NGAP
 		var ok bool
 		n3iwfUe, ok = n3iwfSelf.UePoolLoad(ueNgapIDs.UENGAPIDPair.RANUENGAPID.Value)
 		if !ok {
-			n3iwfUe = amf.FindUeByAmfUeNgapID(ueNgapIDs.UENGAPIDPair.AMFUENGAPID.Value)
+			n3iwfUe = amf.FindUeByAmfUENGAPID(ueNgapIDs.UENGAPIDPair.AmfUENGAPID.Value)
 		}
-	case ngapType.UENGAPIDsPresentAMFUENGAPID:
+	case ngapType.UENGAPIDsPresentAmfUENGAPID:
 		// TODO: find UE according to specific AMF
 		// The implementation here may have error when N3IWF need to
 		// connect multiple AMFs.
 		// Use UEpool in AMF context can solve this problem
-		n3iwfUe = amf.FindUeByAmfUeNgapID(ueNgapIDs.AMFUENGAPID.Value)
+		n3iwfUe = amf.FindUeByAmfUENGAPID(ueNgapIDs.AmfUENGAPID.Value)
 	}
 
 	if n3iwfUe == nil {
@@ -1188,7 +1188,7 @@ func HandleDownlinkNASTransport(amf *context.N3IWFAMF, message *ngapType.NGAPPDU
 		return
 	}
 
-	var amfUeNgapID *ngapType.AMFUENGAPID
+	var AmfUENGAPID *ngapType.AmfUENGAPID
 	var ranUeNgapID *ngapType.RANUENGAPID
 	var oldAMF *ngapType.AMFName
 	var nasPDU *ngapType.NASPDU
@@ -1219,11 +1219,11 @@ func HandleDownlinkNASTransport(amf *context.N3IWFAMF, message *ngapType.NGAPPDU
 
 	for _, ie := range downlinkNASTransport.ProtocolIEs.List {
 		switch ie.Id.Value {
-		case ngapType.ProtocolIEIDAMFUENGAPID:
-			ngapLog.Traceln("[NGAP] Decode IE AMFUENGAPID")
-			amfUeNgapID = ie.Value.AMFUENGAPID
-			if amfUeNgapID == nil {
-				ngapLog.Errorf("AMFUENGAPID is nil")
+		case ngapType.ProtocolIEIDAmfUENGAPID:
+			ngapLog.Traceln("[NGAP] Decode IE AmfUENGAPID")
+			AmfUENGAPID = ie.Value.AmfUENGAPID
+			if AmfUENGAPID == nil {
+				ngapLog.Errorf("AmfUENGAPID is nil")
 				item := buildCriticalityDiagnosticsIEItem(
 					ngapType.CriticalityPresentReject, ie.Id.Value, ngapType.TypeOfErrorPresentMissing)
 				iesCriticalityDiagnostics.List = append(iesCriticalityDiagnostics.List, item)
@@ -1274,13 +1274,13 @@ func HandleDownlinkNASTransport(amf *context.N3IWFAMF, message *ngapType.NGAPPDU
 		}
 	}
 
-	if amfUeNgapID != nil {
-		if n3iwfUe.AmfUeNgapId == context.AmfUeNgapIdUnspecified {
+	if AmfUENGAPID != nil {
+		if n3iwfUe.AmfUENGAPID == context.AmfUENGAPIDUnspecified {
 			ngapLog.Tracef("Create new logical UE-associated NG-connection")
-			n3iwfUe.AmfUeNgapId = amfUeNgapID.Value
+			n3iwfUe.AmfUENGAPID = AmfUENGAPID.Value
 		} else {
-			if n3iwfUe.AmfUeNgapId != amfUeNgapID.Value {
-				ngapLog.Warn("AMFUENGAPID unmatched")
+			if n3iwfUe.AmfUENGAPID != AmfUENGAPID.Value {
+				ngapLog.Warn("AmfUENGAPID unmatched")
 				return
 			}
 		}
@@ -1378,7 +1378,7 @@ func HandlePDUSessionResourceSetupRequest(amf *context.N3IWFAMF, message *ngapTy
 		return
 	}
 
-	var amfUeNgapID *ngapType.AMFUENGAPID
+	var AmfUENGAPID *ngapType.AmfUENGAPID
 	var ranUeNgapID *ngapType.RANUENGAPID
 	var nasPDU *ngapType.NASPDU
 	var pduSessionResourceSetupListSUReq *ngapType.PDUSessionResourceSetupListSUReq
@@ -1406,11 +1406,11 @@ func HandlePDUSessionResourceSetupRequest(amf *context.N3IWFAMF, message *ngapTy
 
 	for _, ie := range pduSessionResourceSetupRequest.ProtocolIEs.List {
 		switch ie.Id.Value {
-		case ngapType.ProtocolIEIDAMFUENGAPID:
-			ngapLog.Traceln("[NGAP] Decode IE AMFUENGAPID")
-			amfUeNgapID = ie.Value.AMFUENGAPID
-			if amfUeNgapID == nil {
-				ngapLog.Errorf("AMFUENGAPID is nil")
+		case ngapType.ProtocolIEIDAmfUENGAPID:
+			ngapLog.Traceln("[NGAP] Decode IE AmfUENGAPID")
+			AmfUENGAPID = ie.Value.AmfUENGAPID
+			if AmfUENGAPID == nil {
+				ngapLog.Errorf("AmfUENGAPID is nil")
 				item := buildCriticalityDiagnosticsIEItem(
 					ngapType.CriticalityPresentReject, ie.Id.Value, ngapType.TypeOfErrorPresentMissing)
 				iesCriticalityDiagnostics.List = append(iesCriticalityDiagnostics.List, item)
@@ -1445,7 +1445,7 @@ func HandlePDUSessionResourceSetupRequest(amf *context.N3IWFAMF, message *ngapTy
 		return
 	}
 
-	if (amfUeNgapID != nil) && (ranUeNgapID != nil) {
+	if (AmfUENGAPID != nil) && (ranUeNgapID != nil) {
 		// Find UE context
 		var ok bool
 		n3iwfUe, ok = n3iwfSelf.UePoolLoad(ranUeNgapID.Value)
@@ -1455,7 +1455,7 @@ func HandlePDUSessionResourceSetupRequest(amf *context.N3IWFAMF, message *ngapTy
 			// Cause: Unknown local UE NGAP ID
 			return
 		} else {
-			if n3iwfUe.AmfUeNgapId != amfUeNgapID.Value {
+			if n3iwfUe.AmfUENGAPID != AmfUENGAPID.Value {
 				// TODO: build cause and handle error
 				// Cause: Inconsistent remote UE NGAP ID
 				return
@@ -1705,7 +1705,7 @@ func HandlePDUSessionResourceModifyRequest(amf *context.N3IWFAMF, message *ngapT
 		return
 	}
 
-	var amfUeNgapID *ngapType.AMFUENGAPID
+	var AmfUENGAPID *ngapType.AmfUENGAPID
 	var ranUeNgapID *ngapType.RANUENGAPID
 	var pduSessionResourceModifyListModReq *ngapType.PDUSessionResourceModifyListModReq
 	var iesCriticalityDiagnostics ngapType.CriticalityDiagnosticsIEList
@@ -1732,11 +1732,11 @@ func HandlePDUSessionResourceModifyRequest(amf *context.N3IWFAMF, message *ngapT
 
 	for _, ie := range pduSessionResourceModifyRequest.ProtocolIEs.List {
 		switch ie.Id.Value {
-		case ngapType.ProtocolIEIDAMFUENGAPID:
-			ngapLog.Traceln("[NGAP] Decode IE AMFUENGAPID")
-			amfUeNgapID = ie.Value.AMFUENGAPID
-			if amfUeNgapID == nil {
-				ngapLog.Error("AMFUENGAPID is nil")
+		case ngapType.ProtocolIEIDAmfUENGAPID:
+			ngapLog.Traceln("[NGAP] Decode IE AmfUENGAPID")
+			AmfUENGAPID = ie.Value.AmfUENGAPID
+			if AmfUENGAPID == nil {
+				ngapLog.Error("AmfUENGAPID is nil")
 				item := buildCriticalityDiagnosticsIEItem(
 					ngapType.CriticalityPresentReject, ie.Id.Value, ngapType.TypeOfErrorPresentMissing)
 				iesCriticalityDiagnostics.List = append(iesCriticalityDiagnostics.List, item)
@@ -1768,7 +1768,7 @@ func HandlePDUSessionResourceModifyRequest(amf *context.N3IWFAMF, message *ngapT
 		return
 	}
 
-	if (amfUeNgapID != nil) && (ranUeNgapID != nil) {
+	if (AmfUENGAPID != nil) && (ranUeNgapID != nil) {
 		// Find UE context
 		var ok bool
 		n3iwfUe, ok = n3iwfSelf.UePoolLoad(ranUeNgapID.Value)
@@ -1778,7 +1778,7 @@ func HandlePDUSessionResourceModifyRequest(amf *context.N3IWFAMF, message *ngapT
 			// Cause: Unknown local UE NGAP ID
 			return
 		} else {
-			if n3iwfUe.AmfUeNgapId != amfUeNgapID.Value {
+			if n3iwfUe.AmfUENGAPID != AmfUENGAPID.Value {
 				// TODO: build cause and send error indication
 				// Cause: Inconsistent remote UE NGAP ID
 				return
@@ -1981,7 +1981,7 @@ func handlePDUSessionResourceModifyRequestTransfer(
 func HandlePDUSessionResourceModifyConfirm(amf *context.N3IWFAMF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[N3IWF] Handle PDU Session Resource Modify Confirm")
 
-	var aMFUENGAPID *ngapType.AMFUENGAPID
+	var AmfUENGAPID *ngapType.AmfUENGAPID
 	var rANUENGAPID *ngapType.RANUENGAPID
 	var pDUSessionResourceModifyListModCfm *ngapType.PDUSessionResourceModifyListModCfm
 	var pDUSessionResourceFailedToModifyListModCfm *ngapType.PDUSessionResourceFailedToModifyListModCfm
@@ -2013,9 +2013,9 @@ func HandlePDUSessionResourceModifyConfirm(amf *context.N3IWFAMF, message *ngapT
 
 	for _, ie := range pDUSessionResourceModifyConfirm.ProtocolIEs.List {
 		switch ie.Id.Value {
-		case ngapType.ProtocolIEIDAMFUENGAPID:
-			ngapLog.Traceln("[NGAP] Decode IE AMFUENGAPID")
-			aMFUENGAPID = ie.Value.AMFUENGAPID
+		case ngapType.ProtocolIEIDAmfUENGAPID:
+			ngapLog.Traceln("[NGAP] Decode IE AmfUENGAPID")
+			AmfUENGAPID = ie.Value.AmfUENGAPID
 		case ngapType.ProtocolIEIDRANUENGAPID:
 			ngapLog.Traceln("[NGAP] Decode IE RANUENGAPID")
 			rANUENGAPID = ie.Value.RANUENGAPID
@@ -2042,24 +2042,24 @@ func HandlePDUSessionResourceModifyConfirm(amf *context.N3IWFAMF, message *ngapT
 			return
 		}
 	}
-	if aMFUENGAPID != nil {
+	if AmfUENGAPID != nil {
 		if ue != nil {
-			if ue.AmfUeNgapId != aMFUENGAPID.Value {
-				ngapLog.Errorf("Inconsistent remote UE NGAP ID, AMFUENGAPID: %d, ue.AmfUeNgapId: %d",
-					aMFUENGAPID.Value, ue.AmfUeNgapId)
+			if ue.AmfUENGAPID != AmfUENGAPID.Value {
+				ngapLog.Errorf("Inconsistent remote UE NGAP ID, AmfUENGAPID: %d, ue.AmfUENGAPID: %d",
+					AmfUENGAPID.Value, ue.AmfUENGAPID)
 				return
 			}
 		} else {
-			ue = amf.FindUeByAmfUeNgapID(aMFUENGAPID.Value)
+			ue = amf.FindUeByAmfUENGAPID(AmfUENGAPID.Value)
 			if ue == nil {
-				ngapLog.Errorf("Inconsistent remote UE NGAP ID, AMFUENGAPID: %d, ue.AmfUeNgapId: %d",
-					aMFUENGAPID.Value, ue.AmfUeNgapId)
+				ngapLog.Errorf("Inconsistent remote UE NGAP ID, AmfUENGAPID: %d, ue.AmfUENGAPID: %d",
+					AmfUENGAPID.Value, ue.AmfUENGAPID)
 				return
 			}
 		}
 	}
 	if ue == nil {
-		ngapLog.Warn("RANUENGAPID and  AMFUENGAPID are both nil")
+		ngapLog.Warn("RANUENGAPID and  AmfUENGAPID are both nil")
 		return
 	}
 	if pDUSessionResourceModifyListModCfm != nil {
@@ -2109,7 +2109,7 @@ func HandlePDUSessionResourceModifyConfirm(amf *context.N3IWFAMF, message *ngapT
 
 func HandlePDUSessionResourceReleaseCommand(amf *context.N3IWFAMF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[N3IWF] Handle PDU Session Resource Release Command")
-	var aMFUENGAPID *ngapType.AMFUENGAPID
+	var AmfUENGAPID *ngapType.AmfUENGAPID
 	var rANUENGAPID *ngapType.RANUENGAPID
 	// var rANPagingPriority *ngapType.RANPagingPriority
 	// var nASPDU *ngapType.NASPDU
@@ -2141,11 +2141,11 @@ func HandlePDUSessionResourceReleaseCommand(amf *context.N3IWFAMF, message *ngap
 
 	for _, ie := range pDUSessionResourceReleaseCommand.ProtocolIEs.List {
 		switch ie.Id.Value {
-		case ngapType.ProtocolIEIDAMFUENGAPID:
-			ngapLog.Traceln("[NGAP] Decode IE AMFUENGAPID")
-			aMFUENGAPID = ie.Value.AMFUENGAPID
-			if aMFUENGAPID == nil {
-				ngapLog.Error("AMFUENGAPID is nil")
+		case ngapType.ProtocolIEIDAmfUENGAPID:
+			ngapLog.Traceln("[NGAP] Decode IE AmfUENGAPID")
+			AmfUENGAPID = ie.Value.AmfUENGAPID
+			if AmfUENGAPID == nil {
+				ngapLog.Error("AmfUENGAPID is nil")
 				item := buildCriticalityDiagnosticsIEItem(
 					ngapType.CriticalityPresentReject, ie.Id.Value, ngapType.TypeOfErrorPresentMissing)
 				iesCriticalityDiagnostics.List = append(iesCriticalityDiagnostics.List, item)
@@ -2196,9 +2196,9 @@ func HandlePDUSessionResourceReleaseCommand(amf *context.N3IWFAMF, message *ngap
 		return
 	}
 
-	if ue.AmfUeNgapId != aMFUENGAPID.Value {
-		ngapLog.Errorf("Inconsistent remote UE NGAP ID, AMFUENGAPID: %d, ue.AmfUeNgapId: %d",
-			aMFUENGAPID.Value, ue.AmfUeNgapId)
+	if ue.AmfUENGAPID != AmfUENGAPID.Value {
+		ngapLog.Errorf("Inconsistent remote UE NGAP ID, AmfUENGAPID: %d, ue.AmfUENGAPID: %d",
+			AmfUENGAPID.Value, ue.AmfUENGAPID)
 		cause := buildCause(ngapType.CausePresentRadioNetwork,
 			ngapType.CauseRadioNetworkPresentInconsistentRemoteUENGAPID)
 		ngap_message.SendErrorIndication(amf, nil, &rANUENGAPID.Value, cause, nil)
@@ -2240,7 +2240,7 @@ func HandlePDUSessionResourceReleaseCommand(amf *context.N3IWFAMF, message *ngap
 func HandleErrorIndication(amf *context.N3IWFAMF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[N3IWF] Handle Error Indication")
 
-	var aMFUENGAPID *ngapType.AMFUENGAPID
+	var AmfUENGAPID *ngapType.AmfUENGAPID
 	var rANUENGAPID *ngapType.RANUENGAPID
 	var cause *ngapType.Cause
 	var criticalityDiagnostics *ngapType.CriticalityDiagnostics
@@ -2266,9 +2266,9 @@ func HandleErrorIndication(amf *context.N3IWFAMF, message *ngapType.NGAPPDU) {
 
 	for _, ie := range errorIndication.ProtocolIEs.List {
 		switch ie.Id.Value {
-		case ngapType.ProtocolIEIDAMFUENGAPID:
-			aMFUENGAPID = ie.Value.AMFUENGAPID
-			ngapLog.Trace("[NGAP] Decode IE AmfUeNgapID")
+		case ngapType.ProtocolIEIDAmfUENGAPID:
+			AmfUENGAPID = ie.Value.AmfUENGAPID
+			ngapLog.Trace("[NGAP] Decode IE AmfUENGAPID")
 		case ngapType.ProtocolIEIDRANUENGAPID:
 			rANUENGAPID = ie.Value.RANUENGAPID
 			ngapLog.Trace("[NGAP] Decode IE RanUeNgapID")
@@ -2286,14 +2286,14 @@ func HandleErrorIndication(amf *context.N3IWFAMF, message *ngapType.NGAPPDU) {
 		return
 	}
 
-	if (aMFUENGAPID == nil) != (rANUENGAPID == nil) {
+	if (AmfUENGAPID == nil) != (rANUENGAPID == nil) {
 		ngapLog.Error("One of UE NGAP ID is not included in this message")
 		return
 	}
 
-	if (aMFUENGAPID != nil) && (rANUENGAPID != nil) {
+	if (AmfUENGAPID != nil) && (rANUENGAPID != nil) {
 		ngapLog.Trace("UE-associated procedure error")
-		ngapLog.Warnf("AMF UE NGAP ID is defined, value = %d", aMFUENGAPID.Value)
+		ngapLog.Warnf("AMF UE NGAP ID is defined, value = %d", AmfUENGAPID.Value)
 		ngapLog.Warnf("RAN UE NGAP ID is defined, value = %d", rANUENGAPID.Value)
 	}
 
@@ -2310,7 +2310,7 @@ func HandleErrorIndication(amf *context.N3IWFAMF, message *ngapType.NGAPPDU) {
 
 func HandleUERadioCapabilityCheckRequest(amf *context.N3IWFAMF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[N3IWF] Handle UE Radio Capability Check Request")
-	var aMFUENGAPID *ngapType.AMFUENGAPID
+	var AmfUENGAPID *ngapType.AmfUENGAPID
 	var rANUENGAPID *ngapType.RANUENGAPID
 	var uERadioCapability *ngapType.UERadioCapability
 
@@ -2340,11 +2340,11 @@ func HandleUERadioCapabilityCheckRequest(amf *context.N3IWFAMF, message *ngapTyp
 
 	for _, ie := range uERadioCapabilityCheckRequest.ProtocolIEs.List {
 		switch ie.Id.Value {
-		case ngapType.ProtocolIEIDAMFUENGAPID:
-			ngapLog.Traceln("[NGAP] Decode IE AMFUENGAPID")
-			aMFUENGAPID = ie.Value.AMFUENGAPID
-			if aMFUENGAPID == nil {
-				ngapLog.Error("AMFUENGAPID is nil")
+		case ngapType.ProtocolIEIDAmfUENGAPID:
+			ngapLog.Traceln("[NGAP] Decode IE AmfUENGAPID")
+			AmfUENGAPID = ie.Value.AmfUENGAPID
+			if AmfUENGAPID == nil {
+				ngapLog.Error("AmfUENGAPID is nil")
 				item := buildCriticalityDiagnosticsIEItem(
 					ngapType.CriticalityPresentReject, ie.Id.Value, ngapType.TypeOfErrorPresentMissing)
 				iesCriticalityDiagnostics.List = append(iesCriticalityDiagnostics.List, item)

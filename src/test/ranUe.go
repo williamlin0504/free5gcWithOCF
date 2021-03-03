@@ -19,7 +19,7 @@ import (
 type RanUeContext struct {
 	Supi               string
 	RanUeNgapId        int64
-	AmfUeNgapId        int64
+	AmfUENGAPID        int64
 	ULCount            security.Count
 	DLCount            security.Count
 	CipheringAlg       uint8

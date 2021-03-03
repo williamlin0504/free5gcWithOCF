@@ -385,7 +385,7 @@ func SendPDUSessionResourceReleaseResponse(
 
 func SendErrorIndication(
 	amf *context.OCFAMF,
-	amfUENGAPID *int64,
+	AmfUENGAPID *int64,
 	ranUENGAPID *int64,
 	cause *ngapType.Cause,
 	criticalityDiagnostics *ngapType.CriticalityDiagnostics) {
@@ -397,7 +397,7 @@ func SendErrorIndication(
 		return
 	}
 
-	pkt, err := BuildErrorIndication(amfUENGAPID, ranUENGAPID, cause, criticalityDiagnostics)
+	pkt, err := BuildErrorIndication(AmfUENGAPID, ranUENGAPID, cause, criticalityDiagnostics)
 	if err != nil {
 		ngaplog.Errorf("Build Error Indication failed : %+v\n", err)
 		return
@@ -408,7 +408,7 @@ func SendErrorIndication(
 
 func SendErrorIndicationWithSctpConn(
 	sctpConn *sctp.SCTPConn,
-	amfUENGAPID *int64,
+	AmfUENGAPID *int64,
 	ranUENGAPID *int64,
 	cause *ngapType.Cause,
 	criticalityDiagnostics *ngapType.CriticalityDiagnostics) {
@@ -420,7 +420,7 @@ func SendErrorIndicationWithSctpConn(
 		return
 	}
 
-	pkt, err := BuildErrorIndication(amfUENGAPID, ranUENGAPID, cause, criticalityDiagnostics)
+	pkt, err := BuildErrorIndication(AmfUENGAPID, ranUENGAPID, cause, criticalityDiagnostics)
 	if err != nil {
 		ngaplog.Errorf("Build Error Indication failed : %+v\n", err)
 		return

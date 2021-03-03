@@ -191,7 +191,7 @@ func ueRanEmulator() error {
 	// New UE
 	// ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA2, security.AlgIntegrity128NIA2)
 	ue := test.NewRanUeContext(uerancfg.Supi, uerancfg.NgapID, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
-	ue.AmfUeNgapId = uerancfg.NgapID
+	ue.AmfUENGAPID = uerancfg.NgapID
 	ue.AuthenticationSubs = test.GetAuthSubscription(uerancfg.K, uerancfg.Opc, uerancfg.Op)
 
 	mobileIdentity5GS := encodeSuci([]byte(strings.TrimPrefix(uerancfg.Supi, "imsi-")), len(uerancfg.Mnc))
@@ -238,7 +238,7 @@ func ueRanEmulator() error {
 
 	// send NAS Authentication Response
 	pdu := nasTestpacket.GetAuthenticationResponse(resStat, "")
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUENGAPID, ue.RanUeNgapId, pdu)
 	if err != nil {
 		return err
 	}
@@ -266,7 +266,7 @@ func ueRanEmulator() error {
 	if err != nil {
 		return err
 	}
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUENGAPID, ue.RanUeNgapId, pdu)
 	if err != nil {
 		return err
 	}
@@ -286,7 +286,7 @@ func ueRanEmulator() error {
 	}
 
 	// send ngap Initial Context Setup Response Msg
-	sendMsg, err = test.GetInitialContextSetupResponse(ue.AmfUeNgapId, ue.RanUeNgapId)
+	sendMsg, err = test.GetInitialContextSetupResponse(ue.AmfUENGAPID, ue.RanUeNgapId)
 	if err != nil {
 		return err
 	}
@@ -301,7 +301,7 @@ func ueRanEmulator() error {
 	if err != nil {
 		return err
 	}
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUENGAPID, ue.RanUeNgapId, pdu)
 	if err != nil {
 		return err
 	}
@@ -324,7 +324,7 @@ func ueRanEmulator() error {
 	if err != nil {
 		return err
 	}
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUENGAPID, ue.RanUeNgapId, pdu)
 	if err != nil {
 		return err
 	}
@@ -344,7 +344,7 @@ func ueRanEmulator() error {
 	}
 
 	// send 14. NGAP-PDU Session Resource Setup Response
-	sendMsg, err = test.GetPDUSessionResourceSetupResponse(ue.AmfUeNgapId, ue.RanUeNgapId, uerancfg.N3Ran.Addr)
+	sendMsg, err = test.GetPDUSessionResourceSetupResponse(ue.AmfUENGAPID, ue.RanUeNgapId, uerancfg.N3Ran.Addr)
 	if err != nil {
 		return err
 	}
