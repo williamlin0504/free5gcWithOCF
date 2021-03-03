@@ -100,6 +100,15 @@ func RanIDToNgap(modelsRanNodeId models.GlobalRanNodeId) ngapType.GlobalRANNodeI
 		globalN3IWFID.N3IWFID.Present = ngapType.N3IWFIDPresentN3IWFID
 		globalN3IWFID.N3IWFID.N3IWFID = new(aper.BitString)
 		*globalN3IWFID.N3IWFID.N3IWFID = HexToBitString(modelsRanNodeId.N3IwfId, len(modelsRanNodeId.N3IwfId)*4)
+
+		ngapRanNodeId.Present = ngapType.GlobalRANNodeIDPresentGlobalOCFID
+		ngapRanNodeId.GlobalOCFID = new(ngapType.GlobalOCFID)
+		globalOCFID := ngapRanNodeId.GlobalOCFID
+
+		globalOCFID.PLMNIdentity = PlmnIdToNgap(*modelsRanNodeId.PlmnId)
+		globalOCFID.OCFID.Present = ngapType.OCFIDPresentOCFID
+		globalOCFID.OCFID.N3IWFID = new(aper.BitString)
+		*globalOCFID.OCFID.N3IWFID = HexToBitString(modelsRanNodeId.OcfId, len(modelsRanNodeId.OcfId)*4)
 	}
 
 	return ngapRanNodeId
