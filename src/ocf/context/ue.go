@@ -28,7 +28,7 @@ type OCFUe struct {
 	IPSecInnerIP          string
 
 	/* Relative Context */
-	OCF *OCFOCF
+	OCF *OCF
 
 	/* PDU Session */
 	PduSessionList map[int64]*PDUSession // pduSessionId as key

@@ -20,7 +20,7 @@ type AMF struct {
 	// Overload related
 	AMFOverloadContent *AMFOverloadContent
 	// Relative Context
-	AmfUeList map[int64]*AMFUe // ranUeNgapId as key
+	AmfUeList map[int64]*AmfUe // ranUeNgapId as key
 }
 
 type AMFTNLAssociationItem struct {
@@ -45,10 +45,10 @@ func (amf *AMF) init(sctpAddr string, conn *sctp.SCTPConn) {
 	amf.SCTPAddr = sctpAddr
 	amf.SCTPConn = conn
 	amf.AMFTNLAssociationList = make(map[string]*AMFTNLAssociationItem)
-	amf.AmfUeList = make(map[int64]*AMFUe)
+	amf.AmfUeList = make(map[int64]*AmfUe)
 }
 
-func (amf *AMF) FindUeByAmfUeNgapID(id int64) *AMFUe {
+func (amf *AMF) FindUeByAmfUeNgapID(id int64) *AmfUe {
 	for _, amfUe := range amf.AmfUeList {
 		if amfUe.AmfUeNgapId == id {
 			return amfUe

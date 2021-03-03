@@ -32,7 +32,7 @@ type OCFContext struct {
 
 	// Pools
 	UePool                 sync.Map // map[int64]*OCFUe, RanUeNgapID as key
-	OCFPool                sync.Map // map[string]*OCFOCF, SCTPAddr as key
+	OCFPool                sync.Map // map[string]*OCF, SCTPAddr as key
 	OCFReInitAvailableList sync.Map // map[string]bool, SCTPAddr as key
 	IKESA                  sync.Map // map[uint64]*IKESecurityAssociation, SPI as key
 	ChildSA                sync.Map // map[uint32]*ChildSecurityAssociation, SPI as key
@@ -103,12 +103,12 @@ func (context *OCFContext) UePoolLoad(ranUeNgapId int64) (*OCFUe, bool) {
 	}
 }
 
-func (context *OCFContext) NewOcfOcf(sctpAddr string, conn *sctp.SCTPConn) *OCFOCF {
-	amf := new(OCFOCF)
+func (context *OCFContext) NewOcfOcf(sctpAddr string, conn *sctp.SCTPConn) *OCF {
+	amf := new(OCF)
 	amf.init(sctpAddr, conn)
 	if item, loaded := context.OCFPool.LoadOrStore(sctpAddr, amf); loaded {
 		contextLog.Warn("[Context] NewOcfOcf(): OCF entry already exists.")
-		return item.(*OCFOCF)
+		return item.(*OCF)
 	} else {
 		return amf
 	}
@@ -118,10 +118,10 @@ func (context *OCFContext) DeleteOcfOcf(sctpAddr string) {
 	context.OCFPool.Delete(sctpAddr)
 }
 
-func (context *OCFContext) OCFPoolLoad(sctpAddr string) (*OCFOCF, bool) {
+func (context *OCFContext) OCFPoolLoad(sctpAddr string) (*OCF, bool) {
 	amf, ok := context.OCFPool.Load(sctpAddr)
 	if ok {
-		return amf.(*OCFOCF), ok
+		return amf.(*OCF), ok
 	} else {
 		return nil, ok
 	}
@@ -255,10 +255,10 @@ func (context *OCFContext) AllocatedUETEIDLoad(teid uint32) (*OCFUe, bool) {
 	}
 }
 
-func (context *OCFContext) OCFSelection(ueSpecifiedGUAMI *ngapType.GUAMI) *OCFOCF {
-	var availableOCF *OCFOCF
+func (context *OCFContext) OCFSelection(ueSpecifiedGUAMI *ngapType.GUAMI) *OCF {
+	var availableOCF *OCF
 	context.OCFPool.Range(func(key, value interface{}) bool {
-		amf := value.(*OCFOCF)
+		amf := value.(*OCF)
 		if amf.FindAvalibleOCFByCompareGUAMI(ueSpecifiedGUAMI) {
 			availableOCF = amf
 			return false

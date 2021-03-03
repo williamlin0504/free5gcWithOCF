@@ -241,7 +241,7 @@ func HandleNGSetupFailure(sctpAddr string, conn *sctp.SCTPConn, message *ngapTyp
 	}
 }
 
-func HandleNGReset(amf *context.OCFOCF, message *ngapType.NGAPPDU) {
+func HandleNGReset(amf *context.OCF, message *ngapType.NGAPPDU) {
 
 	ngapLog.Infoln("[OCF] Handle NG Reset")
 
@@ -349,7 +349,7 @@ func HandleNGReset(amf *context.OCFOCF, message *ngapType.NGAPPDU) {
 	}
 }
 
-func HandleNGResetAcknowledge(amf *context.OCFOCF, message *ngapType.NGAPPDU) {
+func HandleNGResetAcknowledge(amf *context.OCF, message *ngapType.NGAPPDU) {
 
 	ngapLog.Infoln("[OCF] Handle NG Reset Acknowledge")
 
@@ -408,7 +408,7 @@ func HandleNGResetAcknowledge(amf *context.OCFOCF, message *ngapType.NGAPPDU) {
 	}
 }
 
-func HandleInitialContextSetupRequest(amf *context.OCFOCF, message *ngapType.NGAPPDU) {
+func HandleInitialContextSetupRequest(amf *context.OCF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle Initial Context Setup Request")
 
 	var amfUeNgapID *ngapType.OCFUENGAPID
@@ -965,7 +965,7 @@ func handlePDUSessionResourceSetupRequestTransfer(ue *context.OCFUe, pduSession 
 	return true, nil
 }
 
-func HandleUEContextModificationRequest(amf *context.OCFOCF, message *ngapType.NGAPPDU) {
+func HandleUEContextModificationRequest(amf *context.OCF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle UE Context Modification Request")
 
 	if amf == nil {
@@ -1096,7 +1096,7 @@ func HandleUEContextModificationRequest(amf *context.OCFOCF, message *ngapType.N
 	ngap_message.SendUEContextModificationResponse(amf, ocfUe, nil)
 }
 
-func HandleUEContextReleaseCommand(amf *context.OCFOCF, message *ngapType.NGAPPDU) {
+func HandleUEContextReleaseCommand(amf *context.OCF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle UE Context Release Command")
 
 	if amf == nil {
@@ -1180,7 +1180,7 @@ func HandleUEContextReleaseCommand(amf *context.OCFOCF, message *ngapType.NGAPPD
 	ngap_message.SendUEContextReleaseComplete(amf, ocfUe, nil)
 }
 
-func HandleDownlinkNASTransport(amf *context.OCFOCF, message *ngapType.NGAPPDU) {
+func HandleDownlinkNASTransport(amf *context.OCF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle Downlink NAS Transport")
 
 	if amf == nil {
@@ -1370,7 +1370,7 @@ func HandleDownlinkNASTransport(amf *context.OCFOCF, message *ngapType.NGAPPDU) 
 	}
 }
 
-func HandlePDUSessionResourceSetupRequest(amf *context.OCFOCF, message *ngapType.NGAPPDU) {
+func HandlePDUSessionResourceSetupRequest(amf *context.OCF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle PDU Session Resource Setup Request")
 
 	if amf == nil {
@@ -1697,7 +1697,7 @@ func HandlePDUSessionResourceSetupRequest(amf *context.OCFOCF, message *ngapType
 
 }
 
-func HandlePDUSessionResourceModifyRequest(amf *context.OCFOCF, message *ngapType.NGAPPDU) {
+func HandlePDUSessionResourceModifyRequest(amf *context.OCF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle PDU Session Resource Modify Request")
 
 	if amf == nil {
@@ -1978,7 +1978,7 @@ func handlePDUSessionResourceModifyRequestTransfer(
 	return success, responseTransfer
 }
 
-func HandlePDUSessionResourceModifyConfirm(amf *context.OCFOCF, message *ngapType.NGAPPDU) {
+func HandlePDUSessionResourceModifyConfirm(amf *context.OCF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle PDU Session Resource Modify Confirm")
 
 	var aMFUENGAPID *ngapType.OCFUENGAPID
@@ -2107,7 +2107,7 @@ func HandlePDUSessionResourceModifyConfirm(amf *context.OCFOCF, message *ngapTyp
 
 }
 
-func HandlePDUSessionResourceReleaseCommand(amf *context.OCFOCF, message *ngapType.NGAPPDU) {
+func HandlePDUSessionResourceReleaseCommand(amf *context.OCF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle PDU Session Resource Release Command")
 	var aMFUENGAPID *ngapType.OCFUENGAPID
 	var rANUENGAPID *ngapType.RANUENGAPID
@@ -2237,7 +2237,7 @@ func HandlePDUSessionResourceReleaseCommand(amf *context.OCFOCF, message *ngapTy
 
 }
 
-func HandleErrorIndication(amf *context.OCFOCF, message *ngapType.NGAPPDU) {
+func HandleErrorIndication(amf *context.OCF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle Error Indication")
 
 	var aMFUENGAPID *ngapType.OCFUENGAPID
@@ -2308,7 +2308,7 @@ func HandleErrorIndication(amf *context.OCFOCF, message *ngapType.NGAPPDU) {
 	// TODO: handle error based on cause/criticalityDiagnostics
 }
 
-func HandleUERadioCapabilityCheckRequest(amf *context.OCFOCF, message *ngapType.NGAPPDU) {
+func HandleUERadioCapabilityCheckRequest(amf *context.OCF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle UE Radio Capability Check Request")
 	var aMFUENGAPID *ngapType.OCFUENGAPID
 	var rANUENGAPID *ngapType.RANUENGAPID
@@ -2387,7 +2387,7 @@ func HandleUERadioCapabilityCheckRequest(amf *context.OCFOCF, message *ngapType.
 
 }
 
-func HandleOCFConfigurationUpdate(amf *context.OCFOCF, message *ngapType.NGAPPDU) {
+func HandleOCFConfigurationUpdate(amf *context.OCF, message *ngapType.NGAPPDU) {
 
 	ngapLog.Infoln("[OCF] Handle OCF Configuration Updaet")
 
@@ -2508,7 +2508,7 @@ func HandleOCFConfigurationUpdate(amf *context.OCFOCF, message *ngapType.NGAPPDU
 	ngap_message.SendOCFConfigurationUpdateAcknowledge(amf, setupList, nil, nil)
 }
 
-func HandleRANConfigurationUpdateAcknowledge(amf *context.OCFOCF, message *ngapType.NGAPPDU) {
+func HandleRANConfigurationUpdateAcknowledge(amf *context.OCF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle RAN Configuration Update Acknowledge")
 
 	var criticalityDiagnostics *ngapType.CriticalityDiagnostics
@@ -2549,7 +2549,7 @@ func HandleRANConfigurationUpdateAcknowledge(amf *context.OCFOCF, message *ngapT
 
 }
 
-func HandleRANConfigurationUpdateFailure(amf *context.OCFOCF, message *ngapType.NGAPPDU) {
+func HandleRANConfigurationUpdateFailure(amf *context.OCF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle RAN Configuration Update Failure")
 
 	var cause *ngapType.Cause
@@ -2655,7 +2655,7 @@ func HandleUETNLAReleaseRequest(message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle UE TNLA Release Request")
 }
 
-func HandleOverloadStart(amf *context.OCFOCF, message *ngapType.NGAPPDU) {
+func HandleOverloadStart(amf *context.OCF, message *ngapType.NGAPPDU) {
 	ngapLog.Infoln("[OCF] Handle Overload Start")
 
 	var aMFOverloadResponse *ngapType.OverloadResponse
@@ -2702,7 +2702,7 @@ func HandleOverloadStart(amf *context.OCFOCF, message *ngapType.NGAPPDU) {
 
 }
 
-func HandleOverloadStop(amf *context.OCFOCF, message *ngapType.NGAPPDU) {
+func HandleOverloadStop(amf *context.OCF, message *ngapType.NGAPPDU) {
 
 	ngapLog.Infoln("[OCF] Handle Overload Stop")
 
