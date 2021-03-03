@@ -14,5 +14,5 @@ type AmfNon3GppAccessRegistrationModification struct {
 	PurgeFlag     bool            `json:"purgeFlag,omitempty" yaml:"purgeFlag" bson:"purgeFlag" mapstructure:"PurgeFlag"`
 	Pei           string          `json:"pei,omitempty" yaml:"pei" bson:"pei" mapstructure:"Pei"`
 	ImsVoPs       ImsVoPs         `json:"imsVoPs,omitempty" yaml:"imsVoPs" bson:"imsVoPs" mapstructure:"ImsVoPs"`
-	BackupAmfInfo []BackupAmfInfo `json:"backupAmfInfo,omitempty" yaml:"backupAmfInfo" bson:"backupAmfInfo" mapstructure:"BackupAmfInfo"`
+	BackupOcfInfo []BackupOcfInfo `json:"backupOcfInfo,omitempty" yaml:"backupOcfInfo" bson:"backupOcfInfo" mapstructure:"BackupOcfInfo"`
 }
