@@ -2,10 +2,10 @@ package context
 
 import (
 	"fmt"
-	"free5gc/lib/ngap/ngapConvert"
-	"free5gc/lib/ngap/ngapType"
-	"free5gc/lib/openapi/models"
-	"free5gc/src/amf/logger"
+	"free5gcWithOCF/lib/ngap/ngapConvert"
+	"free5gcWithOCF/lib/ngap/ngapType"
+	"free5gcWithOCF/lib/openapi/models"
+	"free5gcWithOCF/src/amf/logger"
 	"net"
 )
 

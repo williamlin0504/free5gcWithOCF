@@ -1,8 +1,8 @@
 package oam
 
 import (
-	"free5gc/lib/logger_util"
-	"free5gc/src/amf/logger"
+	"free5gcWithOCF/lib/logger_util"
+	"free5gcWithOCF/src/amf/logger"
 	"net/http"
 
 	"github.com/gin-contrib/cors"

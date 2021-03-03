@@ -5,8 +5,8 @@
 package factory
 
 import (
-	"free5gc/lib/openapi/models"
-	"free5gc/src/amf/context"
+	"free5gcWithOCF/lib/openapi/models"
+	"free5gcWithOCF/src/amf/context"
 )
 
 type Config struct {
