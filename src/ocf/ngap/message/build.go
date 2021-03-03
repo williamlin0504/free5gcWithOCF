@@ -737,10 +737,10 @@ func BuildInitialUEMessage(ue *context.OCFUe, nasPdu []byte,
 			amfID = ue.Guti[6:12]
 			tmsi = ue.Guti[12:]
 		}
-		_, amfSetID, amfPointer := ngapConvert.OcfIdToNgap(amfID)
+		_, amfSetID, amfPointer := ngapConvert.AmfIdToNgap(amfID)
 
-		fiveGSTMSI.OCFSetID.Value = amfSetID
-		fiveGSTMSI.OCFPointer.Value = amfPointer
+		fiveGSTMSI.AMFSetID.Value = amfSetID
+		fiveGSTMSI.AMFPointer.Value = amfPointer
 		var err error
 		fiveGSTMSI.FiveGTMSI.Value, err = hex.DecodeString(tmsi)
 		if err != nil {
@@ -751,12 +751,12 @@ func BuildInitialUEMessage(ue *context.OCFUe, nasPdu []byte,
 	// OCFSetID
 	if len(ue.Guti) != 0 {
 		ie := ngapType.InitialUEMessageIEs{}
-		ie.Id.Value = ngapType.ProtocolIEIDOCFSetID
+		ie.Id.Value = ngapType.ProtocolIEIDAMFSetID
 		ie.Criticality.Value = ngapType.CriticalityPresentIgnore
-		ie.Value.Present = ngapType.InitialUEMessageIEsPresentOCFSetID
-		ie.Value.OCFSetID = new(ngapType.OCFSetID)
+		ie.Value.Present = ngapType.InitialUEMessageIEsPresentAMFSetID
+		ie.Value.AMFSetID = new(ngapType.AMFSetID)
 
-		aMFSetID := ie.Value.OCFSetID
+		aMFSetID := ie.Value.AMFSetID
 		// <MCC><MNC><OCF Region ID><OCF Set ID><OCF Pointer><5G-TMSI>
 		// <MCC><MNC> is 3 bytes, <OCF Region ID><OCF Set ID><OCF Pointer> is 3 bytes
 		// 1 byte is 2 characters
@@ -766,7 +766,7 @@ func BuildInitialUEMessage(ue *context.OCFUe, nasPdu []byte,
 		} else {
 			amfID = ue.Guti[6:12]
 		}
-		_, aMFSetID.Value, _ = ngapConvert.OcfIdToNgap(amfID)
+		_, aMFSetID.Value, _ = ngapConvert.AmfIdToNgap(amfID)
 
 		initialUEMessageIEs.List = append(initialUEMessageIEs.List, ie)
 	}
@@ -1498,20 +1498,20 @@ func BuildOCFConfigurationUpdateAcknowledge(
 	pdu.SuccessfulOutcome = new(ngapType.SuccessfulOutcome)
 
 	successfulOutcome := pdu.SuccessfulOutcome
-	successfulOutcome.ProcedureCode.Value = ngapType.ProcedureCodeOCFConfigurationUpdate
+	successfulOutcome.ProcedureCode.Value = ngapType.ProcedureCodeAMFConfigurationUpdate
 	successfulOutcome.Criticality.Value = ngapType.CriticalityPresentReject
 
-	successfulOutcome.Value.Present = ngapType.SuccessfulOutcomePresentOCFConfigurationUpdateAcknowledge
-	successfulOutcome.Value.OCFConfigurationUpdateAcknowledge = new(ngapType.OCFConfigurationUpdateAcknowledge)
+	successfulOutcome.Value.Present = ngapType.SuccessfulOutcomePresentAMFConfigurationUpdateAcknowledge
+	successfulOutcome.Value.AMFConfigurationUpdateAcknowledge = new(ngapType.AMFConfigurationUpdateAcknowledge)
 
-	aMFConfigurationUpdateAcknowledge := successfulOutcome.Value.OCFConfigurationUpdateAcknowledge
+	aMFConfigurationUpdateAcknowledge := successfulOutcome.Value.AMFConfigurationUpdateAcknowledge
 	aMFConfigurationUpdateAcknowledgeIEs := &aMFConfigurationUpdateAcknowledge.ProtocolIEs
 	// AMFTNLAssociationSetupList
 	if setupList != nil {
-		ie := ngapType.OCFConfigurationUpdateAcknowledgeIEs{}
+		ie := ngapType.AMFConfigurationUpdateAcknowledgeIEs{}
 		ie.Id.Value = ngapType.ProtocolIEIDAMFTNLAssociationSetupList
 		ie.Criticality.Value = ngapType.CriticalityPresentIgnore
-		ie.Value.Present = ngapType.OCFConfigurationUpdateAcknowledgeIEsPresentAMFTNLAssociationSetupList
+		ie.Value.Present = ngapType.AMFConfigurationUpdateAcknowledgeIEsPresentAMFTNLAssociationSetupList
 		ie.Value.AMFTNLAssociationSetupList = new(ngapType.AMFTNLAssociationSetupList)
 
 		aMFTNLAssociationSetupList := ie.Value.AMFTNLAssociationSetupList
@@ -1521,23 +1521,23 @@ func BuildOCFConfigurationUpdateAcknowledge(
 	}
 	// OCFTNLAssociationFailedToSetupList
 	if failList != nil {
-		ie := ngapType.OCFConfigurationUpdateAcknowledgeIEs{}
-		ie.Id.Value = ngapType.ProtocolIEIDOCFTNLAssociationFailedToSetupList
+		ie := ngapType.AMFConfigurationUpdateAcknowledgeIEs{}
+		ie.Id.Value = ngapType.ProtocolIEIDAMFTNLAssociationFailedToSetupList
 		ie.Criticality.Value = ngapType.CriticalityPresentIgnore
-		ie.Value.Present = ngapType.OCFConfigurationUpdateAcknowledgeIEsPresentOCFTNLAssociationFailedToSetupList
-		ie.Value.OCFTNLAssociationFailedToSetupList = new(ngapType.TNLAssociationList)
+		ie.Value.Present = ngapType.AMFConfigurationUpdateAcknowledgeIEsPresentAMFTNLAssociationFailedToSetupList
+		ie.Value.AMFTNLAssociationFailedToSetupList = new(ngapType.TNLAssociationList)
 
-		aMFTNLAssociationFailedToSetupList := ie.Value.OCFTNLAssociationFailedToSetupList
+		aMFTNLAssociationFailedToSetupList := ie.Value.AMFTNLAssociationFailedToSetupList
 		*aMFTNLAssociationFailedToSetupList = *failList
 
 		aMFConfigurationUpdateAcknowledgeIEs.List = append(aMFConfigurationUpdateAcknowledgeIEs.List, ie)
 	}
 	// CriticalityDiagnostics
 	if diagnostics != nil {
-		ie := ngapType.OCFConfigurationUpdateAcknowledgeIEs{}
+		ie := ngapType.AMFConfigurationUpdateAcknowledgeIEs{}
 		ie.Id.Value = ngapType.ProtocolIEIDCriticalityDiagnostics
 		ie.Criticality.Value = ngapType.CriticalityPresentIgnore
-		ie.Value.Present = ngapType.OCFConfigurationUpdateAcknowledgeIEsPresentCriticalityDiagnostics
+		ie.Value.Present = ngapType.AMFConfigurationUpdateAcknowledgeIEsPresentCriticalityDiagnostics
 		ie.Value.CriticalityDiagnostics = new(ngapType.CriticalityDiagnostics)
 
 		criticalityDiagnostics := ie.Value.CriticalityDiagnostics
@@ -1560,20 +1560,20 @@ func BuildOCFConfigurationUpdateFailure(
 	pdu.UnsuccessfulOutcome = new(ngapType.UnsuccessfulOutcome)
 
 	unsuccessfulOutcome := pdu.UnsuccessfulOutcome
-	unsuccessfulOutcome.ProcedureCode.Value = ngapType.ProcedureCodeOCFConfigurationUpdate
+	unsuccessfulOutcome.ProcedureCode.Value = ngapType.ProcedureCodeAMFConfigurationUpdate
 	unsuccessfulOutcome.Criticality.Value = ngapType.CriticalityPresentReject
 
-	unsuccessfulOutcome.Value.Present = ngapType.UnsuccessfulOutcomePresentOCFConfigurationUpdateFailure
-	unsuccessfulOutcome.Value.OCFConfigurationUpdateFailure = new(ngapType.OCFConfigurationUpdateFailure)
+	unsuccessfulOutcome.Value.Present = ngapType.UnsuccessfulOutcomePresentAMFConfigurationUpdateFailure
+	unsuccessfulOutcome.Value.AMFConfigurationUpdateFailure = new(ngapType.AMFConfigurationUpdateFailure)
 
-	aMFConfigurationUpdateFailure := unsuccessfulOutcome.Value.OCFConfigurationUpdateFailure
+	aMFConfigurationUpdateFailure := unsuccessfulOutcome.Value.AMFConfigurationUpdateFailure
 	aMFConfigurationUpdateFailureIEs := &aMFConfigurationUpdateFailure.ProtocolIEs
 	// Cause
 	{
-		ie := ngapType.OCFConfigurationUpdateFailureIEs{}
+		ie := ngapType.AMFConfigurationUpdateFailureIEs{}
 		ie.Id.Value = ngapType.ProtocolIEIDCause
 		ie.Criticality.Value = ngapType.CriticalityPresentIgnore
-		ie.Value.Present = ngapType.OCFConfigurationUpdateFailureIEsPresentCause
+		ie.Value.Present = ngapType.AMFConfigurationUpdateFailureIEsPresentCause
 		ie.Value.Cause = new(ngapType.Cause)
 
 		cause := ie.Value.Cause
@@ -1583,10 +1583,10 @@ func BuildOCFConfigurationUpdateFailure(
 	}
 	// TimeToWait
 	if time != nil {
-		ie := ngapType.OCFConfigurationUpdateFailureIEs{}
+		ie := ngapType.AMFConfigurationUpdateFailureIEs{}
 		ie.Id.Value = ngapType.ProtocolIEIDTimeToWait
 		ie.Criticality.Value = ngapType.CriticalityPresentIgnore
-		ie.Value.Present = ngapType.OCFConfigurationUpdateFailureIEsPresentTimeToWait
+		ie.Value.Present = ngapType.AMFConfigurationUpdateFailureIEsPresentTimeToWait
 		ie.Value.TimeToWait = new(ngapType.TimeToWait)
 
 		timeToWait := ie.Value.TimeToWait
@@ -1596,10 +1596,10 @@ func BuildOCFConfigurationUpdateFailure(
 	}
 	// CriticalityDiagnostics
 	if diagnostics != nil {
-		ie := ngapType.OCFConfigurationUpdateFailureIEs{}
+		ie := ngapType.AMFConfigurationUpdateFailureIEs{}
 		ie.Id.Value = ngapType.ProtocolIEIDCriticalityDiagnostics
 		ie.Criticality.Value = ngapType.CriticalityPresentIgnore
-		ie.Value.Present = ngapType.OCFConfigurationUpdateFailureIEsPresentCriticalityDiagnostics
+		ie.Value.Present = ngapType.AMFConfigurationUpdateFailureIEsPresentCriticalityDiagnostics
 		ie.Value.CriticalityDiagnostics = new(ngapType.CriticalityDiagnostics)
 
 		criticalityDiagnostics := ie.Value.CriticalityDiagnostics
