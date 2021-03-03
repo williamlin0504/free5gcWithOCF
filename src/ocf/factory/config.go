@@ -20,7 +20,7 @@ type Info struct {
 
 type Configuration struct {
 	OCFInfo          context.OCFNFInfo          `yaml:"OCFInformation"`
-	OCFSCTPAddresses []context.OCFSCTPAddresses `yaml:"OCFSCTPAddresses"`
+	AMFSCTPAddresses []context.AMFSCTPAddresses `yaml:"AMFSCTPAddresses"`
 
 	IKEBindAddr          string `yaml:"IKEBindAddress"`
 	IPSecGatewayAddr     string `yaml:"IPSecInterfaceAddress"`

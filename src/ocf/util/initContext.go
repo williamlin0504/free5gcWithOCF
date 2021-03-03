@@ -41,11 +41,11 @@ func InitOCFContext() bool {
 	}
 
 	// OCF SCTP addresses
-	if len(factory.OcfConfig.Configuration.OCFSCTPAddresses) == 0 {
+	if len(factory.OcfConfig.Configuration.AMFSCTPAddresses) == 0 {
 		contextLog.Error("No OCF specified")
 		return false
 	} else {
-		for _, amfAddress := range factory.OcfConfig.Configuration.OCFSCTPAddresses {
+		for _, amfAddress := range factory.OcfConfig.Configuration.AMFSCTPAddresses {
 			amfSCTPAddr := new(sctp.SCTPAddr)
 			// IP addresses
 			for _, ipAddrStr := range amfAddress.IPAddresses {
@@ -63,7 +63,7 @@ func InitOCFContext() bool {
 				amfSCTPAddr.Port = amfAddress.Port
 			}
 			// Append to context
-			ocfContext.OCFSCTPAddresses = append(ocfContext.OCFSCTPAddresses, amfSCTPAddr)
+			ocfContext.AMFSCTPAddresses = append(ocfContext.AMFSCTPAddresses, amfSCTPAddr)
 		}
 	}
 

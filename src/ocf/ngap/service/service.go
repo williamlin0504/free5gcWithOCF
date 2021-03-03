@@ -27,7 +27,7 @@ func Run() error {
 	// ocf context
 	ocfSelf := context.OCFSelf()
 	// load amf SCTP address slice
-	amfSCTPAddresses := ocfSelf.OCFSCTPAddresses
+	amfSCTPAddresses := ocfSelf.AMFSCTPAddresses
 
 	localAddr := new(sctp.SCTPAddr)
 
