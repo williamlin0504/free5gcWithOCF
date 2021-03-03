@@ -20,13 +20,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// HTTPGetAmfSubscriptionInfo - Retrieve AMF subscription Info
-func HTTPGetAmfSubscriptionInfo(c *gin.Context) {
+// HTTPGetOcfSubscriptionInfo - Retrieve OCF subscription Info
+func HTTPGetOcfSubscriptionInfo(c *gin.Context) {
 	req := http_wrapper.NewRequest(c.Request, nil)
 	req.Params["ueId"] = c.Params.ByName("ueId")
 	req.Params["subsId"] = c.Params.ByName("subsId")
 
-	rsp := producer.HandleGetAmfSubscriptionInfo(req)
+	rsp := producer.HandleGetOcfSubscriptionInfo(req)
 
 	responseBody, err := openapi.Serialize(rsp.Body, "application/json")
 	if err != nil {
@@ -45,7 +45,7 @@ func HTTPGetAmfSubscriptionInfo(c *gin.Context) {
 	// req.Params["ueId"] = c.Params.ByName("ueId")
 	// req.Params["subsId"] = c.Params.ByName("subsId")
 
-	// handlerMsg := message.NewHandlerMessage(message.EventGetAmfSubscriptionInfo, req)
+	// handlerMsg := message.NewHandlerMessage(message.EventGetOcfSubscriptionInfo, req)
 	// message.SendMessage(handlerMsg)
 
 	// rsp := <-handlerMsg.ResponseChan

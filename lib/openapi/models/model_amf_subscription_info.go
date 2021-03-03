@@ -9,8 +9,8 @@
 
 package models
 
-type AmfSubscriptionInfo struct {
-	AmfInstanceId string `json:"amfInstanceId" bson:"amfInstanceId"`
+type OcfSubscriptionInfo struct {
+	OcfInstanceId string `json:"ocfInstanceId" bson:"ocfInstanceId"`
 	// string providing an URI formatted according to IETF RFC 3986.
 	SubscriptionId                string `json:"subscriptionId" bson:"subscriptionId"`
 	SubsChangeNotifyCorrelationId string `json:"subsChangeNotifyCorrelationId,omitempty" bson:"subsChangeNotifyCorrelationId"`

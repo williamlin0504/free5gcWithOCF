@@ -165,7 +165,7 @@ components:
       enum:
       - NRF
       - UDM
-      - AMF
+      - OCF
       - SMF
       - AUSF
       - NEF

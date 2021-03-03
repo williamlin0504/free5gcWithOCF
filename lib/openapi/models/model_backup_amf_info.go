@@ -9,7 +9,7 @@
 
 package models
 
-type BackupAmfInfo struct {
-	BackupAmf string  `json:"backupAmf" yaml:"backupAmf" bson:"backupAmf" mapstructure:"BackupAmf"`
+type BackupOcfInfo struct {
+	BackupOcf string  `json:"backupOcf" yaml:"backupOcf" bson:"backupOcf" mapstructure:"BackupOcf"`
 	GuamiList []Guami `json:"guamiList,omitempty" yaml:"guamiList" bson:"guamiList" mapstructure:"GuamiList"`
 }

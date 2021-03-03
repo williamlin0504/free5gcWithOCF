@@ -5,9 +5,10 @@ import (
 	"free5gc/lib/MongoDBLibrary"
 	"free5gc/lib/openapi/models"
 	"free5gc/webconsole/backend/logger"
-	"github.com/mitchellh/mapstructure"
 	"reflect"
 	"time"
+
+	"github.com/mitchellh/mapstructure"
 )
 
 var webuiContext = WEBUIContext{}
@@ -43,8 +44,8 @@ func (context *WEBUIContext) UpdateNfProfiles() {
 
 		var uri string
 		switch nfProfile.NfType {
-		case models.NfType_AMF:
-			uri = getNfOamUri(nfProfile, models.ServiceName("namf-oam"))
+		case models.NfType_OCF:
+			uri = getNfOamUri(nfProfile, models.ServiceName("nocf-oam"))
 		case models.NfType_SMF:
 			uri = getNfOamUri(nfProfile, models.ServiceName("nsmf-oam"))
 		}

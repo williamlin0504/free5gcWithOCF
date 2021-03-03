@@ -8,11 +8,11 @@ import (
 	"free5gc/lib/nas/security"
 	"free5gc/lib/ngap"
 	"free5gc/lib/path_util"
-	amf_service "free5gc/src/amf/service"
 	"free5gc/src/app"
 	ausf_service "free5gc/src/ausf/service"
 	nrf_service "free5gc/src/nrf/service"
 	nssf_service "free5gc/src/nssf/service"
+	ocf_service "free5gc/src/ocf/service"
 	pcf_service "free5gc/src/pcf/service"
 	smf_service "free5gc/src/smf/service"
 	"free5gc/src/test"
@@ -30,7 +30,7 @@ import (
 
 var NFs = []app.NetworkFunction{
 	&nrf_service.NRF{},
-	&amf_service.AMF{},
+	&ocf_service.OCF{},
 	&smf_service.SMF{},
 	&udr_service.UDR{},
 	&pcf_service.PCF{},
@@ -77,8 +77,8 @@ func TestNGSetup(t *testing.T) {
 	var sendMsg []byte
 	var recvMsg = make([]byte, 2048)
 
-	// RAN connect to AMF
-	conn, err := test.ConntectToAmf("127.0.0.1", "127.0.0.1", 38412, 9487)
+	// RAN connect to OCF
+	conn, err := test.ConntectToOcf("127.0.0.1", "127.0.0.1", 38412, 9487)
 	assert.Nil(t, err)
 
 	// send NGSetupRequest Msg
@@ -101,7 +101,7 @@ func TestCN(t *testing.T) {
 	// New UE
 	ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA2, security.AlgIntegrity128NIA2)
 	// ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA0)
-	ue.AmfUeNgapId = 1
+	ue.OcfUeNgapId = 1
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
 		TestGenAuthData.MilenageTestSet19.OPC,
 		TestGenAuthData.MilenageTestSet19.OP)

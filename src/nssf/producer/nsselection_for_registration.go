@@ -400,12 +400,12 @@ func nsselectionForRegistration(param plugin.NsselectionQueryParameter,
 	}
 
 	if param.Tai != nil &&
-		!util.CheckAllowedNssaiInAmfTa(authorizedNetworkSliceInfo.AllowedNssaiList, param.NfId, *param.Tai) {
-		util.AddAmfInformation(*param.Tai, authorizedNetworkSliceInfo)
+		!util.CheckAllowedNssaiInOcfTa(authorizedNetworkSliceInfo.AllowedNssaiList, param.NfId, *param.Tai) {
+		util.AddOcfInformation(*param.Tai, authorizedNetworkSliceInfo)
 	}
 
 	if param.SliceInfoRequestForRegistration.DefaultConfiguredSnssaiInd {
-		// Default Configured NSSAI Indication is received from AMF
+		// Default Configured NSSAI Indication is received from OCF
 		// Determine the Configured NSSAI based on the Default Configured NSSAI
 		useDefaultConfiguredNssai(param, authorizedNetworkSliceInfo)
 	} else if checkInvalidRequestedNssai {

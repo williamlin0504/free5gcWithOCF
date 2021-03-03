@@ -62,7 +62,7 @@ class UeInfoApiHelper {
         console.log(response.data)
 
         let ue_context = response.data[0]
-        store.dispatch(ueinfoActions.setUEInfoDetailAMF(ue_context));
+        store.dispatch(ueinfoActions.setUEInfoDetailOCF(ue_context));
 
         let smContextRef = ue_context.PduSessions[0].SmContextRef
 

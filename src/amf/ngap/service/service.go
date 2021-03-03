@@ -2,7 +2,7 @@ package service
 
 import (
 	"encoding/hex"
-	"free5gcWithOCF/src/amf/logger"
+	"free5gcWithOCF/src/ocf/logger"
 	"io"
 	"net"
 	"sync"
@@ -100,14 +100,14 @@ func listenAndServe(addr *sctp.SCTPAddr, msgHandler Handler) {
 			logger.NgapLog.Debugf("Set read buffer to %d bytes", readBufSize)
 		}
 
-		logger.NgapLog.Infof("[AMF] SCTP Accept from: %s", conn.RemoteAddr().String())
+		logger.NgapLog.Infof("[OCF] SCTP Accept from: %s", conn.RemoteAddr().String())
 
 		connections.Store(conn, conn)
 		go func() {
 			if err := handleConnection(conn, readBufSize, msgHandler); err != nil {
 				logger.NgapLog.Errorf("Handle connection[addr: %+v] error: %+v", conn.RemoteAddr(), err)
 			}
-			// if AMF call Stop(), then conn.Close() will return "bad file descriptor" error
+			// if OCF call Stop(), then conn.Close() will return "bad file descriptor" error
 			// because conn has been closed inside Stop()
 			if err := conn.Close(); err != nil && err.Error() != "bad file descriptor" {
 				logger.NgapLog.Errorf("close connection error: %+v", err)

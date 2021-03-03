@@ -146,9 +146,9 @@ func CheckSupportedSnssaiInTa(snssai models.Snssai, tai models.Tai) bool {
 	}
 	return false
 
-	// // Check supported S-NSSAI in AmfList instead of TaList
-	// for _, amfConfig := range factory.NssfConfig.Configuration.AmfList {
-	//     if checkSupportedNssaiAvailabilityData(snssai, tai, amfConfig.SupportedNssaiAvailabilityData) == true {
+	// // Check supported S-NSSAI in OcfList instead of TaList
+	// for _, ocfConfig := range factory.NssfConfig.Configuration.OcfList {
+	//     if checkSupportedNssaiAvailabilityData(snssai, tai, ocfConfig.SupportedNssaiAvailabilityData) == true {
 	//         return true
 	//     }
 	// }
@@ -167,30 +167,30 @@ func CheckSupportedNssaiAvailabilityData(
 	return false
 }
 
-// Check whether S-NSSAI is supported or not by the AMF at UE's current TA
-func CheckSupportedSnssaiInAmfTa(snssai models.Snssai, nfId string, tai models.Tai) bool {
-	// Uncomment following lines if supported S-NSSAI lists of AMF Sets are independent of those of AMFs
-	// for _, amfSetConfig := range factory.NssfConfig.Configuration.AmfSetList {
-	//     if amfSetConfig.AmfList != nil && len(amfSetConfig.AmfList) != 0 && Contain(nfId, amfSetConfig.AmfList) {
-	//         return checkSupportedNssaiAvailabilityData(snssai, tai, amfSetConfig.SupportedNssaiAvailabilityData)
+// Check whether S-NSSAI is supported or not by the OCF at UE's current TA
+func CheckSupportedSnssaiInOcfTa(snssai models.Snssai, nfId string, tai models.Tai) bool {
+	// Uncomment following lines if supported S-NSSAI lists of OCF Sets are independent of those of OCFs
+	// for _, ocfSetConfig := range factory.NssfConfig.Configuration.OcfSetList {
+	//     if ocfSetConfig.OcfList != nil && len(ocfSetConfig.OcfList) != 0 && Contain(nfId, ocfSetConfig.OcfList) {
+	//         return checkSupportedNssaiAvailabilityData(snssai, tai, ocfSetConfig.SupportedNssaiAvailabilityData)
 	//     }
 	// }
 
-	for _, amfConfig := range factory.NssfConfig.Configuration.AmfList {
-		if amfConfig.NfId == nfId {
-			return CheckSupportedNssaiAvailabilityData(snssai, tai, amfConfig.SupportedNssaiAvailabilityData)
+	for _, ocfConfig := range factory.NssfConfig.Configuration.OcfList {
+		if ocfConfig.NfId == nfId {
+			return CheckSupportedNssaiAvailabilityData(snssai, tai, ocfConfig.SupportedNssaiAvailabilityData)
 		}
 	}
 
-	logger.Util.Warnf("No AMF %s in NSSF configuration", nfId)
+	logger.Util.Warnf("No OCF %s in NSSF configuration", nfId)
 	return false
 }
 
-// Check whether all S-NSSAIs in Allowed NSSAI is supported by the AMF at UE's current TA
-func CheckAllowedNssaiInAmfTa(allowedNssaiList []models.AllowedNssai, nfId string, tai models.Tai) bool {
+// Check whether all S-NSSAIs in Allowed NSSAI is supported by the OCF at UE's current TA
+func CheckAllowedNssaiInOcfTa(allowedNssaiList []models.AllowedNssai, nfId string, tai models.Tai) bool {
 	for _, allowedNssai := range allowedNssaiList {
 		for _, allowedSnssai := range allowedNssai.AllowedSnssaiList {
-			if CheckSupportedSnssaiInAmfTa(*allowedSnssai.AllowedSnssai, nfId, tai) {
+			if CheckSupportedSnssaiInOcfTa(*allowedSnssai.AllowedSnssai, nfId, tai) {
 				continue
 			} else {
 				return false
@@ -282,14 +282,14 @@ func GetRestrictedSnssaiListFromConfig(tai models.Tai) []models.RestrictedSnssai
 }
 
 // Get authorized NSSAI availability data of the given NF ID and TAI from configuration
-func AuthorizeOfAmfTaFromConfig(nfId string, tai models.Tai) (models.AuthorizedNssaiAvailabilityData, error) {
+func AuthorizeOfOcfTaFromConfig(nfId string, tai models.Tai) (models.AuthorizedNssaiAvailabilityData, error) {
 	var authorizedNssaiAvailabilityData models.AuthorizedNssaiAvailabilityData
 	authorizedNssaiAvailabilityData.Tai = new(models.Tai)
 	*authorizedNssaiAvailabilityData.Tai = tai
 
-	for _, amfConfig := range factory.NssfConfig.Configuration.AmfList {
-		if amfConfig.NfId == nfId {
-			for _, supportedNssaiAvailabilityData := range amfConfig.SupportedNssaiAvailabilityData {
+	for _, ocfConfig := range factory.NssfConfig.Configuration.OcfList {
+		if ocfConfig.NfId == nfId {
+			for _, supportedNssaiAvailabilityData := range ocfConfig.SupportedNssaiAvailabilityData {
 				if reflect.DeepEqual(*supportedNssaiAvailabilityData.Tai, tai) {
 					authorizedNssaiAvailabilityData.SupportedSnssaiList = supportedNssaiAvailabilityData.SupportedSnssaiList
 					authorizedNssaiAvailabilityData.RestrictedSnssaiList = GetRestrictedSnssaiListFromConfig(tai)
@@ -300,25 +300,25 @@ func AuthorizeOfAmfTaFromConfig(nfId string, tai models.Tai) (models.AuthorizedN
 			}
 			e, err1 := json.Marshal(tai)
 			if err1 != nil {
-				logger.Util.Errorf("Marshal error in AuthorizeOfAmfTaFromConfig: %+v", err1)
+				logger.Util.Errorf("Marshal error in AuthorizeOfOcfTaFromConfig: %+v", err1)
 			}
-			err := fmt.Errorf("No supported S-NSSAI list by AMF %s under TAI %s in NSSF configuration", nfId, e)
+			err := fmt.Errorf("No supported S-NSSAI list by OCF %s under TAI %s in NSSF configuration", nfId, e)
 			return authorizedNssaiAvailabilityData, err
 		}
 	}
-	err := fmt.Errorf("No AMF configuration of %s", nfId)
+	err := fmt.Errorf("No OCF configuration of %s", nfId)
 	return authorizedNssaiAvailabilityData, err
 }
 
 // Get all authorized NSSAI availability data of the given NF ID from configuration
-func AuthorizeOfAmfFromConfig(nfId string) ([]models.AuthorizedNssaiAvailabilityData, error) {
+func AuthorizeOfOcfFromConfig(nfId string) ([]models.AuthorizedNssaiAvailabilityData, error) {
 	var authorizedNssaiAvailabilityDataList []models.AuthorizedNssaiAvailabilityData
 
 	factory.ConfigLock.RLock()
 	defer factory.ConfigLock.RUnlock()
-	for _, amfConfig := range factory.NssfConfig.Configuration.AmfList {
-		if amfConfig.NfId == nfId {
-			for _, supportedNssaiAvailabilityData := range amfConfig.SupportedNssaiAvailabilityData {
+	for _, ocfConfig := range factory.NssfConfig.Configuration.OcfList {
+		if ocfConfig.NfId == nfId {
+			for _, supportedNssaiAvailabilityData := range ocfConfig.SupportedNssaiAvailabilityData {
 				var authorizedNssaiAvailabilityData models.AuthorizedNssaiAvailabilityData
 				authorizedNssaiAvailabilityData.Tai = new(models.Tai)
 				*authorizedNssaiAvailabilityData.Tai = *supportedNssaiAvailabilityData.Tai
@@ -331,7 +331,7 @@ func AuthorizeOfAmfFromConfig(nfId string) ([]models.AuthorizedNssaiAvailability
 			return authorizedNssaiAvailabilityDataList, nil
 		}
 	}
-	err := fmt.Errorf("No AMF configuration of %s", nfId)
+	err := fmt.Errorf("No OCF configuration of %s", nfId)
 	return authorizedNssaiAvailabilityDataList, err
 }
 
@@ -357,9 +357,9 @@ func AuthorizeOfTaListFromConfig(taiList []models.Tai) []models.AuthorizedNssaiA
 
 // Get supported S-NSSAI list of the given NF ID and TAI from configuration
 func GetSupportedSnssaiListFromConfig(nfId string, tai models.Tai) []models.Snssai {
-	for _, amfConfig := range factory.NssfConfig.Configuration.AmfList {
-		if amfConfig.NfId == nfId {
-			for _, supportedNssaiAvailabilityData := range amfConfig.SupportedNssaiAvailabilityData {
+	for _, ocfConfig := range factory.NssfConfig.Configuration.OcfList {
+		if ocfConfig.NfId == nfId {
+			for _, supportedNssaiAvailabilityData := range ocfConfig.SupportedNssaiAvailabilityData {
 				if reflect.DeepEqual(*supportedNssaiAvailabilityData.Tai, tai) {
 					return supportedNssaiAvailabilityData.SupportedSnssaiList
 				}
@@ -417,26 +417,26 @@ func AddAllowedSnssai(allowedSnssai models.AllowedSnssai, accessType models.Acce
 	}
 }
 
-// Add AMF information to Authorized Network Slice Info
-func AddAmfInformation(tai models.Tai, authorizedNetworkSliceInfo *models.AuthorizedNetworkSliceInfo) {
+// Add OCF information to Authorized Network Slice Info
+func AddOcfInformation(tai models.Tai, authorizedNetworkSliceInfo *models.AuthorizedNetworkSliceInfo) {
 	factory.ConfigLock.RLock()
 	defer factory.ConfigLock.RUnlock()
 	if authorizedNetworkSliceInfo.AllowedNssaiList == nil || len(authorizedNetworkSliceInfo.AllowedNssaiList) == 0 {
 		return
 	}
 
-	// Check if any AMF can serve the UE
-	// That is, whether NSSAI of all Allowed S-NSSAIs is a subset of NSSAI supported by AMF
+	// Check if any OCF can serve the UE
+	// That is, whether NSSAI of all Allowed S-NSSAIs is a subset of NSSAI supported by OCF
 
-	// Find AMF Set that could serve UE from AMF Set list in configuration
-	// Simply use the first applicable AMF set
-	// TODO: Policies of AMF selection (e.g. load balance between AMF instances)
-	for _, amfSetConfig := range factory.NssfConfig.Configuration.AmfSetList {
+	// Find OCF Set that could serve UE from OCF Set list in configuration
+	// Simply use the first applicable OCF set
+	// TODO: Policies of OCF selection (e.g. load balance between OCF instances)
+	for _, ocfSetConfig := range factory.NssfConfig.Configuration.OcfSetList {
 		hitAllowedNssai := true
 		for _, allowedNssai := range authorizedNetworkSliceInfo.AllowedNssaiList {
 			for _, allowedSnssai := range allowedNssai.AllowedSnssaiList {
 				if CheckSupportedNssaiAvailabilityData(*allowedSnssai.AllowedSnssai,
-					tai, amfSetConfig.SupportedNssaiAvailabilityData) {
+					tai, ocfSetConfig.SupportedNssaiAvailabilityData) {
 					continue
 				} else {
 					hitAllowedNssai = false
@@ -451,30 +451,30 @@ func AddAmfInformation(tai models.Tai, authorizedNetworkSliceInfo *models.Author
 		if !hitAllowedNssai {
 			continue
 		} else {
-			// Add AMF Set to Authorized Network Slice Info
-			if amfSetConfig.AmfList != nil && len(amfSetConfig.AmfList) != 0 {
-				// List of candidate AMF(s) provided in configuration
-				authorizedNetworkSliceInfo.CandidateAmfList =
-					append(authorizedNetworkSliceInfo.CandidateAmfList, amfSetConfig.AmfList...)
+			// Add OCF Set to Authorized Network Slice Info
+			if ocfSetConfig.OcfList != nil && len(ocfSetConfig.OcfList) != 0 {
+				// List of candidate OCF(s) provided in configuration
+				authorizedNetworkSliceInfo.CandidateOcfList =
+					append(authorizedNetworkSliceInfo.CandidateOcfList, ocfSetConfig.OcfList...)
 			} else {
 				// TODO: Possibly querying the NRF
-				authorizedNetworkSliceInfo.TargetAmfSet = amfSetConfig.AmfSetId
-				// The API URI of the NRF may be included if target AMF Set is included
-				authorizedNetworkSliceInfo.NrfAmfSet = amfSetConfig.NrfAmfSet
+				authorizedNetworkSliceInfo.TargetOcfSet = ocfSetConfig.OcfSetId
+				// The API URI of the NRF may be included if target OCF Set is included
+				authorizedNetworkSliceInfo.NrfOcfSet = ocfSetConfig.NrfOcfSet
 			}
 			return
 		}
 	}
 
-	// No AMF Set in configuration can serve the UE
-	// Find all candidate AMFs that could serve UE from AMF list in configuration
-	hitAmf := false
-	for _, amfConfig := range factory.NssfConfig.Configuration.AmfList {
+	// No OCF Set in configuration can serve the UE
+	// Find all candidate OCFs that could serve UE from OCF list in configuration
+	hitOcf := false
+	for _, ocfConfig := range factory.NssfConfig.Configuration.OcfList {
 		hitAllowedNssai := true
 		for _, allowedNssai := range authorizedNetworkSliceInfo.AllowedNssaiList {
 			for _, allowedSnssai := range allowedNssai.AllowedSnssaiList {
 				if CheckSupportedNssaiAvailabilityData(*allowedSnssai.AllowedSnssai,
-					tai, amfConfig.SupportedNssaiAvailabilityData) {
+					tai, ocfConfig.SupportedNssaiAvailabilityData) {
 					continue
 				} else {
 					hitAllowedNssai = false
@@ -489,13 +489,13 @@ func AddAmfInformation(tai models.Tai, authorizedNetworkSliceInfo *models.Author
 		if !hitAllowedNssai {
 			continue
 		} else {
-			// Add AMF Set to Authorized Network Slice Info
-			authorizedNetworkSliceInfo.CandidateAmfList = append(authorizedNetworkSliceInfo.CandidateAmfList, amfConfig.NfId)
-			hitAmf = true
+			// Add OCF Set to Authorized Network Slice Info
+			authorizedNetworkSliceInfo.CandidateOcfList = append(authorizedNetworkSliceInfo.CandidateOcfList, ocfConfig.NfId)
+			hitOcf = true
 		}
 	}
 
-	if !hitAmf {
-		logger.Util.Warnf("No candidate AMF or AMF Set can serve the UE")
+	if !hitOcf {
+		logger.Util.Warnf("No candidate OCF or OCF Set can serve the UE")
 	}
 }

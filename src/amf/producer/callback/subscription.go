@@ -2,45 +2,45 @@ package callback
 
 import (
 	"context"
-	"free5gc/lib/openapi/Namf_Communication"
+	"free5gc/lib/openapi/Nocf_Communication"
 	"free5gc/lib/openapi/models"
-	amf_context "free5gc/src/amf/context"
-	"free5gc/src/amf/logger"
+	ocf_context "free5gc/src/ocf/context"
+	"free5gc/src/ocf/logger"
 	"reflect"
 )
 
-func SendAmfStatusChangeNotify(amfStatus string, guamiList []models.Guami) {
-	amfSelf := amf_context.AMF_Self()
+func SendOcfStatusChangeNotify(ocfStatus string, guamiList []models.Guami) {
+	ocfSelf := ocf_context.OCF_Self()
 
-	amfSelf.AMFStatusSubscriptions.Range(func(key, value interface{}) bool {
+	ocfSelf.OCFStatusSubscriptions.Range(func(key, value interface{}) bool {
 		subscriptionData := value.(models.SubscriptionData)
 
-		configuration := Namf_Communication.NewConfiguration()
-		client := Namf_Communication.NewAPIClient(configuration)
-		amfStatusNotification := models.AmfStatusChangeNotification{}
-		var amfStatusInfo = models.AmfStatusInfo{}
+		configuration := Nocf_Communication.NewConfiguration()
+		client := Nocf_Communication.NewAPIClient(configuration)
+		ocfStatusNotification := models.OcfStatusChangeNotification{}
+		var ocfStatusInfo = models.OcfStatusInfo{}
 
 		for _, guami := range guamiList {
 			for _, subGumi := range subscriptionData.GuamiList {
 				if reflect.DeepEqual(guami, subGumi) {
-					//AMF status is available
-					amfStatusInfo.GuamiList = append(amfStatusInfo.GuamiList, guami)
+					//OCF status is available
+					ocfStatusInfo.GuamiList = append(ocfStatusInfo.GuamiList, guami)
 				}
 			}
 		}
 
-		amfStatusInfo = models.AmfStatusInfo{
-			StatusChange:     (models.StatusChange)(amfStatus),
-			TargetAmfRemoval: "",
-			TargetAmfFailure: "",
+		ocfStatusInfo = models.OcfStatusInfo{
+			StatusChange:     (models.StatusChange)(ocfStatus),
+			TargetOcfRemoval: "",
+			TargetOcfFailure: "",
 		}
 
-		amfStatusNotification.AmfStatusInfoList = append(amfStatusNotification.AmfStatusInfoList, amfStatusInfo)
-		uri := subscriptionData.AmfStatusUri
+		ocfStatusNotification.OcfStatusInfoList = append(ocfStatusNotification.OcfStatusInfoList, ocfStatusInfo)
+		uri := subscriptionData.OcfStatusUri
 
-		logger.ProducerLog.Infof("[AMF] Send Amf Status Change Notify to %s", uri)
-		httpResponse, err := client.AmfStatusChangeCallbackDocumentApiServiceCallbackDocumentApi.
-			AmfStatusChangeNotify(context.Background(), uri, amfStatusNotification)
+		logger.ProducerLog.Infof("[OCF] Send Ocf Status Change Notify to %s", uri)
+		httpResponse, err := client.OcfStatusChangeCallbackDocumentApiServiceCallbackDocumentApi.
+			OcfStatusChangeNotify(context.Background(), uri, ocfStatusNotification)
 		if err != nil {
 			if httpResponse == nil {
 				HttpLog.Errorln(err.Error())

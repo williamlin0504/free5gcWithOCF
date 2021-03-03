@@ -9,21 +9,21 @@
 
 package models
 
-type Amf3GppAccessRegistration struct {
-	AmfInstanceId     string  `json:"amfInstanceId" bson:"amfInstanceId"`
+type Ocf3GppAccessRegistration struct {
+	OcfInstanceId     string  `json:"ocfInstanceId" bson:"ocfInstanceId"`
 	SupportedFeatures string  `json:"supportedFeatures,omitempty" bson:"supportedFeatures"`
 	PurgeFlag         bool    `json:"purgeFlag,omitempty" bson:"purgeFlag"`
 	Pei               string  `json:"pei,omitempty" bson:"pei"`
 	ImsVoPs           ImsVoPs `json:"imsVoPs,omitempty" bson:"imsVoPs"`
 	// string providing an URI formatted according to IETF RFC 3986.
 	DeregCallbackUri    string      `json:"deregCallbackUri" bson:"deregCallbackUri"`
-	AmfServiceNameDereg ServiceName `json:"amfServiceNameDereg,omitempty" bson:"amfServiceNameDereg"`
+	OcfServiceNameDereg ServiceName `json:"ocfServiceNameDereg,omitempty" bson:"ocfServiceNameDereg"`
 	// string providing an URI formatted according to IETF RFC 3986.
 	PcscfRestorationCallbackUri string          `json:"pcscfRestorationCallbackUri,omitempty" bson:"pcscfRestorationCallbackUri"`
-	AmfServiceNamePcscfRest     ServiceName     `json:"amfServiceNamePcscfRest,omitempty" bson:"amfServiceNamePcscfRest"`
+	OcfServiceNamePcscfRest     ServiceName     `json:"ocfServiceNamePcscfRest,omitempty" bson:"ocfServiceNamePcscfRest"`
 	InitialRegistrationInd      bool            `json:"initialRegistrationInd,omitempty" bson:"initialRegistrationInd"`
 	Guami                       *Guami          `json:"guami" bson:"guami"`
-	BackupAmfInfo               []BackupAmfInfo `json:"backupAmfInfo,omitempty" bson:"backupAmfInfo"`
+	BackupOcfInfo               []BackupOcfInfo `json:"backupOcfInfo,omitempty" bson:"backupOcfInfo"`
 	DrFlag                      bool            `json:"drFlag,omitempty" bson:"drFlag"`
 	RatType                     RatType         `json:"ratType" bson:"ratType"`
 }

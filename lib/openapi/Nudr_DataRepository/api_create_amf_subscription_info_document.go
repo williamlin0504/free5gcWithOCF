@@ -26,17 +26,17 @@ var (
 	_ context.Context
 )
 
-type CreateAMFSubscriptionInfoDocumentApiService service
+type CreateOCFSubscriptionInfoDocumentApiService service
 
 /*
-CreateAMFSubscriptionInfoDocumentApiService Create AmfSubscriptions for an individual ee subscriptions of a UE
+CreateOCFSubscriptionInfoDocumentApiService Create OcfSubscriptions for an individual ee subscriptions of a UE
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param ueId
  * @param subsId
- * @param amfSubscriptionInfo
+ * @param ocfSubscriptionInfo
 */
 
-func (a *CreateAMFSubscriptionInfoDocumentApiService) CreateAMFSubscriptions(ctx context.Context, ueId string, subsId string, amfSubscriptionInfo []models.AmfSubscriptionInfo) (*http.Response, error) {
+func (a *CreateOCFSubscriptionInfoDocumentApiService) CreateOCFSubscriptions(ctx context.Context, ueId string, subsId string, ocfSubscriptionInfo []models.OcfSubscriptionInfo) (*http.Response, error) {
 	var (
 		localVarHTTPMethod   = strings.ToUpper("Put")
 		localVarPostBody     interface{}
@@ -46,7 +46,7 @@ func (a *CreateAMFSubscriptionInfoDocumentApiService) CreateAMFSubscriptions(ctx
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath() + "/subscription-data/{ueId}/context-data/ee-subscriptions/{subsId}/amf-subscriptions"
+	localVarPath := a.client.cfg.BasePath() + "/subscription-data/{ueId}/context-data/ee-subscriptions/{subsId}/ocf-subscriptions"
 	localVarPath = strings.Replace(localVarPath, "{"+"ueId"+"}", fmt.Sprintf("%v", ueId), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"subsId"+"}", fmt.Sprintf("%v", subsId), -1)
 
@@ -68,7 +68,7 @@ func (a *CreateAMFSubscriptionInfoDocumentApiService) CreateAMFSubscriptions(ctx
 	}
 
 	// body params
-	localVarPostBody = &amfSubscriptionInfo
+	localVarPostBody = &ocfSubscriptionInfo
 
 	r, err := openapi.PrepareRequest(ctx, a.client.cfg, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {

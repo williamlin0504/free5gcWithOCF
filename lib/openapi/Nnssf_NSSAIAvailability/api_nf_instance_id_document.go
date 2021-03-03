@@ -29,7 +29,7 @@ var (
 type NFInstanceIDDocumentApiService service
 
 /*
-NFInstanceIDDocumentApiService Deletes an already existing S-NSSAIs per TA provided by the NF service consumer (e.g AMF)
+NFInstanceIDDocumentApiService Deletes an already existing S-NSSAIs per TA provided by the NF service consumer (e.g OCF)
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param nfId Identifier of the NF service consumer instance
 */
@@ -148,7 +148,7 @@ func (a *NFInstanceIDDocumentApiService) NSSAIAvailabilityDelete(ctx context.Con
 }
 
 /*
-NFInstanceIDDocumentApiService Updates an already existing S-NSSAIs per TA provided by the NF service consumer (e.g AMF)
+NFInstanceIDDocumentApiService Updates an already existing S-NSSAIs per TA provided by the NF service consumer (e.g OCF)
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param nfId Identifier of the NF service consumer instance
  * @param patchItem JSON Patch instructions to update at the NSSF, the S-NSSAIs supported per TA
@@ -313,7 +313,7 @@ func (a *NFInstanceIDDocumentApiService) NSSAIAvailabilityPatch(ctx context.Cont
 }
 
 /*
-NFInstanceIDDocumentApiService Updates/replaces the NSSF with the S-NSSAIs the NF service consumer (e.g AMF)supports per TA
+NFInstanceIDDocumentApiService Updates/replaces the NSSF with the S-NSSAIs the NF service consumer (e.g OCF)supports per TA
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param nfId Identifier of the NF service consumer instance
  * @param nssaiAvailabilityInfo Parameters to update/replace at the NSSF, the S-NSSAIs supported per TA

@@ -1,4 +1,4 @@
-package TestAmf
+package TestOcf
 
 type NIA2TestSet struct {
 	CountI    string

@@ -26,28 +26,28 @@ var (
 	_ context.Context
 )
 
-type QueryAMFSubscriptionInfoDocumentApiService service
+type QueryOCFSubscriptionInfoDocumentApiService service
 
 /*
-QueryAMFSubscriptionInfoDocumentApiService Retrieve AMF subscription Info
+QueryOCFSubscriptionInfoDocumentApiService Retrieve OCF subscription Info
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param ueId
  * @param subsId
-@return []models.AmfSubscriptionInfo
+@return []models.OcfSubscriptionInfo
 */
 
-func (a *QueryAMFSubscriptionInfoDocumentApiService) GetAmfSubscriptionInfo(ctx context.Context, ueId string, subsId string) ([]models.AmfSubscriptionInfo, *http.Response, error) {
+func (a *QueryOCFSubscriptionInfoDocumentApiService) GetOcfSubscriptionInfo(ctx context.Context, ueId string, subsId string) ([]models.OcfSubscriptionInfo, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  []models.AmfSubscriptionInfo
+		localVarReturnValue  []models.OcfSubscriptionInfo
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath() + "/subscription-data/{ueId}/context-data/ee-subscriptions/{subsId}/amf-subscriptions"
+	localVarPath := a.client.cfg.BasePath() + "/subscription-data/{ueId}/context-data/ee-subscriptions/{subsId}/ocf-subscriptions"
 	localVarPath = strings.Replace(localVarPath, "{"+"ueId"+"}", fmt.Sprintf("%v", ueId), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"subsId"+"}", fmt.Sprintf("%v", subsId), -1)
 

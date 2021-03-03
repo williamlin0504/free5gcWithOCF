@@ -21,7 +21,7 @@ func init() {
 }
 
 // Run setup N3IWF NAS for UE to forward NAS message
-// to AMF
+// to OCF
 func Run() error {
 	// N3IWF context
 	n3iwfSelf := context.N3IWFSelf()
@@ -93,7 +93,7 @@ func listenAndServe(tcpListener net.Listener) {
 
 // serveConn handle accepted TCP connection. It reads NAS packets
 // from the connection and call forward() to forward NAS messages
-// to AMF
+// to OCF
 func serveConn(ue *context.N3IWFUe, connection net.Conn) {
 	defer func() {
 		err := connection.Close()
@@ -124,8 +124,8 @@ func serveConn(ue *context.N3IWFUe, connection net.Conn) {
 }
 
 // forward forwards NAS messages sent from UE to the
-// associated AMF
+// associated OCF
 func forward(ue *context.N3IWFUe, packet []byte) {
 	nwucpLog.Trace("Forward NWu -> N2")
-	message.SendUplinkNASTransport(ue.AMF, ue, packet)
+	message.SendUplinkNASTransport(ue.OCF, ue, packet)
 }

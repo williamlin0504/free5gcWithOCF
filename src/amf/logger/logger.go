@@ -47,28 +47,28 @@ func init() {
 		log.Hooks.Add(free5gcLogHook)
 	}
 
-	selfLogHook, err := logger_util.NewFileHook(logger_conf.NfLogDir+"amf.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
+	selfLogHook, err := logger_util.NewFileHook(logger_conf.NfLogDir+"ocf.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
 	if err == nil {
 		log.Hooks.Add(selfLogHook)
 	}
 
-	AppLog = log.WithFields(logrus.Fields{"component": "AMF", "category": "App"})
-	InitLog = log.WithFields(logrus.Fields{"component": "AMF", "category": "Init"})
-	ContextLog = log.WithFields(logrus.Fields{"component": "AMF", "category": "Context"})
-	NgapLog = log.WithFields(logrus.Fields{"component": "AMF", "category": "NGAP"})
-	HandlerLog = log.WithFields(logrus.Fields{"component": "AMF", "category": "Handler"})
-	HttpLog = log.WithFields(logrus.Fields{"component": "AMF", "category": "HTTP"})
-	GmmLog = log.WithFields(logrus.Fields{"component": "AMF", "category": "Gmm"})
-	MtLog = log.WithFields(logrus.Fields{"component": "AMF", "category": "MT"})
-	ProducerLog = log.WithFields(logrus.Fields{"component": "AMF", "category": "Producer"})
-	LocationLog = log.WithFields(logrus.Fields{"component": "AMF", "category": "LocInfo"})
-	CommLog = log.WithFields(logrus.Fields{"component": "AMF", "category": "Comm"})
-	CallbackLog = log.WithFields(logrus.Fields{"component": "AMF", "category": "Callback"})
-	UtilLog = log.WithFields(logrus.Fields{"component": "AMF", "category": "Util"})
-	NasLog = log.WithFields(logrus.Fields{"component": "AMF", "category": "NAS"})
-	ConsumerLog = log.WithFields(logrus.Fields{"component": "AMF", "category": "Consumer"})
-	EeLog = log.WithFields(logrus.Fields{"component": "AMF", "category": "EventExposure"})
-	GinLog = log.WithFields(logrus.Fields{"component": "AMF", "category": "GIN"})
+	AppLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "App"})
+	InitLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "Init"})
+	ContextLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "Context"})
+	NgapLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "NGAP"})
+	HandlerLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "Handler"})
+	HttpLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "HTTP"})
+	GmmLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "Gmm"})
+	MtLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "MT"})
+	ProducerLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "Producer"})
+	LocationLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "LocInfo"})
+	CommLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "Comm"})
+	CallbackLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "Callback"})
+	UtilLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "Util"})
+	NasLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "NAS"})
+	ConsumerLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "Consumer"})
+	EeLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "EventExposure"})
+	GinLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "GIN"})
 }
 
 func SetLogLevel(level logrus.Level) {

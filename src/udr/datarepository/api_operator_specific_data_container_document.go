@@ -20,7 +20,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// HTTPAmfContext3gpp - To modify operator specific data of a UE
+// HTTPOcfContext3gpp - To modify operator specific data of a UE
 func HTTPPatchOperSpecData(c *gin.Context) {
 	var patchItemArray []models.PatchItem
 

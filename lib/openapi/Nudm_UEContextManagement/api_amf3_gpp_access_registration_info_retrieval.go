@@ -28,33 +28,33 @@ var (
 	_ context.Context
 )
 
-type AMF3GppAccessRegistrationInfoRetrievalApiService service
+type OCF3GppAccessRegistrationInfoRetrievalApiService service
 
 /*
-AMF3GppAccessRegistrationInfoRetrievalApiService retrieve the AMF registration for 3GPP access information
+OCF3GppAccessRegistrationInfoRetrievalApiService retrieve the OCF registration for 3GPP access information
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param ueId Identifier of the UE
  * @param optional nil or *GetParamOpts - Optional Parameters:
  * @param "SupportedFeatures" (optional.String) -
-@return models.Amf3GppAccessRegistration
+@return models.Ocf3GppAccessRegistration
 */
 
 type GetParamOpts struct {
 	SupportedFeatures optional.String
 }
 
-func (a *AMF3GppAccessRegistrationInfoRetrievalApiService) Get(ctx context.Context, ueId string, localVarOptionals *GetParamOpts) (models.Amf3GppAccessRegistration, *http.Response, error) {
+func (a *OCF3GppAccessRegistrationInfoRetrievalApiService) Get(ctx context.Context, ueId string, localVarOptionals *GetParamOpts) (models.Ocf3GppAccessRegistration, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  models.Amf3GppAccessRegistration
+		localVarReturnValue  models.Ocf3GppAccessRegistration
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath() + "/{ueId}/registrations/amf-3gpp-access"
+	localVarPath := a.client.cfg.BasePath() + "/{ueId}/registrations/ocf-3gpp-access"
 	localVarPath = strings.Replace(localVarPath, "{"+"ueId"+"}", fmt.Sprintf("%v", ueId), -1)
 
 	localVarHeaderParams := make(map[string]string)

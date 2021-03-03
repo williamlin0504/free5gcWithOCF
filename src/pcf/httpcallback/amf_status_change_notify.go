@@ -11,8 +11,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func HTTPAmfStatusChangeNotify(c *gin.Context) {
-	var amfStatusChangeNotification models.AmfStatusChangeNotification
+func HTTPOcfStatusChangeNotify(c *gin.Context) {
+	var ocfStatusChangeNotification models.OcfStatusChangeNotification
 
 	requestBody, err := c.GetRawData()
 	if err != nil {
@@ -27,7 +27,7 @@ func HTTPAmfStatusChangeNotify(c *gin.Context) {
 		return
 	}
 
-	err = openapi.Deserialize(&amfStatusChangeNotification, requestBody, "application/json")
+	err = openapi.Deserialize(&ocfStatusChangeNotification, requestBody, "application/json")
 	if err != nil {
 		problemDetail := "[Request Body] " + err.Error()
 		rsp := models.ProblemDetails{
@@ -40,9 +40,9 @@ func HTTPAmfStatusChangeNotify(c *gin.Context) {
 		return
 	}
 
-	req := http_wrapper.NewRequest(c.Request, amfStatusChangeNotification)
+	req := http_wrapper.NewRequest(c.Request, ocfStatusChangeNotification)
 
-	rsp := producer.HandleAmfStatusChangeNotify(req)
+	rsp := producer.HandleOcfStatusChangeNotify(req)
 
 	if rsp.Status == http.StatusNoContent {
 		c.Status(rsp.Status)

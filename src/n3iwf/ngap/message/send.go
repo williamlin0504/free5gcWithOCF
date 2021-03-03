@@ -15,11 +15,11 @@ func init() {
 	ngaplog = logger.NgapLog
 }
 
-func SendToAmf(amf *context.N3IWFAMF, pkt []byte) {
-	if amf == nil {
-		ngaplog.Errorf("[N3IWF] AMF Context is nil ")
+func SendToOcf(ocf *context.N3IWFOCF, pkt []byte) {
+	if ocf == nil {
+		ngaplog.Errorf("[N3IWF] OCF Context is nil ")
 	} else {
-		if n, err := amf.SCTPConn.Write(pkt); err != nil {
+		if n, err := ocf.SCTPConn.Write(pkt); err != nil {
 			ngaplog.Errorf("Write to SCTP socket failed: %+v", err)
 		} else {
 			ngaplog.Tracef("Wrote %d bytes", n)
@@ -32,8 +32,8 @@ func SendNGSetupRequest(conn *sctp.SCTPConn) {
 
 	sctpAddr := conn.RemoteAddr().String()
 
-	if available, _ := context.N3IWFSelf().AMFReInitAvailableListLoad(sctpAddr); !available {
-		ngaplog.Warnf("[N3IWF] Please Wait at least for the indicated time before reinitiating toward same AMF[%s]", sctpAddr)
+	if available, _ := context.N3IWFSelf().OCFReInitAvailableListLoad(sctpAddr); !available {
+		ngaplog.Warnf("[N3IWF] Please Wait at least for the indicated time before reinitiating toward same OCF[%s]", sctpAddr)
 		return
 	}
 	pkt, err := BuildNGSetupRequest()
@@ -51,7 +51,7 @@ func SendNGSetupRequest(conn *sctp.SCTPConn) {
 
 // partOfNGInterface: if reset type is "reset all", set it to nil TS 38.413 9.2.6.11
 func SendNGReset(
-	amf *context.N3IWFAMF,
+	ocf *context.N3IWFOCF,
 	cause ngapType.Cause,
 	partOfNGInterface *ngapType.UEAssociatedLogicalNGConnectionList) {
 
@@ -63,11 +63,11 @@ func SendNGReset(
 		return
 	}
 
-	SendToAmf(amf, pkt)
+	SendToOcf(ocf, pkt)
 }
 
 func SendNGResetAcknowledge(
-	amf *context.N3IWFAMF,
+	ocf *context.N3IWFOCF,
 	partOfNGInterface *ngapType.UEAssociatedLogicalNGConnectionList,
 	diagnostics *ngapType.CriticalityDiagnostics) {
 
@@ -84,11 +84,11 @@ func SendNGResetAcknowledge(
 		return
 	}
 
-	SendToAmf(amf, pkt)
+	SendToOcf(ocf, pkt)
 }
 
 func SendInitialContextSetupResponse(
-	amf *context.N3IWFAMF,
+	ocf *context.N3IWFOCF,
 	ue *context.N3IWFUe,
 	responseList *ngapType.PDUSessionResourceSetupListCxtRes,
 	failedList *ngapType.PDUSessionResourceFailedToSetupListCxtRes,
@@ -112,11 +112,11 @@ func SendInitialContextSetupResponse(
 		return
 	}
 
-	SendToAmf(amf, pkt)
+	SendToOcf(ocf, pkt)
 }
 
 func SendInitialContextSetupFailure(
-	amf *context.N3IWFAMF,
+	ocf *context.N3IWFOCF,
 	ue *context.N3IWFUe,
 	cause ngapType.Cause,
 	failedList *ngapType.PDUSessionResourceFailedToSetupListCxtFail,
@@ -135,11 +135,11 @@ func SendInitialContextSetupFailure(
 		return
 	}
 
-	SendToAmf(amf, pkt)
+	SendToOcf(ocf, pkt)
 }
 
 func SendUEContextModificationResponse(
-	amf *context.N3IWFAMF,
+	ocf *context.N3IWFOCF,
 	ue *context.N3IWFUe,
 	criticalityDiagnostics *ngapType.CriticalityDiagnostics) {
 
@@ -151,11 +151,11 @@ func SendUEContextModificationResponse(
 		return
 	}
 
-	SendToAmf(amf, pkt)
+	SendToOcf(ocf, pkt)
 }
 
 func SendUEContextModificationFailure(
-	amf *context.N3IWFAMF,
+	ocf *context.N3IWFOCF,
 	ue *context.N3IWFUe,
 	cause ngapType.Cause,
 	criticalityDiagnostics *ngapType.CriticalityDiagnostics) {
@@ -168,11 +168,11 @@ func SendUEContextModificationFailure(
 		return
 	}
 
-	SendToAmf(amf, pkt)
+	SendToOcf(ocf, pkt)
 }
 
 func SendUEContextReleaseComplete(
-	amf *context.N3IWFAMF,
+	ocf *context.N3IWFOCF,
 	ue *context.N3IWFUe,
 	criticalityDiagnostics *ngapType.CriticalityDiagnostics) {
 
@@ -184,11 +184,11 @@ func SendUEContextReleaseComplete(
 		return
 	}
 
-	SendToAmf(amf, pkt)
+	SendToOcf(ocf, pkt)
 }
 
 func SendUEContextReleaseRequest(
-	amf *context.N3IWFAMF,
+	ocf *context.N3IWFOCF,
 	ue *context.N3IWFUe, cause ngapType.Cause) {
 
 	ngaplog.Infoln("[N3IWF] Send UE Context Release Request")
@@ -199,13 +199,13 @@ func SendUEContextReleaseRequest(
 		return
 	}
 
-	SendToAmf(amf, pkt)
+	SendToOcf(ocf, pkt)
 }
 
-func SendInitialUEMessage(amf *context.N3IWFAMF,
+func SendInitialUEMessage(ocf *context.N3IWFOCF,
 	ue *context.N3IWFUe, nasPdu []byte) {
 	ngaplog.Infoln("[N3IWF] Send Initial UE Message")
-	// Attach To AMF
+	// Attach To OCF
 
 	pkt, err := BuildInitialUEMessage(ue, nasPdu, nil)
 	if err != nil {
@@ -213,12 +213,12 @@ func SendInitialUEMessage(amf *context.N3IWFAMF,
 		return
 	}
 
-	SendToAmf(amf, pkt)
-	// ue.AttachAMF()
+	SendToOcf(ocf, pkt)
+	// ue.AttachOCF()
 }
 
 func SendUplinkNASTransport(
-	amf *context.N3IWFAMF,
+	ocf *context.N3IWFOCF,
 	ue *context.N3IWFUe,
 	nasPdu []byte) {
 
@@ -235,11 +235,11 @@ func SendUplinkNASTransport(
 		return
 	}
 
-	SendToAmf(amf, pkt)
+	SendToOcf(ocf, pkt)
 }
 
 func SendNASNonDeliveryIndication(
-	amf *context.N3IWFAMF,
+	ocf *context.N3IWFOCF,
 	ue *context.N3IWFUe,
 	nasPdu []byte,
 	cause ngapType.Cause) {
@@ -256,7 +256,7 @@ func SendNASNonDeliveryIndication(
 		return
 	}
 
-	SendToAmf(amf, pkt)
+	SendToOcf(ocf, pkt)
 }
 
 func SendRerouteNASRequest() {
@@ -264,7 +264,7 @@ func SendRerouteNASRequest() {
 }
 
 func SendPDUSessionResourceSetupResponse(
-	amf *context.N3IWFAMF,
+	ocf *context.N3IWFOCF,
 	ue *context.N3IWFUe,
 	responseList *ngapType.PDUSessionResourceSetupListSURes,
 	failedListSURes *ngapType.PDUSessionResourceFailedToSetupListSURes,
@@ -283,11 +283,11 @@ func SendPDUSessionResourceSetupResponse(
 		return
 	}
 
-	SendToAmf(amf, pkt)
+	SendToOcf(ocf, pkt)
 }
 
 func SendPDUSessionResourceModifyResponse(
-	amf *context.N3IWFAMF,
+	ocf *context.N3IWFOCF,
 	ue *context.N3IWFUe,
 	responseList *ngapType.PDUSessionResourceModifyListModRes,
 	failedList *ngapType.PDUSessionResourceFailedToModifyListModRes,
@@ -306,11 +306,11 @@ func SendPDUSessionResourceModifyResponse(
 		return
 	}
 
-	SendToAmf(amf, pkt)
+	SendToOcf(ocf, pkt)
 }
 
 func SendPDUSessionResourceModifyIndication(
-	amf *context.N3IWFAMF,
+	ocf *context.N3IWFOCF,
 	ue *context.N3IWFUe,
 	modifyList []ngapType.PDUSessionResourceModifyItemModInd) {
 
@@ -331,11 +331,11 @@ func SendPDUSessionResourceModifyIndication(
 		return
 	}
 
-	SendToAmf(amf, pkt)
+	SendToOcf(ocf, pkt)
 }
 
 func SendPDUSessionResourceNotify(
-	amf *context.N3IWFAMF,
+	ocf *context.N3IWFOCF,
 	ue *context.N3IWFUe,
 	notiList *ngapType.PDUSessionResourceNotifyList,
 	relList *ngapType.PDUSessionResourceReleasedListNot) {
@@ -353,11 +353,11 @@ func SendPDUSessionResourceNotify(
 		return
 	}
 
-	SendToAmf(amf, pkt)
+	SendToOcf(ocf, pkt)
 }
 
 func SendPDUSessionResourceReleaseResponse(
-	amf *context.N3IWFAMF,
+	ocf *context.N3IWFOCF,
 	ue *context.N3IWFUe,
 	relList ngapType.PDUSessionResourceReleasedListRelRes,
 	diagnostics *ngapType.CriticalityDiagnostics) {
@@ -379,13 +379,13 @@ func SendPDUSessionResourceReleaseResponse(
 		return
 	}
 
-	SendToAmf(amf, pkt)
+	SendToOcf(ocf, pkt)
 
 }
 
 func SendErrorIndication(
-	amf *context.N3IWFAMF,
-	amfUENGAPID *int64,
+	ocf *context.N3IWFOCF,
+	ocfUENGAPID *int64,
 	ranUENGAPID *int64,
 	cause *ngapType.Cause,
 	criticalityDiagnostics *ngapType.CriticalityDiagnostics) {
@@ -397,18 +397,18 @@ func SendErrorIndication(
 		return
 	}
 
-	pkt, err := BuildErrorIndication(amfUENGAPID, ranUENGAPID, cause, criticalityDiagnostics)
+	pkt, err := BuildErrorIndication(ocfUENGAPID, ranUENGAPID, cause, criticalityDiagnostics)
 	if err != nil {
 		ngaplog.Errorf("Build Error Indication failed : %+v\n", err)
 		return
 	}
 
-	SendToAmf(amf, pkt)
+	SendToOcf(ocf, pkt)
 }
 
 func SendErrorIndicationWithSctpConn(
 	sctpConn *sctp.SCTPConn,
-	amfUENGAPID *int64,
+	ocfUENGAPID *int64,
 	ranUENGAPID *int64,
 	cause *ngapType.Cause,
 	criticalityDiagnostics *ngapType.CriticalityDiagnostics) {
@@ -420,7 +420,7 @@ func SendErrorIndicationWithSctpConn(
 		return
 	}
 
-	pkt, err := BuildErrorIndication(amfUENGAPID, ranUENGAPID, cause, criticalityDiagnostics)
+	pkt, err := BuildErrorIndication(ocfUENGAPID, ranUENGAPID, cause, criticalityDiagnostics)
 	if err != nil {
 		ngaplog.Errorf("Build Error Indication failed : %+v\n", err)
 		return
@@ -438,7 +438,7 @@ func SendUERadioCapabilityInfoIndication() {
 }
 
 func SendUERadioCapabilityCheckResponse(
-	amf *context.N3IWFAMF,
+	ocf *context.N3IWFOCF,
 	ue *context.N3IWFUe,
 	diagnostics *ngapType.CriticalityDiagnostics) {
 	ngaplog.Infoln("[N3IWF] Send UE Radio Capability Check Response")
@@ -449,59 +449,59 @@ func SendUERadioCapabilityCheckResponse(
 		ngaplog.Errorf("Build UERadio Capability Check Response failed : %+v\n", err)
 		return
 	}
-	SendToAmf(amf, pkt)
+	SendToOcf(ocf, pkt)
 }
 
-func SendAMFConfigurationUpdateAcknowledge(
-	amf *context.N3IWFAMF,
-	setupList *ngapType.AMFTNLAssociationSetupList,
+func SendOCFConfigurationUpdateAcknowledge(
+	ocf *context.N3IWFOCF,
+	setupList *ngapType.OCFTNLAssociationSetupList,
 	failList *ngapType.TNLAssociationList,
 	diagnostics *ngapType.CriticalityDiagnostics) {
 
-	ngaplog.Infoln("[N3IWF] Send AMF Configuration Update Acknowledge")
+	ngaplog.Infoln("[N3IWF] Send OCF Configuration Update Acknowledge")
 
-	pkt, err := BuildAMFConfigurationUpdateAcknowledge(setupList, failList, diagnostics)
+	pkt, err := BuildOCFConfigurationUpdateAcknowledge(setupList, failList, diagnostics)
 	if err != nil {
-		ngaplog.Errorf("Build AMF Configuration Update Acknowledge failed : %+v\n", err)
+		ngaplog.Errorf("Build OCF Configuration Update Acknowledge failed : %+v\n", err)
 		return
 	}
 
-	SendToAmf(amf, pkt)
+	SendToOcf(ocf, pkt)
 }
 
-func SendAMFConfigurationUpdateFailure(
-	amf *context.N3IWFAMF,
+func SendOCFConfigurationUpdateFailure(
+	ocf *context.N3IWFOCF,
 	ngCause ngapType.Cause,
 	time *ngapType.TimeToWait,
 	diagnostics *ngapType.CriticalityDiagnostics) {
 
-	ngaplog.Infoln("[N3IWF] Send AMF Configuration Update Failure")
-	pkt, err := BuildAMFConfigurationUpdateFailure(ngCause, time, diagnostics)
+	ngaplog.Infoln("[N3IWF] Send OCF Configuration Update Failure")
+	pkt, err := BuildOCFConfigurationUpdateFailure(ngCause, time, diagnostics)
 	if err != nil {
-		ngaplog.Errorf("Build AMF Configuration Update Failure failed : %+v\n", err)
+		ngaplog.Errorf("Build OCF Configuration Update Failure failed : %+v\n", err)
 		return
 	}
 
-	SendToAmf(amf, pkt)
+	SendToOcf(ocf, pkt)
 }
 
-func SendRANConfigurationUpdate(amf *context.N3IWFAMF) {
+func SendRANConfigurationUpdate(ocf *context.N3IWFOCF) {
 
 	ngaplog.Infoln("[N3IWF] Send RAN Configuration Update")
 
-	if available, _ := context.N3IWFSelf().AMFReInitAvailableListLoad(amf.SCTPAddr); !available {
+	if available, _ := context.N3IWFSelf().OCFReInitAvailableListLoad(ocf.SCTPAddr); !available {
 		ngaplog.Warnf(
-			"[N3IWF] Please Wait at least for the indicated time before reinitiating toward same AMF[%s]", amf.SCTPAddr)
+			"[N3IWF] Please Wait at least for the indicated time before reinitiating toward same OCF[%s]", ocf.SCTPAddr)
 		return
 	}
 
 	pkt, err := BuildRANConfigurationUpdate()
 	if err != nil {
-		ngaplog.Errorf("Build AMF Configuration Update Failure failed : %+v\n", err)
+		ngaplog.Errorf("Build OCF Configuration Update Failure failed : %+v\n", err)
 		return
 	}
 
-	SendToAmf(amf, pkt)
+	SendToOcf(ocf, pkt)
 }
 
 func SendUplinkRANConfigurationTransfer() {

@@ -51,7 +51,7 @@ func GetAMreqdata() models.PolicyAssociationRequest {
 	timeNow := time.Now()
 	//d := time.Date(2019, 7, 5, 12, 30, 0, 0, time.UTC)
 	amCreateReqData := models.PolicyAssociationRequest{
-		NotificationUri: "http://127.0.0.1:29518/namf-callback/v1/am-policy/imsi-2089300007487-1",
+		NotificationUri: "http://127.0.0.1:29518/nocf-callback/v1/am-policy/imsi-2089300007487-1",
 		Supi:            "imsi-2089300007487",
 		SuppFeat:        "1",
 		Pei:             "123456789123456",
@@ -113,7 +113,7 @@ func GetAMreqdata() models.PolicyAssociationRequest {
 				Mcc: "208",
 				Mnc: "93",
 			},
-			AmfId: "cafe00",
+			OcfId: "cafe00",
 		},
 		TimeZone: "+08:00+1h",
 		TraceReq: &models.TraceData{
@@ -156,8 +156,8 @@ func GetAMUpdateReqData() models.PolicyAssociationUpdateRequest {
 			CollectionEntityIpv6Addr: "2001:db8:85a3::8a2e:370:7334",
 			InterfaceList:            "string",
 		},
-		NotificationUri:   "http://127.0.0.1:29518/namf-callback/v1/am-policy-backbup/imsi-2089300007487-1",
-		AltNotifIpv4Addrs: []string{"http://127.0.0.1:29518/namf-callback/v1/am-policy/imsi-2089300007487-1"},
+		NotificationUri:   "http://127.0.0.1:29518/nocf-callback/v1/am-policy-backbup/imsi-2089300007487-1",
+		AltNotifIpv4Addrs: []string{"http://127.0.0.1:29518/nocf-callback/v1/am-policy/imsi-2089300007487-1"},
 	}
 	return amUpdateReqData
 }

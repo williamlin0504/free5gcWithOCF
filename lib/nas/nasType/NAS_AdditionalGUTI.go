@@ -9,9 +9,9 @@ package nasType
 // MCCDigit3 Row, sBit, len = [2, 2], 4 , 4
 // MNCDigit2 Row, sBit, len = [3, 3], 8 , 4
 // MNCDigit1 Row, sBit, len = [3, 3], 4 , 4
-// AMFRegionID Row, sBit, len = [4, 4], 8 , 8
-// AMFSetID Row, sBit, len = [5, 6], 8 , 10
-// AMFPointer Row, sBit, len = [6, 6], 6 , 6
+// OCFRegionID Row, sBit, len = [4, 4], 8 , 8
+// OCFSetID Row, sBit, len = [5, 6], 8 , 10
+// OCFPointer Row, sBit, len = [6, 6], 6 , 6
 // TMSI5G Row, sBit, len = [7, 10], 8 , 32
 type AdditionalGUTI struct {
 	Iei   uint8
@@ -146,39 +146,39 @@ func (a *AdditionalGUTI) SetMNCDigit1(mNCDigit1 uint8) {
 }
 
 // AdditionalGUTI 9.11.3.4
-// AMFRegionID Row, sBit, len = [4, 4], 8 , 8
-func (a *AdditionalGUTI) GetAMFRegionID() (aMFRegionID uint8) {
+// OCFRegionID Row, sBit, len = [4, 4], 8 , 8
+func (a *AdditionalGUTI) GetOCFRegionID() (aMFRegionID uint8) {
 	return a.Octet[4]
 }
 
 // AdditionalGUTI 9.11.3.4
-// AMFRegionID Row, sBit, len = [4, 4], 8 , 8
-func (a *AdditionalGUTI) SetAMFRegionID(aMFRegionID uint8) {
+// OCFRegionID Row, sBit, len = [4, 4], 8 , 8
+func (a *AdditionalGUTI) SetOCFRegionID(aMFRegionID uint8) {
 	a.Octet[4] = aMFRegionID
 }
 
 // AdditionalGUTI 9.11.3.4
-// AMFSetID Row, sBit, len = [5, 6], 8 , 10
-func (a *AdditionalGUTI) GetAMFSetID() (aMFSetID uint16) {
+// OCFSetID Row, sBit, len = [5, 6], 8 , 10
+func (a *AdditionalGUTI) GetOCFSetID() (aMFSetID uint16) {
 	return (uint16(a.Octet[5])<<2 + uint16((a.Octet[6])&GetBitMask(8, 2))>>6)
 }
 
 // AdditionalGUTI 9.11.3.4
-// AMFSetID Row, sBit, len = [5, 6], 8 , 10
-func (a *AdditionalGUTI) SetAMFSetID(aMFSetID uint16) {
+// OCFSetID Row, sBit, len = [5, 6], 8 , 10
+func (a *AdditionalGUTI) SetOCFSetID(aMFSetID uint16) {
 	a.Octet[5] = uint8((aMFSetID)>>2) & 255
 	a.Octet[6] = a.Octet[6]&GetBitMask(6, 6) + uint8(aMFSetID&3)<<6
 }
 
 // AdditionalGUTI 9.11.3.4
-// AMFPointer Row, sBit, len = [6, 6], 6 , 6
-func (a *AdditionalGUTI) GetAMFPointer() (aMFPointer uint8) {
+// OCFPointer Row, sBit, len = [6, 6], 6 , 6
+func (a *AdditionalGUTI) GetOCFPointer() (aMFPointer uint8) {
 	return a.Octet[6] & GetBitMask(6, 0)
 }
 
 // AdditionalGUTI 9.11.3.4
-// AMFPointer Row, sBit, len = [6, 6], 6 , 6
-func (a *AdditionalGUTI) SetAMFPointer(aMFPointer uint8) {
+// OCFPointer Row, sBit, len = [6, 6], 6 , 6
+func (a *AdditionalGUTI) SetOCFPointer(aMFPointer uint8) {
 	a.Octet[6] = (a.Octet[6] & 192) + (aMFPointer & 63)
 }
 

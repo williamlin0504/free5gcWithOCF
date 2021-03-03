@@ -11,7 +11,7 @@ import (
 	"free5gc/lib/nas/nasType"
 	"free5gc/lib/nas/security"
 	"free5gc/lib/openapi/models"
-	"free5gc/src/amf/logger"
+	"free5gc/src/ocf/logger"
 	"reflect"
 	"regexp"
 	"sync"
@@ -46,20 +46,20 @@ const (
 	Registered              fsm.StateType = "Registered"
 )
 
-type AmfUe struct {
+type OcfUe struct {
 	/* Gmm State */
 	State map[models.AccessType]*fsm.State
 	/* Registration procedure related context */
 	RegistrationType5GS                uint8
 	IdentityTypeUsedForRegistration    uint8
 	RegistrationRequest                *nasMessage.RegistrationRequest
-	ServingAmfChanged                  bool
+	ServingOcfChanged                  bool
 	DeregistrationTargetAccessType     uint8 // only used when deregistration procedure is initialized by the network
 	RegistrationAcceptForNon3GPPAccess []byte
 	RetransmissionOfInitialNASMsg      bool
-	/* Used for AMF relocation */
-	TargetAmfProfile *models.NfProfile
-	TargetAmfUri     string
+	/* Used for OCF relocation */
+	TargetOcfProfile *models.NfProfile
+	TargetOcfUri     string
 	/* Ue Identity*/
 	PlmnId              models.PlmnId
 	Suci                string
@@ -72,7 +72,7 @@ type AmfUe struct {
 	GroupID             string
 	EBI                 int32
 	/* Ue Identity*/
-	EventSubscriptionsInfo map[string]*AmfUeEventSubscription
+	EventSubscriptionsInfo map[string]*OcfUeEventSubscription
 	/* User Location*/
 	RatType                  models.RatType
 	Location                 models.UserLocation
@@ -102,7 +102,7 @@ type AmfUe struct {
 	AuthFailureCauseSynchFailureTimes int
 	ABBA                              []uint8
 	Kseaf                             string
-	Kamf                              string
+	Kocf                              string
 	/* context about PCF */
 	PcfId                        string
 	PcfUri                       string
@@ -172,7 +172,7 @@ type AmfUe struct {
 	T3550RetryTimes int
 	/* Ue Context Release Cause */
 	ReleaseCause map[models.AccessType]*CauseAll
-	/* T3502 (Assigned by AMF, and used by UE to initialize registration procedure) */
+	/* T3502 (Assigned by OCF, and used by UE to initialize registration procedure) */
 	T3502Value                      int // Second
 	T3512Value                      int // default 54 min
 	Non3gppDeregistrationTimerValue int // default 54 min
@@ -181,11 +181,11 @@ type AmfUe struct {
 	T3522RetryTimes int
 }
 
-type AmfUeEventSubscription struct {
+type OcfUeEventSubscription struct {
 	Timestamp         time.Time
 	AnyUe             bool
 	RemainReports     *int32
-	EventSubscription *models.AmfEventSubscription
+	EventSubscription *models.OcfEventSubscription
 }
 type N1N2Message struct {
 	Request     models.N1N2MessageTransferRequest
@@ -242,12 +242,12 @@ type NGRANCGI struct {
 	EUTRACGI *models.Ecgi
 }
 
-func (ue *AmfUe) init() {
+func (ue *OcfUe) init() {
 	ue.State = make(map[models.AccessType]*fsm.State)
 	ue.State[models.AccessType__3_GPP_ACCESS] = fsm.NewState(Deregistered)
 	ue.State[models.AccessType_NON_3_GPP_ACCESS] = fsm.NewState(Deregistered)
 	ue.UnauthenticatedSupi = true
-	ue.EventSubscriptionsInfo = make(map[string]*AmfUeEventSubscription)
+	ue.EventSubscriptionsInfo = make(map[string]*OcfUeEventSubscription)
 	ue.SmContextList = make(map[int32]*SmContext)
 	ue.StoredSmContext = make(map[int32]*StoredSmContext)
 	ue.RanUe = make(map[models.AccessType]*RanUe)
@@ -263,18 +263,18 @@ func (ue *AmfUe) init() {
 	ue.ReleaseCause = make(map[models.AccessType]*CauseAll)
 }
 
-func (ue *AmfUe) CmConnect(anType models.AccessType) bool {
+func (ue *OcfUe) CmConnect(anType models.AccessType) bool {
 	if _, ok := ue.RanUe[anType]; !ok {
 		return false
 	}
 	return true
 }
 
-func (ue *AmfUe) CmIdle(anType models.AccessType) bool {
+func (ue *OcfUe) CmIdle(anType models.AccessType) bool {
 	return !ue.CmConnect(anType)
 }
 
-func (ue *AmfUe) Remove() {
+func (ue *OcfUe) Remove() {
 	for _, ranUe := range ue.RanUe {
 		if err := ranUe.Remove(); err != nil {
 			logger.ContextLog.Errorf("Remove RanUe error: %v", err)
@@ -282,20 +282,20 @@ func (ue *AmfUe) Remove() {
 	}
 	tmsiGenerator.FreeID(int64(ue.Tmsi))
 	if len(ue.Supi) > 0 {
-		AMF_Self().UePool.Delete(ue.Supi)
+		OCF_Self().UePool.Delete(ue.Supi)
 	}
 }
 
-func (ue *AmfUe) DetachRanUe(anType models.AccessType) {
+func (ue *OcfUe) DetachRanUe(anType models.AccessType) {
 	delete(ue.RanUe, anType)
 }
 
-func (ue *AmfUe) AttachRanUe(ranUe *RanUe) {
+func (ue *OcfUe) AttachRanUe(ranUe *RanUe) {
 	ue.RanUe[ranUe.Ran.AnType] = ranUe
-	ranUe.AmfUe = ue
+	ranUe.OcfUe = ue
 }
 
-func (ue *AmfUe) GetAnType() models.AccessType {
+func (ue *OcfUe) GetAnType() models.AccessType {
 	if ue.CmConnect(models.AccessType__3_GPP_ACCESS) {
 		return models.AccessType__3_GPP_ACCESS
 	} else if ue.CmConnect(models.AccessType_NON_3_GPP_ACCESS) {
@@ -304,7 +304,7 @@ func (ue *AmfUe) GetAnType() models.AccessType {
 	return ""
 }
 
-func (ue *AmfUe) GetCmInfo() (cmInfos []models.CmInfo) {
+func (ue *OcfUe) GetCmInfo() (cmInfos []models.CmInfo) {
 	var cmInfo models.CmInfo
 	cmInfo.AccessType = models.AccessType__3_GPP_ACCESS
 	if ue.CmConnect(cmInfo.AccessType) {
@@ -323,7 +323,7 @@ func (ue *AmfUe) GetCmInfo() (cmInfos []models.CmInfo) {
 	return
 }
 
-func (ue *AmfUe) InAllowedNssai(targetSNssai models.Snssai, anType models.AccessType) bool {
+func (ue *OcfUe) InAllowedNssai(targetSNssai models.Snssai, anType models.AccessType) bool {
 	for _, sNssai := range ue.AllowedNssai[anType] {
 		if reflect.DeepEqual(sNssai, targetSNssai) {
 			return true
@@ -332,7 +332,7 @@ func (ue *AmfUe) InAllowedNssai(targetSNssai models.Snssai, anType models.Access
 	return false
 }
 
-func (ue *AmfUe) InSubscribedNssai(targetSNssai models.Snssai) bool {
+func (ue *OcfUe) InSubscribedNssai(targetSNssai models.Snssai) bool {
 	for _, sNssai := range ue.SubscribedNssai {
 		if reflect.DeepEqual(sNssai.SubscribedSnssai, targetSNssai) {
 			return true
@@ -341,7 +341,7 @@ func (ue *AmfUe) InSubscribedNssai(targetSNssai models.Snssai) bool {
 	return false
 }
 
-func (ue *AmfUe) GetNsiInformationFromSnssai(anType models.AccessType, snssai models.Snssai) *models.NsiInformation {
+func (ue *OcfUe) GetNsiInformationFromSnssai(anType models.AccessType, snssai models.Snssai) *models.NsiInformation {
 	for _, allowedSnssai := range ue.AllowedNssai[anType] {
 		if reflect.DeepEqual(*allowedSnssai.AllowedSnssai, snssai) {
 			// TODO: select NsiInformation based on operator policy
@@ -353,7 +353,7 @@ func (ue *AmfUe) GetNsiInformationFromSnssai(anType models.AccessType, snssai mo
 	return nil
 }
 
-func (ue *AmfUe) TaiListInRegistrationArea(taiList []models.Tai, accessType models.AccessType) bool {
+func (ue *OcfUe) TaiListInRegistrationArea(taiList []models.Tai, accessType models.AccessType) bool {
 	for _, tai := range taiList {
 		if !InTaiList(tai, ue.RegistrationArea[accessType]) {
 			return false
@@ -362,7 +362,7 @@ func (ue *AmfUe) TaiListInRegistrationArea(taiList []models.Tai, accessType mode
 	return true
 }
 
-func (ue *AmfUe) HasWildCardSubscribedDNN() bool {
+func (ue *OcfUe) HasWildCardSubscribedDNN() bool {
 	for _, snssaiInfo := range ue.SmfSelectionData.SubscribedSnssaiInfos {
 		for _, dnnInfo := range snssaiInfo.DnnInfos {
 			if dnnInfo.Dnn == "*" {
@@ -373,12 +373,12 @@ func (ue *AmfUe) HasWildCardSubscribedDNN() bool {
 	return false
 }
 
-func (ue *AmfUe) SecurityContextIsValid() bool {
+func (ue *OcfUe) SecurityContextIsValid() bool {
 	return ue.SecurityContextAvailable && ue.NgKsi.Ksi != nasMessage.NasKeySetIdentifierNoKeyIsAvailable && !ue.MacFailed
 }
 
-// Kamf Derivation function defined in TS 33.501 Annex A.7
-func (ue *AmfUe) DerivateKamf() {
+// Kocf Derivation function defined in TS 33.501 Annex A.7
+func (ue *OcfUe) DerivateKocf() {
 
 	supiRegexp, err := regexp.Compile("(?:imsi|supi)-([0-9]{5,15})")
 	if err != nil {
@@ -401,12 +401,12 @@ func (ue *AmfUe) DerivateKamf() {
 		logger.ContextLog.Error(err)
 		return
 	}
-	KamfBytes := UeauCommon.GetKDFValue(KseafDecode, UeauCommon.FC_FOR_KAMF_DERIVATION, P0, L0, P1, L1)
-	ue.Kamf = hex.EncodeToString(KamfBytes)
+	KocfBytes := UeauCommon.GetKDFValue(KseafDecode, UeauCommon.FC_FOR_KOCF_DERIVATION, P0, L0, P1, L1)
+	ue.Kocf = hex.EncodeToString(KocfBytes)
 }
 
 // Algorithm key Derivation function defined in TS 33.501 Annex A.9
-func (ue *AmfUe) DerivateAlgKey() {
+func (ue *OcfUe) DerivateAlgKey() {
 
 	// Security Key
 	P0 := []byte{security.NNASEncAlg}
@@ -414,12 +414,12 @@ func (ue *AmfUe) DerivateAlgKey() {
 	P1 := []byte{ue.CipheringAlg}
 	L1 := UeauCommon.KDFLen(P1)
 
-	KamfBytes, err := hex.DecodeString(ue.Kamf)
+	KocfBytes, err := hex.DecodeString(ue.Kocf)
 	if err != nil {
 		logger.ContextLog.Error(err)
 		return
 	}
-	kenc := UeauCommon.GetKDFValue(KamfBytes, UeauCommon.FC_FOR_ALGORITHM_KEY_DERIVATION, P0, L0, P1, L1)
+	kenc := UeauCommon.GetKDFValue(KocfBytes, UeauCommon.FC_FOR_ALGORITHM_KEY_DERIVATION, P0, L0, P1, L1)
 	copy(ue.KnasEnc[:], kenc[16:32])
 
 	// Integrity Key
@@ -428,12 +428,12 @@ func (ue *AmfUe) DerivateAlgKey() {
 	P1 = []byte{ue.IntegrityAlg}
 	L1 = UeauCommon.KDFLen(P1)
 
-	kint := UeauCommon.GetKDFValue(KamfBytes, UeauCommon.FC_FOR_ALGORITHM_KEY_DERIVATION, P0, L0, P1, L1)
+	kint := UeauCommon.GetKDFValue(KocfBytes, UeauCommon.FC_FOR_ALGORITHM_KEY_DERIVATION, P0, L0, P1, L1)
 	copy(ue.KnasInt[:], kint[16:32])
 }
 
 // Access Network key Derivation function defined in TS 33.501 Annex A.9
-func (ue *AmfUe) DerivateAnKey(anType models.AccessType) {
+func (ue *OcfUe) DerivateAnKey(anType models.AccessType) {
 
 	accessType := security.AccessType3GPP // Defalut 3gpp
 	P0 := make([]byte, 4)
@@ -445,12 +445,12 @@ func (ue *AmfUe) DerivateAnKey(anType models.AccessType) {
 	P1 := []byte{accessType}
 	L1 := UeauCommon.KDFLen(P1)
 
-	KamfBytes, err := hex.DecodeString(ue.Kamf)
+	KocfBytes, err := hex.DecodeString(ue.Kocf)
 	if err != nil {
 		logger.ContextLog.Error(err)
 		return
 	}
-	key := UeauCommon.GetKDFValue(KamfBytes, UeauCommon.FC_FOR_KGNB_KN3IWF_DERIVATION, P0, L0, P1, L1)
+	key := UeauCommon.GetKDFValue(KocfBytes, UeauCommon.FC_FOR_KGNB_KN3IWF_DERIVATION, P0, L0, P1, L1)
 	switch accessType {
 	case security.AccessType3GPP:
 		ue.Kgnb = key
@@ -460,20 +460,20 @@ func (ue *AmfUe) DerivateAnKey(anType models.AccessType) {
 }
 
 // NH Derivation function defined in TS 33.501 Annex A.10
-func (ue *AmfUe) DerivateNH(syncInput []byte) {
+func (ue *OcfUe) DerivateNH(syncInput []byte) {
 
 	P0 := syncInput
 	L0 := UeauCommon.KDFLen(P0)
 
-	KamfBytes, err := hex.DecodeString(ue.Kamf)
+	KocfBytes, err := hex.DecodeString(ue.Kocf)
 	if err != nil {
 		logger.ContextLog.Error(err)
 		return
 	}
-	ue.NH = UeauCommon.GetKDFValue(KamfBytes, UeauCommon.FC_FOR_NH_DERIVATION, P0, L0)
+	ue.NH = UeauCommon.GetKDFValue(KocfBytes, UeauCommon.FC_FOR_NH_DERIVATION, P0, L0)
 }
 
-func (ue *AmfUe) UpdateSecurityContext(anType models.AccessType) {
+func (ue *OcfUe) UpdateSecurityContext(anType models.AccessType) {
 	ue.DerivateAnKey(anType)
 	switch anType {
 	case models.AccessType__3_GPP_ACCESS:
@@ -484,12 +484,12 @@ func (ue *AmfUe) UpdateSecurityContext(anType models.AccessType) {
 	ue.NCC = 1
 }
 
-func (ue *AmfUe) UpdateNH() {
+func (ue *OcfUe) UpdateNH() {
 	ue.NCC++
 	ue.DerivateNH(ue.NH)
 }
 
-func (ue *AmfUe) SelectSecurityAlg(intOrder, encOrder []uint8) {
+func (ue *OcfUe) SelectSecurityAlg(intOrder, encOrder []uint8) {
 	ue.CipheringAlg = security.AlgCiphering128NEA0
 	ue.IntegrityAlg = security.AlgIntegrity128NIA0
 
@@ -530,23 +530,23 @@ func (ue *AmfUe) SelectSecurityAlg(intOrder, encOrder []uint8) {
 	}
 }
 
-func (ue *AmfUe) ClearRegistrationRequestData(accessType models.AccessType) {
+func (ue *OcfUe) ClearRegistrationRequestData(accessType models.AccessType) {
 	ue.RegistrationRequest = nil
 	ue.RegistrationType5GS = 0
 	ue.IdentityTypeUsedForRegistration = 0
 	ue.AuthFailureCauseSynchFailureTimes = 0
-	ue.ServingAmfChanged = false
+	ue.ServingOcfChanged = false
 	ue.RegistrationAcceptForNon3GPPAccess = nil
 	ue.RanUe[accessType].UeContextRequest = false
 	ue.RetransmissionOfInitialNASMsg = false
 }
 
-func (ue *AmfUe) RemoveAmPolicyAssociation() {
+func (ue *OcfUe) RemoveAmPolicyAssociation() {
 	ue.AmPolicyAssociation = nil
 	ue.PolicyAssociationId = ""
 }
 
-func (ue *AmfUe) CopyDataFromUeContextModel(ueContext models.UeContext) {
+func (ue *OcfUe) CopyDataFromUeContextModel(ueContext models.UeContext) {
 	if ueContext.Supi != "" {
 		ue.Supi = ueContext.Supi
 		ue.UnauthenticatedSupi = ueContext.SupiUnauthInd
@@ -613,9 +613,9 @@ func (ue *AmfUe) CopyDataFromUeContextModel(ueContext models.UeContext) {
 		seafData := ueContext.SeafData
 
 		ue.NgKsi = *seafData.NgKsi
-		if seafData.KeyAmf != nil {
-			if seafData.KeyAmf.KeyType == models.KeyAmfType_KAMF {
-				ue.Kamf = seafData.KeyAmf.KeyVal
+		if seafData.KeyOcf != nil {
+			if seafData.KeyOcf.KeyType == models.KeyOcfType_KOCF {
+				ue.Kocf = seafData.KeyOcf.KeyVal
 			}
 		}
 		if nh, err := hex.DecodeString(seafData.Nh); err != nil {

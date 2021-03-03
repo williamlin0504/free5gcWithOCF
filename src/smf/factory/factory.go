@@ -1,5 +1,5 @@
 /*
- * AMF Configuration Factory
+ * OCF Configuration Factory
  */
 
 package factory

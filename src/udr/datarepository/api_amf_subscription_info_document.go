@@ -16,12 +16,13 @@ import (
 
 	"free5gc/lib/openapi"
 	"free5gc/src/udr/producer"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
-// HTTPModifyAmfSubscriptionInfo - modify the AMF Subscription Info
-func HTTPModifyAmfSubscriptionInfo(c *gin.Context) {
+// HTTPModifyOcfSubscriptionInfo - modify the OCF Subscription Info
+func HTTPModifyOcfSubscriptionInfo(c *gin.Context) {
 	var patchItemArray []models.PatchItem
 
 	requestBody, err := c.GetRawData()
@@ -54,7 +55,7 @@ func HTTPModifyAmfSubscriptionInfo(c *gin.Context) {
 	req.Params["ueId"] = c.Params.ByName("ueId")
 	req.Params["subsId"] = c.Params.ByName("subsId")
 
-	rsp := producer.HandleModifyAmfSubscriptionInfo(req)
+	rsp := producer.HandleModifyOcfSubscriptionInfo(req)
 
 	responseBody, err := openapi.Serialize(rsp.Body, "application/json")
 	if err != nil {

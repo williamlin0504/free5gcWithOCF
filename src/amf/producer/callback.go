@@ -6,12 +6,12 @@ import (
 	"free5gc/lib/nas/nasMessage"
 	"free5gc/lib/ngap/ngapType"
 	"free5gc/lib/openapi/models"
-	"free5gc/src/amf/consumer"
-	"free5gc/src/amf/context"
-	gmm_message "free5gc/src/amf/gmm/message"
-	"free5gc/src/amf/logger"
-	"free5gc/src/amf/nas"
-	ngap_message "free5gc/src/amf/ngap/message"
+	"free5gc/src/ocf/consumer"
+	"free5gc/src/ocf/context"
+	gmm_message "free5gc/src/ocf/gmm/message"
+	"free5gc/src/ocf/logger"
+	"free5gc/src/ocf/nas"
+	ngap_message "free5gc/src/ocf/ngap/message"
 	"net/http"
 	"strconv"
 
@@ -19,7 +19,7 @@ import (
 )
 
 func HandleSmContextStatusNotify(request *http_wrapper.Request) *http_wrapper.Response {
-	logger.ProducerLog.Infoln("[AMF] Handle SmContext Status Notify")
+	logger.ProducerLog.Infoln("[OCF] Handle SmContext Status Notify")
 
 	guti := request.Params["guti"]
 	pduSessionIDString := request.Params["pduSessionId"]
@@ -41,9 +41,9 @@ func HandleSmContextStatusNotify(request *http_wrapper.Request) *http_wrapper.Re
 
 func SmContextStatusNotifyProcedure(guti string, pduSessionID int32,
 	smContextStatusNotification models.SmContextStatusNotification) *models.ProblemDetails {
-	amfSelf := context.AMF_Self()
+	ocfSelf := context.OCF_Self()
 
-	ue, ok := amfSelf.AmfUeFindByGuti(guti)
+	ue, ok := ocfSelf.OcfUeFindByGuti(guti)
 	if !ok {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusNotFound,
@@ -117,9 +117,9 @@ func HandleAmPolicyControlUpdateNotifyUpdate(request *http_wrapper.Request) *htt
 
 func AmPolicyControlUpdateNotifyUpdateProcedure(polAssoID string,
 	policyUpdate models.PolicyUpdate) *models.ProblemDetails {
-	amfSelf := context.AMF_Self()
+	ocfSelf := context.OCF_Self()
 
-	ue, ok := amfSelf.AmfUeFindByPolicyAssociationID(polAssoID)
+	ue, ok := ocfSelf.OcfUeFindByPolicyAssociationID(polAssoID)
 	if !ok {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusNotFound,
@@ -195,9 +195,9 @@ func HandleAmPolicyControlUpdateNotifyTerminate(request *http_wrapper.Request) *
 
 func AmPolicyControlUpdateNotifyTerminateProcedure(polAssoID string,
 	terminationNotification models.TerminationNotification) *models.ProblemDetails {
-	amfSelf := context.AMF_Self()
+	ocfSelf := context.OCF_Self()
 
-	ue, ok := amfSelf.AmfUeFindByPolicyAssociationID(polAssoID)
+	ue, ok := ocfSelf.OcfUeFindByPolicyAssociationID(polAssoID)
 	if !ok {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusNotFound,
@@ -221,9 +221,9 @@ func AmPolicyControlUpdateNotifyTerminateProcedure(polAssoID string,
 	return nil
 }
 
-// TS 23.502 4.2.2.2.3 Registration with AMF re-allocation
+// TS 23.502 4.2.2.2.3 Registration with OCF re-allocation
 func HandleN1MessageNotify(request *http_wrapper.Request) *http_wrapper.Response {
-	logger.ProducerLog.Infoln("[AMF] Handle N1 Message Notify")
+	logger.ProducerLog.Infoln("[OCF] Handle N1 Message Notify")
 
 	n1MessageNotify := request.Body.(models.N1MessageNotify)
 
@@ -238,7 +238,7 @@ func HandleN1MessageNotify(request *http_wrapper.Request) *http_wrapper.Response
 func N1MessageNotifyProcedure(n1MessageNotify models.N1MessageNotify) *models.ProblemDetails {
 	logger.ProducerLog.Debugf("n1MessageNotify: %+v", n1MessageNotify)
 
-	amfSelf := context.AMF_Self()
+	ocfSelf := context.OCF_Self()
 
 	registrationCtxtContainer := n1MessageNotify.JsonData.RegistrationCtxtContainer
 	if registrationCtxtContainer.UeContext == nil {
@@ -250,7 +250,7 @@ func N1MessageNotifyProcedure(n1MessageNotify models.N1MessageNotify) *models.Pr
 		return problemDetails
 	}
 
-	ran, ok := amfSelf.AmfRanFindByRanID(*registrationCtxtContainer.RanNodeId)
+	ran, ok := ocfSelf.OcfRanFindByRanID(*registrationCtxtContainer.RanNodeId)
 	if !ok {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusBadRequest,
@@ -261,32 +261,32 @@ func N1MessageNotifyProcedure(n1MessageNotify models.N1MessageNotify) *models.Pr
 	}
 
 	go func() {
-		var amfUe *context.AmfUe
+		var ocfUe *context.OcfUe
 		ueContext := registrationCtxtContainer.UeContext
 		if ueContext.Supi != "" {
-			amfUe = amfSelf.NewAmfUe(ueContext.Supi)
+			ocfUe = ocfSelf.NewOcfUe(ueContext.Supi)
 		} else {
-			amfUe = amfSelf.NewAmfUe("")
+			ocfUe = ocfSelf.NewOcfUe("")
 		}
-		amfUe.CopyDataFromUeContextModel(*ueContext)
+		ocfUe.CopyDataFromUeContextModel(*ueContext)
 
 		ranUe := ran.RanUeFindByRanUeNgapID(int64(registrationCtxtContainer.AnN2ApId))
 
 		ranUe.Location = *registrationCtxtContainer.UserLocation
-		amfUe.Location = *registrationCtxtContainer.UserLocation
+		ocfUe.Location = *registrationCtxtContainer.UserLocation
 		ranUe.UeContextRequest = registrationCtxtContainer.UeContextRequest
-		ranUe.OldAmfName = registrationCtxtContainer.InitialAmfName
+		ranUe.OldOcfName = registrationCtxtContainer.InitialOcfName
 
 		if registrationCtxtContainer.AllowedNssai != nil {
 			allowedNssai := registrationCtxtContainer.AllowedNssai
-			amfUe.AllowedNssai[allowedNssai.AccessType] = allowedNssai.AllowedSnssaiList
+			ocfUe.AllowedNssai[allowedNssai.AccessType] = allowedNssai.AllowedSnssaiList
 		}
 
 		if len(registrationCtxtContainer.ConfiguredNssai) > 0 {
-			amfUe.ConfiguredNssai = registrationCtxtContainer.ConfiguredNssai
+			ocfUe.ConfiguredNssai = registrationCtxtContainer.ConfiguredNssai
 		}
 
-		amfUe.AttachRanUe(ranUe)
+		ocfUe.AttachRanUe(ranUe)
 
 		nas.HandleNAS(ranUe, ngapType.ProcedureCodeInitialUEMessage, n1MessageNotify.BinaryDataN1Message)
 	}()

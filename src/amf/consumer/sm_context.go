@@ -5,7 +5,7 @@ import (
 	"free5gc/lib/openapi"
 	"free5gc/lib/openapi/Nsmf_PDUSession"
 	"free5gc/lib/openapi/models"
-	amf_context "free5gc/src/amf/context"
+	ocf_context "free5gc/src/ocf/context"
 	"strconv"
 )
 
@@ -22,13 +22,13 @@ const (
 	UpdateSmContextPresentN2HandoverComplete        UpdateSmContextPresent = "N2_Handover_Complete"
 	UpdateSmContextPresentN2HandoverCanceled        UpdateSmContextPresent = "N2_Handover_Canceled"
 	UpdateSmContextPresentHandoverBetweenAccessType UpdateSmContextPresent = "Handover_Between_AccessType"
-	UpdateSmContextPresentHandoverBetweenAMF        UpdateSmContextPresent = "Handover_Between_AMF"
+	UpdateSmContextPresentHandoverBetweenOCF        UpdateSmContextPresent = "Handover_Between_OCF"
 	UpdateSmContextPresentOnlyN2SmInfo              UpdateSmContextPresent = "N2SmInfo"
 )
 
 type updateSmContextRequsetParam struct {
 	accessType         models.AccessType
-	cause              amf_context.CauseAll
+	cause              ocf_context.CauseAll
 	n2SmType           models.N2SmInfoType
 	anTypeCanBeChanged bool
 }
@@ -36,15 +36,15 @@ type updateSmContextRequsetHandoverParam struct {
 	accessType models.AccessType
 	targetId   *models.NgRanTargetId
 	guami      *models.Guami
-	amfid      string
-	cause      amf_context.CauseAll
+	ocfid      string
+	cause      ocf_context.CauseAll
 	n2SmType   models.N2SmInfoType
 	n1SmMsg    bool
 	activation bool
 }
 
 func SendCreateSmContextRequest(
-	ue *amf_context.AmfUe, smfUri string, nasPdu []byte, smContextCreateData models.SmContextCreateData) (
+	ue *ocf_context.OcfUe, smfUri string, nasPdu []byte, smContextCreateData models.SmContextCreateData) (
 	response *models.PostSmContextsResponse, smContextRef string, errorResponse *models.PostSmContextsErrorResponse,
 	problemDetail *models.ProblemDetails, err1 error) {
 	configuration := Nsmf_PDUSession.NewConfiguration()
@@ -79,9 +79,9 @@ func SendCreateSmContextRequest(
 	}
 	return response, smContextRef, errorResponse, problemDetail, err1
 }
-func BuildCreateSmContextRequest(ue *amf_context.AmfUe, pduSessionContext models.PduSessionContext,
+func BuildCreateSmContextRequest(ue *ocf_context.OcfUe, pduSessionContext models.PduSessionContext,
 	requestType models.RequestType) (smContextCreateData models.SmContextCreateData) {
-	context := amf_context.AMF_Self()
+	context := ocf_context.OCF_Self()
 	smContextCreateData.Supi = ue.Supi
 	smContextCreateData.UnauthenticatedSupi = ue.UnauthenticatedSupi
 	smContextCreateData.Pei = ue.Pei
@@ -107,14 +107,14 @@ func BuildCreateSmContextRequest(ue *amf_context.AmfUe, pduSessionContext models
 	// 	smContextCreateData.UeLocation = ue.Location
 	// }
 	smContextCreateData.UeTimeZone = ue.TimeZone
-	smContextCreateData.SmContextStatusUri = context.GetIPv4Uri() + "/namf-callback/v1/smContextStatus/" +
+	smContextCreateData.SmContextStatusUri = context.GetIPv4Uri() + "/nocf-callback/v1/smContextStatus/" +
 		ue.Guti + "/" + strconv.Itoa(int(pduSessionContext.PduSessionId))
 
 	return smContextCreateData
 }
 
 // Upadate SmContext Request
-// servingNfId, smContextStatusUri, guami, servingNetwork -> amf change
+// servingNfId, smContextStatusUri, guami, servingNetwork -> ocf change
 // anType -> anType change
 // ratType -> ratType change
 // presenceInLadn -> Service Request , Xn handover, N2 handover and dnn is a ladn
@@ -123,18 +123,18 @@ func BuildCreateSmContextRequest(ue *amf_context.AmfUe, pduSessionContext models
 // hoState -> the preparation, execution or cancellation of a handover of the PDU session
 // toBeSwitch -> Xn Handover to request to switch the PDU session to a new downlink N3 tunnel endpoint
 // failedToBeSwitch -> indicate that the PDU session failed to be setup in the target RAN
-// targetId, targetServingNfId(preparation with AMF change) -> N2 handover
+// targetId, targetServingNfId(preparation with OCF change) -> N2 handover
 // release -> duplicated PDU Session Id in subclause 5.2.2.3.11, slice not available in subclause 5.2.2.3.12
 // ngApCause -> e.g. the NGAP cause for requesting to deactivate the user plane connection of the PDU session.
-// 5gMmCauseValue -> AMF received a 5GMM cause code from the UE e.g 5GMM Status message in response to
+// 5gMmCauseValue -> OCF received a 5GMM cause code from the UE e.g 5GMM Status message in response to
 // a Downlink NAS Transport message carrying 5GSM payload
 // anTypeCanBeChanged
 
-func SendUpdateSmContextActivateUpCnxState(ue *amf_context.AmfUe, pduSessionId int32, accessType models.AccessType) (
+func SendUpdateSmContextActivateUpCnxState(ue *ocf_context.OcfUe, pduSessionId int32, accessType models.AccessType) (
 	*models.UpdateSmContextResponse, *models.UpdateSmContextErrorResponse, *models.ProblemDetails, error) {
 	smContext, ok := ue.SmContextList[pduSessionId]
 	if !ok {
-		return nil, nil, nil, openapi.ReportError("[AMF] pduSessionId : %d is not in Ue", pduSessionId)
+		return nil, nil, nil, openapi.ReportError("[OCF] pduSessionId : %d is not in Ue", pduSessionId)
 	}
 	param := updateSmContextRequsetParam{
 		accessType: accessType,
@@ -143,11 +143,11 @@ func SendUpdateSmContextActivateUpCnxState(ue *amf_context.AmfUe, pduSessionId i
 	return SendUpdateSmContextRequest(ue, smContext.SmfUri, smContext.PduSessionContext.SmContextRef, updateData, nil, nil)
 }
 
-func SendUpdateSmContextDeactivateUpCnxState(ue *amf_context.AmfUe, pduSessionId int32, cause amf_context.CauseAll) (
+func SendUpdateSmContextDeactivateUpCnxState(ue *ocf_context.OcfUe, pduSessionId int32, cause ocf_context.CauseAll) (
 	*models.UpdateSmContextResponse, *models.UpdateSmContextErrorResponse, *models.ProblemDetails, error) {
 	smContext, ok := ue.SmContextList[pduSessionId]
 	if !ok {
-		return nil, nil, nil, openapi.ReportError("[AMF] pduSessionId : %d is not in Ue", pduSessionId)
+		return nil, nil, nil, openapi.ReportError("[OCF] pduSessionId : %d is not in Ue", pduSessionId)
 	}
 	param := updateSmContextRequsetParam{
 		cause: cause,
@@ -155,11 +155,11 @@ func SendUpdateSmContextDeactivateUpCnxState(ue *amf_context.AmfUe, pduSessionId
 	updateData := BuildUpdateSmContextRequset(ue, UpdateSmContextPresentDeactivateUpCnxState, pduSessionId, param)
 	return SendUpdateSmContextRequest(ue, smContext.SmfUri, smContext.PduSessionContext.SmContextRef, updateData, nil, nil)
 }
-func SendUpdateSmContextChangeAccessType(ue *amf_context.AmfUe, pduSessionId int32, anTypeCanBeChanged bool) (
+func SendUpdateSmContextChangeAccessType(ue *ocf_context.OcfUe, pduSessionId int32, anTypeCanBeChanged bool) (
 	*models.UpdateSmContextResponse, *models.UpdateSmContextErrorResponse, *models.ProblemDetails, error) {
 	smContext, ok := ue.SmContextList[pduSessionId]
 	if !ok {
-		return nil, nil, nil, openapi.ReportError("[AMF] pduSessionId : %d is not in Ue", pduSessionId)
+		return nil, nil, nil, openapi.ReportError("[OCF] pduSessionId : %d is not in Ue", pduSessionId)
 	}
 	param := updateSmContextRequsetParam{
 		anTypeCanBeChanged: anTypeCanBeChanged,
@@ -169,11 +169,11 @@ func SendUpdateSmContextChangeAccessType(ue *amf_context.AmfUe, pduSessionId int
 }
 
 func SendUpdateSmContextN2Info(
-	ue *amf_context.AmfUe, pduSessionId int32, n2SmType models.N2SmInfoType, N2SmInfo []byte) (
+	ue *ocf_context.OcfUe, pduSessionId int32, n2SmType models.N2SmInfoType, N2SmInfo []byte) (
 	*models.UpdateSmContextResponse, *models.UpdateSmContextErrorResponse, *models.ProblemDetails, error) {
 	smContext, ok := ue.SmContextList[pduSessionId]
 	if !ok {
-		return nil, nil, nil, openapi.ReportError("[AMF] pduSessionId : %d is not in Ue", pduSessionId)
+		return nil, nil, nil, openapi.ReportError("[OCF] pduSessionId : %d is not in Ue", pduSessionId)
 	}
 	param := updateSmContextRequsetParam{
 		n2SmType: n2SmType,
@@ -184,11 +184,11 @@ func SendUpdateSmContextN2Info(
 }
 
 func SendUpdateSmContextXnHandover(
-	ue *amf_context.AmfUe, pduSessionId int32, n2SmType models.N2SmInfoType, N2SmInfo []byte) (
+	ue *ocf_context.OcfUe, pduSessionId int32, n2SmType models.N2SmInfoType, N2SmInfo []byte) (
 	*models.UpdateSmContextResponse, *models.UpdateSmContextErrorResponse, *models.ProblemDetails, error) {
 	smContext, ok := ue.SmContextList[pduSessionId]
 	if !ok {
-		return nil, nil, nil, openapi.ReportError("[AMF] pduSessionId : %d is not in Ue", pduSessionId)
+		return nil, nil, nil, openapi.ReportError("[OCF] pduSessionId : %d is not in Ue", pduSessionId)
 	}
 	param := updateSmContextRequsetHandoverParam{
 		n2SmType: n2SmType,
@@ -199,11 +199,11 @@ func SendUpdateSmContextXnHandover(
 }
 
 func SendUpdateSmContextXnHandoverFailed(
-	ue *amf_context.AmfUe, pduSessionId int32, n2SmType models.N2SmInfoType, N2SmInfo []byte) (
+	ue *ocf_context.OcfUe, pduSessionId int32, n2SmType models.N2SmInfoType, N2SmInfo []byte) (
 	*models.UpdateSmContextResponse, *models.UpdateSmContextErrorResponse, *models.ProblemDetails, error) {
 	smContext, ok := ue.SmContextList[pduSessionId]
 	if !ok {
-		return nil, nil, nil, openapi.ReportError("[AMF] pduSessionId : %d is not in Ue", pduSessionId)
+		return nil, nil, nil, openapi.ReportError("[OCF] pduSessionId : %d is not in Ue", pduSessionId)
 	}
 	param := updateSmContextRequsetHandoverParam{
 		n2SmType: n2SmType,
@@ -214,16 +214,16 @@ func SendUpdateSmContextXnHandoverFailed(
 		ue, smContext.SmfUri, smContext.PduSessionContext.SmContextRef, updateData, nil, N2SmInfo)
 }
 
-func SendUpdateSmContextN2HandoverPreparing(ue *amf_context.AmfUe, pduSessionId int32, n2SmType models.N2SmInfoType,
-	N2SmInfo []byte, amfid string, targetId *models.NgRanTargetId) (
+func SendUpdateSmContextN2HandoverPreparing(ue *ocf_context.OcfUe, pduSessionId int32, n2SmType models.N2SmInfoType,
+	N2SmInfo []byte, ocfid string, targetId *models.NgRanTargetId) (
 	*models.UpdateSmContextResponse, *models.UpdateSmContextErrorResponse, *models.ProblemDetails, error) {
 	smContext, ok := ue.SmContextList[pduSessionId]
 	if !ok {
-		return nil, nil, nil, openapi.ReportError("[AMF] pduSessionId : %d is not in Ue", pduSessionId)
+		return nil, nil, nil, openapi.ReportError("[OCF] pduSessionId : %d is not in Ue", pduSessionId)
 	}
 	param := updateSmContextRequsetHandoverParam{
 		targetId: targetId,
-		amfid:    amfid,
+		ocfid:    ocfid,
 		n2SmType: n2SmType,
 	}
 	updateData := BuildUpdateSmContextRequsetHandover(ue, UpdateSmContextPresentN2HandoverPreparing, pduSessionId, param)
@@ -231,11 +231,11 @@ func SendUpdateSmContextN2HandoverPreparing(ue *amf_context.AmfUe, pduSessionId 
 		ue, smContext.SmfUri, smContext.PduSessionContext.SmContextRef, updateData, nil, N2SmInfo)
 }
 func SendUpdateSmContextN2HandoverPrepared(
-	ue *amf_context.AmfUe, pduSessionId int32, n2SmType models.N2SmInfoType, N2SmInfo []byte) (
+	ue *ocf_context.OcfUe, pduSessionId int32, n2SmType models.N2SmInfoType, N2SmInfo []byte) (
 	*models.UpdateSmContextResponse, *models.UpdateSmContextErrorResponse, *models.ProblemDetails, error) {
 	smContext, ok := ue.SmContextList[pduSessionId]
 	if !ok {
-		return nil, nil, nil, openapi.ReportError("[AMF] pduSessionId : %d is not in Ue", pduSessionId)
+		return nil, nil, nil, openapi.ReportError("[OCF] pduSessionId : %d is not in Ue", pduSessionId)
 	}
 	param := updateSmContextRequsetHandoverParam{
 		n2SmType: n2SmType,
@@ -246,24 +246,24 @@ func SendUpdateSmContextN2HandoverPrepared(
 }
 
 func SendUpdateSmContextN2HandoverComplete(
-	ue *amf_context.AmfUe, pduSessionId int32, amfid string, guami *models.Guami) (
+	ue *ocf_context.OcfUe, pduSessionId int32, ocfid string, guami *models.Guami) (
 	*models.UpdateSmContextResponse, *models.UpdateSmContextErrorResponse, *models.ProblemDetails, error) {
 	smContext, ok := ue.SmContextList[pduSessionId]
 	if !ok {
-		return nil, nil, nil, openapi.ReportError("[AMF] pduSessionId : %d is not in Ue", pduSessionId)
+		return nil, nil, nil, openapi.ReportError("[OCF] pduSessionId : %d is not in Ue", pduSessionId)
 	}
 	param := updateSmContextRequsetHandoverParam{
 		guami: guami,
-		amfid: amfid,
+		ocfid: ocfid,
 	}
 	updateData := BuildUpdateSmContextRequsetHandover(ue, UpdateSmContextPresentN2HandoverComplete, pduSessionId, param)
 	return SendUpdateSmContextRequest(ue, smContext.SmfUri, smContext.PduSessionContext.SmContextRef, updateData, nil, nil)
 }
-func SendUpdateSmContextN2HandoverCanceled(ue *amf_context.AmfUe, pduSessionId int32, cause amf_context.CauseAll) (
+func SendUpdateSmContextN2HandoverCanceled(ue *ocf_context.OcfUe, pduSessionId int32, cause ocf_context.CauseAll) (
 	*models.UpdateSmContextResponse, *models.UpdateSmContextErrorResponse, *models.ProblemDetails, error) {
 	smContext, ok := ue.SmContextList[pduSessionId]
 	if !ok {
-		return nil, nil, nil, openapi.ReportError("[AMF] pduSessionId : %d is not in Ue", pduSessionId)
+		return nil, nil, nil, openapi.ReportError("[OCF] pduSessionId : %d is not in Ue", pduSessionId)
 	}
 	param := updateSmContextRequsetHandoverParam{
 		cause: cause,
@@ -273,11 +273,11 @@ func SendUpdateSmContextN2HandoverCanceled(ue *amf_context.AmfUe, pduSessionId i
 }
 
 func SendUpdateSmContextHandoverBetweenAccessType(
-	ue *amf_context.AmfUe, pduSessionId int32, targetAccessType models.AccessType, N1SmMsg []byte) (
+	ue *ocf_context.OcfUe, pduSessionId int32, targetAccessType models.AccessType, N1SmMsg []byte) (
 	*models.UpdateSmContextResponse, *models.UpdateSmContextErrorResponse, *models.ProblemDetails, error) {
 	smContext, ok := ue.SmContextList[pduSessionId]
 	if !ok {
-		return nil, nil, nil, openapi.ReportError("[AMF] pduSessionId : %d is not in Ue", pduSessionId)
+		return nil, nil, nil, openapi.ReportError("[OCF] pduSessionId : %d is not in Ue", pduSessionId)
 	}
 	isN1SmMsg := false
 	if N1SmMsg != nil {
@@ -293,23 +293,23 @@ func SendUpdateSmContextHandoverBetweenAccessType(
 		ue, smContext.SmfUri, smContext.PduSessionContext.SmContextRef, updateData, N1SmMsg, nil)
 }
 
-func SendUpdateSmContextHandoverBetweenAMF(
-	ue *amf_context.AmfUe, pduSessionId int32, amfid string, guami *models.Guami, activate bool) (
+func SendUpdateSmContextHandoverBetweenOCF(
+	ue *ocf_context.OcfUe, pduSessionId int32, ocfid string, guami *models.Guami, activate bool) (
 	*models.UpdateSmContextResponse, *models.UpdateSmContextErrorResponse, *models.ProblemDetails, error) {
 	smContext, ok := ue.SmContextList[pduSessionId]
 	if !ok {
-		return nil, nil, nil, openapi.ReportError("[AMF] pduSessionId : %d is not in Ue", pduSessionId)
+		return nil, nil, nil, openapi.ReportError("[OCF] pduSessionId : %d is not in Ue", pduSessionId)
 	}
 	param := updateSmContextRequsetHandoverParam{
 		guami:      guami,
-		amfid:      amfid,
+		ocfid:      ocfid,
 		activation: activate,
 	}
-	updateData := BuildUpdateSmContextRequsetHandover(ue, UpdateSmContextPresentHandoverBetweenAMF, pduSessionId, param)
+	updateData := BuildUpdateSmContextRequsetHandover(ue, UpdateSmContextPresentHandoverBetweenOCF, pduSessionId, param)
 	return SendUpdateSmContextRequest(ue, smContext.SmfUri, smContext.PduSessionContext.SmContextRef, updateData, nil, nil)
 }
 
-func SendUpdateSmContextRequest(ue *amf_context.AmfUe, smfUri, smContextRef string,
+func SendUpdateSmContextRequest(ue *ocf_context.OcfUe, smfUri, smContextRef string,
 	updateData models.SmContextUpdateData, n1Msg []byte, n2Info []byte) (
 	response *models.UpdateSmContextResponse, errorResponse *models.UpdateSmContextErrorResponse,
 	problemDetail *models.ProblemDetails, err1 error) {
@@ -346,21 +346,21 @@ func SendUpdateSmContextRequest(ue *amf_context.AmfUe, smfUri, smContextRef stri
 }
 
 func BuildUpdateSmContextRequset(
-	ue *amf_context.AmfUe, present UpdateSmContextPresent, pduSessionId int32, param updateSmContextRequsetParam) (
+	ue *ocf_context.OcfUe, present UpdateSmContextPresent, pduSessionId int32, param updateSmContextRequsetParam) (
 	updateData models.SmContextUpdateData) {
 	smContext := ue.SmContextList[pduSessionId]
-	context := amf_context.AMF_Self()
+	context := ocf_context.OCF_Self()
 	switch present {
 	case UpdateSmContextPresentActivateUpCnxState:
 		updateData.UpCnxState = models.UpCnxState_ACTIVATING
-		if !amf_context.CompareUserLocation(ue.Location, smContext.UserLocation) {
+		if !ocf_context.CompareUserLocation(ue.Location, smContext.UserLocation) {
 			updateData.UeLocation = &ue.Location
 		}
 		if param.accessType != "" && smContext.PduSessionContext.AccessType != param.accessType {
 			updateData.AnType = param.accessType
 		}
 		if ladn, ok := context.LadnPool[smContext.PduSessionContext.Dnn]; ok {
-			if amf_context.InTaiList(ue.Tai, ladn.TaiLists) {
+			if ocf_context.InTaiList(ue.Tai, ladn.TaiLists) {
 				updateData.PresenceInLadn = models.PresenceState_IN_AREA
 			}
 		}
@@ -389,10 +389,10 @@ func BuildUpdateSmContextRequset(
 }
 
 func BuildUpdateSmContextRequsetHandover(
-	ue *amf_context.AmfUe, present UpdateSmContextPresent, pduSessionId int32, param updateSmContextRequsetHandoverParam) (
+	ue *ocf_context.OcfUe, present UpdateSmContextPresent, pduSessionId int32, param updateSmContextRequsetHandoverParam) (
 	updateData models.SmContextUpdateData) {
 	smContext := ue.SmContextList[pduSessionId]
-	context := amf_context.AMF_Self()
+	context := ocf_context.OCF_Self()
 	if param.n2SmType != "" {
 		updateData.N2SmInfoType = param.n2SmType
 		updateData.N2SmInfo = new(models.RefToBinaryData)
@@ -403,7 +403,7 @@ func BuildUpdateSmContextRequsetHandover(
 		updateData.ToBeSwitched = true
 		updateData.UeLocation = &ue.Location
 		if ladn, ok := context.LadnPool[smContext.PduSessionContext.Dnn]; ok {
-			if amf_context.InTaiList(ue.Tai, ladn.TaiLists) {
+			if ocf_context.InTaiList(ue.Tai, ladn.TaiLists) {
 				updateData.PresenceInLadn = models.PresenceState_IN_AREA
 			} else {
 				updateData.PresenceInLadn = models.PresenceState_OUT_OF_AREA
@@ -414,21 +414,21 @@ func BuildUpdateSmContextRequsetHandover(
 	case UpdateSmContextPresentN2HandoverPreparing:
 		updateData.HoState = models.HoState_PREPARING
 		updateData.TargetId = param.targetId
-		// amf changed in same plmn
-		if param.amfid != "" {
-			updateData.TargetServingNfId = param.amfid
+		// ocf changed in same plmn
+		if param.ocfid != "" {
+			updateData.TargetServingNfId = param.ocfid
 		}
 	case UpdateSmContextPresentN2HandoverPrepared:
 		updateData.HoState = models.HoState_PREPARED
 	case UpdateSmContextPresentN2HandoverComplete:
 		updateData.HoState = models.HoState_COMPLETED
-		if param.amfid != "" {
-			updateData.ServingNfId = param.amfid
+		if param.ocfid != "" {
+			updateData.ServingNfId = param.ocfid
 			updateData.ServingNetwork = param.guami.PlmnId
 			updateData.Guami = param.guami
 		}
 		if ladn, ok := context.LadnPool[smContext.PduSessionContext.Dnn]; ok {
-			if amf_context.InTaiList(ue.Tai, ladn.TaiLists) {
+			if ocf_context.InTaiList(ue.Tai, ladn.TaiLists) {
 				updateData.PresenceInLadn = models.PresenceState_IN_AREA
 			} else {
 				updateData.PresenceInLadn = models.PresenceState_OUT_OF_AREA
@@ -452,20 +452,20 @@ func BuildUpdateSmContextRequsetHandover(
 			updateData.N1SmMsg = new(models.RefToBinaryData)
 			updateData.N1SmMsg.ContentId = "N1Msg"
 		}
-	case UpdateSmContextPresentHandoverBetweenAMF:
-		updateData.ServingNfId = param.amfid
+	case UpdateSmContextPresentHandoverBetweenOCF:
+		updateData.ServingNfId = param.ocfid
 		updateData.ServingNetwork = param.guami.PlmnId
 		updateData.Guami = param.guami
 		if param.activation {
 			updateData.UpCnxState = models.UpCnxState_ACTIVATING
-			if !amf_context.CompareUserLocation(ue.Location, smContext.UserLocation) {
+			if !ocf_context.CompareUserLocation(ue.Location, smContext.UserLocation) {
 				updateData.UeLocation = &ue.Location
 			}
 			if param.accessType != "" && smContext.PduSessionContext.AccessType != param.accessType {
 				updateData.AnType = param.accessType
 			}
 			if ladn, ok := context.LadnPool[smContext.PduSessionContext.Dnn]; ok {
-				if amf_context.InTaiList(ue.Tai, ladn.TaiLists) {
+				if ocf_context.InTaiList(ue.Tai, ladn.TaiLists) {
 					updateData.PresenceInLadn = models.PresenceState_IN_AREA
 				}
 			}
@@ -476,11 +476,11 @@ func BuildUpdateSmContextRequsetHandover(
 
 // Release SmContext Request
 
-func SendReleaseSmContextRequest(ue *amf_context.AmfUe, pduSessionId int32,
+func SendReleaseSmContextRequest(ue *ocf_context.OcfUe, pduSessionId int32,
 	smContextReleaseData models.SmContextReleaseData) (detail *models.ProblemDetails, err error) {
 	smContext, ok := ue.SmContextList[pduSessionId]
 	if !ok {
-		err = openapi.ReportError("[AMF] pduSessionId : %d is not in Ue", pduSessionId)
+		err = openapi.ReportError("[OCF] pduSessionId : %d is not in Ue", pduSessionId)
 		return
 	}
 
@@ -504,7 +504,7 @@ func SendReleaseSmContextRequest(ue *amf_context.AmfUe, pduSessionId int32,
 	return
 }
 func BuildReleaseSmContextRequest(
-	ue *amf_context.AmfUe, cause *amf_context.CauseAll, n2SmInfoType models.N2SmInfoType, n2Info []byte) (
+	ue *ocf_context.OcfUe, cause *ocf_context.CauseAll, n2SmInfoType models.N2SmInfoType, n2Info []byte) (
 	releaseData models.SmContextReleaseData) {
 	if cause != nil {
 		if cause.Cause != nil {

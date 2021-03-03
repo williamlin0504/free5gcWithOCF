@@ -9,10 +9,10 @@
 
 package models
 
-type Amf3GppAccessRegistrationModification struct {
+type Ocf3GppAccessRegistrationModification struct {
 	Guami         *Guami          `json:"guami" bson:"guami"`
 	PurgeFlag     bool            `json:"purgeFlag,omitempty" bson:"purgeFlag"`
 	Pei           string          `json:"pei,omitempty" bson:"pei"`
 	ImsVoPs       ImsVoPs         `json:"imsVoPs,omitempty" bson:"imsVoPs"`
-	BackupAmfInfo []BackupAmfInfo `json:"backupAmfInfo,omitempty" bson:"backupAmfInfo"`
+	BackupOcfInfo []BackupOcfInfo `json:"backupOcfInfo,omitempty" bson:"backupOcfInfo"`
 }

@@ -533,8 +533,8 @@ func GetServiceRequest(serviceType uint8) []byte {
 	serviceRequest.SetMessageType(nas.MsgTypeServiceRequest)
 	serviceRequest.SetServiceTypeValue(serviceType)
 	serviceRequest.SetNasKeySetIdentifiler(0x01)
-	serviceRequest.SetAMFSetID(uint16(0xFE) << 2)
-	serviceRequest.SetAMFPointer(0)
+	serviceRequest.SetOCFSetID(uint16(0xFE) << 2)
+	serviceRequest.SetOCFPointer(0)
 	serviceRequest.SetTMSI5G([4]uint8{0, 0, 0, 1})
 	serviceRequest.TMSI5GS.SetLen(7)
 	switch serviceType {

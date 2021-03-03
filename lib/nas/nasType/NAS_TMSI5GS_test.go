@@ -82,43 +82,43 @@ func TestNasTypeTMSI5GSGetSetTypeOfIdentity(t *testing.T) {
 	}
 }
 
-type nasTypeTMSI5GSAMFSetID struct {
+type nasTypeTMSI5GSOCFSetID struct {
 	inLen uint16
 	in    uint16
 	out   uint16
 }
 
-var nasTypeTMSI5GSAMFSetIDTable = []nasTypeTMSI5GSAMFSetID{
+var nasTypeTMSI5GSOCFSetIDTable = []nasTypeTMSI5GSOCFSetID{
 	{2, 0x01, 0x01},
 }
 
-func TestNasTypeTMSI5GSGetSetAMFSetID(t *testing.T) {
+func TestNasTypeTMSI5GSGetSetOCFSetID(t *testing.T) {
 	a := nasType.NewTMSI5GS(0x01)
-	for _, table := range nasTypeTMSI5GSAMFSetIDTable {
+	for _, table := range nasTypeTMSI5GSOCFSetIDTable {
 		a.SetLen(table.inLen)
-		a.SetAMFSetID(table.in)
+		a.SetOCFSetID(table.in)
 
-		assert.Equal(t, table.out, a.GetAMFSetID())
+		assert.Equal(t, table.out, a.GetOCFSetID())
 	}
 }
 
-type nasTypeTMSI5GSAMFPointer struct {
+type nasTypeTMSI5GSOCFPointer struct {
 	inLen uint16
 	in    uint8
 	out   uint8
 }
 
-var nasTypeTMSI5GSAMFPointerTable = []nasTypeTMSI5GSAMFPointer{
+var nasTypeTMSI5GSOCFPointerTable = []nasTypeTMSI5GSOCFPointer{
 	{3, 0x01, 0x01},
 }
 
-func TestNasTypeTMSI5GSGetSetAMFPointer(t *testing.T) {
+func TestNasTypeTMSI5GSGetSetOCFPointer(t *testing.T) {
 	a := nasType.NewTMSI5GS(0x01)
-	for _, table := range nasTypeTMSI5GSAMFPointerTable {
+	for _, table := range nasTypeTMSI5GSOCFPointerTable {
 		a.SetLen(table.inLen)
-		a.SetAMFPointer(table.in)
+		a.SetOCFPointer(table.in)
 
-		assert.Equal(t, table.out, a.GetAMFPointer())
+		assert.Equal(t, table.out, a.GetOCFPointer())
 	}
 }
 
@@ -165,8 +165,8 @@ func TestNasTypeTMSI5GS(t *testing.T) {
 		a.SetLen(table.in.Len)
 		a.SetSpare(0x01)
 		a.SetTypeOfIdentity(0x01)
-		a.SetAMFSetID(0x01)
-		a.SetAMFPointer(0x01)
+		a.SetOCFSetID(0x01)
+		a.SetOCFPointer(0x01)
 		a.SetTMSI5G([4]uint8{0x01, 0x01, 0x01, 0x01})
 
 		assert.Equal(t, table.out.Iei, a.Iei)

@@ -26,18 +26,18 @@ type APIClient struct {
 	common service // Reuse a single struct instead of allocating one for each service on the heap.
 
 	// API Services
-	AMF3GPPAccessRegistrationDocumentApi         *AMF3GPPAccessRegistrationDocumentApiService
-	AMFNon3GPPAccessRegistrationDocumentApi      *AMFNon3GPPAccessRegistrationDocumentApiService
+	OCF3GPPAccessRegistrationDocumentApi         *OCF3GPPAccessRegistrationDocumentApiService
+	OCFNon3GPPAccessRegistrationDocumentApi      *OCFNon3GPPAccessRegistrationDocumentApiService
 	AccessAndMobilityDataApi                     *AccessAndMobilityDataApiService
 	AccessAndMobilitySubscriptionDataDocumentApi *AccessAndMobilitySubscriptionDataDocumentApiService
-	AmfSubscriptionInfoDocumentApi               *AmfSubscriptionInfoDocumentApiService
+	OcfSubscriptionInfoDocumentApi               *OcfSubscriptionInfoDocumentApiService
 	AuthEventDocumentApi                         *AuthEventDocumentApiService
 	AuthenticationDataDocumentApi                *AuthenticationDataDocumentApiService
 	AuthenticationSoRDocumentApi                 *AuthenticationSoRDocumentApiService
 	AuthenticationStatusDocumentApi              *AuthenticationStatusDocumentApiService
-	CreateAMFSubscriptionInfoDocumentApi         *CreateAMFSubscriptionInfoDocumentApiService
+	CreateOCFSubscriptionInfoDocumentApi         *CreateOCFSubscriptionInfoDocumentApiService
 	DefaultApi                                   *DefaultApiService
-	EventAMFSubscriptionInfoDocumentApi          *EventAMFSubscriptionInfoDocumentApiService
+	EventOCFSubscriptionInfoDocumentApi          *EventOCFSubscriptionInfoDocumentApiService
 	EventExposureDataDocumentApi                 *EventExposureDataDocumentApiService
 	EventExposureGroupSubscriptionsCollectionApi *EventExposureGroupSubscriptionsCollectionApiService
 	EventExposureSubscriptionDocumentApi         *EventExposureSubscriptionDocumentApiService
@@ -47,7 +47,7 @@ type APIClient struct {
 	PduSessionManagementDataApi                  *PduSessionManagementDataApiService
 	ProvisionedDataDocumentApi                   *ProvisionedDataDocumentApiService
 	ProvisionedParameterDataDocumentApi          *ProvisionedParameterDataDocumentApiService
-	QueryAMFSubscriptionInfoDocumentApi          *QueryAMFSubscriptionInfoDocumentApiService
+	QueryOCFSubscriptionInfoDocumentApi          *QueryOCFSubscriptionInfoDocumentApiService
 	QueryIdentityDataBySUPIOrGPSIDocumentApi     *QueryIdentityDataBySUPIOrGPSIDocumentApiService
 	QueryODBDataBySUPIOrGPSIDocumentApi          *QueryODBDataBySUPIOrGPSIDocumentApiService
 	RetrievalOfSharedDataApi                     *RetrievalOfSharedDataApiService
@@ -88,18 +88,18 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.common.client = c
 
 	// API Services
-	c.AMF3GPPAccessRegistrationDocumentApi = (*AMF3GPPAccessRegistrationDocumentApiService)(&c.common)
-	c.AMFNon3GPPAccessRegistrationDocumentApi = (*AMFNon3GPPAccessRegistrationDocumentApiService)(&c.common)
+	c.OCF3GPPAccessRegistrationDocumentApi = (*OCF3GPPAccessRegistrationDocumentApiService)(&c.common)
+	c.OCFNon3GPPAccessRegistrationDocumentApi = (*OCFNon3GPPAccessRegistrationDocumentApiService)(&c.common)
 	c.AccessAndMobilityDataApi = (*AccessAndMobilityDataApiService)(&c.common)
 	c.AccessAndMobilitySubscriptionDataDocumentApi = (*AccessAndMobilitySubscriptionDataDocumentApiService)(&c.common)
-	c.AmfSubscriptionInfoDocumentApi = (*AmfSubscriptionInfoDocumentApiService)(&c.common)
+	c.OcfSubscriptionInfoDocumentApi = (*OcfSubscriptionInfoDocumentApiService)(&c.common)
 	c.AuthEventDocumentApi = (*AuthEventDocumentApiService)(&c.common)
 	c.AuthenticationDataDocumentApi = (*AuthenticationDataDocumentApiService)(&c.common)
 	c.AuthenticationSoRDocumentApi = (*AuthenticationSoRDocumentApiService)(&c.common)
 	c.AuthenticationStatusDocumentApi = (*AuthenticationStatusDocumentApiService)(&c.common)
-	c.CreateAMFSubscriptionInfoDocumentApi = (*CreateAMFSubscriptionInfoDocumentApiService)(&c.common)
+	c.CreateOCFSubscriptionInfoDocumentApi = (*CreateOCFSubscriptionInfoDocumentApiService)(&c.common)
 	c.DefaultApi = (*DefaultApiService)(&c.common)
-	c.EventAMFSubscriptionInfoDocumentApi = (*EventAMFSubscriptionInfoDocumentApiService)(&c.common)
+	c.EventOCFSubscriptionInfoDocumentApi = (*EventOCFSubscriptionInfoDocumentApiService)(&c.common)
 	c.EventExposureDataDocumentApi = (*EventExposureDataDocumentApiService)(&c.common)
 	c.EventExposureGroupSubscriptionsCollectionApi = (*EventExposureGroupSubscriptionsCollectionApiService)(&c.common)
 	c.EventExposureSubscriptionDocumentApi = (*EventExposureSubscriptionDocumentApiService)(&c.common)
@@ -109,7 +109,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.PduSessionManagementDataApi = (*PduSessionManagementDataApiService)(&c.common)
 	c.ProvisionedDataDocumentApi = (*ProvisionedDataDocumentApiService)(&c.common)
 	c.ProvisionedParameterDataDocumentApi = (*ProvisionedParameterDataDocumentApiService)(&c.common)
-	c.QueryAMFSubscriptionInfoDocumentApi = (*QueryAMFSubscriptionInfoDocumentApiService)(&c.common)
+	c.QueryOCFSubscriptionInfoDocumentApi = (*QueryOCFSubscriptionInfoDocumentApiService)(&c.common)
 	c.QueryIdentityDataBySUPIOrGPSIDocumentApi = (*QueryIdentityDataBySUPIOrGPSIDocumentApiService)(&c.common)
 	c.QueryODBDataBySUPIOrGPSIDocumentApi = (*QueryODBDataBySUPIOrGPSIDocumentApiService)(&c.common)
 	c.RetrievalOfSharedDataApi = (*RetrievalOfSharedDataApiService)(&c.common)

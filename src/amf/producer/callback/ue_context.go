@@ -3,17 +3,17 @@ package callback
 import (
 	"context"
 	"fmt"
-	"free5gc/lib/openapi/Namf_Communication"
+	"free5gc/lib/openapi/Nocf_Communication"
 	"free5gc/lib/openapi/models"
-	amf_context "free5gc/src/amf/context"
+	ocf_context "free5gc/src/ocf/context"
 )
 
-func SendN2InfoNotifyN2Handover(ue *amf_context.AmfUe, releaseList []int32) error {
+func SendN2InfoNotifyN2Handover(ue *ocf_context.OcfUe, releaseList []int32) error {
 	if ue.HandoverNotifyUri == "" {
 		return fmt.Errorf("N2 Info Notify N2Handover failed(uri dose not exist)")
 	}
-	configuration := Namf_Communication.NewConfiguration()
-	client := Namf_Communication.NewAPIClient(configuration)
+	configuration := Nocf_Communication.NewConfiguration()
+	client := Nocf_Communication.NewAPIClient(configuration)
 
 	n2InformationNotification := models.N2InformationNotification{
 		N2NotifySubscriptionId: ue.Supi,

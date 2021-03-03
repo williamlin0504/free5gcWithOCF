@@ -6,8 +6,8 @@ type ProcedureCode struct {
 	Value int64 `aper:"valueLB:0,valueUB:255"`
 }
 
-const ProcedureCodeAMFConfigurationUpdate int64 = 0
-const ProcedureCodeAMFStatusIndication int64 = 1
+const ProcedureCodeOCFConfigurationUpdate int64 = 0
+const ProcedureCodeOCFStatusIndication int64 = 1
 const ProcedureCodeCellTrafficTrace int64 = 2
 const ProcedureCodeDeactivateTrace int64 = 3
 const ProcedureCodeDownlinkNASTransport int64 = 4

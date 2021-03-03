@@ -9,13 +9,13 @@
 
 package models
 
-type AmfInfo struct {
-	AmfSetId             string              `json:"amfSetId" yaml:"amfSetId" bson:"amfSetId" mapstructure:"AmfSetId"`
-	AmfRegionId          string              `json:"amfRegionId" yaml:"amfRegionId" bson:"amfRegionId" mapstructure:"AmfRegionId"`
+type OcfInfo struct {
+	OcfSetId             string              `json:"ocfSetId" yaml:"ocfSetId" bson:"ocfSetId" mapstructure:"OcfSetId"`
+	OcfRegionId          string              `json:"ocfRegionId" yaml:"ocfRegionId" bson:"ocfRegionId" mapstructure:"OcfRegionId"`
 	GuamiList            *[]Guami            `json:"guamiList" yaml:"guamiList" bson:"guamiList" mapstructure:"GuamiList"`
 	TaiList              *[]Tai              `json:"taiList,omitempty" yaml:"taiList" bson:"taiList" mapstructure:"TaiList"`
 	TaiRangeList         *[]TaiRange         `json:"taiRangeList,omitempty" yaml:"taiRangeList" bson:"taiRangeList" mapstructure:"TaiRangeList"`
-	BackupInfoAmfFailure *[]Guami            `json:"backupInfoAmfFailure,omitempty" yaml:"backupInfoAmfFailure" bson:"backupInfoAmfFailure" mapstructure:"BackupInfoAmfFailure"`
-	BackupInfoAmfRemoval *[]Guami            `json:"backupInfoAmfRemoval,omitempty" yaml:"backupInfoAmfRemoval" bson:"backupInfoAmfRemoval" mapstructure:"BackupInfoAmfRemoval"`
-	N2InterfaceAmfInfo   *N2InterfaceAmfInfo `json:"n2InterfaceAmfInfo,omitempty" yaml:"n2InterfaceAmfInfo" bson:"n2InterfaceAmfInfo" mapstructure:"N2InterfaceAmfInfo"`
+	BackupInfoOcfFailure *[]Guami            `json:"backupInfoOcfFailure,omitempty" yaml:"backupInfoOcfFailure" bson:"backupInfoOcfFailure" mapstructure:"BackupInfoOcfFailure"`
+	BackupInfoOcfRemoval *[]Guami            `json:"backupInfoOcfRemoval,omitempty" yaml:"backupInfoOcfRemoval" bson:"backupInfoOcfRemoval" mapstructure:"BackupInfoOcfRemoval"`
+	N2InterfaceOcfInfo   *N2InterfaceOcfInfo `json:"n2InterfaceOcfInfo,omitempty" yaml:"n2InterfaceOcfInfo" bson:"n2InterfaceOcfInfo" mapstructure:"N2InterfaceOcfInfo"`
 }

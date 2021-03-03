@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"free5gc/lib/milenage"
+
 	// "math/rand"
 	"reflect"
 	"strings"
@@ -14,7 +15,7 @@ type f1Test struct {
 	K           string
 	RAND        string
 	SQN         string
-	AMF         string
+	OCF         string
 	OP          string
 	ExpectedOPc string
 	f1          string
@@ -69,7 +70,7 @@ func init() {
 		K:           "465b5ce8b199b49faa5f0a2ee238a6bc",
 		RAND:        "23553cbe9637a89d218ae64dae47bf35",
 		SQN:         "ff9bb4d0b607",
-		AMF:         "b9b9",
+		OCF:         "b9b9",
 		OP:          "cdc202d5123e20f62b6d676ac72cb318",
 		ExpectedOPc: "cd63cb71954a9f4e48a5994e37a02baf",
 		f1:          "4a9ffac354dfafb3",
@@ -79,7 +80,7 @@ func init() {
 		K:           "0396eb317b6d1c36f19c1c84cd6ffd16",
 		RAND:        "c00d603103dcee52c4478119494202e8",
 		SQN:         "fd8eef40df7d",
-		AMF:         "af17",
+		OCF:         "af17",
 		OP:          "ff53bade17df5d4e793073ce9d7579fa",
 		ExpectedOPc: "53c15671c60a4b731c55b4a441c0bde2",
 		f1:          "5df5b31807e258b0",
@@ -90,7 +91,7 @@ func init() {
 		K:           "fec86ba6eb707ed08905757b1bb44b8f",
 		RAND:        "9f7c8d021accf4db213ccff0c7f71a6a",
 		SQN:         "9d0277595ffc",
-		AMF:         "725c",
+		OCF:         "725c",
 		OP:          "dbc59adcb6f9a0ef735477b7fadf8374",
 		ExpectedOPc: "1006020f0a478bf6b699f15c062e42b3",
 		f1:          "9cabc3e99baf7281",
@@ -101,7 +102,7 @@ func init() {
 		K:           "9e5944aea94b81165c82fbf9f32db751",
 		RAND:        "ce83dbc54ac0274a157c17f80d017bd6",
 		SQN:         "0b604a81eca8",
-		AMF:         "9e09",
+		OCF:         "9e09",
 		OP:          "223014c5806694c007ca1eeef57f004f",
 		ExpectedOPc: "a64a507ae1a2a98bb88eb4210135dc87",
 		f1:          "74a58220cba84c49",
@@ -112,7 +113,7 @@ func init() {
 		K:           "4ab1deb05ca6ceb051fc98e77d026a84",
 		RAND:        "74b0cd6031a1c8339b2b6ce2b8c4a186",
 		SQN:         "e880a1b580b6 ",
-		AMF:         "9f07",
+		OCF:         "9f07",
 		OP:          "2d16c5cd1fdf6b22383584e3bef2a8d8",
 		ExpectedOPc: "dcf07cbd51855290b92a07a9891e523e",
 		f1:          "49e785dd12626ef2",
@@ -123,7 +124,7 @@ func init() {
 		K:           "6c38a116ac280c454f59332ee35c8c4f",
 		RAND:        "ee6466bc96202c5a557abbeff8babf63",
 		SQN:         "414b98222181",
-		AMF:         "4464",
+		OCF:         "4464",
 		OP:          "1ba00a1a7c6700ac8c3ff3e96ad08725",
 		ExpectedOPc: "3803ef5363b947c6aaa225e58fae3934",
 		f1:          "078adfb488241a57",
@@ -242,7 +243,7 @@ func TestF1Test35207(t *testing.T) {
 		K, _ := hex.DecodeString(strings.Repeat(testTable.K, 1))
 		RAND, _ := hex.DecodeString(strings.Repeat(testTable.RAND, 1))
 		SQN, _ := hex.DecodeString(strings.Repeat(testTable.SQN, 1))
-		AMF, _ := hex.DecodeString(strings.Repeat(testTable.AMF, 1))
+		OCF, _ := hex.DecodeString(strings.Repeat(testTable.OCF, 1))
 		OP, _ := hex.DecodeString(strings.Repeat(testTable.OP, 1))
 		ExpectedOPc, _ := hex.DecodeString(strings.Repeat(testTable.ExpectedOPc, 1))
 		f1, _ := hex.DecodeString(strings.Repeat(testTable.f1, 1))
@@ -258,7 +259,7 @@ func TestF1Test35207(t *testing.T) {
 			t.Errorf("Testf1Test35207%s \t OPC[0x%x] \t ExpectedOPc[0x%x]\n", i, OPC, ExpectedOPc)
 		}
 		MAC_A, MAC_S := make([]byte, 8), make([]byte, 8)
-		milenage.F1(OPC, K, RAND, SQN, AMF, MAC_A, MAC_S)
+		milenage.F1(OPC, K, RAND, SQN, OCF, MAC_A, MAC_S)
 
 		if !reflect.DeepEqual(MAC_A, f1) {
 			t.Errorf("Testf1Test35207%s \t MAC_A[0x%x] \t f1[0x%x]\n", i, MAC_A, f1)
@@ -362,7 +363,7 @@ func TestRAND(t *testing.T) {
 	/*
 		K, RAND, CK, IK: 128 bits (16 bytes) (hex len = 32)
 		SQN, AK: 48 bits (6 bytes) (hex len = 12) TS33.102 - 6.3.2
-		AMF: 16 bits (2 bytes) (hex len = 4) TS33.102 - Annex H
+		OCF: 16 bits (2 bytes) (hex len = 4) TS33.102 - Annex H
 	*/
 
 	K, OP := make([]byte, 16), make([]byte, 16)
@@ -383,13 +384,13 @@ func TestRAND(t *testing.T) {
 	RAND := make([]byte, 16)
 	RAND, _ = hex.DecodeString("81e92b6c0ee0e12ebceba8d92a99dfa5")
 
-	AMF, _ := hex.DecodeString("c3ab")
-	fmt.Printf("RAND=%x\nAMF=%x\n", RAND, AMF)
+	OCF, _ := hex.DecodeString("c3ab")
+	fmt.Printf("RAND=%x\nOCF=%x\n", RAND, OCF)
 
 	// for test
 	// RAND, _ = hex.DecodeString(TestGenAuthData.MilenageTestSet19.RAND)
-	// AMF, _ = hex.DecodeString(TestGenAuthData.MilenageTestSet19.AMF)
-	fmt.Printf("For test: RAND=%x, AMF=%x\n", RAND, AMF)
+	// OCF, _ = hex.DecodeString(TestGenAuthData.MilenageTestSet19.OCF)
+	fmt.Printf("For test: RAND=%x, OCF=%x\n", RAND, OCF)
 
 	// Run milenage
 	MAC_A, MAC_S := make([]byte, 8), make([]byte, 8)
@@ -399,7 +400,7 @@ func TestRAND(t *testing.T) {
 
 	// Generate MAC_A, MAC_S
 
-	milenage.F1(OPC, K, RAND, SQN, AMF, MAC_A, MAC_S)
+	milenage.F1(OPC, K, RAND, SQN, OCF, MAC_A, MAC_S)
 
 	// Generate RES, CK, IK, AK, AKstar
 	// RES == XRES (expected RES) for server
@@ -428,14 +429,14 @@ func TestRAND(t *testing.T) {
 	if !reflect.DeepEqual(AK, expAK) {
 		t.Errorf("AK[0x%x] \t expected[0x%x]\n", AK, expAK)
 	}
-	// fmt.Printf("AMF=%x, MAC_A=%x\n", AMF, MAC_A)
+	// fmt.Printf("OCF=%x, MAC_A=%x\n", OCF, MAC_A)
 	SQNxorAK := make([]byte, 6)
 	for i := 0; i < len(SQN); i++ {
 		SQNxorAK[i] = SQN[i] ^ AK[i]
 	}
 
 	fmt.Printf("SQN xor AK = %x\n", SQNxorAK)
-	AUTN := append(append(SQNxorAK, AMF...), MAC_A...)
+	AUTN := append(append(SQNxorAK, OCF...), MAC_A...)
 
 	// fmt.Printf("MAC_A = %x\n", MAC_A)
 	// fmt.Printf("MAC_S = %x\n", MAC_S)

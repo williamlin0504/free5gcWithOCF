@@ -3,8 +3,8 @@ package producer
 import (
 	"free5gc/lib/http_wrapper"
 	"free5gc/lib/openapi/models"
-	"free5gc/src/amf/context"
-	"free5gc/src/amf/logger"
+	"free5gc/src/ocf/context"
+	"free5gc/src/ocf/logger"
 	"net/http"
 )
 
@@ -26,9 +26,9 @@ func HandleProvideDomainSelectionInfoRequest(request *http_wrapper.Request) *htt
 
 func ProvideDomainSelectionInfoProcedure(ueContextID string, infoClassQuery string, supportedFeaturesQuery string) (
 	*models.UeContextInfo, *models.ProblemDetails) {
-	amfSelf := context.AMF_Self()
+	ocfSelf := context.OCF_Self()
 
-	ue, ok := amfSelf.AmfUeFindByUeContextID(ueContextID)
+	ue, ok := ocfSelf.OcfUeFindByUeContextID(ueContextID)
 	if !ok {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusNotFound,

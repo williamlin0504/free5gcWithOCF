@@ -5,7 +5,7 @@ import (
 	"free5gc/lib/ngap/ngapConvert"
 	"free5gc/lib/ngap/ngapType"
 	"free5gc/lib/openapi/models"
-	"free5gc/src/amf/logger"
+	"free5gc/src/ocf/logger"
 	"net"
 )
 
@@ -15,7 +15,7 @@ const (
 	RanPresentN3IwfId = 3
 )
 
-type AmfRan struct {
+type OcfRan struct {
 	RanPresent int
 	RanId      *models.GlobalRanNodeId
 	Name       string
@@ -39,28 +39,28 @@ func NewSupportedTAI() (tai SupportedTAI) {
 	return
 }
 
-func (ran *AmfRan) Remove() {
+func (ran *OcfRan) Remove() {
 	ran.RemoveAllUeInRan()
-	AMF_Self().DeleteAmfRan(ran.Conn)
+	OCF_Self().DeleteOcfRan(ran.Conn)
 }
 
-func (ran *AmfRan) NewRanUe(ranUeNgapID int64) (*RanUe, error) {
+func (ran *OcfRan) NewRanUe(ranUeNgapID int64) (*RanUe, error) {
 	ranUe := RanUe{}
-	self := AMF_Self()
-	amfUeNgapID, err := self.AllocateAmfUeNgapID()
+	self := OCF_Self()
+	ocfUeNgapID, err := self.AllocateOcfUeNgapID()
 	if err != nil {
-		return nil, fmt.Errorf("Allocate AMF UE NGAP ID error: %+v", err)
+		return nil, fmt.Errorf("Allocate OCF UE NGAP ID error: %+v", err)
 	}
-	ranUe.AmfUeNgapId = amfUeNgapID
+	ranUe.OcfUeNgapId = ocfUeNgapID
 	ranUe.RanUeNgapId = ranUeNgapID
 	ranUe.Ran = ran
 
 	ran.RanUeList = append(ran.RanUeList, &ranUe)
-	self.RanUePool.Store(ranUe.AmfUeNgapId, &ranUe)
+	self.RanUePool.Store(ranUe.OcfUeNgapId, &ranUe)
 	return &ranUe, nil
 }
 
-func (ran *AmfRan) RemoveAllUeInRan() {
+func (ran *OcfRan) RemoveAllUeInRan() {
 	for _, ranUe := range ran.RanUeList {
 		if err := ranUe.Remove(); err != nil {
 			logger.ContextLog.Errorf("Remove RanUe error: %v", err)
@@ -68,7 +68,7 @@ func (ran *AmfRan) RemoveAllUeInRan() {
 	}
 }
 
-func (ran *AmfRan) RanUeFindByRanUeNgapID(ranUeNgapID int64) *RanUe {
+func (ran *OcfRan) RanUeFindByRanUeNgapID(ranUeNgapID int64) *RanUe {
 	for _, ranUe := range ran.RanUeList {
 		if ranUe.RanUeNgapId == ranUeNgapID {
 			return ranUe
@@ -77,7 +77,7 @@ func (ran *AmfRan) RanUeFindByRanUeNgapID(ranUeNgapID int64) *RanUe {
 	return nil
 }
 
-func (ran *AmfRan) SetRanId(ranNodeId *ngapType.GlobalRANNodeID) {
+func (ran *OcfRan) SetRanId(ranNodeId *ngapType.GlobalRANNodeID) {
 	ranId := ngapConvert.RanIdToModels(*ranNodeId)
 	ran.RanPresent = ranNodeId.Present
 	ran.RanId = &ranId

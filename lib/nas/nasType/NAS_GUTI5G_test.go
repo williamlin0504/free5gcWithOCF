@@ -190,60 +190,60 @@ func TestNasTypeGUTI5GGetSetMNCDigit1(t *testing.T) {
 	}
 }
 
-type nasTypeGUTI5GAMFRegionID struct {
+type nasTypeGUTI5GOCFRegionID struct {
 	inLen uint16
 	in    uint8
 	out   uint8
 }
 
-var nasTypeGUTI5GAMFRegionIDTable = []nasTypeGUTI5GAMFRegionID{
+var nasTypeGUTI5GOCFRegionIDTable = []nasTypeGUTI5GOCFRegionID{
 	{12, 0x01, 0x01},
 }
 
-func TestNasTypeGUTI5GGetSetAMFRegionID(t *testing.T) {
+func TestNasTypeGUTI5GGetSetOCFRegionID(t *testing.T) {
 	a := nasType.NewGUTI5G(nasMessage.ConfigurationUpdateCommandGUTI5GType)
-	for _, table := range nasTypeGUTI5GAMFRegionIDTable {
+	for _, table := range nasTypeGUTI5GOCFRegionIDTable {
 		a.SetLen(table.inLen)
-		a.SetAMFRegionID(table.in)
-		assert.Equal(t, table.out, a.GetAMFRegionID())
+		a.SetOCFRegionID(table.in)
+		assert.Equal(t, table.out, a.GetOCFRegionID())
 	}
 }
 
-type nasTypeGUTI5GAMFSetID struct {
+type nasTypeGUTI5GOCFSetID struct {
 	inLen uint16
 	in    uint16
 	out   uint16
 }
 
-var nasTypeGUTI5GAMFSetIDTable = []nasTypeGUTI5GAMFSetID{
+var nasTypeGUTI5GOCFSetIDTable = []nasTypeGUTI5GOCFSetID{
 	{12, 0x101, 0x101},
 }
 
-func TestNasTypeGUTI5GGetSetAMFSetID(t *testing.T) {
+func TestNasTypeGUTI5GGetSetOCFSetID(t *testing.T) {
 	a := nasType.NewGUTI5G(nasMessage.ConfigurationUpdateCommandGUTI5GType)
-	for _, table := range nasTypeGUTI5GAMFSetIDTable {
+	for _, table := range nasTypeGUTI5GOCFSetIDTable {
 		a.SetLen(table.inLen)
-		a.SetAMFSetID(table.in)
-		assert.Equal(t, table.out, a.GetAMFSetID())
+		a.SetOCFSetID(table.in)
+		assert.Equal(t, table.out, a.GetOCFSetID())
 	}
 }
 
-type nasTypeGUTI5GAMFPointer struct {
+type nasTypeGUTI5GOCFPointer struct {
 	inLen uint16
 	in    uint8
 	out   uint8
 }
 
-var nasTypeGUTI5GAMFPointerTable = []nasTypeGUTI5GAMFPointer{
+var nasTypeGUTI5GOCFPointerTable = []nasTypeGUTI5GOCFPointer{
 	{12, 0x0f, 0x0f},
 }
 
-func TestNasTypeGUTI5GGetSetAMFPointer(t *testing.T) {
+func TestNasTypeGUTI5GGetSetOCFPointer(t *testing.T) {
 	a := nasType.NewGUTI5G(nasMessage.ConfigurationUpdateCommandGUTI5GType)
-	for _, table := range nasTypeGUTI5GAMFPointerTable {
+	for _, table := range nasTypeGUTI5GOCFPointerTable {
 		a.SetLen(table.inLen)
-		a.SetAMFPointer(table.in)
-		assert.Equal(t, table.out, a.GetAMFPointer())
+		a.SetOCFPointer(table.in)
+		assert.Equal(t, table.out, a.GetOCFPointer())
 	}
 }
 
@@ -277,9 +277,9 @@ type testGUTI5GDataTemplate struct {
 	inMCCDigit3      uint8
 	inMNCDigit2      uint8
 	inMNCDigit1      uint8
-	inAMFRegionID    uint8
-	inAMFSetID       uint16
-	inAMFPointer     uint8
+	inOCFRegionID    uint8
+	inOCFSetID       uint16
+	inOCFPointer     uint8
 	inTMSI5G         [4]uint8
 
 	outIei            uint8
@@ -292,9 +292,9 @@ type testGUTI5GDataTemplate struct {
 	outMCCDigit3      uint8
 	outMNCDigit2      uint8
 	outMNCDigit1      uint8
-	outAMFRegionID    uint8
-	outAMFSetID       uint16
-	outAMFPointer     uint8
+	outOCFRegionID    uint8
+	outOCFSetID       uint16
+	outOCFPointer     uint8
 	outTMSI5G         [4]uint8
 }
 
@@ -319,9 +319,9 @@ func TestNasTypeGUTI5G(t *testing.T) {
 		a.SetMCCDigit3(table.inMCCDigit3)
 		a.SetMNCDigit2(table.inMNCDigit2)
 		a.SetMNCDigit1(table.inMNCDigit1)
-		a.SetAMFRegionID(table.inAMFRegionID)
-		a.SetAMFSetID(table.inAMFSetID)
-		a.SetAMFPointer(table.inAMFPointer)
+		a.SetOCFRegionID(table.inOCFRegionID)
+		a.SetOCFSetID(table.inOCFSetID)
+		a.SetOCFPointer(table.inOCFPointer)
 		a.SetTMSI5G(table.inTMSI5G)
 
 		assert.Equalf(t, table.outIei, a.GetIei(), "in(%v): out %v, actual %x", table.inIei, table.outIei, a.GetIei())
@@ -334,9 +334,9 @@ func TestNasTypeGUTI5G(t *testing.T) {
 		assert.Equalf(t, table.outMCCDigit3, a.GetMCCDigit3(), "in(%v): out %v, actual %x", table.inMCCDigit3, table.outMCCDigit3, a.GetMCCDigit3())
 		assert.Equalf(t, table.outMNCDigit2, a.GetMNCDigit2(), "in(%v): out %v, actual %x", table.inMNCDigit2, table.outMNCDigit2, a.GetMNCDigit2())
 		assert.Equalf(t, table.outMNCDigit1, a.GetMNCDigit1(), "in(%v): out %v, actual %x", table.inMNCDigit1, table.outMNCDigit1, a.GetMNCDigit1())
-		assert.Equalf(t, table.outAMFRegionID, a.GetAMFRegionID(), "in(%v): out %v, actual %x", table.inAMFRegionID, table.outAMFRegionID, a.GetAMFRegionID())
-		assert.Equalf(t, table.outAMFSetID, a.GetAMFSetID(), "in(%v): out %v, actual %x", table.inAMFSetID, table.outAMFSetID, a.GetAMFSetID())
-		assert.Equalf(t, table.outAMFPointer, a.GetAMFPointer(), "in(%v): out %v, actual %x", table.inAMFPointer, table.outAMFPointer, a.GetAMFPointer())
+		assert.Equalf(t, table.outOCFRegionID, a.GetOCFRegionID(), "in(%v): out %v, actual %x", table.inOCFRegionID, table.outOCFRegionID, a.GetOCFRegionID())
+		assert.Equalf(t, table.outOCFSetID, a.GetOCFSetID(), "in(%v): out %v, actual %x", table.inOCFSetID, table.outOCFSetID, a.GetOCFSetID())
+		assert.Equalf(t, table.outOCFPointer, a.GetOCFPointer(), "in(%v): out %v, actual %x", table.inOCFPointer, table.outOCFPointer, a.GetOCFPointer())
 		assert.Equalf(t, table.outTMSI5G, a.GetTMSI5G(), "in(%v): out %v, actual %x", table.inTMSI5G, table.outTMSI5G, a.GetTMSI5G())
 	}
 }

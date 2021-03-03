@@ -1,4 +1,4 @@
-package TestAmf
+package TestOcf
 
 import (
 	"fmt"

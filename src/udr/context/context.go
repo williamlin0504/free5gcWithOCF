@@ -57,7 +57,7 @@ type UEGroupSubsData struct {
 
 type EeSubscriptionCollection struct {
 	EeSubscriptions      *models.EeSubscription
-	AmfSubscriptionInfos []models.AmfSubscriptionInfo
+	OcfSubscriptionInfos []models.OcfSubscriptionInfo
 }
 
 // Reset UDR Context

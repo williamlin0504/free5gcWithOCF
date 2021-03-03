@@ -42,8 +42,8 @@ func TestRegistration(t *testing.T) {
 	var sendMsg []byte
 	var recvMsg = make([]byte, 2048)
 
-	// RAN connect to AMF
-	conn, err := test.ConntectToAmf("127.0.0.1", "127.0.0.1", 38412, 9487)
+	// RAN connect to OCF
+	conn, err := test.ConntectToOcf("127.0.0.1", "127.0.0.1", 38412, 9487)
 	assert.Nil(t, err)
 
 	// RAN connect to UPF
@@ -66,7 +66,7 @@ func TestRegistration(t *testing.T) {
 	// New UE
 	// ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA2, security.AlgIntegrity128NIA2)
 	ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
-	ue.AmfUeNgapId = 1
+	ue.OcfUeNgapId = 1
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
 		TestGenAuthData.MilenageTestSet19.OPC,
 		TestGenAuthData.MilenageTestSet19.OP)
@@ -137,7 +137,7 @@ func TestRegistration(t *testing.T) {
 
 	// send NAS Authentication Response
 	pdu := nasTestpacket.GetAuthenticationResponse(resStat, "")
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -158,7 +158,7 @@ func TestRegistration(t *testing.T) {
 	pdu = nasTestpacket.GetSecurityModeComplete(registrationRequestWith5GMM)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCipheredWithNew5gNasSecurityContext, true, true)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -173,7 +173,7 @@ func TestRegistration(t *testing.T) {
 		"No InitialContextSetup received.")
 
 	// send ngap Initial Context Setup Response Msg
-	sendMsg, err = test.GetInitialContextSetupResponse(ue.AmfUeNgapId, ue.RanUeNgapId)
+	sendMsg, err = test.GetInitialContextSetupResponse(ue.OcfUeNgapId, ue.RanUeNgapId)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -182,7 +182,7 @@ func TestRegistration(t *testing.T) {
 	pdu = nasTestpacket.GetRegistrationComplete(nil)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCiphered, true, false)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -197,7 +197,7 @@ func TestRegistration(t *testing.T) {
 	pdu = nasTestpacket.GetUlNasTransport_PduSessionEstablishmentRequest(10, nasMessage.ULNASTransportRequestTypeInitialRequest, "internet", &sNssai)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCiphered, true, false)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -212,7 +212,7 @@ func TestRegistration(t *testing.T) {
 		"No PDUSessionResourceSetup received.")
 
 	// send 14. NGAP-PDU Session Resource Setup Response
-	sendMsg, err = test.GetPDUSessionResourceSetupResponse(ue.AmfUeNgapId, ue.RanUeNgapId, ranIpAddr)
+	sendMsg, err = test.GetPDUSessionResourceSetupResponse(ue.OcfUeNgapId, ue.RanUeNgapId, ranIpAddr)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -276,8 +276,8 @@ func TestDeregistration(t *testing.T) {
 	var sendMsg []byte
 	var recvMsg = make([]byte, 2048)
 
-	// RAN connect to AMF
-	conn, err := test.ConntectToAmf("127.0.0.1", "127.0.0.1", 38412, 9487)
+	// RAN connect to OCF
+	conn, err := test.ConntectToOcf("127.0.0.1", "127.0.0.1", 38412, 9487)
 	assert.Nil(t, err)
 
 	// send NGSetupRequest Msg
@@ -294,7 +294,7 @@ func TestDeregistration(t *testing.T) {
 
 	// New UE
 	ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
-	ue.AmfUeNgapId = 1
+	ue.OcfUeNgapId = 1
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
 		TestGenAuthData.MilenageTestSet19.OPC,
 		TestGenAuthData.MilenageTestSet19.OP)
@@ -362,7 +362,7 @@ func TestDeregistration(t *testing.T) {
 
 	// send NAS Authentication Response
 	pdu := nasTestpacket.GetAuthenticationResponse(resStat, "")
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	require.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	require.Nil(t, err)
@@ -379,7 +379,7 @@ func TestDeregistration(t *testing.T) {
 	pdu = nasTestpacket.GetSecurityModeComplete(registrationRequestWith5GMM)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCipheredWithNew5gNasSecurityContext, true, true)
 	require.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	require.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	require.Nil(t, err)
@@ -391,7 +391,7 @@ func TestDeregistration(t *testing.T) {
 	require.Nil(t, err)
 
 	// send ngap Initial Context Setup Response Msg
-	sendMsg, err = test.GetInitialContextSetupResponse(ue.AmfUeNgapId, ue.RanUeNgapId)
+	sendMsg, err = test.GetInitialContextSetupResponse(ue.OcfUeNgapId, ue.RanUeNgapId)
 	require.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	require.Nil(t, err)
@@ -400,7 +400,7 @@ func TestDeregistration(t *testing.T) {
 	pdu = nasTestpacket.GetRegistrationComplete(nil)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCiphered, true, false)
 	require.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	require.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	require.Nil(t, err)
@@ -415,7 +415,7 @@ func TestDeregistration(t *testing.T) {
 	pdu = nasTestpacket.GetDeregistrationRequest(nasMessage.AccessType3GPP, 0, 0x04, mobileIdentity5GS)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCiphered, true, false)
 	require.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	require.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	require.Nil(t, err)
@@ -446,7 +446,7 @@ func TestDeregistration(t *testing.T) {
 		"No UEContextReleaseCommand received.")
 
 	// send ngap UE Context Release Complete
-	sendMsg, err = test.GetUEContextReleaseComplete(ue.AmfUeNgapId, ue.RanUeNgapId, nil)
+	sendMsg, err = test.GetUEContextReleaseComplete(ue.OcfUeNgapId, ue.RanUeNgapId, nil)
 	require.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	require.Nil(t, err)
@@ -468,8 +468,8 @@ func TestServiceRequest(t *testing.T) {
 	var sendMsg []byte
 	var recvMsg = make([]byte, 2048)
 
-	// RAN connect to AMF
-	conn, err := test.ConntectToAmf("127.0.0.1", "127.0.0.1", 38412, 9487)
+	// RAN connect to OCF
+	conn, err := test.ConntectToOcf("127.0.0.1", "127.0.0.1", 38412, 9487)
 	assert.Nil(t, err)
 
 	// send NGSetupRequest Msg
@@ -486,7 +486,7 @@ func TestServiceRequest(t *testing.T) {
 
 	// New UE
 	ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
-	ue.AmfUeNgapId = 1
+	ue.OcfUeNgapId = 1
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
 		TestGenAuthData.MilenageTestSet19.OPC,
 		TestGenAuthData.MilenageTestSet19.OP)
@@ -554,7 +554,7 @@ func TestServiceRequest(t *testing.T) {
 
 	// send NAS Authentication Response
 	pdu := nasTestpacket.GetAuthenticationResponse(resStat, "")
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -571,7 +571,7 @@ func TestServiceRequest(t *testing.T) {
 	pdu = nasTestpacket.GetSecurityModeComplete(registrationRequestWith5GMM)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCipheredWithNew5gNasSecurityContext, true, true)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -583,7 +583,7 @@ func TestServiceRequest(t *testing.T) {
 	assert.Nil(t, err)
 
 	// send ngap Initial Context Setup Response Msg
-	sendMsg, err = test.GetInitialContextSetupResponse(ue.AmfUeNgapId, ue.RanUeNgapId)
+	sendMsg, err = test.GetInitialContextSetupResponse(ue.OcfUeNgapId, ue.RanUeNgapId)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -592,7 +592,7 @@ func TestServiceRequest(t *testing.T) {
 	pdu = nasTestpacket.GetRegistrationComplete(nil)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCiphered, true, false)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -606,7 +606,7 @@ func TestServiceRequest(t *testing.T) {
 	pdu = nasTestpacket.GetUlNasTransport_PduSessionEstablishmentRequest(10, nasMessage.ULNASTransportRequestTypeInitialRequest, "internet", &sNssai)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCiphered, true, false)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -618,14 +618,14 @@ func TestServiceRequest(t *testing.T) {
 	assert.Nil(t, err)
 
 	// send 14. NGAP-PDU Session Resource Setup Response
-	sendMsg, err = test.GetPDUSessionResourceSetupResponse(ue.AmfUeNgapId, ue.RanUeNgapId, ranIpAddr)
+	sendMsg, err = test.GetPDUSessionResourceSetupResponse(ue.OcfUeNgapId, ue.RanUeNgapId, ranIpAddr)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
 
 	// send ngap UE Context Release Request
 	pduSessionIDList := []int64{10}
-	sendMsg, err = test.GetUEContextReleaseRequest(ue.AmfUeNgapId, ue.RanUeNgapId, pduSessionIDList)
+	sendMsg, err = test.GetUEContextReleaseRequest(ue.OcfUeNgapId, ue.RanUeNgapId, pduSessionIDList)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -637,7 +637,7 @@ func TestServiceRequest(t *testing.T) {
 	assert.Nil(t, err)
 
 	// send ngap UE Context Release Complete
-	sendMsg, err = test.GetUEContextReleaseComplete(ue.AmfUeNgapId, ue.RanUeNgapId, nil)
+	sendMsg, err = test.GetUEContextReleaseComplete(ue.OcfUeNgapId, ue.RanUeNgapId, nil)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -662,7 +662,7 @@ func TestServiceRequest(t *testing.T) {
 	assert.Nil(t, err)
 
 	// Send Initial Context Setup Response
-	sendMsg, err = test.GetInitialContextSetupResponseForServiceRequest(ue.AmfUeNgapId, ue.RanUeNgapId, ranIpAddr)
+	sendMsg, err = test.GetInitialContextSetupResponseForServiceRequest(ue.OcfUeNgapId, ue.RanUeNgapId, ranIpAddr)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -684,8 +684,8 @@ func TestGUTIRegistration(t *testing.T) {
 	var sendMsg []byte
 	var recvMsg = make([]byte, 2048)
 
-	// RAN connect to AMF
-	conn, err := test.ConntectToAmf("127.0.0.1", "127.0.0.1", 38412, 9487)
+	// RAN connect to OCF
+	conn, err := test.ConntectToOcf("127.0.0.1", "127.0.0.1", 38412, 9487)
 	require.Nil(t, err)
 
 	// send NGSetupRequest Msg
@@ -702,7 +702,7 @@ func TestGUTIRegistration(t *testing.T) {
 
 	// New UE
 	ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
-	ue.AmfUeNgapId = 1
+	ue.OcfUeNgapId = 1
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
 		TestGenAuthData.MilenageTestSet19.OPC,
 		TestGenAuthData.MilenageTestSet19.OP)
@@ -770,7 +770,7 @@ func TestGUTIRegistration(t *testing.T) {
 
 	// send NAS Authentication Response
 	pdu := nasTestpacket.GetAuthenticationResponse(resStat, "")
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	require.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	require.Nil(t, err)
@@ -787,7 +787,7 @@ func TestGUTIRegistration(t *testing.T) {
 	pdu = nasTestpacket.GetSecurityModeComplete(registrationRequestWith5GMM)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCipheredWithNew5gNasSecurityContext, true, true)
 	require.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	require.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	require.Nil(t, err)
@@ -799,7 +799,7 @@ func TestGUTIRegistration(t *testing.T) {
 	require.Nil(t, err)
 
 	// send ngap Initial Context Setup Response Msg
-	sendMsg, err = test.GetInitialContextSetupResponse(ue.AmfUeNgapId, ue.RanUeNgapId)
+	sendMsg, err = test.GetInitialContextSetupResponse(ue.OcfUeNgapId, ue.RanUeNgapId)
 	require.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	require.Nil(t, err)
@@ -808,7 +808,7 @@ func TestGUTIRegistration(t *testing.T) {
 	pdu = nasTestpacket.GetRegistrationComplete(nil)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCiphered, true, false)
 	require.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	require.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	require.Nil(t, err)
@@ -823,7 +823,7 @@ func TestGUTIRegistration(t *testing.T) {
 	pdu = nasTestpacket.GetDeregistrationRequest(nasMessage.AccessType3GPP, 0, 0x04, GUTI5GS)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCiphered, true, false)
 	require.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	require.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	require.Nil(t, err)
@@ -850,7 +850,7 @@ func TestGUTIRegistration(t *testing.T) {
 	require.Nil(t, err)
 
 	// send ngap UE Context Release Complete
-	sendMsg, err = test.GetUEContextReleaseComplete(ue.AmfUeNgapId, ue.RanUeNgapId, nil)
+	sendMsg, err = test.GetUEContextReleaseComplete(ue.OcfUeNgapId, ue.RanUeNgapId, nil)
 	require.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	require.Nil(t, err)
@@ -892,7 +892,7 @@ func TestGUTIRegistration(t *testing.T) {
 	}
 	pdu = nasTestpacket.GetIdentityResponse(mobileIdentity)
 	require.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	require.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	require.Nil(t, err)
@@ -919,7 +919,7 @@ func TestGUTIRegistration(t *testing.T) {
 
 	// send NAS Authentication Response
 	pdu = nasTestpacket.GetAuthenticationResponse(resStat, "")
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	require.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	require.Nil(t, err)
@@ -941,7 +941,7 @@ func TestGUTIRegistration(t *testing.T) {
 	pdu = nasTestpacket.GetSecurityModeComplete(nil)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCipheredWithNew5gNasSecurityContext, true, true)
 	require.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	require.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	require.Nil(t, err)
@@ -953,7 +953,7 @@ func TestGUTIRegistration(t *testing.T) {
 	require.Nil(t, err)
 
 	// send ngap Initial Context Setup Response Msg
-	sendMsg, err = test.GetInitialContextSetupResponse(ue.AmfUeNgapId, ue.RanUeNgapId)
+	sendMsg, err = test.GetInitialContextSetupResponse(ue.OcfUeNgapId, ue.RanUeNgapId)
 	require.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	require.Nil(t, err)
@@ -962,7 +962,7 @@ func TestGUTIRegistration(t *testing.T) {
 	pdu = nasTestpacket.GetRegistrationComplete(nil)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCiphered, true, false)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -984,8 +984,8 @@ func TestPDUSessionReleaseRequest(t *testing.T) {
 	var sendMsg []byte
 	var recvMsg = make([]byte, 2048)
 
-	// RAN connect to AMF
-	conn, err := test.ConntectToAmf("127.0.0.1", "127.0.0.1", 38412, 9487)
+	// RAN connect to OCF
+	conn, err := test.ConntectToOcf("127.0.0.1", "127.0.0.1", 38412, 9487)
 	assert.Nil(t, err)
 
 	// send NGSetupRequest Msg
@@ -1002,7 +1002,7 @@ func TestPDUSessionReleaseRequest(t *testing.T) {
 
 	// New UE
 	ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
-	ue.AmfUeNgapId = 1
+	ue.OcfUeNgapId = 1
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
 		TestGenAuthData.MilenageTestSet19.OPC,
 		TestGenAuthData.MilenageTestSet19.OP)
@@ -1070,7 +1070,7 @@ func TestPDUSessionReleaseRequest(t *testing.T) {
 
 	// send NAS Authentication Response
 	pdu := nasTestpacket.GetAuthenticationResponse(resStat, "")
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1087,7 +1087,7 @@ func TestPDUSessionReleaseRequest(t *testing.T) {
 	pdu = nasTestpacket.GetSecurityModeComplete(registrationRequestWith5GMM)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCipheredWithNew5gNasSecurityContext, true, true)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1099,7 +1099,7 @@ func TestPDUSessionReleaseRequest(t *testing.T) {
 	assert.Nil(t, err)
 
 	// send ngap Initial Context Setup Response Msg
-	sendMsg, err = test.GetInitialContextSetupResponse(ue.AmfUeNgapId, ue.RanUeNgapId)
+	sendMsg, err = test.GetInitialContextSetupResponse(ue.OcfUeNgapId, ue.RanUeNgapId)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1108,7 +1108,7 @@ func TestPDUSessionReleaseRequest(t *testing.T) {
 	pdu = nasTestpacket.GetRegistrationComplete(nil)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCiphered, true, false)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1122,7 +1122,7 @@ func TestPDUSessionReleaseRequest(t *testing.T) {
 	pdu = nasTestpacket.GetUlNasTransport_PduSessionEstablishmentRequest(10, nasMessage.ULNASTransportRequestTypeInitialRequest, "internet", &sNssai)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCiphered, true, false)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1134,7 +1134,7 @@ func TestPDUSessionReleaseRequest(t *testing.T) {
 	assert.Nil(t, err)
 
 	// send 14. NGAP-PDU Session Resource Setup Response
-	sendMsg, err = test.GetPDUSessionResourceSetupResponse(ue.AmfUeNgapId, ue.RanUeNgapId, ranIpAddr)
+	sendMsg, err = test.GetPDUSessionResourceSetupResponse(ue.OcfUeNgapId, ue.RanUeNgapId, ranIpAddr)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1143,14 +1143,14 @@ func TestPDUSessionReleaseRequest(t *testing.T) {
 	pdu = nasTestpacket.GetUlNasTransport_PduSessionReleaseRequest(10)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCiphered, true, false)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
 
 	time.Sleep(1000 * time.Millisecond)
 	// send N2 Resource Release Ack(PDUSession Resource Release Response)
-	sendMsg, err = test.GetPDUSessionResourceReleaseResponse(ue.AmfUeNgapId, ue.RanUeNgapId)
+	sendMsg, err = test.GetPDUSessionResourceReleaseResponse(ue.OcfUeNgapId, ue.RanUeNgapId)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1162,7 +1162,7 @@ func TestPDUSessionReleaseRequest(t *testing.T) {
 	pdu = nasTestpacket.GetUlNasTransport_PduSessionReleaseComplete(10, nasMessage.ULNASTransportRequestTypeInitialRequest, "internet", &sNssai)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCiphered, true, false)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1185,8 +1185,8 @@ func TestXnHandover(t *testing.T) {
 	var sendMsg []byte
 	var recvMsg = make([]byte, 2048)
 
-	// RAN connect to AMF
-	conn, err := test.ConntectToAmf("127.0.0.1", "127.0.0.1", 38412, 9487)
+	// RAN connect to OCF
+	conn, err := test.ConntectToOcf("127.0.0.1", "127.0.0.1", 38412, 9487)
 	assert.Nil(t, err)
 
 	// send NGSetupRequest Msg
@@ -1203,7 +1203,7 @@ func TestXnHandover(t *testing.T) {
 
 	time.Sleep(10 * time.Millisecond)
 
-	conn2, err1 := test.ConntectToAmf("127.0.0.1", "127.0.0.1", 38412, 9488)
+	conn2, err1 := test.ConntectToOcf("127.0.0.1", "127.0.0.1", 38412, 9488)
 	assert.Nil(t, err1)
 
 	// send Second NGSetupRequest Msg
@@ -1220,7 +1220,7 @@ func TestXnHandover(t *testing.T) {
 
 	// New UE
 	ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
-	ue.AmfUeNgapId = 1
+	ue.OcfUeNgapId = 1
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
 		TestGenAuthData.MilenageTestSet19.OPC,
 		TestGenAuthData.MilenageTestSet19.OP)
@@ -1288,7 +1288,7 @@ func TestXnHandover(t *testing.T) {
 
 	// send NAS Authentication Response
 	pdu := nasTestpacket.GetAuthenticationResponse(resStat, "")
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1305,7 +1305,7 @@ func TestXnHandover(t *testing.T) {
 	pdu = nasTestpacket.GetSecurityModeComplete(registrationRequestWith5GMM)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCipheredWithNew5gNasSecurityContext, true, true)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1317,7 +1317,7 @@ func TestXnHandover(t *testing.T) {
 	assert.Nil(t, err)
 
 	// send ngap Initial Context Setup Response Msg
-	sendMsg, err = test.GetInitialContextSetupResponse(ue.AmfUeNgapId, ue.RanUeNgapId)
+	sendMsg, err = test.GetInitialContextSetupResponse(ue.OcfUeNgapId, ue.RanUeNgapId)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1326,7 +1326,7 @@ func TestXnHandover(t *testing.T) {
 	pdu = nasTestpacket.GetRegistrationComplete(nil)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCiphered, true, false)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1340,7 +1340,7 @@ func TestXnHandover(t *testing.T) {
 	pdu = nasTestpacket.GetUlNasTransport_PduSessionEstablishmentRequest(10, nasMessage.ULNASTransportRequestTypeInitialRequest, "internet", &sNssai)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCiphered, true, false)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1352,14 +1352,14 @@ func TestXnHandover(t *testing.T) {
 	assert.Nil(t, err)
 
 	// send 14. NGAP-PDU Session Resource Setup Response
-	sendMsg, err = test.GetPDUSessionResourceSetupResponse(ue.AmfUeNgapId, ue.RanUeNgapId, ranIpAddr)
+	sendMsg, err = test.GetPDUSessionResourceSetupResponse(ue.OcfUeNgapId, ue.RanUeNgapId, ranIpAddr)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
 
 	time.Sleep(2000 * time.Millisecond)
 	// send Path Switch Request (XnHandover)
-	sendMsg, err = test.GetPathSwitchRequest(ue.AmfUeNgapId, ue.RanUeNgapId)
+	sendMsg, err = test.GetPathSwitchRequest(ue.OcfUeNgapId, ue.RanUeNgapId)
 	assert.Nil(t, err)
 	_, err = conn2.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1388,8 +1388,8 @@ func TestPaging(t *testing.T) {
 	var sendMsg []byte
 	var recvMsg = make([]byte, 2048)
 
-	// RAN connect to AMFcd
-	conn, err := test.ConntectToAmf("127.0.0.1", "127.0.0.1", 38412, 9487)
+	// RAN connect to OCFcd
+	conn, err := test.ConntectToOcf("127.0.0.1", "127.0.0.1", 38412, 9487)
 	assert.Nil(t, err)
 
 	// send NGSetupRequest Msg
@@ -1406,7 +1406,7 @@ func TestPaging(t *testing.T) {
 
 	// New UE
 	ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
-	ue.AmfUeNgapId = 1
+	ue.OcfUeNgapId = 1
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
 		TestGenAuthData.MilenageTestSet19.OPC,
 		TestGenAuthData.MilenageTestSet19.OP)
@@ -1474,7 +1474,7 @@ func TestPaging(t *testing.T) {
 
 	// send NAS Authentication Response
 	pdu := nasTestpacket.GetAuthenticationResponse(resStat, "")
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1491,7 +1491,7 @@ func TestPaging(t *testing.T) {
 	pdu = nasTestpacket.GetSecurityModeComplete(registrationRequestWith5GMM)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCipheredWithNew5gNasSecurityContext, true, true)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1503,7 +1503,7 @@ func TestPaging(t *testing.T) {
 	assert.Nil(t, err)
 
 	// send ngap Initial Context Setup Response Msg
-	sendMsg, err = test.GetInitialContextSetupResponse(ue.AmfUeNgapId, ue.RanUeNgapId)
+	sendMsg, err = test.GetInitialContextSetupResponse(ue.OcfUeNgapId, ue.RanUeNgapId)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1512,7 +1512,7 @@ func TestPaging(t *testing.T) {
 	pdu = nasTestpacket.GetRegistrationComplete(nil)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCiphered, true, false)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1525,7 +1525,7 @@ func TestPaging(t *testing.T) {
 	pdu = nasTestpacket.GetUlNasTransport_PduSessionEstablishmentRequest(10, nasMessage.ULNASTransportRequestTypeInitialRequest, "internet", &sNssai)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCiphered, true, false)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1537,14 +1537,14 @@ func TestPaging(t *testing.T) {
 	assert.Nil(t, err)
 
 	// send 14. NGAP-PDU Session Resource Setup Response
-	sendMsg, err = test.GetPDUSessionResourceSetupResponse(ue.AmfUeNgapId, ue.RanUeNgapId, ranIpAddr)
+	sendMsg, err = test.GetPDUSessionResourceSetupResponse(ue.OcfUeNgapId, ue.RanUeNgapId, ranIpAddr)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
 
 	// send ngap UE Context Release Request
 	pduSessionIDList := []int64{10}
-	sendMsg, err = test.GetUEContextReleaseRequest(ue.AmfUeNgapId, ue.RanUeNgapId, pduSessionIDList)
+	sendMsg, err = test.GetUEContextReleaseRequest(ue.OcfUeNgapId, ue.RanUeNgapId, pduSessionIDList)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1556,7 +1556,7 @@ func TestPaging(t *testing.T) {
 	assert.Nil(t, err)
 
 	// send ngap UE Context Release Complete
-	sendMsg, err = test.GetUEContextReleaseComplete(ue.AmfUeNgapId, ue.RanUeNgapId, nil)
+	sendMsg, err = test.GetUEContextReleaseComplete(ue.OcfUeNgapId, ue.RanUeNgapId, nil)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1605,7 +1605,7 @@ func TestPaging(t *testing.T) {
 	assert.Nil(t, err)
 
 	//send Initial Context Setup Response
-	sendMsg, err = test.GetInitialContextSetupResponseForServiceRequest(ue.AmfUeNgapId, ue.RanUeNgapId, ranIpAddr)
+	sendMsg, err = test.GetInitialContextSetupResponseForServiceRequest(ue.OcfUeNgapId, ue.RanUeNgapId, ranIpAddr)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1626,8 +1626,8 @@ func TestN2Handover(t *testing.T) {
 	var sendMsg []byte
 	var recvMsg = make([]byte, 2048)
 
-	// RAN1 connect to AMF
-	conn, err := test.ConntectToAmf("127.0.0.1", "127.0.0.1", 38412, 9487)
+	// RAN1 connect to OCF
+	conn, err := test.ConntectToOcf("127.0.0.1", "127.0.0.1", 38412, 9487)
 	assert.Nil(t, err)
 
 	// RAN1 connect to UPF
@@ -1648,8 +1648,8 @@ func TestN2Handover(t *testing.T) {
 
 	time.Sleep(10 * time.Millisecond)
 
-	// RAN2 connect to AMF
-	conn2, err1 := test.ConntectToAmf("127.0.0.1", "127.0.0.1", 38412, 9488)
+	// RAN2 connect to OCF
+	conn2, err1 := test.ConntectToOcf("127.0.0.1", "127.0.0.1", 38412, 9488)
 	assert.Nil(t, err1)
 
 	// RAN2 connect to UPF
@@ -1670,7 +1670,7 @@ func TestN2Handover(t *testing.T) {
 
 	// New UE
 	ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
-	ue.AmfUeNgapId = 1
+	ue.OcfUeNgapId = 1
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
 		TestGenAuthData.MilenageTestSet19.OPC,
 		TestGenAuthData.MilenageTestSet19.OP)
@@ -1738,7 +1738,7 @@ func TestN2Handover(t *testing.T) {
 
 	// send NAS Authentication Response
 	pdu := nasTestpacket.GetAuthenticationResponse(resStat, "")
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1755,7 +1755,7 @@ func TestN2Handover(t *testing.T) {
 	pdu = nasTestpacket.GetSecurityModeComplete(registrationRequestWith5GMM)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCipheredWithNew5gNasSecurityContext, true, true)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1767,7 +1767,7 @@ func TestN2Handover(t *testing.T) {
 	assert.Nil(t, err)
 
 	// send ngap Initial Context Setup Response Msg
-	sendMsg, err = test.GetInitialContextSetupResponse(ue.AmfUeNgapId, ue.RanUeNgapId)
+	sendMsg, err = test.GetInitialContextSetupResponse(ue.OcfUeNgapId, ue.RanUeNgapId)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1776,7 +1776,7 @@ func TestN2Handover(t *testing.T) {
 	pdu = nasTestpacket.GetRegistrationComplete(nil)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCiphered, true, false)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1789,7 +1789,7 @@ func TestN2Handover(t *testing.T) {
 	pdu = nasTestpacket.GetUlNasTransport_PduSessionEstablishmentRequest(10, nasMessage.ULNASTransportRequestTypeInitialRequest, "internet", &sNssai)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCiphered, true, false)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1801,7 +1801,7 @@ func TestN2Handover(t *testing.T) {
 	assert.Nil(t, err)
 
 	// send 14. NGAP-PDU Session Resource Setup Response
-	sendMsg, err = test.GetPDUSessionResourceSetupResponse(ue.AmfUeNgapId, ue.RanUeNgapId, ranIpAddr)
+	sendMsg, err = test.GetPDUSessionResourceSetupResponse(ue.OcfUeNgapId, ue.RanUeNgapId, ranIpAddr)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1853,7 +1853,7 @@ func TestN2Handover(t *testing.T) {
 	// ============================================
 
 	// Source RAN send ngap Handover Required Msg
-	sendMsg, err = test.GetHandoverRequired(ue.AmfUeNgapId, ue.RanUeNgapId, []byte{0x00, 0x01, 0x02}, []byte{0x01, 0x20})
+	sendMsg, err = test.GetHandoverRequired(ue.OcfUeNgapId, ue.RanUeNgapId, []byte{0x00, 0x01, 0x02}, []byte{0x01, 0x20})
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1866,12 +1866,12 @@ func TestN2Handover(t *testing.T) {
 
 	// Target RAN create New UE
 	targetUe := deepcopy.Copy(ue).(*test.RanUeContext)
-	targetUe.AmfUeNgapId = 2
+	targetUe.OcfUeNgapId = 2
 	targetUe.ULCount.Set(ue.ULCount.Overflow(), ue.ULCount.SQN())
 	targetUe.DLCount.Set(ue.DLCount.Overflow(), ue.DLCount.SQN())
 
 	// Target RAN send ngap Handover Request Acknowledge Msg
-	sendMsg, err = test.GetHandoverRequestAcknowledge(targetUe.AmfUeNgapId, targetUe.RanUeNgapId)
+	sendMsg, err = test.GetHandoverRequestAcknowledge(targetUe.OcfUeNgapId, targetUe.RanUeNgapId)
 	assert.Nil(t, err)
 	_, err = conn2.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1888,7 +1888,7 @@ func TestN2Handover(t *testing.T) {
 	assert.Nil(t, err)
 
 	// Target RAN send ngap Handover Notify
-	sendMsg, err = test.GetHandoverNotify(targetUe.AmfUeNgapId, targetUe.RanUeNgapId)
+	sendMsg, err = test.GetHandoverNotify(targetUe.OcfUeNgapId, targetUe.RanUeNgapId)
 	assert.Nil(t, err)
 	_, err = conn2.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1901,12 +1901,12 @@ func TestN2Handover(t *testing.T) {
 
 	// Source RAN send ngap UE Context Release Complete
 	pduSessionIDList := []int64{10}
-	sendMsg, err = test.GetUEContextReleaseComplete(ue.AmfUeNgapId, ue.RanUeNgapId, pduSessionIDList)
+	sendMsg, err = test.GetUEContextReleaseComplete(ue.OcfUeNgapId, ue.RanUeNgapId, pduSessionIDList)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
 
-	// UE send NAS Registration Request(Mobility Registration Update) To Target AMF (2 AMF scenario not supportted yet)
+	// UE send NAS Registration Request(Mobility Registration Update) To Target OCF (2 OCF scenario not supportted yet)
 	mobileIdentity5GS = nasType.MobileIdentity5GS{
 		Len:    11, // 5g-guti
 		Buffer: []uint8{0x02, 0x02, 0xf8, 0x39, 0xca, 0xfe, 0x00, 0x00, 0x00, 0x00, 0x01},
@@ -1931,7 +1931,7 @@ func TestN2Handover(t *testing.T) {
 	assert.Nil(t, err)
 
 	// Target RAN send ngap Initial Context Setup Response Msg
-	sendMsg, err = test.GetInitialContextSetupResponseForServiceRequest(targetUe.AmfUeNgapId, targetUe.RanUeNgapId, "10.200.200.2")
+	sendMsg, err = test.GetInitialContextSetupResponseForServiceRequest(targetUe.OcfUeNgapId, targetUe.RanUeNgapId, "10.200.200.2")
 	assert.Nil(t, err)
 	_, err = conn2.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1940,7 +1940,7 @@ func TestN2Handover(t *testing.T) {
 	pdu = nasTestpacket.GetRegistrationComplete(nil)
 	pdu, err = test.EncodeNasPduWithSecurity(targetUe, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCiphered, true, false)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(targetUe.AmfUeNgapId, targetUe.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(targetUe.OcfUeNgapId, targetUe.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn2.Write(sendMsg)
 	assert.Nil(t, err)
@@ -1970,8 +1970,8 @@ func TestDuplicateRegistration(t *testing.T) {
 	var sendMsg []byte
 	var recvMsg = make([]byte, 2048)
 
-	// RAN connect to AMF
-	conn, err := test.ConntectToAmf("127.0.0.1", "127.0.0.1", 38412, 9487)
+	// RAN connect to OCF
+	conn, err := test.ConntectToOcf("127.0.0.1", "127.0.0.1", 38412, 9487)
 	assert.Nil(t, err)
 
 	// RAN connect to UPF
@@ -1993,7 +1993,7 @@ func TestDuplicateRegistration(t *testing.T) {
 	// New UE
 	ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
 	// ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA0)
-	ue.AmfUeNgapId = 1
+	ue.OcfUeNgapId = 1
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
 		TestGenAuthData.MilenageTestSet19.OPC,
 		TestGenAuthData.MilenageTestSet19.OP)
@@ -2061,7 +2061,7 @@ func TestDuplicateRegistration(t *testing.T) {
 
 	// send NAS Authentication Response
 	pdu := nasTestpacket.GetAuthenticationResponse(resStat, "")
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -2078,7 +2078,7 @@ func TestDuplicateRegistration(t *testing.T) {
 	pdu = nasTestpacket.GetSecurityModeComplete(registrationRequestWith5GMM)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCipheredWithNew5gNasSecurityContext, true, true)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -2090,7 +2090,7 @@ func TestDuplicateRegistration(t *testing.T) {
 	assert.Nil(t, err)
 
 	// send ngap Initial Context Setup Response Msg
-	sendMsg, err = test.GetInitialContextSetupResponse(ue.AmfUeNgapId, ue.RanUeNgapId)
+	sendMsg, err = test.GetInitialContextSetupResponse(ue.OcfUeNgapId, ue.RanUeNgapId)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -2099,7 +2099,7 @@ func TestDuplicateRegistration(t *testing.T) {
 	pdu = nasTestpacket.GetRegistrationComplete(nil)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCiphered, true, false)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -2114,7 +2114,7 @@ func TestDuplicateRegistration(t *testing.T) {
 	pdu = nasTestpacket.GetUlNasTransport_PduSessionEstablishmentRequest(10, nasMessage.ULNASTransportRequestTypeInitialRequest, "internet", &sNssai)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCiphered, true, false)
 	assert.Nil(t, err)
-	PduSessionEstablishmentRequestMSG, err := test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	PduSessionEstablishmentRequestMSG, err := test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(PduSessionEstablishmentRequestMSG)
 	assert.Nil(t, err)
@@ -2126,7 +2126,7 @@ func TestDuplicateRegistration(t *testing.T) {
 	assert.Nil(t, err)
 
 	// send 14. NGAP-PDU Session Resource Setup Response
-	sendMsg, err = test.GetPDUSessionResourceSetupResponse(ue.AmfUeNgapId, ue.RanUeNgapId, ranIpAddr)
+	sendMsg, err = test.GetPDUSessionResourceSetupResponse(ue.OcfUeNgapId, ue.RanUeNgapId, ranIpAddr)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -2139,7 +2139,7 @@ func TestDuplicateRegistration(t *testing.T) {
 	_, err = conn.Write(PduSessionEstablishmentRequestMSG)
 	assert.Nil(t, err)
 
-	sendMsg, err = test.GetPDUSessionResourceReleaseResponse(ue.AmfUeNgapId, ue.RanUeNgapId)
+	sendMsg, err = test.GetPDUSessionResourceReleaseResponse(ue.OcfUeNgapId, ue.RanUeNgapId)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -2153,7 +2153,7 @@ func TestDuplicateRegistration(t *testing.T) {
 	time.Sleep(1 * time.Second)
 
 	// send 14. NGAP-PDU Session Resource Setup Response
-	sendMsg, err = test.GetPDUSessionResourceSetupResponse(ue.AmfUeNgapId, ue.RanUeNgapId, ranIpAddr)
+	sendMsg, err = test.GetPDUSessionResourceSetupResponse(ue.OcfUeNgapId, ue.RanUeNgapId, ranIpAddr)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -2215,8 +2215,8 @@ func TestReSynchronisation(t *testing.T) {
 	var sendMsg []byte
 	var recvMsg = make([]byte, 2048)
 
-	// RAN connect to AMF
-	conn, err := test.ConntectToAmf("127.0.0.1", "127.0.0.1", 38412, 9487)
+	// RAN connect to OCF
+	conn, err := test.ConntectToOcf("127.0.0.1", "127.0.0.1", 38412, 9487)
 	assert.Nil(t, err)
 
 	// RAN connect to UPF
@@ -2238,7 +2238,7 @@ func TestReSynchronisation(t *testing.T) {
 	// New UE
 	// ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA2, security.AlgIntegrity128NIA2)
 	ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
-	ue.AmfUeNgapId = 1
+	ue.OcfUeNgapId = 1
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
 		TestGenAuthData.MilenageTestSet19.OPC,
 		TestGenAuthData.MilenageTestSet19.OP)
@@ -2339,8 +2339,8 @@ func TestReSynchronisation(t *testing.T) {
 	CK, IK := make([]byte, 16), make([]byte, 16)
 	RES := make([]byte, 8)
 	AK, AKstar := make([]byte, 6), make([]byte, 6)
-	AMF, _ := hex.DecodeString("0000")
-	milenage.F1(OPC, K, rand[:], newSqnMs, AMF, MAC_A, MAC_S)
+	OCF, _ := hex.DecodeString("0000")
+	milenage.F1(OPC, K, rand[:], newSqnMs, OCF, MAC_A, MAC_S)
 	milenage.F2345(OPC, K, rand[:], RES, CK, IK, AK, AKstar)
 
 	SQNmsxorAK := make([]byte, 6)
@@ -2358,7 +2358,7 @@ func TestReSynchronisation(t *testing.T) {
 	// failureParam := []uint8{0x68, 0x58, 0x15, 0x86, 0x1f, 0xec, 0x0f, 0xa9, 0x48, 0xe8, 0xb2, 0x3a, 0x08, 0x62}
 	failureParam := AUTS
 	pdu := nasTestpacket.GetAuthenticationFailure(nasMessage.Cause5GMMSynchFailure, failureParam)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -2387,7 +2387,7 @@ func TestReSynchronisation(t *testing.T) {
 
 	// send NAS Authentication Response
 	pdu = nasTestpacket.GetAuthenticationResponse(resStar, "")
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -2404,7 +2404,7 @@ func TestReSynchronisation(t *testing.T) {
 	pdu = nasTestpacket.GetSecurityModeComplete(registrationRequestWith5GMM)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCipheredWithNew5gNasSecurityContext, true, true)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -2416,7 +2416,7 @@ func TestReSynchronisation(t *testing.T) {
 	assert.Nil(t, err)
 
 	// send ngap Initial Context Setup Response Msg
-	sendMsg, err = test.GetInitialContextSetupResponse(ue.AmfUeNgapId, ue.RanUeNgapId)
+	sendMsg, err = test.GetInitialContextSetupResponse(ue.OcfUeNgapId, ue.RanUeNgapId)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -2425,7 +2425,7 @@ func TestReSynchronisation(t *testing.T) {
 	pdu = nasTestpacket.GetRegistrationComplete(nil)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCiphered, true, false)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -2440,7 +2440,7 @@ func TestReSynchronisation(t *testing.T) {
 	pdu = nasTestpacket.GetUlNasTransport_PduSessionEstablishmentRequest(10, nasMessage.ULNASTransportRequestTypeInitialRequest, "internet", &sNssai)
 	pdu, err = test.EncodeNasPduWithSecurity(ue, pdu, nas.SecurityHeaderTypeIntegrityProtectedAndCiphered, true, false)
 	assert.Nil(t, err)
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
@@ -2452,7 +2452,7 @@ func TestReSynchronisation(t *testing.T) {
 	assert.Nil(t, err)
 
 	// send 14. NGAP-PDU Session Resource Setup Response
-	sendMsg, err = test.GetPDUSessionResourceSetupResponse(ue.AmfUeNgapId, ue.RanUeNgapId, ranIpAddr)
+	sendMsg, err = test.GetPDUSessionResourceSetupResponse(ue.OcfUeNgapId, ue.RanUeNgapId, ranIpAddr)
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)

@@ -36,7 +36,7 @@ func GetNrfInfo() *models.NrfInfo {
 	nrfinfo.ServedUdrInfo = getUdrInfo()
 	nrfinfo.ServedUdmInfo = getUdmInfo()
 	nrfinfo.ServedAusfInfo = getAusfInfo()
-	nrfinfo.ServedAmfInfo = getAmfInfo()
+	nrfinfo.ServedOcfInfo = getOcfInfo()
 	nrfinfo.ServedSmfInfo = getSmfInfo()
 	nrfinfo.ServedUpfInfo = getUpfInfo()
 	nrfinfo.ServedPcfInfo = getPcfInfo()
@@ -121,28 +121,28 @@ func getAusfInfo() map[string]models.AusfInfo {
 
 }
 
-func getAmfInfo() map[string]models.AmfInfo {
-	var servedAmfinfo map[string]models.AmfInfo
-	servedAmfinfo = make(map[string]models.AmfInfo)
-	var AMFProfile models.NfProfile
+func getOcfInfo() map[string]models.OcfInfo {
+	var servedOcfinfo map[string]models.OcfInfo
+	servedOcfinfo = make(map[string]models.OcfInfo)
+	var OCFProfile models.NfProfile
 
 	collName := "NfProfile"
-	filter := bson.M{"nfType": "AMF"}
+	filter := bson.M{"nfType": "OCF"}
 
-	AMF := MongoDBLibrary.RestfulAPIGetMany(collName, filter)
-	AMFStruct, err := TimeDecode.Decode(AMF, time.RFC3339)
+	OCF := MongoDBLibrary.RestfulAPIGetMany(collName, filter)
+	OCFStruct, err := TimeDecode.Decode(OCF, time.RFC3339)
 	if err != nil {
 		logger.ManagementLog.Error(err)
 	}
-	for i := 0; i < len(AMFStruct); i++ {
-		err := mapstructure.Decode(AMFStruct[i], &AMFProfile)
+	for i := 0; i < len(OCFStruct); i++ {
+		err := mapstructure.Decode(OCFStruct[i], &OCFProfile)
 		if err != nil {
 			panic(err)
 		}
 		index := strconv.Itoa(i)
-		servedAmfinfo[index] = *AMFProfile.AmfInfo
+		servedOcfinfo[index] = *OCFProfile.OcfInfo
 	}
-	return servedAmfinfo
+	return servedOcfinfo
 
 }
 func getSmfInfo() map[string]models.SmfInfo {

@@ -272,11 +272,11 @@ func PostPoliciesProcedure(polAssoId string,
 	logger.AMpolicylog.Tracef("AMPolicy association Id[%s] Create", assolId)
 
 	if policyAssociationRequest.Guami != nil {
-		// if consumer is AMF then subscribe this AMF Status
-		for _, statusSubsData := range pcfSelf.AMFStatusSubsData {
+		// if consumer is OCF then subscribe this OCF Status
+		for _, statusSubsData := range pcfSelf.OCFStatusSubsData {
 			for _, guami := range statusSubsData.GuamiList {
 				if reflect.DeepEqual(guami, policyAssociationRequest.Guami) {
-					amPolicy.AmfStatusChangeSubscription = &statusSubsData
+					amPolicy.OcfStatusChangeSubscription = &statusSubsData
 				}
 			}
 		}
@@ -284,7 +284,7 @@ func PostPoliciesProcedure(polAssoId string,
 	return &response, locationHeader, nil
 }
 
-// Send AM Policy Update to AMF if policy has changed
+// Send AM Policy Update to OCF if policy has changed
 func SendAMPolicyUpdateNotification(ue *pcf_context.UeContext, PolId string, request models.PolicyUpdate) {
 	if ue == nil {
 		logger.AMpolicylog.Warnln("Policy Update Notification Error[Ue is nil]")
@@ -328,7 +328,7 @@ func SendAMPolicyUpdateNotification(ue *pcf_context.UeContext, PolId string, req
 
 }
 
-// Send AM Policy Update to AMF if policy has been terminated
+// Send AM Policy Update to OCF if policy has been terminated
 func SendAMPolicyTerminationRequestNotification(ue *pcf_context.UeContext,
 	PolId string, request models.TerminationNotification) {
 	if ue == nil {

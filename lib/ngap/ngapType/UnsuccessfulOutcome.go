@@ -10,7 +10,7 @@ type UnsuccessfulOutcome struct {
 
 const (
 	UnsuccessfulOutcomePresentNothing int = iota /* No components present */
-	UnsuccessfulOutcomePresentAMFConfigurationUpdateFailure
+	UnsuccessfulOutcomePresentOCFConfigurationUpdateFailure
 	UnsuccessfulOutcomePresentHandoverPreparationFailure
 	UnsuccessfulOutcomePresentHandoverFailure
 	UnsuccessfulOutcomePresentInitialContextSetupFailure
@@ -22,7 +22,7 @@ const (
 
 type UnsuccessfulOutcomeValue struct {
 	Present                       int
-	AMFConfigurationUpdateFailure *AMFConfigurationUpdateFailure `aper:"valueExt,referenceFieldValue:0"`
+	OCFConfigurationUpdateFailure *OCFConfigurationUpdateFailure `aper:"valueExt,referenceFieldValue:0"`
 	HandoverPreparationFailure    *HandoverPreparationFailure    `aper:"valueExt,referenceFieldValue:12"`
 	HandoverFailure               *HandoverFailure               `aper:"valueExt,referenceFieldValue:13"`
 	InitialContextSetupFailure    *InitialContextSetupFailure    `aper:"valueExt,referenceFieldValue:14"`

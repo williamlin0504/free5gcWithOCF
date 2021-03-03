@@ -1,4 +1,4 @@
-package Namf_Communication
+package Nocf_Communication
 
 import (
 	"context"
@@ -10,9 +10,9 @@ import (
 	"strings"
 )
 
-type AmfStatusChangeCallbackDocumentApiService service
+type OcfStatusChangeCallbackDocumentApiService service
 
-func (a *AmfStatusChangeCallbackDocumentApiService) AmfStatusChangeNotify(ctx context.Context, amfStatusChangeNotifyUrl string, request models.AmfStatusChangeNotification) (*http.Response, error) {
+func (a *OcfStatusChangeCallbackDocumentApiService) OcfStatusChangeNotify(ctx context.Context, ocfStatusChangeNotifyUrl string, request models.OcfStatusChangeNotification) (*http.Response, error) {
 	var (
 		localVarHttpMethod   = strings.ToUpper("Post")
 		localVarPostBody     interface{}
@@ -22,7 +22,7 @@ func (a *AmfStatusChangeCallbackDocumentApiService) AmfStatusChangeNotify(ctx co
 	)
 
 	// create path and map variables
-	localVarPath := amfStatusChangeNotifyUrl
+	localVarPath := ocfStatusChangeNotifyUrl
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}

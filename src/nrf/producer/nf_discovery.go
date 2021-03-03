@@ -8,13 +8,14 @@ import (
 	"free5gc/lib/openapi/models"
 	"free5gc/src/nrf/context"
 	"free5gc/src/nrf/logger"
-	"go.mongodb.org/mongo-driver/bson"
 	"math/big"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
+
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 func HandleNFDiscoveryRequest(request *http_wrapper.Request) *http_wrapper.Response {
@@ -450,9 +451,9 @@ func buildFilter(queryParameters url.Values) bson.M {
 					"$elemMatch": taiBsonM,
 				},
 			}
-		} else if targetNfType == "AMF" {
+		} else if targetNfType == "OCF" {
 			taiFilter = bson.M{
-				"amfInfo.taiList": bson.M{
+				"ocfInfo.taiList": bson.M{
 					"$elemMatch": taiBsonM,
 				},
 			}
@@ -460,32 +461,32 @@ func buildFilter(queryParameters url.Values) bson.M {
 		filter["$and"] = append(filter["$and"].([]bson.M), taiFilter)
 	}
 
-	// [Query-15] amf-region-id
-	if queryParameters["amf-region-id"] != nil {
-		if targetNfType == "AMF" {
-			amfRegionId := queryParameters["amf-region-id"][0]
-			amfRegionIdFilter := bson.M{
-				"amfInfo.amfRegionId": amfRegionId,
+	// [Query-15] ocf-region-id
+	if queryParameters["ocf-region-id"] != nil {
+		if targetNfType == "OCF" {
+			ocfRegionId := queryParameters["ocf-region-id"][0]
+			ocfRegionIdFilter := bson.M{
+				"ocfInfo.ocfRegionId": ocfRegionId,
 			}
-			filter["$and"] = append(filter["$and"].([]bson.M), amfRegionIdFilter)
+			filter["$and"] = append(filter["$and"].([]bson.M), ocfRegionIdFilter)
 		}
 	}
 
-	// [Query-16] amf-set-id
-	if queryParameters["amf-set-id"] != nil {
-		if targetNfType == "AMF" {
-			amfSetId := queryParameters["amf-set-id"][0]
-			amfSetIdFilter := bson.M{
-				"amfInfo.amfSetId": amfSetId,
+	// [Query-16] ocf-set-id
+	if queryParameters["ocf-set-id"] != nil {
+		if targetNfType == "OCF" {
+			ocfSetId := queryParameters["ocf-set-id"][0]
+			ocfSetIdFilter := bson.M{
+				"ocfInfo.ocfSetId": ocfSetId,
 			}
-			filter["$and"] = append(filter["$and"].([]bson.M), amfSetIdFilter)
+			filter["$and"] = append(filter["$and"].([]bson.M), ocfSetIdFilter)
 		}
 	}
 
 	// Query-17: guami
 	// TODO: NOTE[1]
 	if queryParameters["guami"] != nil {
-		if targetNfType == "AMF" {
+		if targetNfType == "OCF" {
 			guami := queryParameters["guami"][0]
 
 			guamiStruct := &models.Guami{}
@@ -506,7 +507,7 @@ func buildFilter(queryParameters url.Values) bson.M {
 			}
 
 			guamiFilter := bson.M{
-				"amfInfo.guamiList": bson.M{
+				"ocfInfo.guamiList": bson.M{
 					"$elemMatch": guamiBsonM,
 				},
 			}
@@ -1568,9 +1569,9 @@ func complexQueryFilterSubprocess(queryParameters map[string]*AtomElem, complexQ
 					},
 				},
 			}
-		} else if targetNfType == "AMF" {
+		} else if targetNfType == "OCF" {
 			taiFilter = bson.M{
-				"amfInfo": bson.M{
+				"ocfInfo": bson.M{
 					"$elemMatch": bson.M{
 						"taiList": taiBsonM,
 					},
@@ -1585,53 +1586,53 @@ func complexQueryFilterSubprocess(queryParameters map[string]*AtomElem, complexQ
 		filter[logicalOperator] = append(filter[logicalOperator].([]bson.M), taiFilter)
 	}
 
-	// [Query-15] amf-region-id
-	if queryParameters["amf-region-id"] != nil {
-		var amfRegionIdFilter bson.M
-		if targetNfType == "AMF" {
-			amfRegionId := queryParameters["amf-region-id"].value
-			amfRegionIdFilter = bson.M{
-				"amfInfo": bson.M{
+	// [Query-15] ocf-region-id
+	if queryParameters["ocf-region-id"] != nil {
+		var ocfRegionIdFilter bson.M
+		if targetNfType == "OCF" {
+			ocfRegionId := queryParameters["ocf-region-id"].value
+			ocfRegionIdFilter = bson.M{
+				"ocfInfo": bson.M{
 					"$elemMatch": bson.M{
-						"amfRegionId": amfRegionId[0],
+						"ocfRegionId": ocfRegionId[0],
 					},
 				},
 			}
 		}
-		if queryParameters["amf-region-id"].negative {
-			amfRegionIdFilter = bson.M{
-				"$not": amfRegionIdFilter,
+		if queryParameters["ocf-region-id"].negative {
+			ocfRegionIdFilter = bson.M{
+				"$not": ocfRegionIdFilter,
 			}
 		}
-		filter[logicalOperator] = append(filter[logicalOperator].([]bson.M), amfRegionIdFilter)
+		filter[logicalOperator] = append(filter[logicalOperator].([]bson.M), ocfRegionIdFilter)
 	}
 
-	// [Query-16] amf-set-id
-	if queryParameters["amf-set-id"] != nil {
-		var amfSetIdFilter bson.M
-		if targetNfType == "AMF" {
-			amfSetId := queryParameters["amf-set-id"].value
-			amfSetIdFilter = bson.M{
-				"amfInfo": bson.M{
+	// [Query-16] ocf-set-id
+	if queryParameters["ocf-set-id"] != nil {
+		var ocfSetIdFilter bson.M
+		if targetNfType == "OCF" {
+			ocfSetId := queryParameters["ocf-set-id"].value
+			ocfSetIdFilter = bson.M{
+				"ocfInfo": bson.M{
 					"$elemMatch": bson.M{ // TOCHECK : elemMatch
-						"amfSetId": amfSetId[0],
+						"ocfSetId": ocfSetId[0],
 					},
 				},
 			}
 		}
-		if queryParameters["amf-set-id"].negative {
-			amfSetIdFilter = bson.M{
-				"$not": amfSetIdFilter,
+		if queryParameters["ocf-set-id"].negative {
+			ocfSetIdFilter = bson.M{
+				"$not": ocfSetIdFilter,
 			}
 		}
-		filter[logicalOperator] = append(filter[logicalOperator].([]bson.M), amfSetIdFilter)
+		filter[logicalOperator] = append(filter[logicalOperator].([]bson.M), ocfSetIdFilter)
 	}
 
 	// Query-17: guami
 	// TODO: NOTE[1]
 	if queryParameters["guami"] != nil {
 		var guamiFilter bson.M
-		if targetNfType == "AMF" {
+		if targetNfType == "OCF" {
 			guami := queryParameters["guami"].value
 			guamiSplit := strings.Split(guami, ",")
 			tempguami := guamiSplit[0] + "," + guamiSplit[1]
@@ -1654,7 +1655,7 @@ func complexQueryFilterSubprocess(queryParameters map[string]*AtomElem, complexQ
 			}
 
 			guamiFilter = bson.M{
-				"amfInfo": bson.M{
+				"ocfInfo": bson.M{
 					"$elemMatch": bson.M{ // TOCHECK : elemMatch
 						"guamiList": bson.M{
 							"$elemMatch": guamiBsonM,

@@ -2,7 +2,7 @@ include $(top_srcdir)/Make_global.am
 
 @RELMAKE@
 
-ACLOCAL_AMFLAGS = -I m4
+ACLOCAL_OCFLAGS = -I m4
 
 SUBDIRS = src include tools
 DIST_SUBDIRS = src include tools

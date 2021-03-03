@@ -2,7 +2,7 @@ import actions from '../actions/ueinfoActions';
 
 const initialState = {
     ueInfoDetail: {
-        amfInfo: {
+        ocfInfo: {
         },
     
         smfInfo: {
@@ -23,7 +23,7 @@ const initialState = {
             }]
         }
     }, 
-    amfInfo: {
+    ocfInfo: {
         AccessType: "3GPP",
         Supi: "imsi-2089300007487",
         Guti: "guti-2089300007487",
@@ -78,8 +78,8 @@ switch (action.type) {
         nextState.registered_ue_err_msg = action.registered_ue_err_msg
         return nextState;
 
-    case actions.SET_UE_DETAIL_AMF:
-        nextState.amfInfo = action.amfInfo
+    case actions.SET_UE_DETAIL_OCF:
+        nextState.ocfInfo = action.ocfInfo
         return nextState;
 
     case actions.SET_UE_DETAIL_SMF:

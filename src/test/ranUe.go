@@ -19,14 +19,14 @@ import (
 type RanUeContext struct {
 	Supi               string
 	RanUeNgapId        int64
-	AmfUeNgapId        int64
+	OcfUeNgapId        int64
 	ULCount            security.Count
 	DLCount            security.Count
 	CipheringAlg       uint8
 	IntegrityAlg       uint8
 	KnasEnc            [16]uint8
 	KnasInt            [16]uint8
-	Kamf               []uint8
+	Kocf               []uint8
 	AuthenticationSubs models.AuthenticationSubscription
 }
 
@@ -104,7 +104,7 @@ func (ue *RanUeContext) DeriveRESstarAndSetKey(
 		fatal.Fatalf("DecodeString error: %+v", err)
 	}
 
-	amf, err := hex.DecodeString(authSubs.AuthenticationManagementField)
+	ocf, err := hex.DecodeString(authSubs.AuthenticationManagementField)
 	if err != nil {
 		fatal.Fatalf("DecodeString error: %+v", err)
 	}
@@ -142,7 +142,7 @@ func (ue *RanUeContext) DeriveRESstarAndSetKey(
 	}
 
 	// Generate MAC_A, MAC_S
-	err = milenage.F1(opc, k, rand, sqn, amf, macA, macS)
+	err = milenage.F1(opc, k, rand, sqn, ocf, macA, macS)
 	if err != nil {
 		fatal.Fatalf("regexp Compile error: %+v", err)
 	}
@@ -160,7 +160,7 @@ func (ue *RanUeContext) DeriveRESstarAndSetKey(
 	P1 := rand
 	P2 := res
 
-	ue.DerivateKamf(key, snName, sqn, ak)
+	ue.DerivateKocf(key, snName, sqn, ak)
 	ue.DerivateAlgKey()
 	kdfVal_for_resStar :=
 		UeauCommon.GetKDFValue(key, FC, P0, UeauCommon.KDFLen(P0), P1, UeauCommon.KDFLen(P1), P2, UeauCommon.KDFLen(P2))
@@ -168,7 +168,7 @@ func (ue *RanUeContext) DeriveRESstarAndSetKey(
 
 }
 
-func (ue *RanUeContext) DerivateKamf(key []byte, snName string, SQN, AK []byte) {
+func (ue *RanUeContext) DerivateKocf(key []byte, snName string, SQN, AK []byte) {
 
 	FC := UeauCommon.FC_FOR_KAUSF_DERIVATION
 	P0 := []byte(snName)
@@ -192,7 +192,7 @@ func (ue *RanUeContext) DerivateKamf(key []byte, snName string, SQN, AK []byte) 
 	P1 = []byte{0x00, 0x00}
 	L1 := UeauCommon.KDFLen(P1)
 
-	ue.Kamf = UeauCommon.GetKDFValue(Kseaf, UeauCommon.FC_FOR_KAMF_DERIVATION, P0, L0, P1, L1)
+	ue.Kocf = UeauCommon.GetKDFValue(Kseaf, UeauCommon.FC_FOR_KOCF_DERIVATION, P0, L0, P1, L1)
 }
 
 // Algorithm key Derivation function defined in TS 33.501 Annex A.9
@@ -203,7 +203,7 @@ func (ue *RanUeContext) DerivateAlgKey() {
 	P1 := []byte{ue.CipheringAlg}
 	L1 := UeauCommon.KDFLen(P1)
 
-	kenc := UeauCommon.GetKDFValue(ue.Kamf, UeauCommon.FC_FOR_ALGORITHM_KEY_DERIVATION, P0, L0, P1, L1)
+	kenc := UeauCommon.GetKDFValue(ue.Kocf, UeauCommon.FC_FOR_ALGORITHM_KEY_DERIVATION, P0, L0, P1, L1)
 	copy(ue.KnasEnc[:], kenc[16:32])
 
 	// Integrity Key
@@ -212,7 +212,7 @@ func (ue *RanUeContext) DerivateAlgKey() {
 	P1 = []byte{ue.IntegrityAlg}
 	L1 = UeauCommon.KDFLen(P1)
 
-	kint := UeauCommon.GetKDFValue(ue.Kamf, UeauCommon.FC_FOR_ALGORITHM_KEY_DERIVATION, P0, L0, P1, L1)
+	kint := UeauCommon.GetKDFValue(ue.Kocf, UeauCommon.FC_FOR_ALGORITHM_KEY_DERIVATION, P0, L0, P1, L1)
 	copy(ue.KnasInt[:], kint[16:32])
 }
 

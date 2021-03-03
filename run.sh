@@ -27,7 +27,7 @@ PID_LIST+=($SUDO_N3IWF_PID $N3IWF_PID)
 
 function terminate()
 {
-    # kill amf first
+    # kill ocf first
     while $(sudo kill -SIGINT ${PID_LIST[2]} 2>/dev/null); do
         sleep 2
     done

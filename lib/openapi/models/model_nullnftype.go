@@ -15,7 +15,7 @@ type Nullnftype string
 const (
 	Nullnftype_NRF      Nullnftype = "NRF"
 	Nullnftype_UDM      Nullnftype = "UDM"
-	Nullnftype_AMF      Nullnftype = "AMF"
+	Nullnftype_OCF      Nullnftype = "OCF"
 	Nullnftype_SMF      Nullnftype = "SMF"
 	Nullnftype_AUSF     Nullnftype = "AUSF"
 	Nullnftype_NEF      Nullnftype = "NEF"

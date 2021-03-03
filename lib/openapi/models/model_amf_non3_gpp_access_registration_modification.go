@@ -9,7 +9,7 @@
 
 package models
 
-type AmfNon3GppAccessRegistrationModification struct {
+type OcfNon3GppAccessRegistrationModification struct {
 	Guami         *Guami          `json:"guami" yaml:"guami" bson:"guami" mapstructure:"Guami"`
 	PurgeFlag     bool            `json:"purgeFlag,omitempty" yaml:"purgeFlag" bson:"purgeFlag" mapstructure:"PurgeFlag"`
 	Pei           string          `json:"pei,omitempty" yaml:"pei" bson:"pei" mapstructure:"Pei"`

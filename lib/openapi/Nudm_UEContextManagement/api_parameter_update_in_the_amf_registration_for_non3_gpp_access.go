@@ -26,16 +26,16 @@ var (
 	_ context.Context
 )
 
-type ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApiService service
+type ParameterUpdateInTheOCFRegistrationForNon3GPPAccessApiService service
 
 /*
-ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApiService update a parameter in the AMF registration for non-3GPP access
+ParameterUpdateInTheOCFRegistrationForNon3GPPAccessApiService update a parameter in the OCF registration for non-3GPP access
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param ueId Identifier of the UE
- * @param amfNon3GppAccessRegistrationModification
+ * @param ocfNon3GppAccessRegistrationModification
 */
 
-func (a *ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApiService) UpdateAmfNon3gppAccess(ctx context.Context, ueId string, amfNon3GppAccessRegistrationModification models.AmfNon3GppAccessRegistrationModification) (*http.Response, error) {
+func (a *ParameterUpdateInTheOCFRegistrationForNon3GPPAccessApiService) UpdateOcfNon3gppAccess(ctx context.Context, ueId string, ocfNon3GppAccessRegistrationModification models.OcfNon3GppAccessRegistrationModification) (*http.Response, error) {
 	var (
 		localVarHTTPMethod   = strings.ToUpper("Patch")
 		localVarPostBody     interface{}
@@ -45,7 +45,7 @@ func (a *ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApiService) UpdateAm
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath() + "/{ueId}/registrations/amf-non-3gpp-access"
+	localVarPath := a.client.cfg.BasePath() + "/{ueId}/registrations/ocf-non-3gpp-access"
 	localVarPath = strings.Replace(localVarPath, "{"+"ueId"+"}", fmt.Sprintf("%v", ueId), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -66,7 +66,7 @@ func (a *ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApiService) UpdateAm
 	}
 
 	// body params
-	localVarPostBody = &amfNon3GppAccessRegistrationModification
+	localVarPostBody = &ocfNon3GppAccessRegistrationModification
 
 	r, err := openapi.PrepareRequest(ctx, a.client.cfg, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {

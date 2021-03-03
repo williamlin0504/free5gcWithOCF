@@ -28,16 +28,16 @@ var (
 	_ context.Context
 )
 
-type AMF3GPPAccessRegistrationDocumentApiService service
+type OCF3GPPAccessRegistrationDocumentApiService service
 
 /*
-AMF3GPPAccessRegistrationDocumentApiService To modify the AMF context data of a UE using 3gpp access in the UDR
+OCF3GPPAccessRegistrationDocumentApiService To modify the OCF context data of a UE using 3gpp access in the UDR
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param ueId UE id
  * @param patchItem
 */
 
-func (a *AMF3GPPAccessRegistrationDocumentApiService) AmfContext3gpp(ctx context.Context, ueId string, patchItem []models.PatchItem) (*http.Response, error) {
+func (a *OCF3GPPAccessRegistrationDocumentApiService) OcfContext3gpp(ctx context.Context, ueId string, patchItem []models.PatchItem) (*http.Response, error) {
 	var (
 		localVarHTTPMethod   = strings.ToUpper("Patch")
 		localVarPostBody     interface{}
@@ -47,7 +47,7 @@ func (a *AMF3GPPAccessRegistrationDocumentApiService) AmfContext3gpp(ctx context
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath() + "/subscription-data/{ueId}/context-data/amf-3gpp-access"
+	localVarPath := a.client.cfg.BasePath() + "/subscription-data/{ueId}/context-data/ocf-3gpp-access"
 	localVarPath = strings.Replace(localVarPath, "{"+"ueId"+"}", fmt.Sprintf("%v", ueId), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -116,18 +116,18 @@ func (a *AMF3GPPAccessRegistrationDocumentApiService) AmfContext3gpp(ctx context
 }
 
 /*
-AMF3GPPAccessRegistrationDocumentApiService To store the AMF context data of a UE using 3gpp access in the UDR
+OCF3GPPAccessRegistrationDocumentApiService To store the OCF context data of a UE using 3gpp access in the UDR
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param ueId UE id
- * @param optional nil or *CreateAmfContext3gppParamOpts - Optional Parameters:
- * @param "Amf3GppAccessRegistration" (optional.Interface of Amf3GppAccessRegistration) -
+ * @param optional nil or *CreateOcfContext3gppParamOpts - Optional Parameters:
+ * @param "Ocf3GppAccessRegistration" (optional.Interface of Ocf3GppAccessRegistration) -
 */
 
-type CreateAmfContext3gppParamOpts struct {
-	Amf3GppAccessRegistration optional.Interface
+type CreateOcfContext3gppParamOpts struct {
+	Ocf3GppAccessRegistration optional.Interface
 }
 
-func (a *AMF3GPPAccessRegistrationDocumentApiService) CreateAmfContext3gpp(ctx context.Context, ueId string, localVarOptionals *CreateAmfContext3gppParamOpts) (*http.Response, error) {
+func (a *OCF3GPPAccessRegistrationDocumentApiService) CreateOcfContext3gpp(ctx context.Context, ueId string, localVarOptionals *CreateOcfContext3gppParamOpts) (*http.Response, error) {
 	var (
 		localVarHTTPMethod   = strings.ToUpper("Put")
 		localVarPostBody     interface{}
@@ -137,7 +137,7 @@ func (a *AMF3GPPAccessRegistrationDocumentApiService) CreateAmfContext3gpp(ctx c
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath() + "/subscription-data/{ueId}/context-data/amf-3gpp-access"
+	localVarPath := a.client.cfg.BasePath() + "/subscription-data/{ueId}/context-data/ocf-3gpp-access"
 	localVarPath = strings.Replace(localVarPath, "{"+"ueId"+"}", fmt.Sprintf("%v", ueId), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -158,12 +158,12 @@ func (a *AMF3GPPAccessRegistrationDocumentApiService) CreateAmfContext3gpp(ctx c
 	}
 
 	// body params
-	if localVarOptionals != nil && localVarOptionals.Amf3GppAccessRegistration.IsSet() {
-		localVarOptionalAmf3GppAccessRegistration, localVarOptionalAmf3GppAccessRegistrationok := localVarOptionals.Amf3GppAccessRegistration.Value().(models.Amf3GppAccessRegistration)
-		if !localVarOptionalAmf3GppAccessRegistrationok {
-			return nil, openapi.ReportError("amf3GppAccessRegistration should be Amf3GppAccessRegistration")
+	if localVarOptionals != nil && localVarOptionals.Ocf3GppAccessRegistration.IsSet() {
+		localVarOptionalOcf3GppAccessRegistration, localVarOptionalOcf3GppAccessRegistrationok := localVarOptionals.Ocf3GppAccessRegistration.Value().(models.Ocf3GppAccessRegistration)
+		if !localVarOptionalOcf3GppAccessRegistrationok {
+			return nil, openapi.ReportError("ocf3GppAccessRegistration should be Ocf3GppAccessRegistration")
 		}
-		localVarPostBody = &localVarOptionalAmf3GppAccessRegistration
+		localVarPostBody = &localVarOptionalOcf3GppAccessRegistration
 	}
 
 	r, err := openapi.PrepareRequest(ctx, a.client.cfg, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
@@ -203,32 +203,32 @@ func (a *AMF3GPPAccessRegistrationDocumentApiService) CreateAmfContext3gpp(ctx c
 }
 
 /*
-AMF3GPPAccessRegistrationDocumentApiService Retrieves the AMF context data of a UE using 3gpp access
+OCF3GPPAccessRegistrationDocumentApiService Retrieves the OCF context data of a UE using 3gpp access
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param ueId UE id
- * @param optional nil or *QueryAmfContext3gppParamOpts - Optional Parameters:
+ * @param optional nil or *QueryOcfContext3gppParamOpts - Optional Parameters:
  * @param "Fields" (optional.Interface of []string) -  attributes to be retrieved
  * @param "SupportedFeatures" (optional.String) -  Supported Features
-@return models.Amf3GppAccessRegistration
+@return models.Ocf3GppAccessRegistration
 */
 
-type QueryAmfContext3gppParamOpts struct {
+type QueryOcfContext3gppParamOpts struct {
 	Fields            optional.Interface
 	SupportedFeatures optional.String
 }
 
-func (a *AMF3GPPAccessRegistrationDocumentApiService) QueryAmfContext3gpp(ctx context.Context, ueId string, localVarOptionals *QueryAmfContext3gppParamOpts) (models.Amf3GppAccessRegistration, *http.Response, error) {
+func (a *OCF3GPPAccessRegistrationDocumentApiService) QueryOcfContext3gpp(ctx context.Context, ueId string, localVarOptionals *QueryOcfContext3gppParamOpts) (models.Ocf3GppAccessRegistration, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  models.Amf3GppAccessRegistration
+		localVarReturnValue  models.Ocf3GppAccessRegistration
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath() + "/subscription-data/{ueId}/context-data/amf-3gpp-access"
+	localVarPath := a.client.cfg.BasePath() + "/subscription-data/{ueId}/context-data/ocf-3gpp-access"
 	localVarPath = strings.Replace(localVarPath, "{"+"ueId"+"}", fmt.Sprintf("%v", ueId), -1)
 
 	localVarHeaderParams := make(map[string]string)

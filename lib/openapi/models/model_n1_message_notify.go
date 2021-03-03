@@ -1,7 +1,7 @@
 /*
- * Namf_Communication
+ * Nocf_Communication
  *
- * AMF Communication Service
+ * OCF Communication Service
  *
  * API version: 1.0.0
  * Manually Created

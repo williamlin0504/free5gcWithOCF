@@ -3,8 +3,8 @@ package ngap
 import (
 	"free5gc/lib/ngap"
 	"free5gc/lib/ngap/ngapType"
-	"free5gc/src/amf/context"
-	"free5gc/src/amf/logger"
+	"free5gc/src/ocf/context"
+	"free5gc/src/ocf/logger"
 	"net"
 
 	"github.com/sirupsen/logrus"
@@ -17,13 +17,13 @@ func init() {
 }
 
 func Dispatch(conn net.Conn, msg []byte) {
-	var ran *context.AmfRan
-	amfSelf := context.AMF_Self()
+	var ran *context.OcfRan
+	ocfSelf := context.OCF_Self()
 
-	ran, ok := amfSelf.AmfRanFindByConn(conn)
+	ran, ok := ocfSelf.OcfRanFindByConn(conn)
 	if !ok {
 		Ngaplog.Infof("Create a new NG connection for: %s", conn.RemoteAddr().String())
-		ran = amfSelf.NewAmfRan(conn)
+		ran = ocfSelf.NewOcfRan(conn)
 	}
 
 	if len(msg) == 0 {
@@ -110,8 +110,8 @@ func Dispatch(conn net.Conn, msg []byte) {
 			HandlePDUSessionResourceReleaseResponse(ran, pdu)
 		case ngapType.ProcedureCodeUERadioCapabilityCheck:
 			HandleUERadioCapabilityCheckResponse(ran, pdu)
-		case ngapType.ProcedureCodeAMFConfigurationUpdate:
-			HandleAMFconfigurationUpdateAcknowledge(ran, pdu)
+		case ngapType.ProcedureCodeOCFConfigurationUpdate:
+			HandleOCFconfigurationUpdateAcknowledge(ran, pdu)
 		case ngapType.ProcedureCodeInitialContextSetup:
 			HandleInitialContextSetupResponse(ran, pdu)
 		case ngapType.ProcedureCodeUEContextModification:
@@ -132,8 +132,8 @@ func Dispatch(conn net.Conn, msg []byte) {
 			return
 		}
 		switch unsuccessfulOutcome.ProcedureCode.Value {
-		case ngapType.ProcedureCodeAMFConfigurationUpdate:
-			HandleAMFconfigurationUpdateFailure(ran, pdu)
+		case ngapType.ProcedureCodeOCFConfigurationUpdate:
+			HandleOCFconfigurationUpdateFailure(ran, pdu)
 		case ngapType.ProcedureCodeInitialContextSetup:
 			HandleInitialContextSetupFailure(ran, pdu)
 		case ngapType.ProcedureCodeUEContextModification:

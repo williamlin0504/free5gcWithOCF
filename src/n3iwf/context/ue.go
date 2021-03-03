@@ -12,13 +12,13 @@ import (
 )
 
 const (
-	AmfUeNgapIdUnspecified int64 = 0xffffffffff
+	OcfUeNgapIdUnspecified int64 = 0xffffffffff
 )
 
 type N3IWFUe struct {
 	/* UE identity*/
 	RanUeNgapId           int64
-	AmfUeNgapId           int64
+	OcfUeNgapId           int64
 	IPAddrv4              string
 	IPAddrv6              string
 	PortNumber            int32
@@ -28,7 +28,7 @@ type N3IWFUe struct {
 	IPSecInnerIP          string
 
 	/* Relative Context */
-	AMF *N3IWFAMF
+	OCF *N3IWFOCF
 
 	/* PDU Session */
 	PduSessionList map[int64]*PDUSession // pduSessionId as key
@@ -185,13 +185,13 @@ type UDPSocketInfo struct {
 
 func (ue *N3IWFUe) init(ranUeNgapId int64) {
 	ue.RanUeNgapId = ranUeNgapId
-	ue.AmfUeNgapId = AmfUeNgapIdUnspecified
+	ue.OcfUeNgapId = OcfUeNgapIdUnspecified
 	ue.PduSessionList = make(map[int64]*PDUSession)
 }
 
 func (ue *N3IWFUe) Remove() {
-	// remove from AMF context
-	ue.DetachAMF()
+	// remove from OCF context
+	ue.DetachOCF()
 	// remove from N3IWF context
 	n3iwfSelf := N3IWFSelf()
 	n3iwfSelf.DeleteN3iwfUe(ue.RanUeNgapId)
@@ -263,18 +263,18 @@ func (ue *N3IWFUe) CreateIKEChildSecurityAssociation(
 	return childSecurityAssociation, nil
 }
 
-func (ue *N3IWFUe) AttachAMF(sctpAddr string) bool {
-	if amf, ok := n3iwfContext.AMFPoolLoad(sctpAddr); ok {
-		amf.N3iwfUeList[ue.RanUeNgapId] = ue
-		ue.AMF = amf
+func (ue *N3IWFUe) AttachOCF(sctpAddr string) bool {
+	if ocf, ok := n3iwfContext.OCFPoolLoad(sctpAddr); ok {
+		ocf.N3iwfUeList[ue.RanUeNgapId] = ue
+		ue.OCF = ocf
 		return true
 	} else {
 		return false
 	}
 }
-func (ue *N3IWFUe) DetachAMF() {
-	if ue.AMF == nil {
+func (ue *N3IWFUe) DetachOCF() {
+	if ue.OCF == nil {
 		return
 	}
-	delete(ue.AMF.N3iwfUeList, ue.RanUeNgapId)
+	delete(ue.OCF.N3iwfUeList, ue.RanUeNgapId)
 }

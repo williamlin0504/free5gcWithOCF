@@ -3,7 +3,7 @@ package ngapType
 // Need to import "free5gc/lib/aper" if it uses "aper"
 
 // Open type declare
-type ProtocolIESingleContainerAMFPagingTargetExtIEs struct {
+type ProtocolIESingleContainerOCFPagingTargetExtIEs struct {
 }
 
 // Open type declare

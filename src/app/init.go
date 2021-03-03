@@ -7,8 +7,8 @@ import (
 	fsmLogger "free5gc/lib/fsm/logger"
 	nasLogger "free5gc/lib/nas/logger"
 	ngapLogger "free5gc/lib/ngap/logger"
-	namfCommLogger "free5gc/lib/openapi/Namf_Communication/logger"
-	namfEventExposureLogger "free5gc/lib/openapi/Namf_EventExposure/logger"
+	nocfCommLogger "free5gc/lib/openapi/Nocf_Communication/logger"
+	nocfEventExposureLogger "free5gc/lib/openapi/Nocf_EventExposure/logger"
 	nsmfPDUSessionLogger "free5gc/lib/openapi/Nsmf_PDUSession/logger"
 	nudrDataRepositoryLogger "free5gc/lib/openapi/Nudr_DataRepository/logger"
 	openApiLogger "free5gc/lib/openapi/logger"
@@ -69,21 +69,21 @@ func AppInitializeWillInitialize(cfgPath string) {
 	}
 	ngapLogger.SetReportCaller(ContextSelf().Logger.NGAP.ReportCaller)
 
-	if ContextSelf().Logger.NamfComm.DebugLevel != "" {
-		level, err := logrus.ParseLevel(ContextSelf().Logger.NamfComm.DebugLevel)
+	if ContextSelf().Logger.NocfComm.DebugLevel != "" {
+		level, err := logrus.ParseLevel(ContextSelf().Logger.NocfComm.DebugLevel)
 		if err == nil {
-			namfCommLogger.SetLogLevel(level)
+			nocfCommLogger.SetLogLevel(level)
 		}
 	}
-	namfCommLogger.SetReportCaller(ContextSelf().Logger.NamfComm.ReportCaller)
+	nocfCommLogger.SetReportCaller(ContextSelf().Logger.NocfComm.ReportCaller)
 
-	if ContextSelf().Logger.NamfEventExposure.DebugLevel != "" {
-		level, err := logrus.ParseLevel(ContextSelf().Logger.NamfEventExposure.DebugLevel)
+	if ContextSelf().Logger.NocfEventExposure.DebugLevel != "" {
+		level, err := logrus.ParseLevel(ContextSelf().Logger.NocfEventExposure.DebugLevel)
 		if err == nil {
-			namfEventExposureLogger.SetLogLevel(level)
+			nocfEventExposureLogger.SetLogLevel(level)
 		}
 	}
-	namfEventExposureLogger.SetReportCaller(ContextSelf().Logger.NamfEventExposure.ReportCaller)
+	nocfEventExposureLogger.SetReportCaller(ContextSelf().Logger.NocfEventExposure.ReportCaller)
 
 	if ContextSelf().Logger.NsmfPDUSession.DebugLevel != "" {
 		level, err := logrus.ParseLevel(ContextSelf().Logger.NsmfPDUSession.DebugLevel)

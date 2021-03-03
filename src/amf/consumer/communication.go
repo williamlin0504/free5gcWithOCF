@@ -6,13 +6,13 @@ import (
 	"fmt"
 	"free5gc/lib/nas/nasMessage"
 	"free5gc/lib/openapi"
-	"free5gc/lib/openapi/Namf_Communication"
+	"free5gc/lib/openapi/Nocf_Communication"
 	"free5gc/lib/openapi/models"
-	amf_context "free5gc/src/amf/context"
-	"free5gc/src/amf/logger"
+	ocf_context "free5gc/src/ocf/context"
+	"free5gc/src/ocf/logger"
 )
 
-func BuildUeContextCreateData(ue *amf_context.AmfUe, targetRanId models.NgRanTargetId,
+func BuildUeContextCreateData(ue *ocf_context.OcfUe, targetRanId models.NgRanTargetId,
 	sourceToTargetData models.N2InfoContent, pduSessionList []models.N2SmInformation,
 	n2NotifyUri string, ngapCause *models.NgApCause) models.UeContextCreateData {
 
@@ -36,7 +36,7 @@ func BuildUeContextCreateData(ue *amf_context.AmfUe, targetRanId models.NgRanTar
 	return ueContextCreateData
 }
 
-func BuildUeContextModel(ue *amf_context.AmfUe) (ueContext models.UeContext) {
+func BuildUeContextModel(ue *ocf_context.OcfUe) (ueContext models.UeContext) {
 
 	ueContext.Supi = ue.Supi
 	ueContext.SupiUnauthInd = ue.UnauthenticatedSupi
@@ -115,11 +115,11 @@ func buildAmPolicyReqTriggers(triggers []models.RequestTrigger) (amPolicyReqTrig
 	return
 }
 
-func CreateUEContextRequest(ue *amf_context.AmfUe, ueContextCreateData models.UeContextCreateData) (
+func CreateUEContextRequest(ue *ocf_context.OcfUe, ueContextCreateData models.UeContextCreateData) (
 	ueContextCreatedData *models.UeContextCreatedData, problemDetails *models.ProblemDetails, err error) {
-	configuration := Namf_Communication.NewConfiguration()
-	configuration.SetBasePath(ue.TargetAmfUri)
-	client := Namf_Communication.NewAPIClient(configuration)
+	configuration := Nocf_Communication.NewConfiguration()
+	configuration.SetBasePath(ue.TargetOcfUri)
+	client := Nocf_Communication.NewAPIClient(configuration)
 
 	req := models.CreateUeContextRequest{
 		JsonData: &ueContextCreateData,
@@ -136,16 +136,16 @@ func CreateUEContextRequest(ue *amf_context.AmfUe, ueContextCreateData models.Ue
 		problem := localErr.(openapi.GenericOpenAPIError).Model().(models.ProblemDetails)
 		problemDetails = &problem
 	} else {
-		err = openapi.ReportError("%s: server no response", ue.TargetAmfUri)
+		err = openapi.ReportError("%s: server no response", ue.TargetOcfUri)
 	}
 	return
 }
 
-func ReleaseUEContextRequest(ue *amf_context.AmfUe, ngapCause models.NgApCause) (
+func ReleaseUEContextRequest(ue *ocf_context.OcfUe, ngapCause models.NgApCause) (
 	problemDetails *models.ProblemDetails, err error) {
-	configuration := Namf_Communication.NewConfiguration()
-	configuration.SetBasePath(ue.TargetAmfUri)
-	client := Namf_Communication.NewAPIClient(configuration)
+	configuration := Nocf_Communication.NewConfiguration()
+	configuration.SetBasePath(ue.TargetOcfUri)
+	client := Nocf_Communication.NewAPIClient(configuration)
 
 	var ueContextId string
 	if ue.Supi != "" {
@@ -174,17 +174,17 @@ func ReleaseUEContextRequest(ue *amf_context.AmfUe, ngapCause models.NgApCause) 
 		problem := localErr.(openapi.GenericOpenAPIError).Model().(models.ProblemDetails)
 		problemDetails = &problem
 	} else {
-		err = openapi.ReportError("%s: server no response", ue.TargetAmfUri)
+		err = openapi.ReportError("%s: server no response", ue.TargetOcfUri)
 	}
 	return problemDetails, err
 }
 
 func UEContextTransferRequest(
-	ue *amf_context.AmfUe, accessType models.AccessType, transferReason models.TransferReason) (
+	ue *ocf_context.OcfUe, accessType models.AccessType, transferReason models.TransferReason) (
 	ueContextTransferRspData *models.UeContextTransferRspData, problemDetails *models.ProblemDetails, err error) {
-	configuration := Namf_Communication.NewConfiguration()
-	configuration.SetBasePath(ue.TargetAmfUri)
-	client := Namf_Communication.NewAPIClient(configuration)
+	configuration := Nocf_Communication.NewConfiguration()
+	configuration.SetBasePath(ue.TargetOcfUri)
+	client := Nocf_Communication.NewAPIClient(configuration)
 
 	ueContextTransferReqData := models.UeContextTransferReqData{
 		Reason:     transferReason,
@@ -221,17 +221,17 @@ func UEContextTransferRequest(
 		problem := localErr.(openapi.GenericOpenAPIError).Model().(models.ProblemDetails)
 		problemDetails = &problem
 	} else {
-		err = openapi.ReportError("%s: server no response", ue.TargetAmfUri)
+		err = openapi.ReportError("%s: server no response", ue.TargetOcfUri)
 	}
 	return ueContextTransferRspData, problemDetails, err
 }
 
 // This operation is called "RegistrationCompleteNotify" at TS 23.502
-func RegistrationStatusUpdate(ue *amf_context.AmfUe, request models.UeRegStatusUpdateReqData) (
+func RegistrationStatusUpdate(ue *ocf_context.OcfUe, request models.UeRegStatusUpdateReqData) (
 	regStatusTransferComplete bool, problemDetails *models.ProblemDetails, err error) {
-	configuration := Namf_Communication.NewConfiguration()
-	configuration.SetBasePath(ue.TargetAmfUri)
-	client := Namf_Communication.NewAPIClient(configuration)
+	configuration := Nocf_Communication.NewConfiguration()
+	configuration.SetBasePath(ue.TargetOcfUri)
+	client := Nocf_Communication.NewAPIClient(configuration)
 
 	ueContextId := fmt.Sprintf("5g-guti-%s", ue.Guti)
 	res, httpResp, localErr :=
@@ -246,7 +246,7 @@ func RegistrationStatusUpdate(ue *amf_context.AmfUe, request models.UeRegStatusU
 		problem := localErr.(openapi.GenericOpenAPIError).Model().(models.ProblemDetails)
 		problemDetails = &problem
 	} else {
-		err = openapi.ReportError("%s: server no response", ue.TargetAmfUri)
+		err = openapi.ReportError("%s: server no response", ue.TargetOcfUri)
 	}
 	return
 }

@@ -1,12 +1,12 @@
 /*
- * AMF Configuration Factory
+ * OCF Configuration Factory
  */
 
 package factory
 
 import (
 	"free5gc/lib/openapi/models"
-	"free5gc/src/amf/context"
+	"free5gc/src/ocf/context"
 )
 
 type Config struct {
@@ -22,7 +22,7 @@ type Info struct {
 }
 
 type Configuration struct {
-	AmfName string `yaml:"amfName,omitempty"`
+	OcfName string `yaml:"ocfName,omitempty"`
 
 	NgapIpList []string `yaml:"ngapIpList,omitempty"`
 

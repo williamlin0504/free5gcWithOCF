@@ -102,8 +102,8 @@ then
     sudo ip link set ipsec0 up
 
     # Configuration
-    cp -f config/amfcfg.conf config/amfcfg.conf.bak
-    cp -f config/amfcfg.n3test.conf config/amfcfg.conf
+    cp -f config/ocfcfg.conf config/ocfcfg.conf.bak
+    cp -f config/ocfcfg.n3test.conf config/ocfcfg.conf
 
     # Run CN
     cd src/test && $GOROOT/bin/go test -v -vet=off -timeout 0 -run TestCN &
@@ -152,8 +152,8 @@ then
     sudo ip netns del ${UENS}
     sudo killall n3iwf
     killall test.test
-    cp -f config/amfcfg.conf.bak config/amfcfg.conf
-    rm -f config/amfcfg.conf.bak
+    cp -f config/ocfcfg.conf.bak config/ocfcfg.conf
+    rm -f config/ocfcfg.conf.bak
 fi
 
 sleep 2

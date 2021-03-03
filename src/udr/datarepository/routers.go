@@ -190,45 +190,45 @@ var routes = Routes{
 	},
 
 	{
-		"HTTPAmfContext3gpp",
+		"HTTPOcfContext3gpp",
 		strings.ToUpper("Patch"),
-		"/subscription-data/:ueId/:servingPlmnId/amf-3gpp-access",
-		HTTPAmfContext3gpp,
+		"/subscription-data/:ueId/:servingPlmnId/ocf-3gpp-access",
+		HTTPOcfContext3gpp,
 	},
 
 	{
-		"HTTPCreateAmfContext3gpp",
+		"HTTPCreateOcfContext3gpp",
 		strings.ToUpper("Put"),
-		"/subscription-data/:ueId/:servingPlmnId/amf-3gpp-access",
-		HTTPCreateAmfContext3gpp,
+		"/subscription-data/:ueId/:servingPlmnId/ocf-3gpp-access",
+		HTTPCreateOcfContext3gpp,
 	},
 
 	{
-		"HTTPQueryAmfContext3gpp",
+		"HTTPQueryOcfContext3gpp",
 		strings.ToUpper("Get"),
-		"/subscription-data/:ueId/:servingPlmnId/amf-3gpp-access",
-		HTTPQueryAmfContext3gpp,
+		"/subscription-data/:ueId/:servingPlmnId/ocf-3gpp-access",
+		HTTPQueryOcfContext3gpp,
 	},
 
 	{
-		"HTTPAmfContextNon3gpp",
+		"HTTPOcfContextNon3gpp",
 		strings.ToUpper("Patch"),
-		"/subscription-data/:ueId/:servingPlmnId/amf-non-3gpp-access",
-		HTTPAmfContextNon3gpp,
+		"/subscription-data/:ueId/:servingPlmnId/ocf-non-3gpp-access",
+		HTTPOcfContextNon3gpp,
 	},
 
 	{
-		"HTTPCreateAmfContextNon3gpp",
+		"HTTPCreateOcfContextNon3gpp",
 		strings.ToUpper("Put"),
-		"/subscription-data/:ueId/:servingPlmnId/amf-non-3gpp-access",
-		HTTPCreateAmfContextNon3gpp,
+		"/subscription-data/:ueId/:servingPlmnId/ocf-non-3gpp-access",
+		HTTPCreateOcfContextNon3gpp,
 	},
 
 	{
-		"HTTPQueryAmfContextNon3gpp",
+		"HTTPQueryOcfContextNon3gpp",
 		strings.ToUpper("Get"),
-		"/subscription-data/:ueId/:servingPlmnId/amf-non-3gpp-access",
-		HTTPQueryAmfContextNon3gpp,
+		"/subscription-data/:ueId/:servingPlmnId/ocf-non-3gpp-access",
+		HTTPQueryOcfContextNon3gpp,
 	},
 
 	{
@@ -624,31 +624,31 @@ var routes = Routes{
 	},
 
 	{
-		"HTTPCreateAMFSubscriptions",
+		"HTTPCreateOCFSubscriptions",
 		strings.ToUpper("Put"),
-		"/subscription-data/:ueId/:servingPlmnId/ee-subscriptions/:subsId/amf-subscriptions",
-		HTTPCreateAMFSubscriptions,
+		"/subscription-data/:ueId/:servingPlmnId/ee-subscriptions/:subsId/ocf-subscriptions",
+		HTTPCreateOCFSubscriptions,
 	},
 
 	{
-		"HTTPModifyAmfSubscriptionInfo",
+		"HTTPModifyOcfSubscriptionInfo",
 		strings.ToUpper("Patch"),
-		"/subscription-data/:ueId/:servingPlmnId/ee-subscriptions/:subsId/amf-subscriptions",
-		HTTPModifyAmfSubscriptionInfo,
+		"/subscription-data/:ueId/:servingPlmnId/ee-subscriptions/:subsId/ocf-subscriptions",
+		HTTPModifyOcfSubscriptionInfo,
 	},
 
 	{
-		"HTTPRemoveAmfSubscriptionsInfo",
+		"HTTPRemoveOcfSubscriptionsInfo",
 		strings.ToUpper("Delete"),
-		"/subscription-data/:ueId/:servingPlmnId/ee-subscriptions/:subsId/amf-subscriptions",
-		HTTPRemoveAmfSubscriptionsInfo,
+		"/subscription-data/:ueId/:servingPlmnId/ee-subscriptions/:subsId/ocf-subscriptions",
+		HTTPRemoveOcfSubscriptionsInfo,
 	},
 
 	{
-		"HTTPGetAmfSubscriptionInfo",
+		"HTTPGetOcfSubscriptionInfo",
 		strings.ToUpper("Get"),
-		"/subscription-data/:ueId/:servingPlmnId/ee-subscriptions/:subsId/amf-subscriptions",
-		HTTPGetAmfSubscriptionInfo,
+		"/subscription-data/:ueId/:servingPlmnId/ee-subscriptions/:subsId/ocf-subscriptions",
+		HTTPGetOcfSubscriptionInfo,
 	},
 }
 

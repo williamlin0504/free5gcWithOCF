@@ -14,12 +14,12 @@ import (
 
 	"github.com/free5gc/CommonConsumerTestData/UDM/TestGenAuthData"
 	"github.com/free5gc/MongoDBLibrary"
-	amf_service "github.com/free5gc/amf/service"
 	ausf_service "github.com/free5gc/ausf/service"
 	"github.com/free5gc/nas/security"
 	"github.com/free5gc/ngap"
 	nrf_service "github.com/free5gc/nrf/service"
 	nssf_service "github.com/free5gc/nssf/service"
+	ocf_service "github.com/free5gc/ocf/service"
 	"github.com/free5gc/path_util"
 	pcf_service "github.com/free5gc/pcf/service"
 	smf_service "github.com/free5gc/smf/service"
@@ -33,7 +33,7 @@ import (
 var initFlag bool = true
 var NFs = []app.NetworkFunction{
 	&nrf_service.NRF{},
-	&amf_service.AMF{},
+	&ocf_service.OCF{},
 	&smf_service.SMF{},
 	&udr_service.UDR{},
 	&pcf_service.PCF{},
@@ -88,8 +88,8 @@ func TestNGSetup(t *testing.T) {
 	var sendMsg []byte
 	var recvMsg = make([]byte, 2048)
 
-	// RAN connect to AMF
-	conn, err := test.ConnectToAmf("127.0.0.1", "127.0.0.1", 38412, 9487)
+	// RAN connect to OCF
+	conn, err := test.ConnectToOcf("127.0.0.1", "127.0.0.1", 38412, 9487)
 	assert.Nil(t, err)
 
 	// send NGSetupRequest Msg
@@ -112,7 +112,7 @@ func TestCN(t *testing.T) {
 	// New UE
 	ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA2, security.AlgIntegrity128NIA2)
 	// ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA0)
-	ue.AmfUeNgapId = 1
+	ue.OcfUeNgapId = 1
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
 		TestGenAuthData.MilenageTestSet19.OPC,
 		TestGenAuthData.MilenageTestSet19.OP)

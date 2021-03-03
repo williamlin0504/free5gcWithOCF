@@ -15,7 +15,7 @@ type Nullrequesternftype string
 const (
 	Nullrequesternftype_NRF      Nullrequesternftype = "NRF"
 	Nullrequesternftype_UDM      Nullrequesternftype = "UDM"
-	Nullrequesternftype_AMF      Nullrequesternftype = "AMF"
+	Nullrequesternftype_OCF      Nullrequesternftype = "OCF"
 	Nullrequesternftype_SMF      Nullrequesternftype = "SMF"
 	Nullrequesternftype_AUSF     Nullrequesternftype = "AUSF"
 	Nullrequesternftype_NEF      Nullrequesternftype = "NEF"

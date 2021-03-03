@@ -1842,9 +1842,9 @@ components:
           type: string
         selMode:
           $ref: '#/components/schemas/DnnSelectionMode'
-        backupAmfInfo:
+        backupOcfInfo:
           items:
-            $ref: '#/components/schemas/BackupAmfInfo'
+            $ref: '#/components/schemas/BackupOcfInfo'
           minItems: 1
           type: array
         traceData:
@@ -2062,7 +2062,7 @@ components:
           plmnId:
             mnc: mnc
             mcc: mcc
-          amfId: amfId
+          ocfId: ocfId
         dataForwarding: false
         n2SmInfo:
           contentId: contentId
@@ -2074,27 +2074,27 @@ components:
         - null
         - null
         targetServingNfId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        backupAmfInfo:
-        - backupAmf: backupAmf
+        backupOcfInfo:
+        - backupOcf: backupOcf
           guamiList:
           - plmnId:
               mnc: mnc
               mcc: mcc
-            amfId: amfId
+            ocfId: ocfId
           - plmnId:
               mnc: mnc
               mcc: mcc
-            amfId: amfId
-        - backupAmf: backupAmf
+            ocfId: ocfId
+        - backupOcf: backupOcf
           guamiList:
           - plmnId:
               mnc: mnc
               mcc: mcc
-            amfId: amfId
+            ocfId: ocfId
           - plmnId:
               mnc: mnc
               mcc: mcc
-            amfId: amfId
+            ocfId: ocfId
         sNssai:
           sd: sd
           sst: 153
@@ -2112,9 +2112,9 @@ components:
           $ref: '#/components/schemas/Guami'
         servingNetwork:
           $ref: '#/components/schemas/PlmnId'
-        backupAmfInfo:
+        backupOcfInfo:
           items:
-            $ref: '#/components/schemas/BackupAmfInfo'
+            $ref: '#/components/schemas/BackupOcfInfo'
           minItems: 1
           nullable: true
           type: array
@@ -4153,15 +4153,15 @@ components:
         plmnId:
           mnc: mnc
           mcc: mcc
-        amfId: amfId
+        ocfId: ocfId
       properties:
         plmnId:
           $ref: '#/components/schemas/PlmnId'
-        amfId:
+        ocfId:
           pattern: ^[A-Fa-f0-9]{6}$
           type: string
       required:
-      - amfId
+      - ocfId
       - plmnId
       type: object
     PlmnId:
@@ -4185,7 +4185,7 @@ components:
     Mnc:
       pattern: ^\d{2,3}$
       type: string
-    AmfId:
+    OcfId:
       pattern: ^[A-Fa-f0-9]{6}$
       type: string
     ServiceName:
@@ -4197,10 +4197,10 @@ components:
       - nudm-ueau
       - nudm-ee
       - nudm-pp
-      - namf-comm
-      - namf-evts
-      - namf-mt
-      - namf-loc
+      - nocf-comm
+      - nocf-evts
+      - nocf-mt
+      - nocf-loc
       - nsmf-pdusession
       - nsmf-event-exposure
       - nausf-auth
@@ -4579,20 +4579,20 @@ components:
     SupportedFeatures:
       pattern: ^[A-Fa-f0-9]*$
       type: string
-    BackupAmfInfo:
+    BackupOcfInfo:
       example:
-        backupAmf: backupAmf
+        backupOcf: backupOcf
         guamiList:
         - plmnId:
             mnc: mnc
             mcc: mcc
-          amfId: amfId
+          ocfId: ocfId
         - plmnId:
             mnc: mnc
             mcc: mcc
-          amfId: amfId
+          ocfId: ocfId
       properties:
-        backupAmf:
+        backupOcf:
           type: string
         guamiList:
           items:
@@ -4600,9 +4600,9 @@ components:
           minItems: 1
           type: array
       required:
-      - backupAmf
+      - backupOcf
       type: object
-    AmfName:
+    OcfName:
       type: string
     TraceData:
       example:

@@ -442,14 +442,14 @@ func GetRegisteredUEContext(c *gin.Context) {
 
 	supi, supiExists := c.Params.Get("supi")
 
-	// TODO: support fetching data from multiple AMFs
-	if amfUris := webuiSelf.GetOamUris(models.NfType_AMF); amfUris != nil {
+	// TODO: support fetching data from multiple OCFs
+	if ocfUris := webuiSelf.GetOamUris(models.NfType_OCF); ocfUris != nil {
 		var requestUri string
 
 		if supiExists {
-			requestUri = fmt.Sprintf("%s/namf-oam/v1/registered-ue-context/%s", amfUris[0], supi)
+			requestUri = fmt.Sprintf("%s/nocf-oam/v1/registered-ue-context/%s", ocfUris[0], supi)
 		} else {
-			requestUri = fmt.Sprintf("%s/namf-oam/v1/registered-ue-context", amfUris[0])
+			requestUri = fmt.Sprintf("%s/nocf-oam/v1/registered-ue-context", ocfUris[0])
 		}
 
 		resp, err := httpsClient.Get(requestUri)
@@ -461,7 +461,7 @@ func GetRegisteredUEContext(c *gin.Context) {
 		sendResponseToClient(c, resp)
 	} else {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"cause": "No AMF Found",
+			"cause": "No OCF Found",
 		})
 	}
 }

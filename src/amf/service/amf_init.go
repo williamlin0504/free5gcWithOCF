@@ -17,43 +17,43 @@ import (
 	"free5gc/lib/logger_util"
 	"free5gc/lib/openapi/models"
 	"free5gc/lib/path_util"
-	"free5gc/src/amf/communication"
-	"free5gc/src/amf/consumer"
-	"free5gc/src/amf/context"
-	"free5gc/src/amf/eventexposure"
-	"free5gc/src/amf/factory"
-	"free5gc/src/amf/httpcallback"
-	"free5gc/src/amf/location"
-	"free5gc/src/amf/logger"
-	"free5gc/src/amf/mt"
-	"free5gc/src/amf/ngap"
-	ngap_message "free5gc/src/amf/ngap/message"
-	ngap_service "free5gc/src/amf/ngap/service"
-	"free5gc/src/amf/oam"
-	"free5gc/src/amf/producer/callback"
-	"free5gc/src/amf/util"
 	"free5gc/src/app"
+	"free5gc/src/ocf/communication"
+	"free5gc/src/ocf/consumer"
+	"free5gc/src/ocf/context"
+	"free5gc/src/ocf/eventexposure"
+	"free5gc/src/ocf/factory"
+	"free5gc/src/ocf/httpcallback"
+	"free5gc/src/ocf/location"
+	"free5gc/src/ocf/logger"
+	"free5gc/src/ocf/mt"
+	"free5gc/src/ocf/ngap"
+	ngap_message "free5gc/src/ocf/ngap/message"
+	ngap_service "free5gc/src/ocf/ngap/service"
+	"free5gc/src/ocf/oam"
+	"free5gc/src/ocf/producer/callback"
+	"free5gc/src/ocf/util"
 )
 
-type AMF struct{}
+type OCF struct{}
 
 type (
 	// Config information.
 	Config struct {
-		amfcfg string
+		ocfcfg string
 	}
 )
 
 var config Config
 
-var amfCLi = []cli.Flag{
+var ocfCLi = []cli.Flag{
 	cli.StringFlag{
 		Name:  "free5gccfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
-		Name:  "amfcfg",
-		Usage: "amf config file",
+		Name:  "ocfcfg",
+		Usage: "ocf config file",
 	},
 }
 
@@ -63,27 +63,27 @@ func init() {
 	initLog = logger.InitLog
 }
 
-func (*AMF) GetCliCmd() (flags []cli.Flag) {
-	return amfCLi
+func (*OCF) GetCliCmd() (flags []cli.Flag) {
+	return ocfCLi
 }
 
-func (*AMF) Initialize(c *cli.Context) {
+func (*OCF) Initialize(c *cli.Context) {
 
 	config = Config{
-		amfcfg: c.String("amfcfg"),
+		ocfcfg: c.String("ocfcfg"),
 	}
 
-	if config.amfcfg != "" {
-		factory.InitConfigFactory(config.amfcfg)
+	if config.ocfcfg != "" {
+		factory.InitConfigFactory(config.ocfcfg)
 	} else {
-		DefaultAmfConfigPath := path_util.Gofree5gcPath("free5gc/config/amfcfg.conf")
-		factory.InitConfigFactory(DefaultAmfConfigPath)
+		DefaultOcfConfigPath := path_util.Gofree5gcPath("free5gc/config/ocfcfg.conf")
+		factory.InitConfigFactory(DefaultOcfConfigPath)
 	}
 
-	if app.ContextSelf().Logger.AMF.DebugLevel != "" {
-		level, err := logrus.ParseLevel(app.ContextSelf().Logger.AMF.DebugLevel)
+	if app.ContextSelf().Logger.OCF.DebugLevel != "" {
+		level, err := logrus.ParseLevel(app.ContextSelf().Logger.OCF.DebugLevel)
 		if err != nil {
-			initLog.Warnf("Log level [%s] is not valid, set to [info] level", app.ContextSelf().Logger.AMF.DebugLevel)
+			initLog.Warnf("Log level [%s] is not valid, set to [info] level", app.ContextSelf().Logger.OCF.DebugLevel)
 			logger.SetLogLevel(logrus.InfoLevel)
 		} else {
 			logger.SetLogLevel(level)
@@ -94,12 +94,12 @@ func (*AMF) Initialize(c *cli.Context) {
 		logger.SetLogLevel(logrus.InfoLevel)
 	}
 
-	logger.SetReportCaller(app.ContextSelf().Logger.AMF.ReportCaller)
+	logger.SetReportCaller(app.ContextSelf().Logger.OCF.ReportCaller)
 
 }
 
-func (amf *AMF) FilterCli(c *cli.Context) (args []string) {
-	for _, flag := range amf.GetCliCmd() {
+func (ocf *OCF) FilterCli(c *cli.Context) (args []string) {
+	for _, flag := range ocf.GetCliCmd() {
 		name := flag.GetName()
 		value := fmt.Sprint(c.Generic(name))
 		if value == "" {
@@ -111,7 +111,7 @@ func (amf *AMF) FilterCli(c *cli.Context) (args []string) {
 	return args
 }
 
-func (amf *AMF) Start() {
+func (ocf *OCF) Start() {
 	initLog.Infoln("Server started")
 
 	router := logger_util.NewGinWithLogrus(logger.GinLog)
@@ -127,21 +127,21 @@ func (amf *AMF) Start() {
 
 	httpcallback.AddService(router)
 	oam.AddService(router)
-	for _, serviceName := range factory.AmfConfig.Configuration.ServiceNameList {
+	for _, serviceName := range factory.OcfConfig.Configuration.ServiceNameList {
 		switch models.ServiceName(serviceName) {
-		case models.ServiceName_NAMF_COMM:
+		case models.ServiceName_NOCF_COMM:
 			communication.AddService(router)
-		case models.ServiceName_NAMF_EVTS:
+		case models.ServiceName_NOCF_EVTS:
 			eventexposure.AddService(router)
-		case models.ServiceName_NAMF_MT:
+		case models.ServiceName_NOCF_MT:
 			mt.AddService(router)
-		case models.ServiceName_NAMF_LOC:
+		case models.ServiceName_NOCF_LOC:
 			location.AddService(router)
 		}
 	}
 
-	self := context.AMF_Self()
-	util.InitAmfContext(self)
+	self := context.OCF_Self()
+	util.InitOcfContext(self)
 
 	addr := fmt.Sprintf("%s:%d", self.BindingIPv4, self.SBIPort)
 
@@ -150,7 +150,7 @@ func (amf *AMF) Start() {
 	// Register to NRF
 	var profile models.NfProfile
 	if profileTmp, err := consumer.BuildNFInstance(self); err != nil {
-		initLog.Error("Build AMF Profile Error")
+		initLog.Error("Build OCF Profile Error")
 	} else {
 		profile = profileTmp
 	}
@@ -165,11 +165,11 @@ func (amf *AMF) Start() {
 	signal.Notify(signalChannel, os.Interrupt, syscall.SIGTERM)
 	go func() {
 		<-signalChannel
-		amf.Terminate()
+		ocf.Terminate()
 		os.Exit(0)
 	}()
 
-	server, err := http2_util.NewServer(addr, util.AmfLogPath, router)
+	server, err := http2_util.NewServer(addr, util.OcfLogPath, router)
 
 	if server == nil {
 		initLog.Errorf("Initialize HTTP server failed: %+v", err)
@@ -180,11 +180,11 @@ func (amf *AMF) Start() {
 		initLog.Warnf("Initialize HTTP server: %+v", err)
 	}
 
-	serverScheme := factory.AmfConfig.Configuration.Sbi.Scheme
+	serverScheme := factory.OcfConfig.Configuration.Sbi.Scheme
 	if serverScheme == "http" {
 		err = server.ListenAndServe()
 	} else if serverScheme == "https" {
-		err = server.ListenAndServeTLS(util.AmfPemPath, util.AmfKeyPath)
+		err = server.ListenAndServeTLS(util.OcfPemPath, util.OcfKeyPath)
 	}
 
 	if err != nil {
@@ -192,14 +192,14 @@ func (amf *AMF) Start() {
 	}
 }
 
-func (amf *AMF) Exec(c *cli.Context) error {
+func (ocf *OCF) Exec(c *cli.Context) error {
 
-	//AMF.Initialize(cfgPath, c)
+	//OCF.Initialize(cfgPath, c)
 
-	initLog.Traceln("args:", c.String("amfcfg"))
-	args := amf.FilterCli(c)
+	initLog.Traceln("args:", c.String("ocfcfg"))
+	args := ocf.FilterCli(c)
 	initLog.Traceln("filter: ", args)
-	command := exec.Command("./amf", args...)
+	command := exec.Command("./ocf", args...)
 
 	stdout, err := command.StdoutPipe()
 	if err != nil {
@@ -229,7 +229,7 @@ func (amf *AMF) Exec(c *cli.Context) error {
 
 	go func() {
 		if err = command.Start(); err != nil {
-			initLog.Errorf("AMF Start error: %+v", err)
+			initLog.Errorf("OCF Start error: %+v", err)
 		}
 		wg.Done()
 	}()
@@ -239,12 +239,12 @@ func (amf *AMF) Exec(c *cli.Context) error {
 	return err
 }
 
-// Used in AMF planned removal procedure
-func (amf *AMF) Terminate() {
-	logger.InitLog.Infof("Terminating AMF...")
-	amfSelf := context.AMF_Self()
+// Used in OCF planned removal procedure
+func (ocf *OCF) Terminate() {
+	logger.InitLog.Infof("Terminating OCF...")
+	ocfSelf := context.OCF_Self()
 
-	// TODO: forward registered UE contexts to target AMF in the same AMF set if there is one
+	// TODO: forward registered UE contexts to target OCF in the same OCF set if there is one
 
 	// deregister with NRF
 	problemDetails, err := consumer.SendDeregisterNFInstance()
@@ -253,20 +253,20 @@ func (amf *AMF) Terminate() {
 	} else if err != nil {
 		logger.InitLog.Errorf("Deregister NF instance Error[%+v]", err)
 	} else {
-		logger.InitLog.Infof("[AMF] Deregister from NRF successfully")
+		logger.InitLog.Infof("[OCF] Deregister from NRF successfully")
 	}
 
-	// send AMF status indication to ran to notify ran that this AMF will be unavailable
-	logger.InitLog.Infof("Send AMF Status Indication to Notify RANs due to AMF terminating")
-	unavailableGuamiList := ngap_message.BuildUnavailableGUAMIList(amfSelf.ServedGuamiList)
-	amfSelf.AmfRanPool.Range(func(key, value interface{}) bool {
-		ran := value.(*context.AmfRan)
-		ngap_message.SendAMFStatusIndication(ran, unavailableGuamiList)
+	// send OCF status indication to ran to notify ran that this OCF will be unavailable
+	logger.InitLog.Infof("Send OCF Status Indication to Notify RANs due to OCF terminating")
+	unavailableGuamiList := ngap_message.BuildUnavailableGUAMIList(ocfSelf.ServedGuamiList)
+	ocfSelf.OcfRanPool.Range(func(key, value interface{}) bool {
+		ran := value.(*context.OcfRan)
+		ngap_message.SendOCFStatusIndication(ran, unavailableGuamiList)
 		return true
 	})
 
 	ngap_service.Stop()
 
-	callback.SendAmfStatusChangeNotify((string)(models.StatusChange_UNAVAILABLE), amfSelf.ServedGuamiList)
-	logger.InitLog.Infof("AMF terminated")
+	callback.SendOcfStatusChangeNotify((string)(models.StatusChange_UNAVAILABLE), ocfSelf.ServedGuamiList)
+	logger.InitLog.Infof("OCF terminated")
 }

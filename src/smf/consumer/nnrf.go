@@ -168,8 +168,8 @@ func SendNFDiscoveryPCF() (problemDetails *models.ProblemDetails, err error) {
 	return
 }
 
-func SendNFDiscoveryServingAMF(smContext *smf_context.SMContext) (*models.ProblemDetails, error) {
-	targetNfType := models.NfType_AMF
+func SendNFDiscoveryServingOCF(smContext *smf_context.SMContext) (*models.ProblemDetails, error) {
+	targetNfType := models.NfType_OCF
 	requesterNfType := models.NfType_SMF
 
 	localVarOptionals := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{}
@@ -190,8 +190,8 @@ func SendNFDiscoveryServingAMF(smContext *smf_context.SMContext) (*models.Proble
 			logger.AppLog.Warnln("NfInstances is nil")
 			return nil, openapi.ReportError("NfInstances is nil")
 		}
-		logger.AppLog.Info("SendNFDiscoveryServingAMF ok")
-		smContext.AMFProfile = deepcopy.Copy(result.NfInstances[0]).(models.NfProfile)
+		logger.AppLog.Info("SendNFDiscoveryServingOCF ok")
+		smContext.OCFProfile = deepcopy.Copy(result.NfInstances[0]).(models.NfProfile)
 	} else if httpResp != nil {
 		if httpResp.Status != localErr.Error() {
 			return nil, localErr

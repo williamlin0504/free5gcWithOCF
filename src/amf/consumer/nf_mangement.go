@@ -6,17 +6,17 @@ import (
 	"free5gc/lib/openapi"
 	"free5gc/lib/openapi/Nnrf_NFManagement"
 	"free5gc/lib/openapi/models"
-	amf_context "free5gc/src/amf/context"
-	"free5gc/src/amf/logger"
-	"free5gc/src/amf/util"
+	ocf_context "free5gc/src/ocf/context"
+	"free5gc/src/ocf/logger"
+	"free5gc/src/ocf/util"
 	"net/http"
 	"strings"
 	"time"
 )
 
-func BuildNFInstance(context *amf_context.AMFContext) (profile models.NfProfile, err error) {
+func BuildNFInstance(context *ocf_context.OCFContext) (profile models.NfProfile, err error) {
 	profile.NfInstanceId = context.NfId
-	profile.NfType = models.NfType_AMF
+	profile.NfType = models.NfType_OCF
 	profile.NfStatus = models.NfStatus_REGISTERED
 	var plmns []models.PlmnId
 	for _, plmnItem := range context.PlmnSupportList {
@@ -27,27 +27,27 @@ func BuildNFInstance(context *amf_context.AMFContext) (profile models.NfProfile,
 		// TODO: change to Per Plmn Support Snssai List
 		profile.SNssais = &context.PlmnSupportList[0].SNssaiList
 	}
-	amfInfo := models.AmfInfo{}
+	ocfInfo := models.OcfInfo{}
 	if len(context.ServedGuamiList) == 0 {
-		err = fmt.Errorf("Gumai List is Empty in AMF")
+		err = fmt.Errorf("Gumai List is Empty in OCF")
 		return
 	}
-	regionId, setId, _, err1 := util.SeperateAmfId(context.ServedGuamiList[0].AmfId)
+	regionId, setId, _, err1 := util.SeperateOcfId(context.ServedGuamiList[0].OcfId)
 	if err1 != nil {
 		err = err1
 		return
 	}
-	amfInfo.AmfRegionId = regionId
-	amfInfo.AmfSetId = setId
-	amfInfo.GuamiList = &context.ServedGuamiList
+	ocfInfo.OcfRegionId = regionId
+	ocfInfo.OcfSetId = setId
+	ocfInfo.GuamiList = &context.ServedGuamiList
 	if len(context.SupportTaiLists) == 0 {
-		err = fmt.Errorf("SupportTaiList is Empty in AMF")
+		err = fmt.Errorf("SupportTaiList is Empty in OCF")
 		return
 	}
-	amfInfo.TaiList = &context.SupportTaiLists
-	profile.AmfInfo = &amfInfo
+	ocfInfo.TaiList = &context.SupportTaiLists
+	profile.OcfInfo = &ocfInfo
 	if context.RegisterIPv4 == "" {
-		err = fmt.Errorf("AMF Address is empty")
+		err = fmt.Errorf("OCF Address is empty")
 		return
 	}
 	profile.Ipv4Addresses = append(profile.Ipv4Addresses, context.RegisterIPv4)
@@ -60,7 +60,7 @@ func BuildNFInstance(context *amf_context.AMFContext) (profile models.NfProfile,
 	}
 
 	defaultNotificationSubscription := models.DefaultNotificationSubscription{
-		CallbackUri:      fmt.Sprintf("%s/namf-callback/v1/n1-message-notify", context.GetIPv4Uri()),
+		CallbackUri:      fmt.Sprintf("%s/nocf-callback/v1/n1-message-notify", context.GetIPv4Uri()),
 		NotificationType: models.NotificationType_N1_MESSAGES,
 		N1MessageClass:   models.N1MessageClass__5_GMM,
 	}
@@ -82,7 +82,7 @@ func SendRegisterNFInstance(nrfUri, nfInstanceId string, profile models.NfProfil
 		_, res, err = client.NFInstanceIDDocumentApi.RegisterNFInstance(context.TODO(), nfInstanceId, profile)
 		if err != nil || res == nil {
 			//TODO : add log
-			fmt.Println(fmt.Errorf("AMF register to NRF Error[%s]", err.Error()))
+			fmt.Println(fmt.Errorf("OCF register to NRF Error[%s]", err.Error()))
 			time.Sleep(2 * time.Second)
 			continue
 		}
@@ -106,17 +106,17 @@ func SendRegisterNFInstance(nrfUri, nfInstanceId string, profile models.NfProfil
 
 func SendDeregisterNFInstance() (problemDetails *models.ProblemDetails, err error) {
 
-	logger.ConsumerLog.Infof("[AMF] Send Deregister NFInstance")
+	logger.ConsumerLog.Infof("[OCF] Send Deregister NFInstance")
 
-	amfSelf := amf_context.AMF_Self()
+	ocfSelf := ocf_context.OCF_Self()
 	// Set client and set url
 	configuration := Nnrf_NFManagement.NewConfiguration()
-	configuration.SetBasePath(amfSelf.NrfUri)
+	configuration.SetBasePath(ocfSelf.NrfUri)
 	client := Nnrf_NFManagement.NewAPIClient(configuration)
 
 	var res *http.Response
 
-	res, err = client.NFInstanceIDDocumentApi.DeregisterNFInstance(context.Background(), amfSelf.NfId)
+	res, err = client.NFInstanceIDDocumentApi.DeregisterNFInstance(context.Background(), ocfSelf.NfId)
 	if err == nil {
 		return
 	} else if res != nil {

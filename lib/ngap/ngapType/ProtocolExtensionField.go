@@ -30,59 +30,59 @@ type AllowedNSSAIItemExtIEsExtensionValue struct {
 	Present int
 }
 
-type AMFTNLAssociationSetupItemExtIEs struct {
+type OCFTNLAssociationSetupItemExtIEs struct {
 	Id             ProtocolExtensionID
 	Criticality    Criticality
-	ExtensionValue AMFTNLAssociationSetupItemExtIEsExtensionValue `aper:"openType,referenceFieldName:Id"`
+	ExtensionValue OCFTNLAssociationSetupItemExtIEsExtensionValue `aper:"openType,referenceFieldName:Id"`
 }
 
 const (
-	AMFTNLAssociationSetupItemExtIEsPresentNothing int = iota /* No components present */
+	OCFTNLAssociationSetupItemExtIEsPresentNothing int = iota /* No components present */
 )
 
-type AMFTNLAssociationSetupItemExtIEsExtensionValue struct {
+type OCFTNLAssociationSetupItemExtIEsExtensionValue struct {
 	Present int
 }
 
-type AMFTNLAssociationToAddItemExtIEs struct {
+type OCFTNLAssociationToAddItemExtIEs struct {
 	Id             ProtocolExtensionID
 	Criticality    Criticality
-	ExtensionValue AMFTNLAssociationToAddItemExtIEsExtensionValue `aper:"openType,referenceFieldName:Id"`
+	ExtensionValue OCFTNLAssociationToAddItemExtIEsExtensionValue `aper:"openType,referenceFieldName:Id"`
 }
 
 const (
-	AMFTNLAssociationToAddItemExtIEsPresentNothing int = iota /* No components present */
+	OCFTNLAssociationToAddItemExtIEsPresentNothing int = iota /* No components present */
 )
 
-type AMFTNLAssociationToAddItemExtIEsExtensionValue struct {
+type OCFTNLAssociationToAddItemExtIEsExtensionValue struct {
 	Present int
 }
 
-type AMFTNLAssociationToRemoveItemExtIEs struct {
+type OCFTNLAssociationToRemoveItemExtIEs struct {
 	Id             ProtocolExtensionID
 	Criticality    Criticality
-	ExtensionValue AMFTNLAssociationToRemoveItemExtIEsExtensionValue `aper:"openType,referenceFieldName:Id"`
+	ExtensionValue OCFTNLAssociationToRemoveItemExtIEsExtensionValue `aper:"openType,referenceFieldName:Id"`
 }
 
 const (
-	AMFTNLAssociationToRemoveItemExtIEsPresentNothing int = iota /* No components present */
+	OCFTNLAssociationToRemoveItemExtIEsPresentNothing int = iota /* No components present */
 )
 
-type AMFTNLAssociationToRemoveItemExtIEsExtensionValue struct {
+type OCFTNLAssociationToRemoveItemExtIEsExtensionValue struct {
 	Present int
 }
 
-type AMFTNLAssociationToUpdateItemExtIEs struct {
+type OCFTNLAssociationToUpdateItemExtIEs struct {
 	Id             ProtocolExtensionID
 	Criticality    Criticality
-	ExtensionValue AMFTNLAssociationToUpdateItemExtIEsExtensionValue `aper:"openType,referenceFieldName:Id"`
+	ExtensionValue OCFTNLAssociationToUpdateItemExtIEsExtensionValue `aper:"openType,referenceFieldName:Id"`
 }
 
 const (
-	AMFTNLAssociationToUpdateItemExtIEsPresentNothing int = iota /* No components present */
+	OCFTNLAssociationToUpdateItemExtIEsPresentNothing int = iota /* No components present */
 )
 
-type AMFTNLAssociationToUpdateItemExtIEsExtensionValue struct {
+type OCFTNLAssociationToUpdateItemExtIEsExtensionValue struct {
 	Present int
 }
 

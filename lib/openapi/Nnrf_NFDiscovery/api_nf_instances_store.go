@@ -47,9 +47,9 @@ NFInstancesStoreApiService Search a collection of NF Instances
  * @param "NsiList" (optional.Interface of []string) -  NSI IDs that are served by the services being discovered
  * @param "SmfServingArea" (optional.String) -
  * @param "Tai" (optional.Interface of models.Tai) -  Tracking Area Identity
- * @param "AmfRegionId" (optional.String) -  AMF Region Identity
- * @param "AmfSetId" (optional.String) -  AMF Set Identity
- * @param "Guami" (optional.Interface of models.Guami) -  Guami used to search for an appropriate AMF
+ * @param "OcfRegionId" (optional.String) -  OCF Region Identity
+ * @param "OcfSetId" (optional.String) -  OCF Set Identity
+ * @param "Guami" (optional.Interface of models.Guami) -  Guami used to search for an appropriate OCF
  * @param "Supi" (optional.String) -  SUPI of the user
  * @param "UeIpv4Address" (optional.String) -  IPv4 address of the UE
  * @param "IpDomain" (optional.String) -  IP domain of the UE, which supported by BSF
@@ -84,8 +84,8 @@ type SearchNFInstancesParamOpts struct {
 	NsiList                 optional.Interface
 	SmfServingArea          optional.String
 	Tai                     optional.Interface
-	AmfRegionId             optional.String
-	AmfSetId                optional.String
+	OcfRegionId             optional.String
+	OcfSetId                optional.String
 	Guami                   optional.Interface
 	Supi                    optional.String
 	UeIpv4Address           optional.String
@@ -162,11 +162,11 @@ func (a *NFInstancesStoreApiService) SearchNFInstances(ctx context.Context, targ
 	if localVarOptionals != nil && localVarOptionals.Tai.IsSet() {
 		localVarQueryParams.Add("tai", openapi.ParameterToString(localVarOptionals.Tai.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.AmfRegionId.IsSet() {
-		localVarQueryParams.Add("amf-region-id", openapi.ParameterToString(localVarOptionals.AmfRegionId.Value(), ""))
+	if localVarOptionals != nil && localVarOptionals.OcfRegionId.IsSet() {
+		localVarQueryParams.Add("ocf-region-id", openapi.ParameterToString(localVarOptionals.OcfRegionId.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.AmfSetId.IsSet() {
-		localVarQueryParams.Add("amf-set-id", openapi.ParameterToString(localVarOptionals.AmfSetId.Value(), ""))
+	if localVarOptionals != nil && localVarOptionals.OcfSetId.IsSet() {
+		localVarQueryParams.Add("ocf-set-id", openapi.ParameterToString(localVarOptionals.OcfSetId.Value(), ""))
 	}
 	if localVarOptionals != nil && localVarOptionals.Guami.IsSet() {
 		localVarQueryParams.Add("guami", openapi.ParameterToString(localVarOptionals.Guami.Value(), ""))

@@ -273,27 +273,27 @@ type ProtocolIEContainerRANConfigurationUpdateFailureIEs struct {
 }
 
 /* Sequence of = 35, FULL Name = struct ProtocolIE_Container_6449P45 */
-/* AMFConfigurationUpdateIEs */
-type ProtocolIEContainerAMFConfigurationUpdateIEs struct {
-	List []AMFConfigurationUpdateIEs `aper:"sizeLB:0,sizeUB:65535"`
+/* OCFConfigurationUpdateIEs */
+type ProtocolIEContainerOCFConfigurationUpdateIEs struct {
+	List []OCFConfigurationUpdateIEs `aper:"sizeLB:0,sizeUB:65535"`
 }
 
 /* Sequence of = 35, FULL Name = struct ProtocolIE_Container_6449P46 */
-/* AMFConfigurationUpdateAcknowledgeIEs */
-type ProtocolIEContainerAMFConfigurationUpdateAcknowledgeIEs struct {
-	List []AMFConfigurationUpdateAcknowledgeIEs `aper:"sizeLB:0,sizeUB:65535"`
+/* OCFConfigurationUpdateAcknowledgeIEs */
+type ProtocolIEContainerOCFConfigurationUpdateAcknowledgeIEs struct {
+	List []OCFConfigurationUpdateAcknowledgeIEs `aper:"sizeLB:0,sizeUB:65535"`
 }
 
 /* Sequence of = 35, FULL Name = struct ProtocolIE_Container_6449P47 */
-/* AMFConfigurationUpdateFailureIEs */
-type ProtocolIEContainerAMFConfigurationUpdateFailureIEs struct {
-	List []AMFConfigurationUpdateFailureIEs `aper:"sizeLB:0,sizeUB:65535"`
+/* OCFConfigurationUpdateFailureIEs */
+type ProtocolIEContainerOCFConfigurationUpdateFailureIEs struct {
+	List []OCFConfigurationUpdateFailureIEs `aper:"sizeLB:0,sizeUB:65535"`
 }
 
 /* Sequence of = 35, FULL Name = struct ProtocolIE_Container_6449P48 */
-/* AMFStatusIndicationIEs */
-type ProtocolIEContainerAMFStatusIndicationIEs struct {
-	List []AMFStatusIndicationIEs `aper:"sizeLB:0,sizeUB:65535"`
+/* OCFStatusIndicationIEs */
+type ProtocolIEContainerOCFStatusIndicationIEs struct {
+	List []OCFStatusIndicationIEs `aper:"sizeLB:0,sizeUB:65535"`
 }
 
 /* Sequence of = 35, FULL Name = struct ProtocolIE_Container_6449P49 */

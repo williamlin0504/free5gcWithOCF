@@ -21,14 +21,14 @@ type context struct {
 }
 
 type Logger struct {
-	AMF                AMF                `yaml:"AMF"`
+	OCF                OCF                `yaml:"OCF"`
 	UDM                UDM                `yaml:"UDM"`
 	SMF                SMF                `yaml:"SMF"`
 	NAS                NAS                `yaml:"NAS"`
 	FSM                FSM                `yaml:"FSM"`
 	NGAP               NGAP               `yaml:"NGAP"`
-	NamfComm           NamfComm           `yaml:"NamfComm"`
-	NamfEventExposure  NamfEventExposure  `yaml:"NamfEventExposure"`
+	NocfComm           NocfComm           `yaml:"NocfComm"`
+	NocfEventExposure  NocfEventExposure  `yaml:"NocfEventExposure"`
 	NsmfPDUSession     NsmfPDUSession     `yaml:"NsmfPDUSession"`
 	NudrDataRepository NudrDataRepository `yaml:"NudrDataRepository"`
 	OpenApi            OpenApi            `yaml:"OpenApi"`
@@ -43,7 +43,7 @@ type Logger struct {
 	WEBUI              WEBUI              `yaml:"WEBUI"`
 }
 
-type AMF struct {
+type OCF struct {
 	DebugLevel   string `yaml:"debugLevel"`
 	ReportCaller bool   `yaml:"ReportCaller"`
 }
@@ -103,12 +103,12 @@ type NGAP struct {
 	ReportCaller bool   `yaml:"ReportCaller"`
 }
 
-type NamfComm struct {
+type NocfComm struct {
 	DebugLevel   string `yaml:"debugLevel"`
 	ReportCaller bool   `yaml:"ReportCaller"`
 }
 
-type NamfEventExposure struct {
+type NocfEventExposure struct {
 	DebugLevel   string `yaml:"debugLevel"`
 	ReportCaller bool   `yaml:"ReportCaller"`
 }

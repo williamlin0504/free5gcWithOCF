@@ -96,14 +96,15 @@ func NaiToString(buf []byte) (nai string) {
 func GutiToString(buf []byte) (guami models.Guami, guti string) {
 
 	plmnID := PlmnIDToString(buf[1:4])
-	amfID := hex.EncodeToString(buf[4:7])
+	ocfID := hex.EncodeToString(buf[4:7])
 	tmsi5G := hex.EncodeToString(buf[7:])
 
 	guami.PlmnId = new(models.PlmnId)
 	guami.PlmnId.Mcc = plmnID[:3]
 	guami.PlmnId.Mnc = plmnID[3:]
-	guami.AmfId = amfID
-	guti = plmnID + amfID + tmsi5G
+	guami.OcfId = ocfID
+	guami.OcfId = ocfID
+	guti = plmnID + ocfID + ocfID + tmsi5G
 	return
 }
 
@@ -141,7 +142,7 @@ func GutiToNas(guti string) nasType.GUTI5G {
 		mnc2 = mnc2Tmp
 	}
 	mnc3 = 0x0f
-	amfId := ""
+	ocfId := ""
 	tmsi := ""
 	if len(guti) == 20 {
 		if mnc3Tmp, err := strconv.Atoi(string(guti[5])); err != nil {
@@ -149,10 +150,10 @@ func GutiToNas(guti string) nasType.GUTI5G {
 		} else {
 			mnc3 = mnc3Tmp
 		}
-		amfId = guti[6:12]
+		ocfId = guti[6:12]
 		tmsi = guti[12:]
 	} else {
-		amfId = guti[5:11]
+		ocfId = guti[5:11]
 		tmsi = guti[11:]
 	}
 	gutiNas.SetMCCDigit1(uint8(mcc1))
@@ -162,10 +163,15 @@ func GutiToNas(guti string) nasType.GUTI5G {
 	gutiNas.SetMNCDigit2(uint8(mnc2))
 	gutiNas.SetMNCDigit3(uint8(mnc3))
 
-	amfRegionId, amfSetId, amfPointer := AmfIdToNas(amfId)
-	gutiNas.SetAMFRegionID(amfRegionId)
-	gutiNas.SetAMFSetID(amfSetId)
-	gutiNas.SetAMFPointer(amfPointer)
+	ocfRegionId, ocfSetId, ocfPointer := OcfIdToNas(ocfId)
+	gutiNas.SetOCFRegionID(ocfRegionId)
+	gutiNas.SetOCFSetID(ocfSetId)
+	gutiNas.SetOCFPointer(ocfPointer)
+
+	ocfRegionId, ocfSetId, ocfPointer := OcfIdToNas(ocfId)
+	gutiNas.SetOCFRegionID(ocfRegionId)
+	gutiNas.SetOCFSetID(ocfSetId)
+	gutiNas.SetOCFPointer(ocfPointer)
 	if tmsiBytes, err := hex.DecodeString(tmsi); err != nil {
 		logger.ConvertLog.Warnf("Decode TMSI failed: %+v", err)
 	} else {

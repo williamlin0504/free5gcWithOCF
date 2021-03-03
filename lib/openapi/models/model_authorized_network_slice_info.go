@@ -14,9 +14,9 @@ type AuthorizedNetworkSliceInfo struct {
 
 	ConfiguredNssai []ConfiguredSnssai `json:"configuredNssai,omitempty" bson:"configuredNssai"`
 
-	TargetAmfSet string `json:"targetAmfSet,omitempty" bson:"targetAmfSet"`
+	TargetOcfSet string `json:"targetOcfSet,omitempty" bson:"targetOcfSet"`
 
-	CandidateAmfList []string `json:"candidateAmfList,omitempty" bson:"candidateAmfList"`
+	CandidateOcfList []string `json:"candidateOcfList,omitempty" bson:"candidateOcfList"`
 
 	RejectedNssaiInPlmn []Snssai `json:"rejectedNssaiInPlmn,omitempty" bson:"rejectedNssaiInPlmn"`
 
@@ -26,5 +26,5 @@ type AuthorizedNetworkSliceInfo struct {
 
 	SupportedFeatures string `json:"supportedFeatures,omitempty" bson:"supportedFeatures"`
 
-	NrfAmfSet string `json:"nrfAmfSet,omitempty" bson:"nrfAmfSet"`
+	NrfOcfSet string `json:"nrfOcfSet,omitempty" bson:"nrfOcfSet"`
 }

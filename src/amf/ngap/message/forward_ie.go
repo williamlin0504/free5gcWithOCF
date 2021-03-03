@@ -5,8 +5,8 @@ import (
 	"free5gc/lib/ngap/ngapConvert"
 	"free5gc/lib/ngap/ngapType"
 	"free5gc/lib/openapi/models"
-	"free5gc/src/amf/context"
-	"free5gc/src/amf/logger"
+	"free5gc/src/ocf/context"
+	"free5gc/src/ocf/logger"
 )
 
 func AppendPDUSessionResourceSetupListSUReq(list *ngapType.PDUSessionResourceSetupListSUReq,
@@ -79,7 +79,7 @@ func AppendPDUSessionResourceToReleaseListRelCmd(list *ngapType.PDUSessionResour
 	list.List = append(list.List, item)
 }
 
-func BuildIEMobilityRestrictionList(ue *context.AmfUe) ngapType.MobilityRestrictionList {
+func BuildIEMobilityRestrictionList(ue *context.OcfUe) ngapType.MobilityRestrictionList {
 	mobilityRestrictionList := ngapType.MobilityRestrictionList{}
 	mobilityRestrictionList.ServingPLMN = ngapConvert.PlmnIdToNgap(ue.PlmnId)
 
@@ -149,11 +149,11 @@ func BuildUnavailableGUAMIList(guamiList []models.Guami) (unavailableGUAMIList n
 	for _, guami := range guamiList {
 		item := ngapType.UnavailableGUAMIItem{}
 		item.GUAMI.PLMNIdentity = ngapConvert.PlmnIdToNgap(*guami.PlmnId)
-		regionId, setId, ptrId := ngapConvert.AmfIdToNgap(guami.AmfId)
-		item.GUAMI.AMFRegionID.Value = regionId
-		item.GUAMI.AMFSetID.Value = setId
-		item.GUAMI.AMFPointer.Value = ptrId
-		// TODO: item.TimerApproachForGUAMIRemoval and item.BackupAMFName not support yet
+		regionId, setId, ptrId := ngapConvert.OcfIdToNgap(guami.OcfId)
+		item.GUAMI.OCFRegionID.Value = regionId
+		item.GUAMI.OCFSetID.Value = setId
+		item.GUAMI.OCFPointer.Value = ptrId
+		// TODO: item.TimerApproachForGUAMIRemoval and item.BackupOCFName not support yet
 		unavailableGUAMIList.List = append(unavailableGUAMIList.List, item)
 	}
 	return

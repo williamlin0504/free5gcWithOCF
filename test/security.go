@@ -12,7 +12,7 @@ func NASEncode(ue *RanUeContext, msg *nas.Message, securityContextAvailable bool
 	payload []byte, err error) {
 	var sequenceNumber uint8
 	if ue == nil {
-		err = fmt.Errorf("amfUe is nil")
+		err = fmt.Errorf("ocfUe is nil")
 		return
 	}
 	if msg == nil {
@@ -71,7 +71,7 @@ func NASEncode(ue *RanUeContext, msg *nas.Message, securityContextAvailable bool
 
 func NASDecode(ue *RanUeContext, securityHeaderType uint8, payload []byte) (msg *nas.Message, err error) {
 	if ue == nil {
-		err = fmt.Errorf("amfUe is nil")
+		err = fmt.Errorf("ocfUe is nil")
 		return
 	}
 	if payload == nil {

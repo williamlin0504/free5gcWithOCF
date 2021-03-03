@@ -5,9 +5,9 @@ import (
 	"free5gc/lib/nas"
 	"free5gc/lib/nas/nasMessage"
 	"free5gc/lib/openapi/models"
-	"free5gc/src/amf/context"
-	gmm_message "free5gc/src/amf/gmm/message"
-	"free5gc/src/amf/logger"
+	"free5gc/src/ocf/context"
+	gmm_message "free5gc/src/ocf/gmm/message"
+	"free5gc/src/ocf/logger"
 )
 
 func DeRegistered(state *fsm.State, event fsm.EventType, args fsm.ArgsType) {
@@ -15,21 +15,21 @@ func DeRegistered(state *fsm.State, event fsm.EventType, args fsm.ArgsType) {
 
 	switch event {
 	case fsm.EntryEvent:
-		amfUe := args[ArgAmfUe].(*context.AmfUe)
+		ocfUe := args[ArgOcfUe].(*context.OcfUe)
 		accessType := args[ArgAccessType].(models.AccessType)
-		amfUe.ClearRegistrationRequestData(accessType)
+		ocfUe.ClearRegistrationRequestData(accessType)
 	case GmmMessageEvent:
-		amfUe := args[ArgAmfUe].(*context.AmfUe)
+		ocfUe := args[ArgOcfUe].(*context.OcfUe)
 		procedureCode := args[ArgProcedureCode].(int64)
 		gmmMessage := args[ArgNASMessage].(*nas.GmmMessage)
 		accessType := args[ArgAccessType].(models.AccessType)
 		switch gmmMessage.GetMessageType() {
 		case nas.MsgTypeRegistrationRequest:
-			if err := HandleRegistrationRequest(amfUe, accessType, procedureCode, gmmMessage.RegistrationRequest); err != nil {
+			if err := HandleRegistrationRequest(ocfUe, accessType, procedureCode, gmmMessage.RegistrationRequest); err != nil {
 				logger.GmmLog.Errorln(err)
 			} else {
 				if err := GmmFSM.SendEvent(state, StartAuthEvent, fsm.ArgsType{
-					ArgAmfUe:         amfUe,
+					ArgOcfUe:         ocfUe,
 					ArgAccessType:    accessType,
 					ArgProcedureCode: procedureCode,
 				}); err != nil {
@@ -55,22 +55,22 @@ func Registered(state *fsm.State, event fsm.EventType, args fsm.ArgsType) {
 	switch event {
 	case fsm.EntryEvent:
 		// clear stored registration request data for this registration
-		amfUe := args[ArgAmfUe].(*context.AmfUe)
+		ocfUe := args[ArgOcfUe].(*context.OcfUe)
 		accessType := args[ArgAccessType].(models.AccessType)
-		amfUe.ClearRegistrationRequestData(accessType)
+		ocfUe.ClearRegistrationRequestData(accessType)
 	case GmmMessageEvent:
-		amfUe := args[ArgAmfUe].(*context.AmfUe)
+		ocfUe := args[ArgOcfUe].(*context.OcfUe)
 		procedureCode := args[ArgProcedureCode].(int64)
 		gmmMessage := args[ArgNASMessage].(*nas.GmmMessage)
 		accessType := args[ArgAccessType].(models.AccessType)
 		switch gmmMessage.GetMessageType() {
 		// Mobility Registration update / Periodic Registration update
 		case nas.MsgTypeRegistrationRequest:
-			if err := HandleRegistrationRequest(amfUe, accessType, procedureCode, gmmMessage.RegistrationRequest); err != nil {
+			if err := HandleRegistrationRequest(ocfUe, accessType, procedureCode, gmmMessage.RegistrationRequest); err != nil {
 				logger.GmmLog.Errorln(err)
 			} else {
 				if err := GmmFSM.SendEvent(state, StartAuthEvent, fsm.ArgsType{
-					ArgAmfUe:         amfUe,
+					ArgOcfUe:         ocfUe,
 					ArgAccessType:    accessType,
 					ArgProcedureCode: procedureCode,
 				}); err != nil {
@@ -78,31 +78,31 @@ func Registered(state *fsm.State, event fsm.EventType, args fsm.ArgsType) {
 				}
 			}
 		case nas.MsgTypeULNASTransport:
-			if err := HandleULNASTransport(amfUe, accessType, gmmMessage.ULNASTransport); err != nil {
+			if err := HandleULNASTransport(ocfUe, accessType, gmmMessage.ULNASTransport); err != nil {
 				logger.GmmLog.Errorln(err)
 			}
 		case nas.MsgTypeConfigurationUpdateComplete:
-			if err := HandleConfigurationUpdateComplete(amfUe, gmmMessage.ConfigurationUpdateComplete); err != nil {
+			if err := HandleConfigurationUpdateComplete(ocfUe, gmmMessage.ConfigurationUpdateComplete); err != nil {
 				logger.GmmLog.Errorln(err)
 			}
 		case nas.MsgTypeServiceRequest:
-			if err := HandleServiceRequest(amfUe, accessType, gmmMessage.ServiceRequest); err != nil {
+			if err := HandleServiceRequest(ocfUe, accessType, gmmMessage.ServiceRequest); err != nil {
 				logger.GmmLog.Errorln(err)
 			}
 		case nas.MsgTypeNotificationResponse:
-			if err := HandleNotificationResponse(amfUe, gmmMessage.NotificationResponse); err != nil {
+			if err := HandleNotificationResponse(ocfUe, gmmMessage.NotificationResponse); err != nil {
 				logger.GmmLog.Errorln(err)
 			}
 		case nas.MsgTypeDeregistrationRequestUEOriginatingDeregistration:
 			if err := GmmFSM.SendEvent(state, InitDeregistrationEvent, fsm.ArgsType{
-				ArgAmfUe:      amfUe,
+				ArgOcfUe:      ocfUe,
 				ArgAccessType: accessType,
 				ArgNASMessage: gmmMessage,
 			}); err != nil {
 				logger.GmmLog.Errorln(err)
 			}
 		case nas.MsgTypeStatus5GMM:
-			if err := HandleStatus5GMM(amfUe, accessType, gmmMessage.Status5GMM); err != nil {
+			if err := HandleStatus5GMM(ocfUe, accessType, gmmMessage.Status5GMM); err != nil {
 				logger.GmmLog.Errorln(err)
 			}
 		default:
@@ -127,45 +127,45 @@ func Authentication(state *fsm.State, event fsm.EventType, args fsm.ArgsType) {
 	case fsm.EntryEvent:
 		fallthrough
 	case AuthRestartEvent:
-		amfUe := args[ArgAmfUe].(*context.AmfUe)
+		ocfUe := args[ArgOcfUe].(*context.OcfUe)
 		accessType := args[ArgAccessType].(models.AccessType)
 
-		pass, err := AuthenticationProcedure(amfUe, accessType)
+		pass, err := AuthenticationProcedure(ocfUe, accessType)
 		if err != nil {
 			logger.GmmLog.Errorln(err)
 		}
 		if pass {
 			if err := GmmFSM.SendEvent(state, AuthSuccessEvent, fsm.ArgsType{
-				ArgAmfUe:      amfUe,
+				ArgOcfUe:      ocfUe,
 				ArgAccessType: accessType,
 			}); err != nil {
 				logger.GmmLog.Errorln(err)
 			}
 		}
 	case GmmMessageEvent:
-		amfUe := args[ArgAmfUe].(*context.AmfUe)
+		ocfUe := args[ArgOcfUe].(*context.OcfUe)
 		gmmMessage := args[ArgNASMessage].(*nas.GmmMessage)
 		accessType := args[ArgAccessType].(models.AccessType)
 
 		switch gmmMessage.GetMessageType() {
 		case nas.MsgTypeIdentityResponse:
-			if err := HandleIdentityResponse(amfUe, gmmMessage.IdentityResponse); err != nil {
+			if err := HandleIdentityResponse(ocfUe, gmmMessage.IdentityResponse); err != nil {
 				logger.GmmLog.Errorln(err)
 			}
-			err := GmmFSM.SendEvent(state, AuthRestartEvent, fsm.ArgsType{ArgAmfUe: amfUe, ArgAccessType: accessType})
+			err := GmmFSM.SendEvent(state, AuthRestartEvent, fsm.ArgsType{ArgOcfUe: ocfUe, ArgAccessType: accessType})
 			if err != nil {
 				logger.GmmLog.Errorln(err)
 			}
 		case nas.MsgTypeAuthenticationResponse:
-			if err := HandleAuthenticationResponse(amfUe, accessType, gmmMessage.AuthenticationResponse); err != nil {
+			if err := HandleAuthenticationResponse(ocfUe, accessType, gmmMessage.AuthenticationResponse); err != nil {
 				logger.GmmLog.Errorln(err)
 			}
 		case nas.MsgTypeAuthenticationFailure:
-			if err := HandleAuthenticationFailure(amfUe, accessType, gmmMessage.AuthenticationFailure); err != nil {
+			if err := HandleAuthenticationFailure(ocfUe, accessType, gmmMessage.AuthenticationFailure); err != nil {
 				logger.GmmLog.Errorln(err)
 			}
 		case nas.MsgTypeStatus5GMM:
-			if err := HandleStatus5GMM(amfUe, accessType, gmmMessage.Status5GMM); err != nil {
+			if err := HandleStatus5GMM(ocfUe, accessType, gmmMessage.Status5GMM); err != nil {
 				logger.GmmLog.Errorln(err)
 			}
 		default:
@@ -180,9 +180,9 @@ func Authentication(state *fsm.State, event fsm.EventType, args fsm.ArgsType) {
 	case fsm.ExitEvent:
 		// clear authentication related data at exit
 		logger.GmmLog.Debugln(event)
-		amfUe := args[ArgAmfUe].(*context.AmfUe)
-		amfUe.AuthenticationCtx = nil
-		amfUe.AuthFailureCauseSynchFailureTimes = 0
+		ocfUe := args[ArgOcfUe].(*context.OcfUe)
+		ocfUe.AuthenticationCtx = nil
+		ocfUe.AuthFailureCauseSynchFailureTimes = 0
 	default:
 		logger.GmmLog.Errorf("Unknown event [%+v]", event)
 	}
@@ -193,50 +193,50 @@ func SecurityMode(state *fsm.State, event fsm.EventType, args fsm.ArgsType) {
 
 	switch event {
 	case fsm.EntryEvent:
-		amfUe := args[ArgAmfUe].(*context.AmfUe)
+		ocfUe := args[ArgOcfUe].(*context.OcfUe)
 		accessType := args[ArgAccessType].(models.AccessType)
-		if amfUe.SecurityContextIsValid() {
+		if ocfUe.SecurityContextIsValid() {
 			logger.GmmLog.Debugln("UE has a valid security context - skip security mode control procedure")
 			if err := GmmFSM.SendEvent(state, SecurityModeSuccessEvent, fsm.ArgsType{
-				ArgAmfUe:      amfUe,
+				ArgOcfUe:      ocfUe,
 				ArgAccessType: accessType,
-				ArgNASMessage: amfUe.RegistrationRequest,
+				ArgNASMessage: ocfUe.RegistrationRequest,
 			}); err != nil {
 				logger.GmmLog.Errorln(err)
 			}
 		} else {
 			eapSuccess := args[ArgEAPSuccess].(bool)
 			eapMessage := args[ArgEAPMessage].(string)
-			// Select enc/int algorithm based on ue security capability & amf's policy,
-			amfSelf := context.AMF_Self()
-			amfUe.SelectSecurityAlg(amfSelf.SecurityAlgorithm.IntegrityOrder, amfSelf.SecurityAlgorithm.CipheringOrder)
+			// Select enc/int algorithm based on ue security capability & ocf's policy,
+			ocfSelf := context.OCF_Self()
+			ocfUe.SelectSecurityAlg(ocfSelf.SecurityAlgorithm.IntegrityOrder, ocfSelf.SecurityAlgorithm.CipheringOrder)
 			// Generate KnasEnc, KnasInt
-			amfUe.DerivateAlgKey()
-			gmm_message.SendSecurityModeCommand(amfUe.RanUe[accessType], eapSuccess, eapMessage)
+			ocfUe.DerivateAlgKey()
+			gmm_message.SendSecurityModeCommand(ocfUe.RanUe[accessType], eapSuccess, eapMessage)
 		}
 	case GmmMessageEvent:
-		amfUe := args[ArgAmfUe].(*context.AmfUe)
+		ocfUe := args[ArgOcfUe].(*context.OcfUe)
 		procedureCode := args[ArgProcedureCode].(int64)
 		gmmMessage := args[ArgNASMessage].(*nas.GmmMessage)
 		accessType := args[ArgAccessType].(models.AccessType)
 		switch gmmMessage.GetMessageType() {
 		case nas.MsgTypeSecurityModeComplete:
-			if err := HandleSecurityModeComplete(amfUe, accessType, procedureCode, gmmMessage.SecurityModeComplete); err != nil {
+			if err := HandleSecurityModeComplete(ocfUe, accessType, procedureCode, gmmMessage.SecurityModeComplete); err != nil {
 				logger.GmmLog.Errorln(err)
 			}
 		case nas.MsgTypeSecurityModeReject:
-			if err := HandleSecurityModeReject(amfUe, accessType, gmmMessage.SecurityModeReject); err != nil {
+			if err := HandleSecurityModeReject(ocfUe, accessType, gmmMessage.SecurityModeReject); err != nil {
 				logger.GmmLog.Errorln(err)
 			}
 			err := GmmFSM.SendEvent(state, SecurityModeFailEvent, fsm.ArgsType{
-				ArgAmfUe:      amfUe,
+				ArgOcfUe:      ocfUe,
 				ArgAccessType: accessType,
 			})
 			if err != nil {
 				logger.GmmLog.Errorln(err)
 			}
 		case nas.MsgTypeStatus5GMM:
-			if err := HandleStatus5GMM(amfUe, accessType, gmmMessage.Status5GMM); err != nil {
+			if err := HandleStatus5GMM(ocfUe, accessType, gmmMessage.Status5GMM); err != nil {
 				logger.GmmLog.Errorln(err)
 			}
 		default:
@@ -261,27 +261,27 @@ func ContextSetup(state *fsm.State, event fsm.EventType, args fsm.ArgsType) {
 	switch event {
 	case fsm.EntryEvent:
 		logger.GmmLog.Debugln("EntryEvent")
-		amfUe := args[ArgAmfUe].(*context.AmfUe)
+		ocfUe := args[ArgOcfUe].(*context.OcfUe)
 		gmmMessage := args[ArgNASMessage]
 		accessType := args[ArgAccessType].(models.AccessType)
 
 		switch message := gmmMessage.(type) {
 		case *nasMessage.RegistrationRequest:
-			amfUe.RegistrationRequest = message
-			switch amfUe.RegistrationType5GS {
+			ocfUe.RegistrationRequest = message
+			switch ocfUe.RegistrationType5GS {
 			case nasMessage.RegistrationType5GSInitialRegistration:
-				if err := HandleInitialRegistration(amfUe, accessType); err != nil {
+				if err := HandleInitialRegistration(ocfUe, accessType); err != nil {
 					logger.GmmLog.Errorln(err)
 				}
 			case nasMessage.RegistrationType5GSMobilityRegistrationUpdating:
 				fallthrough
 			case nasMessage.RegistrationType5GSPeriodicRegistrationUpdating:
-				if err := HandleMobilityAndPeriodicRegistrationUpdating(amfUe, accessType); err != nil {
+				if err := HandleMobilityAndPeriodicRegistrationUpdating(ocfUe, accessType); err != nil {
 					logger.GmmLog.Errorln(err)
 				}
 			}
 		case *nasMessage.ServiceRequest:
-			if err := HandleServiceRequest(amfUe, accessType, message); err != nil {
+			if err := HandleServiceRequest(ocfUe, accessType, message); err != nil {
 				logger.GmmLog.Errorln(err)
 			}
 		default:
@@ -289,20 +289,20 @@ func ContextSetup(state *fsm.State, event fsm.EventType, args fsm.ArgsType) {
 		}
 	case GmmMessageEvent:
 		logger.GmmLog.Debugln("GmmMessageEvent")
-		amfUe := args[ArgAmfUe].(*context.AmfUe)
+		ocfUe := args[ArgOcfUe].(*context.OcfUe)
 		gmmMessage := args[ArgNASMessage].(*nas.GmmMessage)
 		accessType := args[ArgAccessType].(models.AccessType)
 		switch gmmMessage.GetMessageType() {
 		case nas.MsgTypeIdentityResponse:
-			if err := HandleIdentityResponse(amfUe, gmmMessage.IdentityResponse); err != nil {
+			if err := HandleIdentityResponse(ocfUe, gmmMessage.IdentityResponse); err != nil {
 				logger.GmmLog.Errorln(err)
 			}
-			switch amfUe.RegistrationType5GS {
+			switch ocfUe.RegistrationType5GS {
 			case nasMessage.RegistrationType5GSInitialRegistration:
-				if err := HandleInitialRegistration(amfUe, accessType); err != nil {
+				if err := HandleInitialRegistration(ocfUe, accessType); err != nil {
 					logger.GmmLog.Errorln(err)
 					err = GmmFSM.SendEvent(state, ContextSetupFailEvent, fsm.ArgsType{
-						ArgAmfUe:      amfUe,
+						ArgOcfUe:      ocfUe,
 						ArgAccessType: accessType,
 					})
 					if err != nil {
@@ -312,10 +312,10 @@ func ContextSetup(state *fsm.State, event fsm.EventType, args fsm.ArgsType) {
 			case nasMessage.RegistrationType5GSMobilityRegistrationUpdating:
 				fallthrough
 			case nasMessage.RegistrationType5GSPeriodicRegistrationUpdating:
-				if err := HandleMobilityAndPeriodicRegistrationUpdating(amfUe, accessType); err != nil {
+				if err := HandleMobilityAndPeriodicRegistrationUpdating(ocfUe, accessType); err != nil {
 					logger.GmmLog.Errorln(err)
 					err = GmmFSM.SendEvent(state, ContextSetupFailEvent, fsm.ArgsType{
-						ArgAmfUe:      amfUe,
+						ArgOcfUe:      ocfUe,
 						ArgAccessType: accessType,
 					})
 					if err != nil {
@@ -324,11 +324,11 @@ func ContextSetup(state *fsm.State, event fsm.EventType, args fsm.ArgsType) {
 				}
 			}
 		case nas.MsgTypeRegistrationComplete:
-			if err := HandleRegistrationComplete(amfUe, accessType, gmmMessage.RegistrationComplete); err != nil {
+			if err := HandleRegistrationComplete(ocfUe, accessType, gmmMessage.RegistrationComplete); err != nil {
 				logger.GmmLog.Errorln(err)
 			}
 		case nas.MsgTypeStatus5GMM:
-			if err := HandleStatus5GMM(amfUe, accessType, gmmMessage.Status5GMM); err != nil {
+			if err := HandleStatus5GMM(ocfUe, accessType, gmmMessage.Status5GMM); err != nil {
 				logger.GmmLog.Errorln(err)
 			}
 		default:
@@ -350,20 +350,20 @@ func DeregisteredInitiated(state *fsm.State, event fsm.EventType, args fsm.ArgsT
 
 	switch event {
 	case fsm.EntryEvent:
-		amfUe := args[ArgAmfUe].(*context.AmfUe)
+		ocfUe := args[ArgOcfUe].(*context.OcfUe)
 		gmmMessage := args[ArgNASMessage].(*nas.GmmMessage)
 		accessType := args[ArgAccessType].(models.AccessType)
-		if err := HandleDeregistrationRequest(amfUe, accessType,
+		if err := HandleDeregistrationRequest(ocfUe, accessType,
 			gmmMessage.DeregistrationRequestUEOriginatingDeregistration); err != nil {
 			logger.GmmLog.Errorln(err)
 		}
 	case GmmMessageEvent:
-		amfUe := args[ArgAmfUe].(*context.AmfUe)
+		ocfUe := args[ArgOcfUe].(*context.OcfUe)
 		gmmMessage := args[ArgNASMessage].(*nas.GmmMessage)
 		accessType := args[ArgAccessType].(models.AccessType)
 		switch gmmMessage.GetMessageType() {
 		case nas.MsgTypeDeregistrationAcceptUETerminatedDeregistration:
-			if err := HandleDeregistrationAccept(amfUe, accessType,
+			if err := HandleDeregistrationAccept(ocfUe, accessType,
 				gmmMessage.DeregistrationAcceptUETerminatedDeregistration); err != nil {
 				logger.GmmLog.Errorln(err)
 			}

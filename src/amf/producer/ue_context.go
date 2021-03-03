@@ -3,9 +3,9 @@ package producer
 import (
 	"free5gc/lib/http_wrapper"
 	"free5gc/lib/openapi/models"
-	"free5gc/src/amf/consumer"
-	"free5gc/src/amf/context"
-	"free5gc/src/amf/logger"
+	"free5gc/src/ocf/consumer"
+	"free5gc/src/ocf/context"
+	"free5gc/src/ocf/logger"
 	"net/http"
 	"strings"
 )
@@ -27,7 +27,7 @@ func HandleCreateUEContextRequest(request *http_wrapper.Request) *http_wrapper.R
 
 func CreateUEContextProcedure(ueContextID string, createUeContextRequest models.CreateUeContextRequest) (
 	*models.CreateUeContextResponse, *models.UeContextCreateError) {
-	amfSelf := context.AMF_Self()
+	ocfSelf := context.OCF_Self()
 	ueContextCreateData := createUeContextRequest.JsonData
 
 	if ueContextCreateData.UeContext == nil || ueContextCreateData.TargetId == nil ||
@@ -41,9 +41,9 @@ func CreateUEContextProcedure(ueContextID string, createUeContextRequest models.
 		}
 		return nil, ueContextCreateError
 	}
-	// create the UE context in target amf
-	ue := amfSelf.NewAmfUe(ueContextID)
-	//amfSelf.AmfRanSetByRanId(*ueContextCreateData.TargetId.RanNodeId)
+	// create the UE context in target ocf
+	ue := ocfSelf.NewOcfUe(ueContextID)
+	//ocfSelf.OcfRanSetByRanId(*ueContextCreateData.TargetId.RanNodeId)
 	// ue.N1N2Message[ueContextId] = &context.N1N2Message{}
 	// ue.N1N2Message[ueContextId].Request.JsonData = &models.N1N2MessageTransferReqData{
 	// 	N2InfoContainer: &models.N2InfoContainer{
@@ -54,7 +54,7 @@ func CreateUEContextProcedure(ueContextID string, createUeContextRequest models.
 	// }
 	ue.HandoverNotifyUri = ueContextCreateData.N2NotifyUri
 
-	amfSelf.AmfRanFindByRanID(*ueContextCreateData.TargetId.RanNodeId)
+	ocfSelf.OcfRanFindByRanID(*ueContextCreateData.TargetId.RanNodeId)
 	supportedTAI := context.NewSupportedTAI()
 	supportedTAI.Tai.Tac = ueContextCreateData.TargetId.Tai.Tac
 	supportedTAI.Tai.PlmnId = ueContextCreateData.TargetId.Tai.PlmnId
@@ -66,7 +66,7 @@ func CreateUEContextProcedure(ueContextID string, createUeContextRequest models.
 
 	//for _, smInfo := range ueContextCreateData.PduSessionList {
 	//if smInfo.N2InfoContent.NgapIeType == "NgapIeType_HANDOVER_REQUIRED" {
-	// ue.N1N2Message[amfSelf.Uri].Request.JsonData.N2InfoContainer.SmInfo = &smInfo
+	// ue.N1N2Message[ocfSelf.Uri].Request.JsonData.N2InfoContainer.SmInfo = &smInfo
 	//}
 	//}
 
@@ -111,12 +111,12 @@ func CreateUEContextProcedure(ueContextID string, createUeContextRequest models.
 	// ue.N1N2Message[ueContextId].Request.JsonData.N2InfoContainer.SmInfo.N2InfoContent
 	createUeContextResponse.JsonData.PduSessionList = ueContextCreateData.PduSessionList
 	createUeContextResponse.JsonData.PcfReselectedInd = false
-	// TODO: When  Target AMF selects a nw PCF for AM policy, set the flag to true.
+	// TODO: When  Target OCF selects a nw PCF for AM policy, set the flag to true.
 
 	//response.UeContext = ueContextCreateData.UeContext
-	//response.TargetToSourceData = ue.N1N2Message[amfSelf.Uri].Request.JsonData.N2InfoContainer.SmInfo.N2InfoContent
+	//response.TargetToSourceData = ue.N1N2Message[ocfSelf.Uri].Request.JsonData.N2InfoContainer.SmInfo.N2InfoContent
 	//response.PduSessionList = ueContextCreateData.PduSessionList
-	//response.PcfReselectedInd = false // TODO:When  Target AMF selects a nw PCF for AM policy, set the flag to true.
+	//response.PcfReselectedInd = false // TODO:When  Target OCF selects a nw PCF for AM policy, set the flag to true.
 	//
 
 	// return http_wrapper.NewResponse(http.StatusCreated, nil, createUeContextResponse)
@@ -139,7 +139,7 @@ func HandleReleaseUEContextRequest(request *http_wrapper.Request) *http_wrapper.
 }
 
 func ReleaseUEContextProcedure(ueContextID string, ueContextRelease models.UeContextRelease) *models.ProblemDetails {
-	amfSelf := context.AMF_Self()
+	ocfSelf := context.OCF_Self()
 
 	// TODO: UE is emergency registered and the SUPI is not authenticated
 	if ueContextRelease.Supi != "" {
@@ -161,7 +161,7 @@ func ReleaseUEContextProcedure(ueContextID string, ueContextRelease models.UeCon
 
 	logger.CommLog.Debugf("Release UE Context NGAP cause: %+v", ueContextRelease.NgapCause)
 
-	if ue, ok := amfSelf.AmfUeFindByUeContextID(ueContextID); ok {
+	if ue, ok := ocfSelf.OcfUeFindByUeContextID(ueContextID); ok {
 		ue.Remove()
 	} else {
 		problemDetails := &models.ProblemDetails{
@@ -192,7 +192,7 @@ func HandleUEContextTransferRequest(request *http_wrapper.Request) *http_wrapper
 func UEContextTransferProcedure(ueContextID string, ueContextTransferRequest models.UeContextTransferRequest) (
 	*models.UeContextTransferResponse, *models.ProblemDetails) {
 
-	amfSelf := context.AMF_Self()
+	ocfSelf := context.OCF_Self()
 
 	if ueContextTransferRequest.JsonData == nil {
 		problemDetails := &models.ProblemDetails{
@@ -212,7 +212,7 @@ func UEContextTransferProcedure(ueContextID string, ueContextTransferRequest mod
 		return nil, problemDetails
 	}
 
-	ue, ok := amfSelf.AmfUeFindByUeContextID(ueContextID)
+	ue, ok := ocfSelf.OcfUeFindByUeContextID(ueContextID)
 	if !ok {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusNotFound,
@@ -289,7 +289,7 @@ func UEContextTransferProcedure(ueContextID string, ueContextTransferRequest mod
 	return ueContextTransferResponse, nil
 }
 
-func buildUEContextModel(ue *context.AmfUe) *models.UeContext {
+func buildUEContextModel(ue *context.OcfUe) *models.UeContext {
 	ueContext := new(models.UeContext)
 	ueContext.Supi = ue.Supi
 	ueContext.SupiUnauthInd = ue.UnauthenticatedSupi
@@ -388,9 +388,9 @@ func HandleAssignEbiDataRequest(request *http_wrapper.Request) *http_wrapper.Res
 func AssignEbiDataProcedure(ueContextID string, assignEbiData models.AssignEbiData) (
 	*models.AssignedEbiData, *models.AssignEbiError, *models.ProblemDetails) {
 
-	amfSelf := context.AMF_Self()
+	ocfSelf := context.OCF_Self()
 
-	ue, ok := amfSelf.AmfUeFindByUeContextID(ueContextID)
+	ue, ok := ocfSelf.OcfUeFindByUeContextID(ueContextID)
 	if !ok {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusNotFound,
@@ -429,7 +429,7 @@ func HandleRegistrationStatusUpdateRequest(request *http_wrapper.Request) *http_
 func RegistrationStatusUpdateProcedure(ueContextID string, ueRegStatusUpdateReqData models.UeRegStatusUpdateReqData) (
 	*models.UeRegStatusUpdateRspData, *models.ProblemDetails) {
 
-	amfSelf := context.AMF_Self()
+	ocfSelf := context.OCF_Self()
 
 	// ueContextID must be a 5g GUTI (TS 29.518 6.1.3.2.4.5.1)
 	if !strings.HasPrefix(ueContextID, "5g-guti") {
@@ -440,7 +440,7 @@ func RegistrationStatusUpdateProcedure(ueContextID string, ueRegStatusUpdateReqD
 		return nil, problemDetails
 	}
 
-	ue, ok := amfSelf.AmfUeFindByUeContextID(ueContextID)
+	ue, ok := ocfSelf.OcfUeFindByUeContextID(ueContextID)
 	if !ok {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusNotFound,
@@ -479,7 +479,7 @@ func RegistrationStatusUpdateProcedure(ueContextID string, ueRegStatusUpdateReqD
 		ue.Remove()
 	} else {
 		// NOT_TRANSFERRED
-		logger.CommLog.Debug("[AMF] RegistrationStatusUpdate: NOT_TRANSFERRED")
+		logger.CommLog.Debug("[OCF] RegistrationStatusUpdate: NOT_TRANSFERRED")
 	}
 
 	ueRegStatusUpdateRspData.RegStatusTransferComplete = true

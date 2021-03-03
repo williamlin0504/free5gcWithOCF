@@ -147,23 +147,23 @@ paths:
         schema:
           $ref: ./TS29571_CommonData.yaml#/components/schemas/Tai
         style: form
-      - description: AMF Region Identity
+      - description: OCF Region Identity
         explode: true
         in: query
-        name: amf-region-id
+        name: ocf-region-id
         required: false
         schema:
           type: string
         style: form
-      - description: AMF Set Identity
+      - description: OCF Set Identity
         explode: true
         in: query
-        name: amf-set-id
+        name: ocf-set-id
         required: false
         schema:
           type: string
         style: form
-      - description: Guami used to search for an appropriate AMF
+      - description: Guami used to search for an appropriate OCF
         explode: true
         in: query
         name: guami
@@ -657,25 +657,25 @@ components:
             - start: start
               pattern: pattern
               end: end
-          amfInfo:
-            backupInfoAmfRemoval:
+          ocfInfo:
+            backupInfoOcfRemoval:
             - plmnId:
                 mnc: mnc
                 mcc: mcc
-              amfId: amfId
+              ocfId: ocfId
             - plmnId:
                 mnc: mnc
                 mcc: mcc
-              amfId: amfId
+              ocfId: ocfId
             guamiList:
             - plmnId:
                 mnc: mnc
                 mcc: mcc
-              amfId: amfId
+              ocfId: ocfId
             - plmnId:
                 mnc: mnc
                 mcc: mcc
-              amfId: amfId
+              ocfId: ocfId
             taiRangeList:
             - tacRangeList:
               - start: start
@@ -697,22 +697,22 @@ components:
               plmnId:
                 mnc: mnc
                 mcc: mcc
-            backupInfoAmfFailure:
+            backupInfoOcfFailure:
             - plmnId:
                 mnc: mnc
                 mcc: mcc
-              amfId: amfId
+              ocfId: ocfId
             - plmnId:
                 mnc: mnc
                 mcc: mcc
-              amfId: amfId
-            amfSetId: amfSetId
-            amfRegionId: amfRegionId
-            n2InterfaceAmfInfo:
+              ocfId: ocfId
+            ocfSetId: ocfSetId
+            ocfRegionId: ocfRegionId
+            n2InterfaceOcfInfo:
               ipv4EndpointAddress:
               - 198.51.100.1
               - 198.51.100.1
-              amfName: amfName
+              ocfName: ocfName
               ipv6EndpointAddress:
               - 2001:db8:85a3::8a2e:370:7334
               - 2001:db8:85a3::8a2e:370:7334
@@ -1021,25 +1021,25 @@ components:
             - start: start
               pattern: pattern
               end: end
-          amfInfo:
-            backupInfoAmfRemoval:
+          ocfInfo:
+            backupInfoOcfRemoval:
             - plmnId:
                 mnc: mnc
                 mcc: mcc
-              amfId: amfId
+              ocfId: ocfId
             - plmnId:
                 mnc: mnc
                 mcc: mcc
-              amfId: amfId
+              ocfId: ocfId
             guamiList:
             - plmnId:
                 mnc: mnc
                 mcc: mcc
-              amfId: amfId
+              ocfId: ocfId
             - plmnId:
                 mnc: mnc
                 mcc: mcc
-              amfId: amfId
+              ocfId: ocfId
             taiRangeList:
             - tacRangeList:
               - start: start
@@ -1061,22 +1061,22 @@ components:
               plmnId:
                 mnc: mnc
                 mcc: mcc
-            backupInfoAmfFailure:
+            backupInfoOcfFailure:
             - plmnId:
                 mnc: mnc
                 mcc: mcc
-              amfId: amfId
+              ocfId: ocfId
             - plmnId:
                 mnc: mnc
                 mcc: mcc
-              amfId: amfId
-            amfSetId: amfSetId
-            amfRegionId: amfRegionId
-            n2InterfaceAmfInfo:
+              ocfId: ocfId
+            ocfSetId: ocfSetId
+            ocfRegionId: ocfRegionId
+            n2InterfaceOcfInfo:
               ipv4EndpointAddress:
               - 198.51.100.1
               - 198.51.100.1
-              amfName: amfName
+              ocfName: ocfName
               ipv6EndpointAddress:
               - 2001:db8:85a3::8a2e:370:7334
               - 2001:db8:85a3::8a2e:370:7334
@@ -1398,25 +1398,25 @@ components:
           - start: start
             pattern: pattern
             end: end
-        amfInfo:
-          backupInfoAmfRemoval:
+        ocfInfo:
+          backupInfoOcfRemoval:
           - plmnId:
               mnc: mnc
               mcc: mcc
-            amfId: amfId
+            ocfId: ocfId
           - plmnId:
               mnc: mnc
               mcc: mcc
-            amfId: amfId
+            ocfId: ocfId
           guamiList:
           - plmnId:
               mnc: mnc
               mcc: mcc
-            amfId: amfId
+            ocfId: ocfId
           - plmnId:
               mnc: mnc
               mcc: mcc
-            amfId: amfId
+            ocfId: ocfId
           taiRangeList:
           - tacRangeList:
             - start: start
@@ -1438,22 +1438,22 @@ components:
             plmnId:
               mnc: mnc
               mcc: mcc
-          backupInfoAmfFailure:
+          backupInfoOcfFailure:
           - plmnId:
               mnc: mnc
               mcc: mcc
-            amfId: amfId
+            ocfId: ocfId
           - plmnId:
               mnc: mnc
               mcc: mcc
-            amfId: amfId
-          amfSetId: amfSetId
-          amfRegionId: amfRegionId
-          n2InterfaceAmfInfo:
+            ocfId: ocfId
+          ocfSetId: ocfSetId
+          ocfRegionId: ocfRegionId
+          n2InterfaceOcfInfo:
             ipv4EndpointAddress:
             - 198.51.100.1
             - 198.51.100.1
-            amfName: amfName
+            ocfName: ocfName
             ipv6EndpointAddress:
             - 2001:db8:85a3::8a2e:370:7334
             - 2001:db8:85a3::8a2e:370:7334
@@ -1572,8 +1572,8 @@ components:
           $ref: '#/components/schemas/UdmInfo'
         ausfInfo:
           $ref: '#/components/schemas/AusfInfo'
-        amfInfo:
-          $ref: '#/components/schemas/AmfInfo'
+        ocfInfo:
+          $ref: '#/components/schemas/OcfInfo'
         smfInfo:
           $ref: '#/components/schemas/SmfInfo'
         upfInfo:
@@ -1694,7 +1694,7 @@ components:
       enum:
       - NRF
       - UDM
-      - AMF
+      - OCF
       - SMF
       - AUSF
       - NEF
@@ -1728,15 +1728,15 @@ components:
         plmnId:
           mnc: mnc
           mcc: mcc
-        amfId: amfId
+        ocfId: ocfId
       properties:
         plmnId:
           $ref: '#/components/schemas/PlmnId'
-        amfId:
+        ocfId:
           pattern: ^[A-Fa-f0-9]{6}$
           type: string
       required:
-      - amfId
+      - ocfId
       - plmnId
       type: object
     PlmnId:
@@ -1760,7 +1760,7 @@ components:
     Mnc:
       pattern: ^\d{2,3}$
       type: string
-    AmfId:
+    OcfId:
       pattern: ^[A-Fa-f0-9]{6}$
       type: string
     Supi:
@@ -2016,26 +2016,26 @@ components:
           minItems: 1
           type: array
       type: object
-    AmfInfo:
+    OcfInfo:
       example:
-        backupInfoAmfRemoval:
+        backupInfoOcfRemoval:
         - plmnId:
             mnc: mnc
             mcc: mcc
-          amfId: amfId
+          ocfId: ocfId
         - plmnId:
             mnc: mnc
             mcc: mcc
-          amfId: amfId
+          ocfId: ocfId
         guamiList:
         - plmnId:
             mnc: mnc
             mcc: mcc
-          amfId: amfId
+          ocfId: ocfId
         - plmnId:
             mnc: mnc
             mcc: mcc
-          amfId: amfId
+          ocfId: ocfId
         taiRangeList:
         - tacRangeList:
           - start: start
@@ -2057,22 +2057,22 @@ components:
           plmnId:
             mnc: mnc
             mcc: mcc
-        backupInfoAmfFailure:
+        backupInfoOcfFailure:
         - plmnId:
             mnc: mnc
             mcc: mcc
-          amfId: amfId
+          ocfId: ocfId
         - plmnId:
             mnc: mnc
             mcc: mcc
-          amfId: amfId
-        amfSetId: amfSetId
-        amfRegionId: amfRegionId
-        n2InterfaceAmfInfo:
+          ocfId: ocfId
+        ocfSetId: ocfSetId
+        ocfRegionId: ocfRegionId
+        n2InterfaceOcfInfo:
           ipv4EndpointAddress:
           - 198.51.100.1
           - 198.51.100.1
-          amfName: amfName
+          ocfName: ocfName
           ipv6EndpointAddress:
           - 2001:db8:85a3::8a2e:370:7334
           - 2001:db8:85a3::8a2e:370:7334
@@ -2086,9 +2086,9 @@ components:
             mnc: mnc
             mcc: mcc
       properties:
-        amfSetId:
+        ocfSetId:
           type: string
-        amfRegionId:
+        ocfRegionId:
           type: string
         guamiList:
           items:
@@ -2105,21 +2105,21 @@ components:
             $ref: '#/components/schemas/TaiRange'
           minItems: 1
           type: array
-        backupInfoAmfFailure:
+        backupInfoOcfFailure:
           items:
             $ref: '#/components/schemas/Guami'
           minItems: 1
           type: array
-        backupInfoAmfRemoval:
+        backupInfoOcfRemoval:
           items:
             $ref: '#/components/schemas/Guami'
           minItems: 1
           type: array
-        n2InterfaceAmfInfo:
-          $ref: '#/components/schemas/N2InterfaceAmfInfo'
+        n2InterfaceOcfInfo:
+          $ref: '#/components/schemas/N2InterfaceOcfInfo'
       required:
-      - amfRegionId
-      - amfSetId
+      - ocfRegionId
+      - ocfSetId
       - guamiList
       type: object
     TaiRange:
@@ -2161,12 +2161,12 @@ components:
         pattern:
           type: string
       type: object
-    N2InterfaceAmfInfo:
+    N2InterfaceOcfInfo:
       example:
         ipv4EndpointAddress:
         - 198.51.100.1
         - 198.51.100.1
-        amfName: amfName
+        ocfName: ocfName
         ipv6EndpointAddress:
         - 2001:db8:85a3::8a2e:370:7334
         - 2001:db8:85a3::8a2e:370:7334
@@ -2181,7 +2181,7 @@ components:
             $ref: '#/components/schemas/Ipv6Addr'
           minItems: 1
           type: array
-        amfName:
+        ocfName:
           type: string
       type: object
     SmfInfo:
@@ -2600,10 +2600,10 @@ components:
       - nudm-ueau
       - nudm-ee
       - nudm-pp
-      - namf-comm
-      - namf-evts
-      - namf-mt
-      - namf-loc
+      - nocf-comm
+      - nocf-evts
+      - nocf-mt
+      - nocf-loc
       - nsmf-pdusession
       - nsmf-event-exposure
       - nausf-auth
@@ -2735,7 +2735,7 @@ components:
     Tac:
       pattern: (^[A-Fa-f0-9]{4}$)|(^[A-Fa-f0-9]{6}$)
       type: string
-    AmfName:
+    OcfName:
       type: string
     DiameterIdentity:
       pattern: ^([A-Za-z0-9]+(-[A-Za-z0-9]+).)+[a-z]{2,}$
@@ -2761,7 +2761,7 @@ components:
       enum:
       - NRF
       - UDM
-      - AMF
+      - OCF
       - SMF
       - AUSF
       - NEF
@@ -2785,7 +2785,7 @@ components:
       enum:
       - NRF
       - UDM
-      - AMF
+      - OCF
       - SMF
       - AUSF
       - NEF

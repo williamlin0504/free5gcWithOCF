@@ -2,7 +2,7 @@ package context
 
 import (
 	"free5gc/lib/openapi/models"
-	"free5gc/src/amf/logger"
+	"free5gc/src/ocf/logger"
 	"reflect"
 
 	"github.com/mohae/deepcopy"
@@ -59,12 +59,12 @@ func AttachSourceUeTargetUe(sourceUe, targetUe *RanUe) {
 		logger.ContextLog.Error("Target Ue is Nil")
 		return
 	}
-	amfUe := sourceUe.AmfUe
-	if amfUe == nil {
-		logger.ContextLog.Error("AmfUe is Nil")
+	ocfUe := sourceUe.OcfUe
+	if ocfUe == nil {
+		logger.ContextLog.Error("OcfUe is Nil")
 		return
 	}
-	targetUe.AmfUe = amfUe
+	targetUe.OcfUe = ocfUe
 	targetUe.SourceUe = sourceUe
 	sourceUe.TargetUe = targetUe
 }

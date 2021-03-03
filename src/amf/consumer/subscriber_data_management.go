@@ -8,10 +8,10 @@ import (
 	"free5gc/lib/openapi"
 	"free5gc/lib/openapi/Nudm_SubscriberDataManagement"
 	"free5gc/lib/openapi/models"
-	amf_context "free5gc/src/amf/context"
+	ocf_context "free5gc/src/ocf/context"
 )
 
-func PutUpuAck(ue *amf_context.AmfUe, upuMacIue string) error {
+func PutUpuAck(ue *ocf_context.OcfUe, upuMacIue string) error {
 
 	configuration := Nudm_SubscriberDataManagement.NewConfiguration()
 	configuration.SetBasePath(ue.NudmSDMUri)
@@ -27,7 +27,7 @@ func PutUpuAck(ue *amf_context.AmfUe, upuMacIue string) error {
 	return err
 }
 
-func SDMGetAmData(ue *amf_context.AmfUe) (problemDetails *models.ProblemDetails, err error) {
+func SDMGetAmData(ue *ocf_context.OcfUe) (problemDetails *models.ProblemDetails, err error) {
 
 	configuration := Nudm_SubscriberDataManagement.NewConfiguration()
 	configuration.SetBasePath(ue.NudmSDMUri)
@@ -55,7 +55,7 @@ func SDMGetAmData(ue *amf_context.AmfUe) (problemDetails *models.ProblemDetails,
 	return
 }
 
-func SDMGetSmfSelectData(ue *amf_context.AmfUe) (problemDetails *models.ProblemDetails, err error) {
+func SDMGetSmfSelectData(ue *ocf_context.OcfUe) (problemDetails *models.ProblemDetails, err error) {
 
 	configuration := Nudm_SubscriberDataManagement.NewConfiguration()
 	configuration.SetBasePath(ue.NudmSDMUri)
@@ -82,7 +82,7 @@ func SDMGetSmfSelectData(ue *amf_context.AmfUe) (problemDetails *models.ProblemD
 	return
 }
 
-func SDMGetUeContextInSmfData(ue *amf_context.AmfUe) (problemDetails *models.ProblemDetails, err error) {
+func SDMGetUeContextInSmfData(ue *ocf_context.OcfUe) (problemDetails *models.ProblemDetails, err error) {
 
 	configuration := Nudm_SubscriberDataManagement.NewConfiguration()
 	configuration.SetBasePath(ue.NudmSDMUri)
@@ -106,15 +106,15 @@ func SDMGetUeContextInSmfData(ue *amf_context.AmfUe) (problemDetails *models.Pro
 	return
 }
 
-func SDMSubscribe(ue *amf_context.AmfUe) (problemDetails *models.ProblemDetails, err error) {
+func SDMSubscribe(ue *ocf_context.OcfUe) (problemDetails *models.ProblemDetails, err error) {
 
 	configuration := Nudm_SubscriberDataManagement.NewConfiguration()
 	configuration.SetBasePath(ue.NudmSDMUri)
 	client := Nudm_SubscriberDataManagement.NewAPIClient(configuration)
 
-	amfSelf := amf_context.AMF_Self()
+	ocfSelf := ocf_context.OCF_Self()
 	sdmSubscription := models.SdmSubscription{
-		NfInstanceId: amfSelf.NfId,
+		NfInstanceId: ocfSelf.NfId,
 		PlmnId:       &ue.PlmnId,
 	}
 
@@ -134,7 +134,7 @@ func SDMSubscribe(ue *amf_context.AmfUe) (problemDetails *models.ProblemDetails,
 	return
 }
 
-func SDMGetSliceSelectionSubscriptionData(ue *amf_context.AmfUe) (problemDetails *models.ProblemDetails, err error) {
+func SDMGetSliceSelectionSubscriptionData(ue *ocf_context.OcfUe) (problemDetails *models.ProblemDetails, err error) {
 	configuration := Nudm_SubscriberDataManagement.NewConfiguration()
 	configuration.SetBasePath(ue.NudmSDMUri)
 	client := Nudm_SubscriberDataManagement.NewAPIClient(configuration)

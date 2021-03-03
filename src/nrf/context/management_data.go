@@ -247,43 +247,43 @@ func nnrfNFManagementOption(nf *models.NfProfile, nfprofile models.NfProfile) {
 
 		nf.AusfInfo = &a
 	}
-	//amfInfo
-	if nfprofile.AmfInfo != nil {
+	//ocfInfo
+	if nfprofile.OcfInfo != nil {
 
-		var a models.AmfInfo
+		var a models.OcfInfo
 
-		if nfprofile.AmfInfo.AmfSetId != "" {
-			a.AmfSetId = nfprofile.AmfInfo.AmfSetId
+		if nfprofile.OcfInfo.OcfSetId != "" {
+			a.OcfSetId = nfprofile.OcfInfo.OcfSetId
 		}
 
-		if nfprofile.AmfInfo.AmfRegionId != "" {
-			a.AmfRegionId = nfprofile.AmfInfo.AmfRegionId
+		if nfprofile.OcfInfo.OcfRegionId != "" {
+			a.OcfRegionId = nfprofile.OcfInfo.OcfRegionId
 		}
 
-		if nfprofile.AmfInfo.GuamiList != nil {
-			a.GuamiList = nfprofile.AmfInfo.GuamiList
+		if nfprofile.OcfInfo.GuamiList != nil {
+			a.GuamiList = nfprofile.OcfInfo.GuamiList
 		}
 
-		if nfprofile.AmfInfo.TaiList != nil {
-			a.TaiList = nfprofile.AmfInfo.TaiList
+		if nfprofile.OcfInfo.TaiList != nil {
+			a.TaiList = nfprofile.OcfInfo.TaiList
 		}
 
-		if nfprofile.AmfInfo.TaiRangeList != nil {
-			a.TaiRangeList = nfprofile.AmfInfo.TaiRangeList
+		if nfprofile.OcfInfo.TaiRangeList != nil {
+			a.TaiRangeList = nfprofile.OcfInfo.TaiRangeList
 		}
 
-		if nfprofile.AmfInfo.BackupInfoAmfFailure != nil {
-			a.BackupInfoAmfFailure = nfprofile.AmfInfo.BackupInfoAmfFailure
+		if nfprofile.OcfInfo.BackupInfoOcfFailure != nil {
+			a.BackupInfoOcfFailure = nfprofile.OcfInfo.BackupInfoOcfFailure
 		}
 
-		if nfprofile.AmfInfo.BackupInfoAmfRemoval != nil {
-			a.BackupInfoAmfRemoval = nfprofile.AmfInfo.BackupInfoAmfRemoval
+		if nfprofile.OcfInfo.BackupInfoOcfRemoval != nil {
+			a.BackupInfoOcfRemoval = nfprofile.OcfInfo.BackupInfoOcfRemoval
 		}
 
-		if nfprofile.AmfInfo.N2InterfaceAmfInfo != nil {
-			a.N2InterfaceAmfInfo = nfprofile.AmfInfo.N2InterfaceAmfInfo
+		if nfprofile.OcfInfo.N2InterfaceOcfInfo != nil {
+			a.N2InterfaceOcfInfo = nfprofile.OcfInfo.N2InterfaceOcfInfo
 		}
-		nf.AmfInfo = &a
+		nf.OcfInfo = &a
 	}
 	//smfInfo
 	if nfprofile.SmfInfo != nil {
@@ -552,23 +552,23 @@ func GetNofificationUri(nfProfile models.NfProfile) []string {
 		setUriListByFilter(ServiceNameCond, &uriList)
 	}
 
-	// AmfCond
-	if nfProfile.AmfInfo != nil {
-		var amfCond = bson.M{
+	// OcfCond
+	if nfProfile.OcfInfo != nil {
+		var ocfCond = bson.M{
 			"subscrCond": bson.M{
-				"amfSetId":    (*nfProfile.AmfInfo).AmfSetId,
-				"amfRegionId": (*nfProfile.AmfInfo).AmfRegionId,
+				"ocfSetId":    (*nfProfile.OcfInfo).OcfSetId,
+				"ocfRegionId": (*nfProfile.OcfInfo).OcfRegionId,
 			},
 		}
-		setUriListByFilter(amfCond, &uriList)
+		setUriListByFilter(ocfCond, &uriList)
 	}
 
 	// GuamiListCond
-	if nfProfile.AmfInfo != nil {
+	if nfProfile.OcfInfo != nil {
 		var guamiListFilter bson.M
-		if (*nfProfile.AmfInfo).GuamiList != nil {
+		if (*nfProfile.OcfInfo).GuamiList != nil {
 			var guamiListBsonArray bson.A
-			for _, guami := range *(*nfProfile.AmfInfo).GuamiList {
+			for _, guami := range *(*nfProfile.OcfInfo).GuamiList {
 				tmp, err := json.Marshal(guami)
 				if err != nil {
 					logger.ManagementLog.Error(err)

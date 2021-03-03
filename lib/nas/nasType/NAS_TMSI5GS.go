@@ -3,9 +3,9 @@ package nasType
 // TMSI5GS 9.11.3.4
 // Spare Row, sBit, len = [0, 0], 4 , 1
 // TypeOfIdentity Row, sBit, len = [0, 0], 3 , 3
-// AMFSetID Row, sBit, len = [1, 1], 8 , 8
-// AMFSetID Row, sBit, len = [1, 2], 8 , 10
-// AMFPointer Row, sBit, len = [2, 2], 6 , 6
+// OCFSetID Row, sBit, len = [1, 1], 8 , 8
+// OCFSetID Row, sBit, len = [1, 2], 8 , 10
+// OCFPointer Row, sBit, len = [2, 2], 6 , 6
 // TMSI5G Row, sBit, len = [3, 6], 8 , 32
 type TMSI5GS struct {
 	Iei   uint8
@@ -68,27 +68,27 @@ func (a *TMSI5GS) SetTypeOfIdentity(typeOfIdentity uint8) {
 }
 
 // TMSI5GS 9.11.3.4
-// AMFSetID Row, sBit, len = [1, 2], 8 , 10
-func (a *TMSI5GS) GetAMFSetID() (aMFSetID uint16) {
+// OCFSetID Row, sBit, len = [1, 2], 8 , 10
+func (a *TMSI5GS) GetOCFSetID() (aMFSetID uint16) {
 	return (uint16(a.Octet[1])<<2 + uint16((a.Octet[2])&GetBitMask(8, 2))>>6)
 }
 
 // TMSI5GS 9.11.3.4
-// AMFSetID Row, sBit, len = [1, 2], 8 , 10
-func (a *TMSI5GS) SetAMFSetID(aMFSetID uint16) {
+// OCFSetID Row, sBit, len = [1, 2], 8 , 10
+func (a *TMSI5GS) SetOCFSetID(aMFSetID uint16) {
 	a.Octet[1] = uint8((aMFSetID)>>2) & 255
 	a.Octet[2] = a.Octet[2]&GetBitMask(6, 6) + uint8(aMFSetID&3)<<6
 }
 
 // TMSI5GS 9.11.3.4
-// AMFPointer Row, sBit, len = [2, 2], 6 , 6
-func (a *TMSI5GS) GetAMFPointer() (aMFPointer uint8) {
+// OCFPointer Row, sBit, len = [2, 2], 6 , 6
+func (a *TMSI5GS) GetOCFPointer() (aMFPointer uint8) {
 	return a.Octet[2] & GetBitMask(6, 0)
 }
 
 // TMSI5GS 9.11.3.4
-// AMFPointer Row, sBit, len = [2, 2], 6 , 6
-func (a *TMSI5GS) SetAMFPointer(aMFPointer uint8) {
+// OCFPointer Row, sBit, len = [2, 2], 6 , 6
+func (a *TMSI5GS) SetOCFPointer(aMFPointer uint8) {
 	a.Octet[2] = (a.Octet[2] & 192) + (aMFPointer & 63)
 }
 

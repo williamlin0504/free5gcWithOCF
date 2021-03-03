@@ -18,7 +18,7 @@ type SdmSubscription struct {
 	ImplicitUnsubscribe   bool        `json:"implicitUnsubscribe,omitempty" yaml:"implicitUnsubscribe" bson:"implicitUnsubscribe" mapstructure:"ImplicitUnsubscribe"`
 	Expires               *time.Time  `json:"expires,omitempty" yaml:"expires" bson:"expires" mapstructure:"Expires"`
 	CallbackReference     string      `json:"callbackReference" yaml:"callbackReference" bson:"callbackReference" mapstructure:"CallbackReference"`
-	AmfServiceName        ServiceName `json:"amfServiceName,omitempty" yaml:"amfServiceName" bson:"amfServiceName" mapstructure:"AmfServiceName"`
+	OcfServiceName        ServiceName `json:"ocfServiceName,omitempty" yaml:"ocfServiceName" bson:"ocfServiceName" mapstructure:"OcfServiceName"`
 	MonitoredResourceUris []string    `json:"monitoredResourceUris" yaml:"monitoredResourceUris" bson:"monitoredResourceUris" mapstructure:"MonitoredResourceUris"`
 	SingleNssai           *Snssai     `json:"singleNssai,omitempty" yaml:"singleNssai" bson:"singleNssai" mapstructure:"SingleNssai"`
 	Dnn                   string      `json:"dnn,omitempty" yaml:"dnn" bson:"dnn" mapstructure:"Dnn"`

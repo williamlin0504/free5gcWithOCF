@@ -37,7 +37,7 @@ type NsmfEventExposure struct {
 	Expiry       *time.Time          `json:"expiry,omitempty" yaml:"expiry" bson:"expiry" mapstructure:"Expiry"`
 	RepPeriod    int32               `json:"repPeriod,omitempty" yaml:"repPeriod" bson:"repPeriod" mapstructure:"RepPeriod"`
 	Guami        *Guami              `json:"guami,omitempty" yaml:"guami" bson:"guami" mapstructure:"Guami"`
-	// If the NF service consumer is an AMF, it should provide the name of a service produced by the AMF that makes use of notifications about subscribed events.
+	// If the NF service consumer is an OCF, it should provide the name of a service produced by the OCF that makes use of notifications about subscribed events.
 	ServiveName       string `json:"serviveName,omitempty" yaml:"serviveName" bson:"serviveName" mapstructure:"ServiveName"`
 	SupportedFeatures string `json:"supportedFeatures,omitempty" yaml:"supportedFeatures" bson:"supportedFeatures" mapstructure:"SupportedFeatures"`
 }

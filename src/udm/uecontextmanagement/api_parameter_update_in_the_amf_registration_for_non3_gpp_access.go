@@ -15,13 +15,14 @@ import (
 	"free5gc/lib/openapi/models"
 	"free5gc/src/udm/logger"
 	"free5gc/src/udm/producer"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
-// UpdateAmfNon3gppAccess - update a parameter in the AMF registration for non-3GPP access
-func HTTPUpdateAmfNon3gppAccess(c *gin.Context) {
-	var amfNon3GppAccessRegistrationModification models.AmfNon3GppAccessRegistrationModification
+// UpdateOcfNon3gppAccess - update a parameter in the OCF registration for non-3GPP access
+func HTTPUpdateOcfNon3gppAccess(c *gin.Context) {
+	var ocfNon3GppAccessRegistrationModification models.OcfNon3GppAccessRegistrationModification
 	// step 1: retrieve http request body
 	requestBody, err := c.GetRawData()
 	if err != nil {
@@ -37,7 +38,7 @@ func HTTPUpdateAmfNon3gppAccess(c *gin.Context) {
 	}
 
 	// step 2: convert requestBody to openapi models
-	err = openapi.Deserialize(&amfNon3GppAccessRegistrationModification, requestBody, "application/json")
+	err = openapi.Deserialize(&ocfNon3GppAccessRegistrationModification, requestBody, "application/json")
 	if err != nil {
 		problemDetail := "[Request Body] " + err.Error()
 		rsp := models.ProblemDetails{
@@ -50,10 +51,10 @@ func HTTPUpdateAmfNon3gppAccess(c *gin.Context) {
 		return
 	}
 
-	req := http_wrapper.NewRequest(c.Request, amfNon3GppAccessRegistrationModification)
+	req := http_wrapper.NewRequest(c.Request, ocfNon3GppAccessRegistrationModification)
 	req.Params["ueId"] = c.Param("ueId")
 
-	rsp := producer.HandleUpdateAmfNon3gppAccessRequest(req)
+	rsp := producer.HandleUpdateOcfNon3gppAccessRequest(req)
 
 	responseBody, err := openapi.Serialize(rsp.Body, "application/json")
 	if err != nil {

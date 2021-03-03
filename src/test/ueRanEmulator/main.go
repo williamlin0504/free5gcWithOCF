@@ -22,7 +22,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-type n2Amf struct {
+type n2Ocf struct {
 	Addr string `yaml:"addr,omitempty"`
 	Port uint16 `yaml:"port,omitempty"`
 }
@@ -55,7 +55,7 @@ type snssai struct {
 }
 
 type Configuration struct {
-	N2Amf *n2Amf `yaml:"n2Amf,omitempty"`
+	N2Ocf *n2Ocf `yaml:"n2Ocf,omitempty"`
 
 	N2Ran *n2Ran `yaml:"n2Ran,omitempty"`
 
@@ -136,11 +136,11 @@ func ueRanEmulator() error {
 	var sendMsg []byte
 	var recvMsg = make([]byte, 2048)
 
-	// RAN connect to AMF
-	conn, err := test.ConntectToAmf(
-		uerancfg.N2Amf.Addr, uerancfg.N2Ran.Addr, int(uerancfg.N2Amf.Port), int(uerancfg.N2Ran.Port))
+	// RAN connect to OCF
+	conn, err := test.ConntectToOcf(
+		uerancfg.N2Ocf.Addr, uerancfg.N2Ran.Addr, int(uerancfg.N2Ocf.Port), int(uerancfg.N2Ran.Port))
 	if err != nil {
-		err = fmt.Errorf("ConntectToAmf: %v", err)
+		err = fmt.Errorf("ConntectToOcf: %v", err)
 		return err
 	}
 	defer func() {
@@ -149,7 +149,7 @@ func ueRanEmulator() error {
 			fatal.Fatalf("conn Close error in ueRanEmulator: %+v", errConn)
 		}
 	}()
-	fmt.Printf("[UERANEM] Conntect to AMF successfully\n")
+	fmt.Printf("[UERANEM] Conntect to OCF successfully\n")
 
 	// RAN connect to UPF
 	upfConn, err := test.ConnectToUpf(
@@ -191,7 +191,7 @@ func ueRanEmulator() error {
 	// New UE
 	// ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA2, security.AlgIntegrity128NIA2)
 	ue := test.NewRanUeContext(uerancfg.Supi, uerancfg.NgapID, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
-	ue.AmfUeNgapId = uerancfg.NgapID
+	ue.OcfUeNgapId = uerancfg.NgapID
 	ue.AuthenticationSubs = test.GetAuthSubscription(uerancfg.K, uerancfg.Opc, uerancfg.Op)
 
 	mobileIdentity5GS := encodeSuci([]byte(strings.TrimPrefix(uerancfg.Supi, "imsi-")), len(uerancfg.Mnc))
@@ -238,7 +238,7 @@ func ueRanEmulator() error {
 
 	// send NAS Authentication Response
 	pdu := nasTestpacket.GetAuthenticationResponse(resStat, "")
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	if err != nil {
 		return err
 	}
@@ -266,7 +266,7 @@ func ueRanEmulator() error {
 	if err != nil {
 		return err
 	}
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	if err != nil {
 		return err
 	}
@@ -286,7 +286,7 @@ func ueRanEmulator() error {
 	}
 
 	// send ngap Initial Context Setup Response Msg
-	sendMsg, err = test.GetInitialContextSetupResponse(ue.AmfUeNgapId, ue.RanUeNgapId)
+	sendMsg, err = test.GetInitialContextSetupResponse(ue.OcfUeNgapId, ue.RanUeNgapId)
 	if err != nil {
 		return err
 	}
@@ -301,7 +301,7 @@ func ueRanEmulator() error {
 	if err != nil {
 		return err
 	}
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	if err != nil {
 		return err
 	}
@@ -324,7 +324,7 @@ func ueRanEmulator() error {
 	if err != nil {
 		return err
 	}
-	sendMsg, err = test.GetUplinkNASTransport(ue.AmfUeNgapId, ue.RanUeNgapId, pdu)
+	sendMsg, err = test.GetUplinkNASTransport(ue.OcfUeNgapId, ue.RanUeNgapId, pdu)
 	if err != nil {
 		return err
 	}
@@ -344,7 +344,7 @@ func ueRanEmulator() error {
 	}
 
 	// send 14. NGAP-PDU Session Resource Setup Response
-	sendMsg, err = test.GetPDUSessionResourceSetupResponse(ue.AmfUeNgapId, ue.RanUeNgapId, uerancfg.N3Ran.Addr)
+	sendMsg, err = test.GetPDUSessionResourceSetupResponse(ue.OcfUeNgapId, ue.RanUeNgapId, uerancfg.N3Ran.Addr)
 	if err != nil {
 		return err
 	}

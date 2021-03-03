@@ -5,22 +5,22 @@ import (
 	"log"
 )
 
-func AmfIdToNas(amfId string) (amfRegionId uint8, amfSetId uint16, amfPointer uint8) {
+func OcfIdToNas(ocfId string) (ocfRegionId uint8, ocfSetId uint16, ocfPointer uint8) {
 
-	amfIdBytes, err := hex.DecodeString(amfId)
+	ocfIdBytes, err := hex.DecodeString(ocfId)
 	if err != nil {
-		log.Printf("amfId decode failed: %+v", err)
+		log.Printf("ocfId decode failed: %+v", err)
 	}
 
-	amfRegionId = uint8(amfIdBytes[0])
-	amfSetId = uint16(amfIdBytes[1])<<2 + (uint16(amfIdBytes[2])&0x00c0)>>6
-	amfPointer = uint8(amfIdBytes[2]) & 0x3f
+	ocfRegionId = uint8(ocfIdBytes[0])
+	ocfSetId = uint16(ocfIdBytes[1])<<2 + (uint16(ocfIdBytes[2])&0x00c0)>>6
+	ocfPointer = uint8(ocfIdBytes[2]) & 0x3f
 	return
 }
 
-func AmfIdToModels(amfRegionId uint8, amfSetId uint16, amfPointer uint8) (amfId string) {
+func OcfIdToModels(ocfRegionId uint8, ocfSetId uint16, ocfPointer uint8) (ocfId string) {
 
-	tmpBytes := []uint8{amfRegionId, uint8(amfSetId>>2) & 0xff, uint8(amfSetId&0x03) + amfPointer&0x3f}
-	amfId = hex.EncodeToString(tmpBytes)
+	tmpBytes := []uint8{ocfRegionId, uint8(ocfSetId>>2) & 0xff, uint8(ocfSetId&0x03) + ocfPointer&0x3f}
+	ocfId = hex.EncodeToString(tmpBytes)
 	return
 }

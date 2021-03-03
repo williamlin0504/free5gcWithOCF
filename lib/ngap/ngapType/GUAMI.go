@@ -4,8 +4,8 @@ package ngapType
 
 type GUAMI struct {
 	PLMNIdentity PLMNIdentity
-	AMFRegionID  AMFRegionID
-	AMFSetID     AMFSetID
-	AMFPointer   AMFPointer
+	OCFRegionID  OCFRegionID
+	OCFSetID     OCFSetID
+	OCFPointer   OCFPointer
 	IEExtensions *ProtocolExtensionContainerGUAMIExtIEs `aper:"optional"`
 }

@@ -24,16 +24,16 @@ var (
 	_ context.Context
 )
 
-type EventAMFSubscriptionInfoDocumentApiService service
+type EventOCFSubscriptionInfoDocumentApiService service
 
 /*
-EventAMFSubscriptionInfoDocumentApiService Deletes AMF Subscription Info for an eeSubscription
+EventOCFSubscriptionInfoDocumentApiService Deletes OCF Subscription Info for an eeSubscription
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param ueId
  * @param subsId
 */
 
-func (a *EventAMFSubscriptionInfoDocumentApiService) RemoveAmfSubscriptionsInfo(ctx context.Context, ueId string, subsId string) (*http.Response, error) {
+func (a *EventOCFSubscriptionInfoDocumentApiService) RemoveOcfSubscriptionsInfo(ctx context.Context, ueId string, subsId string) (*http.Response, error) {
 	var (
 		localVarHTTPMethod   = strings.ToUpper("Delete")
 		localVarPostBody     interface{}
@@ -43,7 +43,7 @@ func (a *EventAMFSubscriptionInfoDocumentApiService) RemoveAmfSubscriptionsInfo(
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath() + "/subscription-data/{ueId}/context-data/ee-subscriptions/{subsId}/amf-subscriptions"
+	localVarPath := a.client.cfg.BasePath() + "/subscription-data/{ueId}/context-data/ee-subscriptions/{subsId}/ocf-subscriptions"
 	localVarPath = strings.Replace(localVarPath, "{"+"ueId"+"}", fmt.Sprintf("%v", ueId), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"subsId"+"}", fmt.Sprintf("%v", subsId), -1)
 
@@ -90,6 +90,6 @@ func (a *EventAMFSubscriptionInfoDocumentApiService) RemoveAmfSubscriptionsInfo(
 	case 204:
 		return localVarHTTPResponse, nil
 	default:
-		return localVarHTTPResponse, openapi.ReportError("%d is not a valid status code in RemoveAmfSubscriptionsInfo", localVarHTTPResponse.StatusCode)
+		return localVarHTTPResponse, openapi.ReportError("%d is not a valid status code in RemoveOcfSubscriptionsInfo", localVarHTTPResponse.StatusCode)
 	}
 }

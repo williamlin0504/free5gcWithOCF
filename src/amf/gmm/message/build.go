@@ -8,14 +8,14 @@ import (
 	"free5gc/lib/nas/nasMessage"
 	"free5gc/lib/nas/nasType"
 	"free5gc/lib/openapi/models"
-	"free5gc/src/amf/context"
-	"free5gc/src/amf/logger"
-	"free5gc/src/amf/nas/nas_security"
+	"free5gc/src/ocf/context"
+	"free5gc/src/ocf/logger"
+	"free5gc/src/ocf/nas/nas_security"
 
 	"github.com/mitchellh/mapstructure"
 )
 
-func BuildDLNASTransport(ue *context.AmfUe, payloadContainerType uint8, nasPdu []byte,
+func BuildDLNASTransport(ue *context.OcfUe, payloadContainerType uint8, nasPdu []byte,
 	pduSessionId uint8, cause *uint8, backoffTimerUint *uint8, backoffTimer uint8) ([]byte, error) {
 
 	m := nas.NewMessage()
@@ -59,7 +59,7 @@ func BuildDLNASTransport(ue *context.AmfUe, payloadContainerType uint8, nasPdu [
 	return nas_security.Encode(ue, m)
 }
 
-func BuildNotification(ue *context.AmfUe, accessType models.AccessType) ([]byte, error) {
+func BuildNotification(ue *context.OcfUe, accessType models.AccessType) ([]byte, error) {
 
 	m := nas.NewMessage()
 	m.GmmMessage = nas.NewGmmMessage()
@@ -103,7 +103,7 @@ func BuildIdentityRequest(typeOfIdentity uint8) ([]byte, error) {
 	return m.PlainNasEncode()
 }
 
-func BuildAuthenticationRequest(ue *context.AmfUe) ([]byte, error) {
+func BuildAuthenticationRequest(ue *context.OcfUe) ([]byte, error) {
 
 	m := nas.NewMessage()
 	m.GmmMessage = nas.NewGmmMessage()
@@ -162,7 +162,7 @@ func BuildAuthenticationRequest(ue *context.AmfUe) ([]byte, error) {
 	return m.PlainNasEncode()
 }
 
-func BuildServiceAccept(ue *context.AmfUe, pDUSessionStatus *[16]bool,
+func BuildServiceAccept(ue *context.OcfUe, pDUSessionStatus *[16]bool,
 	reactivationResult *[16]bool, errPduSessionId, errCause []uint8) ([]byte, error) {
 
 	m := nas.NewMessage()
@@ -203,7 +203,7 @@ func BuildServiceAccept(ue *context.AmfUe, pDUSessionStatus *[16]bool,
 	return nas_security.Encode(ue, m)
 }
 
-func BuildAuthenticationReject(ue *context.AmfUe, eapMsg string) ([]byte, error) {
+func BuildAuthenticationReject(ue *context.OcfUe, eapMsg string) ([]byte, error) {
 
 	m := nas.NewMessage()
 	m.GmmMessage = nas.NewGmmMessage()
@@ -230,7 +230,7 @@ func BuildAuthenticationReject(ue *context.AmfUe, eapMsg string) ([]byte, error)
 	return m.PlainNasEncode()
 }
 
-func BuildAuthenticationResult(ue *context.AmfUe, eapSuccess bool, eapMsg string) ([]byte, error) {
+func BuildAuthenticationResult(ue *context.OcfUe, eapSuccess bool, eapMsg string) ([]byte, error) {
 
 	m := nas.NewMessage()
 	m.GmmMessage = nas.NewGmmMessage()
@@ -285,7 +285,7 @@ func BuildServiceReject(pDUSessionStatus *[16]bool, cause uint8) ([]byte, error)
 }
 
 // T3346 timer are not supported
-func BuildRegistrationReject(ue *context.AmfUe, cause5GMM uint8, eapMessage string) ([]byte, error) {
+func BuildRegistrationReject(ue *context.OcfUe, cause5GMM uint8, eapMessage string) ([]byte, error) {
 
 	m := nas.NewMessage()
 	m.GmmMessage = nas.NewGmmMessage()
@@ -321,7 +321,7 @@ func BuildRegistrationReject(ue *context.AmfUe, cause5GMM uint8, eapMessage stri
 }
 
 // TS 24.501 8.2.25
-func BuildSecurityModeCommand(ue *context.AmfUe, eapSuccess bool, eapMessage string) ([]byte, error) {
+func BuildSecurityModeCommand(ue *context.OcfUe, eapSuccess bool, eapMessage string) ([]byte, error) {
 	m := nas.NewMessage()
 	m.GmmMessage = nas.NewGmmMessage()
 	m.GmmHeader.SetMessageType(nas.MsgTypeSecurityModeCommand)
@@ -426,14 +426,14 @@ func BuildDeregistrationRequest(ue *context.RanUe, accessType uint8, reRegistrat
 	}
 	m.GmmMessage.DeregistrationRequestUETerminatedDeregistration = deregistrationRequest
 
-	if ue != nil && ue.AmfUe != nil {
+	if ue != nil && ue.OcfUe != nil {
 		m.SecurityHeader = nas.SecurityHeader{
 			ProtocolDiscriminator: nasMessage.Epd5GSMobilityManagementMessage,
 			SecurityHeaderType:    nas.SecurityHeaderTypeIntegrityProtectedAndCiphered,
 		}
 		m.GmmMessage.DeregistrationRequestUETerminatedDeregistration.SetSecurityHeaderType(
 			nas.SecurityHeaderTypeIntegrityProtectedAndCiphered)
-		return nas_security.Encode(ue.AmfUe, m)
+		return nas_security.Encode(ue.OcfUe, m)
 	}
 	return m.PlainNasEncode()
 }
@@ -456,7 +456,7 @@ func BuildDeregistrationAccept() ([]byte, error) {
 }
 
 func BuildRegistrationAccept(
-	ue *context.AmfUe,
+	ue *context.OcfUe,
 	anType models.AccessType,
 	pDUSessionStatus *[16]bool,
 	reactivationResult *[16]bool,
@@ -499,11 +499,11 @@ func BuildRegistrationAccept(
 		registrationAccept.GUTI5G.SetIei(nasMessage.RegistrationAcceptGUTI5GType)
 	}
 
-	amfSelf := context.AMF_Self()
-	if len(amfSelf.PlmnSupportList) > 1 {
+	ocfSelf := context.OCF_Self()
+	if len(ocfSelf.PlmnSupportList) > 1 {
 		registrationAccept.EquivalentPlmns = nasType.NewEquivalentPlmns(nasMessage.RegistrationAcceptEquivalentPlmnsType)
 		var buf []uint8
-		for _, plmnSupportItem := range amfSelf.PlmnSupportList {
+		for _, plmnSupportItem := range ocfSelf.PlmnSupportList {
 			buf = append(buf, nasConvert.PlmnIDToNas(plmnSupportItem.PlmnId)...)
 		}
 		registrationAccept.EquivalentPlmns.SetLen(uint8(len(buf)))
@@ -630,7 +630,7 @@ func BuildRegistrationAccept(
 	return nas_security.Encode(ue, m)
 }
 
-func includeConfiguredNssaiCheck(ue *context.AmfUe) bool {
+func includeConfiguredNssaiCheck(ue *context.OcfUe) bool {
 	if len(ue.ConfiguredNssai) == 0 {
 		return false
 	}
@@ -665,7 +665,7 @@ func BuildStatus5GMM(cause uint8) ([]byte, error) {
 	return m.PlainNasEncode()
 }
 
-func BuildConfigurationUpdateCommand(ue *context.AmfUe, anType models.AccessType,
+func BuildConfigurationUpdateCommand(ue *context.OcfUe, anType models.AccessType,
 	networkSlicingIndication *nasType.NetworkSlicingIndication) ([]byte, error) {
 
 	m := nas.NewMessage()
@@ -744,15 +744,15 @@ func BuildConfigurationUpdateCommand(ue *context.AmfUe, anType models.AccessType
 		configurationUpdateCommand.ServiceAreaList.SetPartialServiceAreaList(partialServiceAreaList)
 	}
 
-	amfSelf := context.AMF_Self()
-	if amfSelf.NetworkName.Full != "" {
-		fullNetworkName := nasConvert.FullNetworkNameToNas(amfSelf.NetworkName.Full)
+	ocfSelf := context.OCF_Self()
+	if ocfSelf.NetworkName.Full != "" {
+		fullNetworkName := nasConvert.FullNetworkNameToNas(ocfSelf.NetworkName.Full)
 		configurationUpdateCommand.FullNameForNetwork = &fullNetworkName
 		configurationUpdateCommand.FullNameForNetwork.SetIei(nasMessage.ConfigurationUpdateCommandFullNameForNetworkType)
 	}
 
-	if amfSelf.NetworkName.Short != "" {
-		shortNetworkName := nasConvert.ShortNetworkNameToNas(amfSelf.NetworkName.Short)
+	if ocfSelf.NetworkName.Short != "" {
+		shortNetworkName := nasConvert.ShortNetworkNameToNas(ocfSelf.NetworkName.Short)
 		configurationUpdateCommand.ShortNameForNetwork = &shortNetworkName
 		configurationUpdateCommand.ShortNameForNetwork.SetIei(nasMessage.ConfigurationUpdateCommandShortNameForNetworkType)
 	}

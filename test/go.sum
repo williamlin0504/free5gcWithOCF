@@ -117,8 +117,8 @@ github.com/free5gc/TimeDecode v1.0.0 h1:3DwKqWIJJsHRtpFo7X7Luwqhxt+3BmOU/RHZPVHs
 github.com/free5gc/TimeDecode v1.0.0/go.mod h1:V6rj2m5X9L5PvmRT1KCm7Ww3XTgWjne364zgnalZyNM=
 github.com/free5gc/UeauCommon v1.0.0 h1:ykhHNOcGpk6hLpVrGcMuKBbc+PgSmrwxCELnyFH9xKs=
 github.com/free5gc/UeauCommon v1.0.0/go.mod h1:Ly9JlJN4c1uCALizCmEha1Nu78ibQjbpQvSrt04nGfw=
-github.com/free5gc/amf v1.3.0 h1:TJeIC3Md2R6sDw7tjmwYi+4p1qcT6ff8fVM+85QB+0k=
-github.com/free5gc/amf v1.3.0/go.mod h1:rvKiesox0/VcKaXPLEqb1udczlvRMdcd7q22fcPQs80=
+github.com/free5gc/ocf v1.3.0 h1:TJeIC3Md2R6sDw7tjmwYi+4p1qcT6ff8fVM+85QB+0k=
+github.com/free5gc/ocf v1.3.0/go.mod h1:rvKiesox0/VcKaXPLEqb1udczlvRMdcd7q22fcPQs80=
 github.com/free5gc/aper v1.0.0 h1:EuKAQ2EL5wykcmaJsoIeExLwr97HhQJOiG7qvqSkjZM=
 github.com/free5gc/aper v1.0.0/go.mod h1:L1R91VwLpAIh/kx/hOWXwgBQp3ZZflRHHKCYmfeGegU=
 github.com/free5gc/ausf v1.3.0 h1:/4yaUlK3zLScjgZL379odOuhZ/3YrhPk79hb9vHnad4=

@@ -3,8 +3,8 @@ package producer
 import (
 	"free5gc/lib/http_wrapper"
 	"free5gc/lib/openapi/models"
-	"free5gc/src/amf/context"
-	"free5gc/src/amf/logger"
+	"free5gc/src/ocf/context"
+	"free5gc/src/ocf/logger"
 	"net/http"
 	"strconv"
 )
@@ -48,10 +48,10 @@ func HandleOAMRegisteredUEContext(request *http_wrapper.Request) *http_wrapper.R
 
 func OAMRegisteredUEContextProcedure(supi string) (UEContexts, *models.ProblemDetails) {
 	var ueContexts UEContexts
-	amfSelf := context.AMF_Self()
+	ocfSelf := context.OCF_Self()
 
 	if supi != "" {
-		if ue, ok := amfSelf.AmfUeFindBySupi(supi); ok {
+		if ue, ok := ocfSelf.OcfUeFindBySupi(supi); ok {
 			ueContext := buildUEContext(ue, models.AccessType__3_GPP_ACCESS)
 			if ueContext != nil {
 				ueContexts = append(ueContexts, *ueContext)
@@ -68,8 +68,8 @@ func OAMRegisteredUEContextProcedure(supi string) (UEContexts, *models.ProblemDe
 			return nil, problemDetails
 		}
 	} else {
-		amfSelf.UePool.Range(func(key, value interface{}) bool {
-			ue := value.(*context.AmfUe)
+		ocfSelf.UePool.Range(func(key, value interface{}) bool {
+			ue := value.(*context.OcfUe)
 			ueContext := buildUEContext(ue, models.AccessType__3_GPP_ACCESS)
 			if ueContext != nil {
 				ueContexts = append(ueContexts, *ueContext)
@@ -84,7 +84,7 @@ func OAMRegisteredUEContextProcedure(supi string) (UEContexts, *models.ProblemDe
 
 	return ueContexts, nil
 }
-func buildUEContext(ue *context.AmfUe, accessType models.AccessType) *UEContext {
+func buildUEContext(ue *context.OcfUe, accessType models.AccessType) *UEContext {
 	if ue.State[accessType].Is(context.Registered) {
 		ueContext := &UEContext{
 			AccessType: models.AccessType__3_GPP_ACCESS,

@@ -6,7 +6,7 @@ import (
 	"free5gc/lib/ngap/ngapConvert"
 	"free5gc/lib/ngap/ngapType"
 	"free5gc/lib/openapi/models"
-	"free5gc/src/amf/logger"
+	"free5gc/src/ocf/logger"
 	"time"
 
 	"github.com/mohae/deepcopy"
@@ -26,7 +26,7 @@ const (
 type RanUe struct {
 	/* UE identity*/
 	RanUeNgapId int64
-	AmfUeNgapId int64
+	OcfUeNgapId int64
 
 	/* HandOver Info*/
 	HandOverType        ngapType.HandoverType
@@ -44,8 +44,8 @@ type RanUe struct {
 	LastActTime       *time.Time
 
 	/* Related Context*/
-	AmfUe *AmfUe
-	Ran   *AmfRan
+	OcfUe *OcfUe
+	Ran   *OcfRan
 
 	/* Routing ID */
 	RoutingID string
@@ -53,8 +53,8 @@ type RanUe struct {
 	Trsr string
 	/* Ue Context Release Action */
 	ReleaseAction RelAction
-	/* context used for AMF Re-allocation procedure */
-	OldAmfName            string
+	/* context used for OCF Re-allocation procedure */
+	OldOcfName            string
 	InitialUEMessage      []byte
 	RRCEstablishmentCause string // Received from initial ue message; pattern: ^[0-9a-fA-F]+$
 	UeContextRequest      bool
@@ -71,9 +71,9 @@ func (ranUe *RanUe) Remove() error {
 	if ran == nil {
 		return fmt.Errorf("RanUe not found in Ran")
 	}
-	if ranUe.AmfUe != nil {
-		ranUe.AmfUe.DetachRanUe(ran.AnType)
-		ranUe.DetachAmfUe()
+	if ranUe.OcfUe != nil {
+		ranUe.OcfUe.DetachRanUe(ran.AnType)
+		ranUe.DetachOcfUe()
 	}
 
 	for index, ranUe1 := range ran.RanUeList {
@@ -82,16 +82,16 @@ func (ranUe *RanUe) Remove() error {
 			break
 		}
 	}
-	self := AMF_Self()
-	self.RanUePool.Delete(ranUe.AmfUeNgapId)
+	self := OCF_Self()
+	self.RanUePool.Delete(ranUe.OcfUeNgapId)
 	return nil
 }
 
-func (ranUe *RanUe) DetachAmfUe() {
-	ranUe.AmfUe = nil
+func (ranUe *RanUe) DetachOcfUe() {
+	ranUe.OcfUe = nil
 }
 
-func (ranUe *RanUe) SwitchToRan(newRan *AmfRan, ranUeNgapId int64) error {
+func (ranUe *RanUe) SwitchToRan(newRan *OcfRan, ranUeNgapId int64) error {
 
 	if ranUe == nil {
 		return fmt.Errorf("ranUe is nil")
@@ -128,7 +128,7 @@ func (ranUe *RanUe) UpdateLocation(userLocationInformation *ngapType.UserLocatio
 		return
 	}
 
-	amfSelf := AMF_Self()
+	ocfSelf := OCF_Self()
 	curTime := time.Now().UTC()
 	switch userLocationInformation.Present {
 	case ngapType.UserLocationInformationPresentUserLocationInformationEUTRA:
@@ -162,12 +162,12 @@ func (ranUe *RanUe) UpdateLocation(userLocationInformation *ngapType.UserLocatio
 			ranUe.Location.EutraLocation.AgeOfLocationInformation = ngapConvert.TimeStampToInt32(
 				locationInfoEUTRA.TimeStamp.Value)
 		}
-		if ranUe.AmfUe != nil {
-			if ranUe.AmfUe.Tai != ranUe.Tai {
-				ranUe.AmfUe.LocationChanged = true
+		if ranUe.OcfUe != nil {
+			if ranUe.OcfUe.Tai != ranUe.Tai {
+				ranUe.OcfUe.LocationChanged = true
 			}
-			ranUe.AmfUe.Location = deepcopy.Copy(ranUe.Location).(models.UserLocation)
-			ranUe.AmfUe.Tai = deepcopy.Copy(*ranUe.AmfUe.Location.EutraLocation.Tai).(models.Tai)
+			ranUe.OcfUe.Location = deepcopy.Copy(ranUe.Location).(models.UserLocation)
+			ranUe.OcfUe.Tai = deepcopy.Copy(*ranUe.OcfUe.Location.EutraLocation.Tai).(models.Tai)
 		}
 	case ngapType.UserLocationInformationPresentUserLocationInformationNR:
 		locationInfoNR := userLocationInformation.UserLocationInformationNR
@@ -199,12 +199,12 @@ func (ranUe *RanUe) UpdateLocation(userLocationInformation *ngapType.UserLocatio
 		if locationInfoNR.TimeStamp != nil {
 			ranUe.Location.NrLocation.AgeOfLocationInformation = ngapConvert.TimeStampToInt32(locationInfoNR.TimeStamp.Value)
 		}
-		if ranUe.AmfUe != nil {
-			if ranUe.AmfUe.Tai != ranUe.Tai {
-				ranUe.AmfUe.LocationChanged = true
+		if ranUe.OcfUe != nil {
+			if ranUe.OcfUe.Tai != ranUe.Tai {
+				ranUe.OcfUe.LocationChanged = true
 			}
-			ranUe.AmfUe.Location = deepcopy.Copy(ranUe.Location).(models.UserLocation)
-			ranUe.AmfUe.Tai = deepcopy.Copy(*ranUe.AmfUe.Location.NrLocation.Tai).(models.Tai)
+			ranUe.OcfUe.Location = deepcopy.Copy(ranUe.Location).(models.UserLocation)
+			ranUe.OcfUe.Tai = deepcopy.Copy(*ranUe.OcfUe.Location.NrLocation.Tai).(models.Tai)
 		}
 	case ngapType.UserLocationInformationPresentUserLocationInformationN3IWF:
 		locationInfoN3IWF := userLocationInformation.UserLocationInformationN3IWF
@@ -223,14 +223,14 @@ func (ranUe *RanUe) UpdateLocation(userLocationInformation *ngapType.UserLocatio
 		// N3GPP TAI is operator-specific
 		// TODO: define N3GPP TAI
 		ranUe.Location.N3gaLocation.N3gppTai = &models.Tai{
-			PlmnId: amfSelf.SupportTaiLists[0].PlmnId,
-			Tac:    amfSelf.SupportTaiLists[0].Tac,
+			PlmnId: ocfSelf.SupportTaiLists[0].PlmnId,
+			Tac:    ocfSelf.SupportTaiLists[0].Tac,
 		}
 		ranUe.Tai = deepcopy.Copy(*ranUe.Location.N3gaLocation.N3gppTai).(models.Tai)
 
-		if ranUe.AmfUe != nil {
-			ranUe.AmfUe.Location = deepcopy.Copy(ranUe.Location).(models.UserLocation)
-			ranUe.AmfUe.Tai = *ranUe.Location.N3gaLocation.N3gppTai
+		if ranUe.OcfUe != nil {
+			ranUe.OcfUe.Location = deepcopy.Copy(ranUe.Location).(models.UserLocation)
+			ranUe.OcfUe.Tai = *ranUe.Location.N3gaLocation.N3gppTai
 		}
 	case ngapType.UserLocationInformationPresentNothing:
 	}

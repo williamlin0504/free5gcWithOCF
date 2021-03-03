@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"free5gc/lib/aes"
 	"free5gc/lib/nas/security"
-	"free5gc/src/amf/logger"
+	"free5gc/src/ocf/logger"
 )
 
 var AES_BLOCK_SIZE int32 = 16

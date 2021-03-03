@@ -4,10 +4,11 @@ import (
 	"free5gc/lib/http_wrapper"
 	"free5gc/lib/openapi"
 	"free5gc/lib/openapi/models"
-	"free5gc/src/amf/logger"
-	"free5gc/src/amf/producer"
-	"github.com/gin-gonic/gin"
+	"free5gc/src/ocf/logger"
+	"free5gc/src/ocf/producer"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func setCorsHeader(c *gin.Context) {

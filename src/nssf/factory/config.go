@@ -35,9 +35,9 @@ type Configuration struct {
 
 	NsiList []NsiConfig `yaml:"nsiList,omitempty"`
 
-	AmfSetList []AmfSetConfig `yaml:"amfSetList"`
+	OcfSetList []OcfSetConfig `yaml:"ocfSetList"`
 
-	AmfList []AmfConfig `yaml:"amfList"`
+	OcfList []OcfConfig `yaml:"ocfList"`
 
 	TaList []TaConfig `yaml:"taList"`
 
@@ -55,7 +55,7 @@ type Sbi struct {
 	Port int `yaml:"port"`
 }
 
-type AmfConfig struct {
+type OcfConfig struct {
 	NfId string `yaml:"nfId"`
 
 	SupportedNssaiAvailabilityData []models.SupportedNssaiAvailabilityData `yaml:"supportedNssaiAvailabilityData"`
@@ -83,12 +83,12 @@ type NsiConfig struct {
 	NsiInformationList []models.NsiInformation `yaml:"nsiInformationList"`
 }
 
-type AmfSetConfig struct {
-	AmfSetId string `yaml:"amfSetId"`
+type OcfSetConfig struct {
+	OcfSetId string `yaml:"ocfSetId"`
 
-	AmfList []string `yaml:"amfList,omitempty"`
+	OcfList []string `yaml:"ocfList,omitempty"`
 
-	NrfAmfSet string `yaml:"nrfAmfSet,omitempty"`
+	NrfOcfSet string `yaml:"nrfOcfSet,omitempty"`
 
 	SupportedNssaiAvailabilityData []models.SupportedNssaiAvailabilityData `yaml:"supportedNssaiAvailabilityData"`
 }

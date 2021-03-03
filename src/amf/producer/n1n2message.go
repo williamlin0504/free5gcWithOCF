@@ -6,12 +6,12 @@ import (
 	"free5gc/lib/nas/nasMessage"
 	"free5gc/lib/ngap/ngapType"
 	"free5gc/lib/openapi/models"
-	"free5gc/src/amf/context"
-	gmm_message "free5gc/src/amf/gmm/message"
-	"free5gc/src/amf/logger"
-	ngap_message "free5gc/src/amf/ngap/message"
-	"free5gc/src/amf/producer/callback"
-	"free5gc/src/amf/util"
+	"free5gc/src/ocf/context"
+	gmm_message "free5gc/src/ocf/gmm/message"
+	"free5gc/src/ocf/logger"
+	ngap_message "free5gc/src/ocf/ngap/message"
+	"free5gc/src/ocf/producer/callback"
+	"free5gc/src/ocf/util"
 	"net/http"
 	"strconv"
 )
@@ -54,11 +54,11 @@ func HandleN1N2MessageTransferRequest(request *http_wrapper.Request) *http_wrapp
 }
 
 // There are 4 possible return value for this function:
-//   - n1n2MessageTransferRspData: if AMF handle N1N2MessageTransfer Request successfully.
+//   - n1n2MessageTransferRspData: if OCF handle N1N2MessageTransfer Request successfully.
 //   - locationHeader: if response status code is 202, then it will return a non-empty string location header for
 //     response
-//   - problemDetails: if AMF reject the request due to application error, e.g. UE context not found.
-//   - TransferErr: if AMF reject the request due to procedure error, e.g. UE has an ongoing procedure.
+//   - problemDetails: if OCF reject the request due to application error, e.g. UE context not found.
+//   - TransferErr: if OCF reject the request due to procedure error, e.g. UE has an ongoing procedure.
 // see TS 29.518 6.1.3.5.3.1 for more details.
 func N1N2MessageTransferProcedure(ueContextID string, reqUri string,
 	n1n2MessageTransferRequest models.N1N2MessageTransferRequest) (
@@ -66,17 +66,17 @@ func N1N2MessageTransferProcedure(ueContextID string, reqUri string,
 	locationHeader string, problemDetails *models.ProblemDetails,
 	transferErr *models.N1N2MessageTransferError) {
 
-	var ue *context.AmfUe
+	var ue *context.OcfUe
 	var ok bool
 	var smContext *context.SmContext
 
-	amfSelf := context.AMF_Self()
+	ocfSelf := context.OCF_Self()
 	requestData := n1n2MessageTransferRequest.JsonData
 	n2Info := n1n2MessageTransferRequest.BinaryDataN2Information
 	n1Msg := n1n2MessageTransferRequest.BinaryDataN1Message
 	anType := models.AccessType__3_GPP_ACCESS
 
-	if ue, ok = amfSelf.AmfUeFindByUeContextID(ueContextID); !ok {
+	if ue, ok = ocfSelf.OcfUeFindByUeContextID(ueContextID); !ok {
 		problemDetails = &models.ProblemDetails{
 			Status: http.StatusNotFound,
 			Cause:  "CONTEXT_NOT_FOUND",
@@ -149,7 +149,7 @@ func N1N2MessageTransferProcedure(ueContextID string, reqUri string,
 			smInfo := requestData.N2InfoContainer.SmInfo
 			switch smInfo.N2InfoContent.NgapIeType {
 			case models.NgapIeType_PDU_RES_SETUP_REQ:
-				logger.ProducerLog.Debugln("AMF Transfer NGAP PDU Resource Setup Req from SMF")
+				logger.ProducerLog.Debugln("OCF Transfer NGAP PDU Resource Setup Req from SMF")
 				var nasPdu []byte
 				var err error
 				if n1Msg != nil {
@@ -173,7 +173,7 @@ func N1N2MessageTransferProcedure(ueContextID string, reqUri string,
 				}
 
 			case models.NgapIeType_PDU_RES_MOD_REQ:
-				logger.ProducerLog.Debugln("AMF Transfer NGAP PDU Resource Modify Req from SMF")
+				logger.ProducerLog.Debugln("OCF Transfer NGAP PDU Resource Modify Req from SMF")
 				var nasPdu []byte
 				var err error
 				if n1Msg != nil {
@@ -189,7 +189,7 @@ func N1N2MessageTransferProcedure(ueContextID string, reqUri string,
 				ngap_message.SendPDUSessionResourceModifyRequest(ue.RanUe[anType], list)
 
 			case models.NgapIeType_PDU_RES_REL_CMD:
-				logger.ProducerLog.Debugln("AMF Transfer NGAP PDU Resource Rel CMD from SMF")
+				logger.ProducerLog.Debugln("OCF Transfer NGAP PDU Resource Rel CMD from SMF")
 				var nasPdu []byte
 				var err error
 				if n1Msg != nil {
@@ -247,7 +247,7 @@ func N1N2MessageTransferProcedure(ueContextID string, reqUri string,
 	} else {
 		n1n2MessageID = n1n2MessageIDTmp
 	}
-	locationHeader = context.AMF_Self().GetIPv4Uri() + reqUri + "/" + strconv.Itoa(int(n1n2MessageID))
+	locationHeader = context.OCF_Self().GetIPv4Uri() + reqUri + "/" + strconv.Itoa(int(n1n2MessageID))
 
 	// Case A (UE is CM-IDLE in 3GPP access and the associated access type is 3GPP access)
 	// in subclause 5.2.2.3.1.2 of TS29518
@@ -342,9 +342,9 @@ func HandleN1N2MessageTransferStatusRequest(request *http_wrapper.Request) *http
 
 func N1N2MessageTransferStatusProcedure(ueContextID string, reqUri string) (models.N1N2MessageTransferCause,
 	*models.ProblemDetails) {
-	amfSelf := context.AMF_Self()
+	ocfSelf := context.OCF_Self()
 
-	ue, ok := amfSelf.AmfUeFindByUeContextID(ueContextID)
+	ue, ok := ocfSelf.OcfUeFindByUeContextID(ueContextID)
 	if !ok {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusNotFound,
@@ -353,7 +353,7 @@ func N1N2MessageTransferStatusProcedure(ueContextID string, reqUri string) (mode
 		return "", problemDetails
 	}
 
-	resourceUri := amfSelf.GetIPv4Uri() + reqUri
+	resourceUri := ocfSelf.GetIPv4Uri() + reqUri
 	n1n2Message := ue.N1N2Message
 	if n1n2Message == nil || n1n2Message.ResourceUri != resourceUri {
 		problemDetails := &models.ProblemDetails{
@@ -385,9 +385,9 @@ func N1N2MessageSubscribeProcedure(ueContextID string,
 	ueN1N2InfoSubscriptionCreateData models.UeN1N2InfoSubscriptionCreateData) (
 	*models.UeN1N2InfoSubscriptionCreatedData, *models.ProblemDetails) {
 
-	amfSelf := context.AMF_Self()
+	ocfSelf := context.OCF_Self()
 
-	ue, ok := amfSelf.AmfUeFindByUeContextID(ueContextID)
+	ue, ok := ocfSelf.OcfUeFindByUeContextID(ueContextID)
 	if !ok {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusNotFound,
@@ -427,9 +427,9 @@ func HandleN1N2MessageUnSubscribeRequest(request *http_wrapper.Request) *http_wr
 }
 
 func N1N2MessageUnSubscribeProcedure(ueContextID string, subscriptionID string) *models.ProblemDetails {
-	amfSelf := context.AMF_Self()
+	ocfSelf := context.OCF_Self()
 
-	ue, ok := amfSelf.AmfUeFindByUeContextID(ueContextID)
+	ue, ok := ocfSelf.OcfUeFindByUeContextID(ueContextID)
 	if !ok {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusNotFound,

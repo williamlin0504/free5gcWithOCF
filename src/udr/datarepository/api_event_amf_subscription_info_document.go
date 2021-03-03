@@ -20,9 +20,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// HTTPCreateAMFSubscriptions - Creates AMF Subscription Info for an eeSubscription
-func HTTPCreateAMFSubscriptions(c *gin.Context) {
-	var amfSubscriptionInfoArray []models.AmfSubscriptionInfo
+// HTTPCreateOCFSubscriptions - Creates OCF Subscription Info for an eeSubscription
+func HTTPCreateOCFSubscriptions(c *gin.Context) {
+	var ocfSubscriptionInfoArray []models.OcfSubscriptionInfo
 
 	requestBody, err := c.GetRawData()
 	if err != nil {
@@ -37,7 +37,7 @@ func HTTPCreateAMFSubscriptions(c *gin.Context) {
 		return
 	}
 
-	err = openapi.Deserialize(&amfSubscriptionInfoArray, requestBody, "application/json")
+	err = openapi.Deserialize(&ocfSubscriptionInfoArray, requestBody, "application/json")
 	if err != nil {
 		problemDetail := "[Request Body] " + err.Error()
 		rsp := models.ProblemDetails{
@@ -50,11 +50,11 @@ func HTTPCreateAMFSubscriptions(c *gin.Context) {
 		return
 	}
 
-	req := http_wrapper.NewRequest(c.Request, amfSubscriptionInfoArray)
+	req := http_wrapper.NewRequest(c.Request, ocfSubscriptionInfoArray)
 	req.Params["ueId"] = c.Params.ByName("ueId")
 	req.Params["subsId"] = c.Params.ByName("subsId")
 
-	rsp := producer.HandleCreateAMFSubscriptions(req)
+	rsp := producer.HandleCreateOCFSubscriptions(req)
 
 	responseBody, err := openapi.Serialize(rsp.Body, "application/json")
 	if err != nil {
@@ -70,13 +70,13 @@ func HTTPCreateAMFSubscriptions(c *gin.Context) {
 	}
 }
 
-// HTTPRemoveAmfSubscriptionsInfo - Deletes AMF Subscription Info for an eeSubscription
-func HTTPRemoveAmfSubscriptionsInfo(c *gin.Context) {
+// HTTPRemoveOcfSubscriptionsInfo - Deletes OCF Subscription Info for an eeSubscription
+func HTTPRemoveOcfSubscriptionsInfo(c *gin.Context) {
 	req := http_wrapper.NewRequest(c.Request, nil)
 	req.Params["ueId"] = c.Params.ByName("ueId")
 	req.Params["subsId"] = c.Params.ByName("subsId")
 
-	rsp := producer.HandleRemoveAmfSubscriptionsInfo(req)
+	rsp := producer.HandleRemoveOcfSubscriptionsInfo(req)
 
 	responseBody, err := openapi.Serialize(rsp.Body, "application/json")
 	if err != nil {

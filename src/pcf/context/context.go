@@ -24,7 +24,7 @@ func init() {
 	PCF_Self().PcfServiceUris = make(map[models.ServiceName]string)
 	PCF_Self().PcfSuppFeats = make(map[models.ServiceName]openapi.SupportedFeature)
 	PCF_Self().BdtPolicyIDGenerator = idgenerator.NewGenerator(1, math.MaxInt64)
-	PCF_Self().AMFStatusSubsData = make(map[string]AMFStatusSubscriptionData)
+	PCF_Self().OCFStatusSubsData = make(map[string]OCFStatusSubscriptionData)
 }
 
 type PCFContext struct {
@@ -48,16 +48,16 @@ type PCFContext struct {
 	BdtPolicyIDGenerator *idgenerator.IDGenerator
 	// App Session related
 	AppSessionPool sync.Map
-	// AMF Status Change Subscription related
-	AMFStatusSubsData map[string]AMFStatusSubscriptionData // subscriptionId as key
+	// OCF Status Change Subscription related
+	OCFStatusSubsData map[string]OCFStatusSubscriptionData // subscriptionId as key
 
 	//lock
 	DefaultUdrURILock sync.RWMutex
 }
 
-type AMFStatusSubscriptionData struct {
-	AmfUri       string
-	AmfStatusUri string
+type OCFStatusSubscriptionData struct {
+	OcfUri       string
+	OcfStatusUri string
 	GuamiList    []models.Guami
 }
 

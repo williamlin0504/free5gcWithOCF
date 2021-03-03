@@ -75,45 +75,45 @@ var routes = Routes{
 	},
 
 	{
-		"GetAmf3gppAccess",
+		"GetOcf3gppAccess",
 		strings.ToUpper("Get"),
-		"/:ueId/registrations/amf-3gpp-access",
-		HTTPGetAmf3gppAccess,
+		"/:ueId/registrations/ocf-3gpp-access",
+		HTTPGetOcf3gppAccess,
 	},
 
 	{
-		"GetAmfNon3gppAccess",
+		"GetOcfNon3gppAccess",
 		strings.ToUpper("Get"),
-		"/:ueId/registrations/amf-non-3gpp-access",
-		HTTPGetAmfNon3gppAccess,
+		"/:ueId/registrations/ocf-non-3gpp-access",
+		HTTPGetOcfNon3gppAccess,
 	},
 
 	{
-		"RegistrationAmf3gppAccess",
+		"RegistrationOcf3gppAccess",
 		strings.ToUpper("Put"),
-		"/:ueId/registrations/amf-3gpp-access",
-		HTTPRegistrationAmf3gppAccess,
+		"/:ueId/registrations/ocf-3gpp-access",
+		HTTPRegistrationOcf3gppAccess,
 	},
 
 	{
 		"Register",
 		strings.ToUpper("Put"),
-		"/:ueId/registrations/amf-non-3gpp-access",
-		HTTPRegistrationAmfNon3gppAccess,
+		"/:ueId/registrations/ocf-non-3gpp-access",
+		HTTPRegistrationOcfNon3gppAccess,
 	},
 
 	{
-		"UpdateAmf3gppAccess",
+		"UpdateOcf3gppAccess",
 		strings.ToUpper("Patch"),
-		"/:ueId/registrations/amf-3gpp-access",
-		HTTPUpdateAmf3gppAccess,
+		"/:ueId/registrations/ocf-3gpp-access",
+		HTTPUpdateOcf3gppAccess,
 	},
 
 	{
-		"UpdateAmfNon3gppAccess",
+		"UpdateOcfNon3gppAccess",
 		strings.ToUpper("Patch"),
-		"/:ueId/registrations/amf-non-3gpp-access",
-		HTTPUpdateAmfNon3gppAccess,
+		"/:ueId/registrations/ocf-non-3gpp-access",
+		HTTPUpdateOcfNon3gppAccess,
 	},
 
 	{

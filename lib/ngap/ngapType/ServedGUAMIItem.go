@@ -4,6 +4,6 @@ package ngapType
 
 type ServedGUAMIItem struct {
 	GUAMI         GUAMI                                            `aper:"valueExt"`
-	BackupAMFName *AMFName                                         `aper:"sizeExt,sizeLB:1,sizeUB:150,optional"`
+	BackupOCFName *OCFName                                         `aper:"sizeExt,sizeLB:1,sizeUB:150,optional"`
 	IEExtensions  *ProtocolExtensionContainerServedGUAMIItemExtIEs `aper:"optional"`
 }

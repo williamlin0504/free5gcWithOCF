@@ -385,8 +385,8 @@ func TestBuildPDUSessionResourceReleaseResponse(t *testing.T) {
 	}
 }
 
-func TestBuildAMFConfigurationUpdateFailure(t *testing.T) {
-	pdu := ngapTestpacket.BuildAMFConfigurationUpdateFailure()
+func TestBuildOCFConfigurationUpdateFailure(t *testing.T) {
+	pdu := ngapTestpacket.BuildOCFConfigurationUpdateFailure()
 	encodeData, err := ngap.Encoder(pdu)
 	if err != nil {
 		t.Error(err.Error())
@@ -621,7 +621,7 @@ func TestBuildRanConfigurationUpdate(t *testing.T) {
 	}
 }
 
-func TestBuildAMFStatusIndication(t *testing.T) {
+func TestBuildOCFStatusIndication(t *testing.T) {
 }
 
 func TestBuildUplinkRanConfigurationTransfer(t *testing.T) {
@@ -712,8 +712,8 @@ func TestBuildUERadioCapabilityInfoIndication(t *testing.T) {
 	}
 }
 
-func TestBuildAMFConfigurationUpdateAcknowledge(t *testing.T) {
-	pdu := ngapTestpacket.BuildAMFConfigurationUpdateAcknowledge()
+func TestBuildOCFConfigurationUpdateAcknowledge(t *testing.T) {
+	pdu := ngapTestpacket.BuildOCFConfigurationUpdateAcknowledge()
 	encodeData, err := ngap.Encoder(pdu)
 	if err != nil {
 		t.Error(err.Error())

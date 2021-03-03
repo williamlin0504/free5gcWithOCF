@@ -39,11 +39,11 @@ OCF3GppAccessRegistrationInfoRetrievalApiService retrieve the OCF registration f
 @return models.Ocf3GppAccessRegistration
 */
 
-type GetParamOpts struct {
+type GetParamOptsOCF struct {
 	SupportedFeatures optional.String
 }
 
-func (a *OCF3GppAccessRegistrationInfoRetrievalApiService) Get(ctx context.Context, ueId string, localVarOptionals *GetParamOpts) (models.Ocf3GppAccessRegistration, *http.Response, error) {
+func (a *OCF3GppAccessRegistrationInfoRetrievalApiService) Get(ctx context.Context, ueId string, localVarOptionals *GetParamOptsOCF) (models.Ocf3GppAccessRegistration, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}

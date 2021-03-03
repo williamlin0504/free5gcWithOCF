@@ -11,7 +11,7 @@ const (
 	MaxNumOfPLMNs                     int   = 12
 	MaxNumOfSlice                     int   = 1024
 	MaxNumOfAllowedSnssais            int   = 8
-	MaxValueOfAmfUeNgapId             int64 = 1099511627775
+	MaxValueOfOcfUeNgapId             int64 = 1099511627775
 	MaxNumOfServedGuamiList           int   = 256
 	MaxNumOfPDUSessions               int   = 256
 	MaxNumOfDRBs                      int   = 32
@@ -27,7 +27,7 @@ const (
 	DefaultNon3gppDeregistrationTimer int   = 3240 // 54 min
 )
 
-// timers at AMF side, defined in TS 24.501 table 10.2.2
+// timers at OCF side, defined in TS 24.501 table 10.2.2
 const (
 	TimeT3513 time.Duration = 6 * time.Second
 	TimeT3522 time.Duration = 6 * time.Second

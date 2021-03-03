@@ -15,10 +15,10 @@ const (
 	PDU_SETUP_REQ_11 = "pdu resource setup request 11"
 )
 
-var ConsumerAMFN1N2MessageTransferRequsetTable = make(map[string]*models.N1N2MessageTransferReqData)
+var ConsumerOCFN1N2MessageTransferRequsetTable = make(map[string]*models.N1N2MessageTransferReqData)
 
 func init() {
-	ConsumerAMFN1N2MessageTransferRequsetTable[N2_SmInfo] = &models.N1N2MessageTransferReqData{
+	ConsumerOCFN1N2MessageTransferRequsetTable[N2_SmInfo] = &models.N1N2MessageTransferReqData{
 		N2InfoContainer: &models.N2InfoContainer{
 			N2InformationClass: models.N2InformationClass_SM,
 			SmInfo: &models.N2SmInformation{
@@ -33,7 +33,7 @@ func init() {
 		},
 		PduSessionId: 10,
 	}
-	ConsumerAMFN1N2MessageTransferRequsetTable[N1_NAS_SM] = &models.N1N2MessageTransferReqData{
+	ConsumerOCFN1N2MessageTransferRequsetTable[N1_NAS_SM] = &models.N1N2MessageTransferReqData{
 		PduSessionId: 10,
 		N1MessageContainer: &models.N1MessageContainer{
 			N1MessageClass: models.N1MessageClass_SM,
@@ -42,7 +42,7 @@ func init() {
 			},
 		},
 	}
-	ConsumerAMFN1N2MessageTransferRequsetTable[SKIP_N1] = &models.N1N2MessageTransferReqData{
+	ConsumerOCFN1N2MessageTransferRequsetTable[SKIP_N1] = &models.N1N2MessageTransferReqData{
 		N1MessageContainer: &models.N1MessageContainer{
 			N1MessageClass: models.N1MessageClass_SM,
 			N1MessageContent: &models.RefToBinaryData{
@@ -51,7 +51,7 @@ func init() {
 		},
 		SkipInd: true,
 	}
-	ConsumerAMFN1N2MessageTransferRequsetTable[FAIL_NOTI] = &models.N1N2MessageTransferReqData{
+	ConsumerOCFN1N2MessageTransferRequsetTable[FAIL_NOTI] = &models.N1N2MessageTransferReqData{
 		N1MessageContainer: &models.N1MessageContainer{
 			N1MessageClass: models.N1MessageClass_SM,
 			N1MessageContent: &models.RefToBinaryData{
@@ -60,7 +60,7 @@ func init() {
 		},
 		N1n2FailureTxfNotifURI: "https://localhost:8082/n1n2MessageError",
 	}
-	ConsumerAMFN1N2MessageTransferRequsetTable[PDU_SETUP_REQ] = &models.N1N2MessageTransferReqData{
+	ConsumerOCFN1N2MessageTransferRequsetTable[PDU_SETUP_REQ] = &models.N1N2MessageTransferReqData{
 		N1MessageContainer: &models.N1MessageContainer{
 			N1MessageClass: models.N1MessageClass_SM,
 			N1MessageContent: &models.RefToBinaryData{
@@ -85,7 +85,7 @@ func init() {
 		},
 		PduSessionId: 10,
 	}
-	ConsumerAMFN1N2MessageTransferRequsetTable[PDU_SETUP_REQ_11] = &models.N1N2MessageTransferReqData{
+	ConsumerOCFN1N2MessageTransferRequsetTable[PDU_SETUP_REQ_11] = &models.N1N2MessageTransferReqData{
 		N2InfoContainer: &models.N2InfoContainer{
 			N2InformationClass: models.N2InformationClass_SM,
 			SmInfo: &models.N2SmInformation{

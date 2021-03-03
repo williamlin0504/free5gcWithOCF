@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"free5gc/lib/openapi/Nnrf_NFDiscovery"
 	"free5gc/lib/openapi/models"
-	amf_context "free5gc/src/amf/context"
-	"free5gc/src/amf/logger"
-	"free5gc/src/amf/util"
+	ocf_context "free5gc/src/ocf/context"
+	"free5gc/src/ocf/logger"
+	"free5gc/src/ocf/util"
 	"net/http"
 )
 
@@ -26,7 +26,7 @@ func SendSearchNFInstances(nrfUri string, targetNfType, requestNfType models.NfT
 	return result, err
 }
 
-func SearchUdmSdmInstance(ue *amf_context.AmfUe, nrfUri string, targetNfType, requestNfType models.NfType,
+func SearchUdmSdmInstance(ue *ocf_context.OcfUe, nrfUri string, targetNfType, requestNfType models.NfType,
 	param *Nnrf_NFDiscovery.SearchNFInstancesParamOpts) error {
 
 	resp, localErr := SendSearchNFInstances(nrfUri, targetNfType, requestNfType, param)
@@ -45,14 +45,14 @@ func SearchUdmSdmInstance(ue *amf_context.AmfUe, nrfUri string, targetNfType, re
 	}
 	ue.NudmSDMUri = sdmUri
 	if ue.NudmSDMUri == "" {
-		err := fmt.Errorf("AMF can not select an UDM by NRF")
+		err := fmt.Errorf("OCF can not select an UDM by NRF")
 		logger.ConsumerLog.Errorf(err.Error())
 		return err
 	}
 	return nil
 }
 
-func SearchNssfNSSelectionInstance(ue *amf_context.AmfUe, nrfUri string, targetNfType, requestNfType models.NfType,
+func SearchNssfNSSelectionInstance(ue *ocf_context.OcfUe, nrfUri string, targetNfType, requestNfType models.NfType,
 	param *Nnrf_NFDiscovery.SearchNFInstancesParamOpts) error {
 
 	resp, localErr := SendSearchNFInstances(nrfUri, targetNfType, requestNfType, param)
@@ -71,12 +71,12 @@ func SearchNssfNSSelectionInstance(ue *amf_context.AmfUe, nrfUri string, targetN
 	}
 	ue.NssfUri = nssfUri
 	if ue.NssfUri == "" {
-		return fmt.Errorf("AMF can not select an NSSF by NRF")
+		return fmt.Errorf("OCF can not select an NSSF by NRF")
 	}
 	return nil
 }
 
-func SearchAmfCommunicationInstance(ue *amf_context.AmfUe, nrfUri string, targetNfType,
+func SearchOcfCommunicationInstance(ue *ocf_context.OcfUe, nrfUri string, targetNfType,
 	requestNfType models.NfType, param *Nnrf_NFDiscovery.SearchNFInstancesParamOpts) (err error) {
 
 	resp, localErr := SendSearchNFInstances(nrfUri, targetNfType, requestNfType, param)
@@ -85,18 +85,18 @@ func SearchAmfCommunicationInstance(ue *amf_context.AmfUe, nrfUri string, target
 		return
 	}
 
-	// select the first AMF, TODO: select base on other info
-	var amfUri string
+	// select the first OCF, TODO: select base on other info
+	var ocfUri string
 	for _, nfProfile := range resp.NfInstances {
-		ue.TargetAmfProfile = &nfProfile
-		amfUri = util.SearchNFServiceUri(nfProfile, models.ServiceName_NAMF_COMM, models.NfServiceStatus_REGISTERED)
-		if amfUri != "" {
+		ue.TargetOcfProfile = &nfProfile
+		ocfUri = util.SearchNFServiceUri(nfProfile, models.ServiceName_NOCF_COMM, models.NfServiceStatus_REGISTERED)
+		if ocfUri != "" {
 			break
 		}
 	}
-	ue.TargetAmfUri = amfUri
-	if ue.TargetAmfUri == "" {
-		err = fmt.Errorf("AMF can not select an target AMF by NRF")
+	ue.TargetOcfUri = ocfUri
+	if ue.TargetOcfUri == "" {
+		err = fmt.Errorf("OCF can not select an target OCF by NRF")
 	}
 	return
 }

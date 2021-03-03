@@ -8,7 +8,7 @@ import (
 	"free5gc/lib/nas/nasConvert"
 	"free5gc/lib/nas/nasMessage"
 	"free5gc/lib/openapi"
-	"free5gc/lib/openapi/Namf_Communication"
+	"free5gc/lib/openapi/Nocf_Communication"
 	"free5gc/lib/openapi/Nsmf_PDUSession"
 	"free5gc/lib/openapi/Nudm_SubscriberDataManagement"
 	"free5gc/lib/openapi/models"
@@ -195,19 +195,19 @@ func HandlePDUSessionSMContextCreate(request models.PostSmContextsRequest) *http
 
 	}
 
-	if problemDetails, err := consumer.SendNFDiscoveryServingAMF(smContext); err != nil {
-		logger.PduSessLog.Warnf("Send NF Discovery Serving AMF Error[%v]", err)
+	if problemDetails, err := consumer.SendNFDiscoveryServingOCF(smContext); err != nil {
+		logger.PduSessLog.Warnf("Send NF Discovery Serving OCF Error[%v]", err)
 	} else if problemDetails != nil {
-		logger.PduSessLog.Warnf("Send NF Discovery Serving AMF Problem[%+v]", problemDetails)
+		logger.PduSessLog.Warnf("Send NF Discovery Serving OCF Problem[%+v]", problemDetails)
 	} else {
-		logger.PduSessLog.Traceln("Send NF Discovery Serving AMF successfully")
+		logger.PduSessLog.Traceln("Send NF Discovery Serving OCF successfully")
 	}
 
-	for _, service := range *smContext.AMFProfile.NfServices {
-		if service.ServiceName == models.ServiceName_NAMF_COMM {
-			communicationConf := Namf_Communication.NewConfiguration()
+	for _, service := range *smContext.OCFProfile.NfServices {
+		if service.ServiceName == models.ServiceName_NOCF_COMM {
+			communicationConf := Nocf_Communication.NewConfiguration()
 			communicationConf.SetBasePath(service.ApiPrefix)
-			smContext.CommunicationClient = Namf_Communication.NewAPIClient(communicationConf)
+			smContext.CommunicationClient = Nocf_Communication.NewAPIClient(communicationConf)
 		}
 	}
 	SendPFCPRule(smContext, defaultPath)
@@ -332,7 +332,7 @@ func HandlePDUSessionSMContextUpdate(smContextRef string, body models.UpdateSmCo
 				logger.PduSessLog.Infoln("The SMContext State should be InActivePending State")
 				logger.PduSessLog.Infoln("SMContext state: ", smContext.SMContextState.String())
 			}
-			// Send Release Notify to AMF
+			// Send Release Notify to OCF
 			logger.PduSessLog.Infoln("[SMF] Send Update SmContext Response")
 			smContext.SMContextState = smf_context.InActive
 			logger.CtxLog.Traceln("SMContextState Change State: ", smContext.SMContextState.String())

@@ -50,7 +50,14 @@ type GetParamOpts struct {
 	IfModifiedSince   optional.String
 }
 
-func (a *RetrievalOfMultipleDataSetsApiService) Get(ctx context.Context, supi string, datasetNames []models.DataSetName, localVarOptionals *GetParamOpts) (models.SubscriptionDataSets, *http.Response, error) {
+type GetParamOptsOCF struct {
+	PlmnId            optional.Interface
+	SupportedFeatures optional.String
+	IfNoneMatch       optional.String
+	IfModifiedSince   optional.String
+}
+
+func (a *RetrievalOfMultipleDataSetsApiService) Get(ctx context.Context, supi string, datasetNames []models.DataSetName, localVarOptionals *GetParamOptsOCF) (models.SubscriptionDataSets, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}

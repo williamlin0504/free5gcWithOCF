@@ -44,8 +44,8 @@ type UeAMPolicyData struct {
 	ServingPlmn       *models.NetworkId
 	AltNotifIpv4Addrs []string
 	AltNotifIpv6Addrs []string
-	// TODO: AMF Status Change
-	AmfStatusUri string
+	// TODO: OCF Status Change
+	OcfStatusUri string
 	Guami        *models.Guami
 	ServiveName  string
 	// TraceReq *TraceData
@@ -62,8 +62,8 @@ type UeAMPolicyData struct {
 	AmPolicyData *models.AmPolicyData // Svbscription Data
 	// Corresponding UE
 	PcfUe *UeContext
-	// AMF status change subscription
-	AmfStatusChangeSubscription *AMFStatusSubscriptionData
+	// OCF status change subscription
+	OcfStatusChangeSubscription *OCFStatusSubscriptionData
 }
 
 type UeSmPolicyData struct {

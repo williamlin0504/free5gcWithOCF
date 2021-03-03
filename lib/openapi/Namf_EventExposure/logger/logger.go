@@ -12,7 +12,7 @@ import (
 )
 
 var log *logrus.Logger
-var NamfEventLog *logrus.Entry
+var NocfEventLog *logrus.Entry
 
 func init() {
 	log = logrus.New()
@@ -31,20 +31,20 @@ func init() {
 		log.Hooks.Add(free5gcLogHook)
 	}
 
-	selfLogHook, err := logger_util.NewFileHook(logger_conf.LibLogDir+"namf_event_exposure.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
+	selfLogHook, err := logger_util.NewFileHook(logger_conf.LibLogDir+"nocf_event_exposure.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
 	if err == nil {
 		log.Hooks.Add(selfLogHook)
 	}
 
-	NamfEventLog = log.WithFields(logrus.Fields{"component": "OAPI", "category": "NamfEvent"})
+	NocfEventLog = log.WithFields(logrus.Fields{"component": "OAPI", "category": "NocfEvent"})
 }
 
 func SetLogLevel(level logrus.Level) {
-	NamfEventLog.Infoln("set log level :", level)
+	NocfEventLog.Infoln("set log level :", level)
 	log.SetLevel(level)
 }
 
 func SetReportCaller(bool bool) {
-	NamfEventLog.Infoln("set report call :", bool)
+	NocfEventLog.Infoln("set report call :", bool)
 	log.SetReportCaller(bool)
 }

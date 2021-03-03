@@ -63,13 +63,13 @@ func QueryAmDataProcedure(collName string, ueId string, servingPlmnId string) (*
 	}
 }
 
-func HandleAmfContext3gpp(request *http_wrapper.Request) *http_wrapper.Response {
-	logger.DataRepoLog.Infof("Handle AmfContext3gpp")
-	collName := "subscriptionData.contextData.amf3gppAccess"
+func HandleOcfContext3gpp(request *http_wrapper.Request) *http_wrapper.Response {
+	logger.DataRepoLog.Infof("Handle OcfContext3gpp")
+	collName := "subscriptionData.contextData.ocf3gppAccess"
 	patchItem := request.Body.([]models.PatchItem)
 	ueId := request.Params["ueId"]
 
-	problemDetails := AmfContext3gppProcedure(collName, ueId, patchItem)
+	problemDetails := OcfContext3gppProcedure(collName, ueId, patchItem)
 	if problemDetails == nil {
 		return http_wrapper.NewResponse(http.StatusNoContent, nil, map[string]interface{}{})
 	} else {
@@ -77,7 +77,7 @@ func HandleAmfContext3gpp(request *http_wrapper.Request) *http_wrapper.Response 
 	}
 }
 
-func AmfContext3gppProcedure(collName string, ueId string, patchItem []models.PatchItem) *models.ProblemDetails {
+func OcfContext3gppProcedure(collName string, ueId string, patchItem []models.PatchItem) *models.ProblemDetails {
 	filter := bson.M{"ueId": ueId}
 	origValue := MongoDBLibrary.RestfulAPIGetOne(collName, filter)
 
@@ -100,35 +100,35 @@ func AmfContext3gppProcedure(collName string, ueId string, patchItem []models.Pa
 	}
 }
 
-func HandleCreateAmfContext3gpp(request *http_wrapper.Request) *http_wrapper.Response {
-	logger.DataRepoLog.Infof("Handle CreateAmfContext3gpp")
+func HandleCreateOcfContext3gpp(request *http_wrapper.Request) *http_wrapper.Response {
+	logger.DataRepoLog.Infof("Handle CreateOcfContext3gpp")
 
-	Amf3GppAccessRegistration := request.Body.(models.Amf3GppAccessRegistration)
+	Ocf3GppAccessRegistration := request.Body.(models.Ocf3GppAccessRegistration)
 	ueId := request.Params["ueId"]
-	collName := "subscriptionData.contextData.amf3gppAccess"
+	collName := "subscriptionData.contextData.ocf3gppAccess"
 
-	CreateAmfContext3gppProcedure(collName, ueId, Amf3GppAccessRegistration)
+	CreateOcfContext3gppProcedure(collName, ueId, Ocf3GppAccessRegistration)
 
 	return http_wrapper.NewResponse(http.StatusNoContent, nil, map[string]interface{}{})
 }
 
-func CreateAmfContext3gppProcedure(collName string, ueId string,
-	Amf3GppAccessRegistration models.Amf3GppAccessRegistration) {
+func CreateOcfContext3gppProcedure(collName string, ueId string,
+	Ocf3GppAccessRegistration models.Ocf3GppAccessRegistration) {
 
 	filter := bson.M{"ueId": ueId}
-	putData := util.ToBsonM(Amf3GppAccessRegistration)
+	putData := util.ToBsonM(Ocf3GppAccessRegistration)
 	putData["ueId"] = ueId
 
 	MongoDBLibrary.RestfulAPIPutOne(collName, filter, putData)
 }
 
-func HandleQueryAmfContext3gpp(request *http_wrapper.Request) *http_wrapper.Response {
-	logger.DataRepoLog.Infof("Handle QueryAmfContext3gpp")
+func HandleQueryOcfContext3gpp(request *http_wrapper.Request) *http_wrapper.Response {
+	logger.DataRepoLog.Infof("Handle QueryOcfContext3gpp")
 
 	ueId := request.Params["ueId"]
-	collName := "subscriptionData.contextData.amf3gppAccess"
+	collName := "subscriptionData.contextData.ocf3gppAccess"
 
-	response, problemDetails := QueryAmfContext3gppProcedure(collName, ueId)
+	response, problemDetails := QueryOcfContext3gppProcedure(collName, ueId)
 
 	if response != nil {
 		return http_wrapper.NewResponse(http.StatusOK, nil, response)
@@ -142,13 +142,13 @@ func HandleQueryAmfContext3gpp(request *http_wrapper.Request) *http_wrapper.Resp
 	return http_wrapper.NewResponse(http.StatusForbidden, nil, problemDetails)
 }
 
-func QueryAmfContext3gppProcedure(collName string, ueId string) (*map[string]interface{}, *models.ProblemDetails) {
+func QueryOcfContext3gppProcedure(collName string, ueId string) (*map[string]interface{}, *models.ProblemDetails) {
 
 	filter := bson.M{"ueId": ueId}
-	amf3GppAccessRegistration := MongoDBLibrary.RestfulAPIGetOne(collName, filter)
+	ocf3GppAccessRegistration := MongoDBLibrary.RestfulAPIGetOne(collName, filter)
 
-	if amf3GppAccessRegistration != nil {
-		return &amf3GppAccessRegistration, nil
+	if ocf3GppAccessRegistration != nil {
+		return &ocf3GppAccessRegistration, nil
 	} else {
 		problemDetails := &models.ProblemDetails{
 			Cause:  "USER_NOT_FOUND",
@@ -158,15 +158,15 @@ func QueryAmfContext3gppProcedure(collName string, ueId string) (*map[string]int
 	}
 }
 
-func HandleAmfContextNon3gpp(request *http_wrapper.Request) *http_wrapper.Response {
-	logger.DataRepoLog.Infof("Handle AmfContextNon3gpp")
+func HandleOcfContextNon3gpp(request *http_wrapper.Request) *http_wrapper.Response {
+	logger.DataRepoLog.Infof("Handle OcfContextNon3gpp")
 
 	ueId := request.Params["ueId"]
-	collName := "subscriptionData.contextData.amfNon3gppAccess"
+	collName := "subscriptionData.contextData.ocfNon3gppAccess"
 	patchItem := request.Body.([]models.PatchItem)
 	filter := bson.M{"ueId": ueId}
 
-	problemDetails := AmfContextNon3gppProcedure(ueId, collName, patchItem, filter)
+	problemDetails := OcfContextNon3gppProcedure(ueId, collName, patchItem, filter)
 
 	if problemDetails == nil {
 		return http_wrapper.NewResponse(http.StatusNoContent, nil, map[string]interface{}{})
@@ -175,7 +175,7 @@ func HandleAmfContextNon3gpp(request *http_wrapper.Request) *http_wrapper.Respon
 	}
 }
 
-func AmfContextNon3gppProcedure(ueId string, collName string, patchItem []models.PatchItem,
+func OcfContextNon3gppProcedure(ueId string, collName string, patchItem []models.PatchItem,
 	filter bson.M) *models.ProblemDetails {
 	origValue := MongoDBLibrary.RestfulAPIGetOne(collName, filter)
 
@@ -197,21 +197,21 @@ func AmfContextNon3gppProcedure(ueId string, collName string, patchItem []models
 	}
 }
 
-func HandleCreateAmfContextNon3gpp(request *http_wrapper.Request) *http_wrapper.Response {
-	logger.DataRepoLog.Infof("Handle CreateAmfContextNon3gpp")
+func HandleCreateOcfContextNon3gpp(request *http_wrapper.Request) *http_wrapper.Response {
+	logger.DataRepoLog.Infof("Handle CreateOcfContextNon3gpp")
 
-	AmfNon3GppAccessRegistration := request.Body.(models.AmfNon3GppAccessRegistration)
-	collName := "subscriptionData.contextData.amfNon3gppAccess"
+	OcfNon3GppAccessRegistration := request.Body.(models.OcfNon3GppAccessRegistration)
+	collName := "subscriptionData.contextData.ocfNon3gppAccess"
 	ueId := request.Params["ueId"]
 
-	CreateAmfContextNon3gppProcedure(AmfNon3GppAccessRegistration, collName, ueId)
+	CreateOcfContextNon3gppProcedure(OcfNon3GppAccessRegistration, collName, ueId)
 
 	return http_wrapper.NewResponse(http.StatusNoContent, nil, map[string]interface{}{})
 }
 
-func CreateAmfContextNon3gppProcedure(AmfNon3GppAccessRegistration models.AmfNon3GppAccessRegistration,
+func CreateOcfContextNon3gppProcedure(OcfNon3GppAccessRegistration models.OcfNon3GppAccessRegistration,
 	collName string, ueId string) {
-	putData := util.ToBsonM(AmfNon3GppAccessRegistration)
+	putData := util.ToBsonM(OcfNon3GppAccessRegistration)
 	putData["ueId"] = ueId
 	filter := bson.M{"ueId": ueId}
 
@@ -219,13 +219,13 @@ func CreateAmfContextNon3gppProcedure(AmfNon3GppAccessRegistration models.AmfNon
 
 }
 
-func HandleQueryAmfContextNon3gpp(request *http_wrapper.Request) *http_wrapper.Response {
-	logger.DataRepoLog.Infof("Handle QueryAmfContextNon3gpp")
+func HandleQueryOcfContextNon3gpp(request *http_wrapper.Request) *http_wrapper.Response {
+	logger.DataRepoLog.Infof("Handle QueryOcfContextNon3gpp")
 
-	collName := "subscriptionData.contextData.amfNon3gppAccess"
+	collName := "subscriptionData.contextData.ocfNon3gppAccess"
 	ueId := request.Params["ueId"]
 
-	response, problemDetails := QueryAmfContextNon3gppProcedure(collName, ueId)
+	response, problemDetails := QueryOcfContextNon3gppProcedure(collName, ueId)
 
 	if response != nil {
 		return http_wrapper.NewResponse(http.StatusOK, nil, response)
@@ -239,7 +239,7 @@ func HandleQueryAmfContextNon3gpp(request *http_wrapper.Request) *http_wrapper.R
 	return http_wrapper.NewResponse(http.StatusForbidden, nil, problemDetails)
 }
 
-func QueryAmfContextNon3gppProcedure(collName string, ueId string) (*map[string]interface{}, *models.ProblemDetails) {
+func QueryOcfContextNon3gppProcedure(collName string, ueId string) (*map[string]interface{}, *models.ProblemDetails) {
 	filter := bson.M{"ueId": ueId}
 	response := MongoDBLibrary.RestfulAPIGetOne(collName, filter)
 
@@ -1320,14 +1320,14 @@ func PolicyDataUesUeIdUePolicySetPutProcedure(collName string, ueId string,
 	}
 }
 
-func HandleCreateAMFSubscriptions(request *http_wrapper.Request) *http_wrapper.Response {
-	logger.DataRepoLog.Infof("Handle CreateAMFSubscriptions")
+func HandleCreateOCFSubscriptions(request *http_wrapper.Request) *http_wrapper.Response {
+	logger.DataRepoLog.Infof("Handle CreateOCFSubscriptions")
 
 	ueId := request.Params["ueId"]
 	subsId := request.Params["subsId"]
-	AmfSubscriptionInfo := request.Body.([]models.AmfSubscriptionInfo)
+	OcfSubscriptionInfo := request.Body.([]models.OcfSubscriptionInfo)
 
-	problemDetails := CreateAMFSubscriptionsProcedure(subsId, ueId, AmfSubscriptionInfo)
+	problemDetails := CreateOCFSubscriptionsProcedure(subsId, ueId, OcfSubscriptionInfo)
 
 	if problemDetails == nil {
 		return http_wrapper.NewResponse(http.StatusNoContent, nil, map[string]interface{}{})
@@ -1336,8 +1336,8 @@ func HandleCreateAMFSubscriptions(request *http_wrapper.Request) *http_wrapper.R
 	}
 }
 
-func CreateAMFSubscriptionsProcedure(subsId string, ueId string,
-	AmfSubscriptionInfo []models.AmfSubscriptionInfo) *models.ProblemDetails {
+func CreateOCFSubscriptionsProcedure(subsId string, ueId string,
+	OcfSubscriptionInfo []models.OcfSubscriptionInfo) *models.ProblemDetails {
 	udrSelf := udr_context.UDR_Self()
 	value, ok := udrSelf.UESubsCollection.Load(ueId)
 	if !ok {
@@ -1358,17 +1358,17 @@ func CreateAMFSubscriptionsProcedure(subsId string, ueId string,
 		return problemDetails
 	}
 
-	UESubsData.EeSubscriptionCollection[subsId].AmfSubscriptionInfos = AmfSubscriptionInfo
+	UESubsData.EeSubscriptionCollection[subsId].OcfSubscriptionInfos = OcfSubscriptionInfo
 	return nil
 }
 
-func HandleRemoveAmfSubscriptionsInfo(request *http_wrapper.Request) *http_wrapper.Response {
-	logger.DataRepoLog.Infof("Handle RemoveAmfSubscriptionsInfo")
+func HandleRemoveOcfSubscriptionsInfo(request *http_wrapper.Request) *http_wrapper.Response {
+	logger.DataRepoLog.Infof("Handle RemoveOcfSubscriptionsInfo")
 
 	ueId := request.Params["ueId"]
 	subsId := request.Params["subsId"]
 
-	problemDetails := RemoveAmfSubscriptionsInfoProcedure(subsId, ueId)
+	problemDetails := RemoveOcfSubscriptionsInfoProcedure(subsId, ueId)
 
 	if problemDetails == nil {
 		return http_wrapper.NewResponse(http.StatusNoContent, nil, map[string]interface{}{})
@@ -1377,7 +1377,7 @@ func HandleRemoveAmfSubscriptionsInfo(request *http_wrapper.Request) *http_wrapp
 	}
 }
 
-func RemoveAmfSubscriptionsInfoProcedure(subsId string, ueId string) *models.ProblemDetails {
+func RemoveOcfSubscriptionsInfoProcedure(subsId string, ueId string) *models.ProblemDetails {
 	udrSelf := udr_context.UDR_Self()
 	value, ok := udrSelf.UESubsCollection.Load(ueId)
 	if !ok {
@@ -1399,27 +1399,27 @@ func RemoveAmfSubscriptionsInfoProcedure(subsId string, ueId string) *models.Pro
 		return problemDetails
 	}
 
-	if UESubsData.EeSubscriptionCollection[subsId].AmfSubscriptionInfos == nil {
+	if UESubsData.EeSubscriptionCollection[subsId].OcfSubscriptionInfos == nil {
 		problemDetails := &models.ProblemDetails{
-			Cause:  "AMFSUBSCRIPTION_NOT_FOUND",
+			Cause:  "OCFSUBSCRIPTION_NOT_FOUND",
 			Status: http.StatusNotFound,
 		}
 		return problemDetails
 	}
 
-	UESubsData.EeSubscriptionCollection[subsId].AmfSubscriptionInfos = nil
+	UESubsData.EeSubscriptionCollection[subsId].OcfSubscriptionInfos = nil
 
 	return nil
 }
 
-func HandleModifyAmfSubscriptionInfo(request *http_wrapper.Request) *http_wrapper.Response {
-	logger.DataRepoLog.Infof("Handle ModifyAmfSubscriptionInfo")
+func HandleModifyOcfSubscriptionInfo(request *http_wrapper.Request) *http_wrapper.Response {
+	logger.DataRepoLog.Infof("Handle ModifyOcfSubscriptionInfo")
 
 	patchItem := request.Body.([]models.PatchItem)
 	ueId := request.Params["ueId"]
 	subsId := request.Params["subsId"]
 
-	problemDetails := ModifyAmfSubscriptionInfoProcedure(ueId, subsId, patchItem)
+	problemDetails := ModifyOcfSubscriptionInfoProcedure(ueId, subsId, patchItem)
 
 	if problemDetails == nil {
 		return http_wrapper.NewResponse(http.StatusNoContent, nil, map[string]interface{}{})
@@ -1428,7 +1428,7 @@ func HandleModifyAmfSubscriptionInfo(request *http_wrapper.Request) *http_wrappe
 	}
 }
 
-func ModifyAmfSubscriptionInfoProcedure(ueId string, subsId string,
+func ModifyOcfSubscriptionInfoProcedure(ueId string, subsId string,
 	patchItem []models.PatchItem) *models.ProblemDetails {
 	udrSelf := udr_context.UDR_Self()
 	value, ok := udrSelf.UESubsCollection.Load(ueId)
@@ -1451,9 +1451,9 @@ func ModifyAmfSubscriptionInfoProcedure(ueId string, subsId string,
 		return problemDetails
 	}
 
-	if UESubsData.EeSubscriptionCollection[subsId].AmfSubscriptionInfos == nil {
+	if UESubsData.EeSubscriptionCollection[subsId].OcfSubscriptionInfos == nil {
 		problemDetails := &models.ProblemDetails{
-			Cause:  "AMFSUBSCRIPTION_NOT_FOUND",
+			Cause:  "OCFSUBSCRIPTION_NOT_FOUND",
 			Status: http.StatusNotFound,
 		}
 		return problemDetails
@@ -1476,7 +1476,7 @@ func ModifyAmfSubscriptionInfoProcedure(ueId string, subsId string,
 	} else {
 		patch = patchtemp
 	}
-	original, err := json.Marshal((UESubsData.EeSubscriptionCollection[subsId]).AmfSubscriptionInfos)
+	original, err := json.Marshal((UESubsData.EeSubscriptionCollection[subsId]).OcfSubscriptionInfos)
 	if err != nil {
 		logger.DataRepoLog.Warnln(err)
 	}
@@ -1490,23 +1490,23 @@ func ModifyAmfSubscriptionInfoProcedure(ueId string, subsId string,
 		}
 		return problemDetails
 	}
-	var modifiedData []models.AmfSubscriptionInfo
+	var modifiedData []models.OcfSubscriptionInfo
 	err = json.Unmarshal(modified, &modifiedData)
 	if err != nil {
 		logger.DataRepoLog.Error(err)
 	}
 
-	UESubsData.EeSubscriptionCollection[subsId].AmfSubscriptionInfos = modifiedData
+	UESubsData.EeSubscriptionCollection[subsId].OcfSubscriptionInfos = modifiedData
 	return nil
 }
 
-func HandleGetAmfSubscriptionInfo(request *http_wrapper.Request) *http_wrapper.Response {
-	logger.DataRepoLog.Infof("Handle GetAmfSubscriptionInfo")
+func HandleGetOcfSubscriptionInfo(request *http_wrapper.Request) *http_wrapper.Response {
+	logger.DataRepoLog.Infof("Handle GetOcfSubscriptionInfo")
 
 	ueId := request.Params["ueId"]
 	subsId := request.Params["subsId"]
 
-	response, problemDetails := GetAmfSubscriptionInfoProcedure(subsId, ueId)
+	response, problemDetails := GetOcfSubscriptionInfoProcedure(subsId, ueId)
 	if response != nil {
 		return http_wrapper.NewResponse(http.StatusOK, nil, response)
 	} else if problemDetails != nil {
@@ -1519,7 +1519,7 @@ func HandleGetAmfSubscriptionInfo(request *http_wrapper.Request) *http_wrapper.R
 	return http_wrapper.NewResponse(int(problemDetails.Status), nil, problemDetails)
 }
 
-func GetAmfSubscriptionInfoProcedure(subsId string, ueId string) (*[]models.AmfSubscriptionInfo,
+func GetOcfSubscriptionInfoProcedure(subsId string, ueId string) (*[]models.OcfSubscriptionInfo,
 	*models.ProblemDetails) {
 	udrSelf := udr_context.UDR_Self()
 
@@ -1543,14 +1543,14 @@ func GetAmfSubscriptionInfoProcedure(subsId string, ueId string) (*[]models.AmfS
 		return nil, problemDetails
 	}
 
-	if UESubsData.EeSubscriptionCollection[subsId].AmfSubscriptionInfos == nil {
+	if UESubsData.EeSubscriptionCollection[subsId].OcfSubscriptionInfos == nil {
 		problemDetails := &models.ProblemDetails{
-			Cause:  "AMFSUBSCRIPTION_NOT_FOUND",
+			Cause:  "OCFSUBSCRIPTION_NOT_FOUND",
 			Status: http.StatusNotFound,
 		}
 		return nil, problemDetails
 	}
-	return &UESubsData.EeSubscriptionCollection[subsId].AmfSubscriptionInfos, nil
+	return &UESubsData.EeSubscriptionCollection[subsId].OcfSubscriptionInfos, nil
 }
 
 func HandleQueryEEData(request *http_wrapper.Request) *http_wrapper.Response {
@@ -2409,7 +2409,7 @@ func HandleCreateSdmSubscriptions(request *http_wrapper.Request) *http_wrapper.R
 	logger.DataRepoLog.Infof("Handle CreateSdmSubscriptions")
 
 	SdmSubscription := request.Body.(models.SdmSubscription)
-	collName := "subscriptionData.contextData.amfNon3gppAccess"
+	collName := "subscriptionData.contextData.ocfNon3gppAccess"
 	ueId := request.Params["ueId"]
 
 	locationHeader, SdmSubscription := CreateSdmSubscriptionsProcedure(SdmSubscription, collName, ueId)

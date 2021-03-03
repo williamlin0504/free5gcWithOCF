@@ -9,18 +9,18 @@
 
 package models
 
-type AmfNon3GppAccessRegistration struct {
-	AmfInstanceId               string          `json:"amfInstanceId" yaml:"amfInstanceId" bson:"amfInstanceId" mapstructure:"AmfInstanceId"`
+type OcfNon3GppAccessRegistration struct {
+	OcfInstanceId               string          `json:"ocfInstanceId" yaml:"ocfInstanceId" bson:"ocfInstanceId" mapstructure:"OcfInstanceId"`
 	SupportedFeatures           string          `json:"supportedFeatures,omitempty" yaml:"supportedFeatures" bson:"supportedFeatures" mapstructure:"SupportedFeatures"`
 	PurgeFlag                   bool            `json:"purgeFlag,omitempty" yaml:"purgeFlag" bson:"purgeFlag" mapstructure:"PurgeFlag"`
 	Pei                         string          `json:"pei,omitempty" yaml:"pei" bson:"pei" mapstructure:"Pei"`
 	ImsVoPs                     ImsVoPs         `json:"imsVoPs" yaml:"imsVoPs" bson:"imsVoPs" mapstructure:"ImsVoPs"`
 	DeregCallbackUri            string          `json:"deregCallbackUri" yaml:"deregCallbackUri" bson:"deregCallbackUri" mapstructure:"DeregCallbackUri"`
-	AmfServiceNameDereg         ServiceName     `json:"amfServiceNameDereg,omitempty" yaml:"amfServiceNameDereg" bson:"amfServiceNameDereg" mapstructure:"AmfServiceNameDereg"`
+	OcfServiceNameDereg         ServiceName     `json:"ocfServiceNameDereg,omitempty" yaml:"ocfServiceNameDereg" bson:"ocfServiceNameDereg" mapstructure:"OcfServiceNameDereg"`
 	PcscfRestorationCallbackUri string          `json:"pcscfRestorationCallbackUri,omitempty" yaml:"pcscfRestorationCallbackUri" bson:"pcscfRestorationCallbackUri" mapstructure:"PcscfRestorationCallbackUri"`
-	AmfServiceNamePcscfRest     ServiceName     `json:"amfServiceNamePcscfRest,omitempty" yaml:"amfServiceNamePcscfRest" bson:"amfServiceNamePcscfRest" mapstructure:"AmfServiceNamePcscfRest"`
+	OcfServiceNamePcscfRest     ServiceName     `json:"ocfServiceNamePcscfRest,omitempty" yaml:"ocfServiceNamePcscfRest" bson:"ocfServiceNamePcscfRest" mapstructure:"OcfServiceNamePcscfRest"`
 	Guami                       *Guami          `json:"guami" yaml:"guami" bson:"guami" mapstructure:"Guami"`
-	BackupAmfInfo               []BackupAmfInfo `json:"backupAmfInfo,omitempty" yaml:"backupAmfInfo" bson:"backupAmfInfo" mapstructure:"BackupAmfInfo"`
+	BackupOcfInfo               []BackupOcfInfo `json:"backupOcfInfo,omitempty" yaml:"backupOcfInfo" bson:"backupOcfInfo" mapstructure:"BackupOcfInfo"`
 	RatType                     RatType         `json:"ratType" yaml:"ratType" bson:"ratType" mapstructure:"RatType"`
 	UrrpIndicator               bool            `json:"urrpIndicator,omitempty" yaml:"urrpIndicator" bson:"urrpIndicator" mapstructure:"UrrpIndicator"`
 }

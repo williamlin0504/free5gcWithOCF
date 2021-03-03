@@ -6,7 +6,7 @@ require (
 	github.com/free5gc/CommonConsumerTestData v1.0.0
 	github.com/free5gc/MongoDBLibrary v1.0.0
 	github.com/free5gc/UeauCommon v1.0.0
-	github.com/free5gc/amf v1.3.0
+	github.com/free5gc/ocf v1.3.0
 	github.com/free5gc/aper v1.0.0
 	github.com/free5gc/ausf v1.3.0
 	github.com/free5gc/http2_util v1.0.0
@@ -67,7 +67,7 @@ require (
 )
 
 replace (
-	github.com/free5gc/amf => ../NFs/amf
+	github.com/free5gc/ocf => ../NFs/ocf
 	github.com/free5gc/ausf => ../NFs/ausf
 	github.com/free5gc/n3iwf => ../NFs/n3iwf
 	github.com/free5gc/nrf => ../NFs/nrf

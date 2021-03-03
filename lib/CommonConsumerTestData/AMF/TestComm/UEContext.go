@@ -18,10 +18,10 @@ const (
 	RegistrationStatusUpdate200  = "RegistrationStatusUpdate200"
 )
 
-var ConsumerAMFCreateUEContextRequsetTable = make(map[string]models.CreateUeContextRequest)
+var ConsumerOCFCreateUEContextRequsetTable = make(map[string]models.CreateUeContextRequest)
 
 func init() {
-	ConsumerAMFCreateUEContextRequsetTable[CreateUEContext403] = models.CreateUeContextRequest{
+	ConsumerOCFCreateUEContextRequsetTable[CreateUEContext403] = models.CreateUeContextRequest{
 		JsonData: &models.UeContextCreateData{
 			UeContext: &models.UeContext{
 				Supi: "imsi-2089300007487",
@@ -35,7 +35,7 @@ func init() {
 			SupportedFeatures:  "",
 		},
 	}
-	ConsumerAMFCreateUEContextRequsetTable[CreateUEContext201] = models.CreateUeContextRequest{
+	ConsumerOCFCreateUEContextRequsetTable[CreateUEContext201] = models.CreateUeContextRequest{
 		JsonData: &models.UeContextCreateData{
 			UeContext: &models.UeContext{
 				Supi: "imsi-2089300007487",
@@ -90,10 +90,10 @@ func init() {
 	}
 }
 
-var ConsumerAMFReleaseUEContextRequestTable = make(map[string]models.UeContextRelease)
+var ConsumerOCFReleaseUEContextRequestTable = make(map[string]models.UeContextRelease)
 
 func init() {
-	ConsumerAMFReleaseUEContextRequestTable[UeContextRelease404] = models.UeContextRelease{
+	ConsumerOCFReleaseUEContextRequestTable[UeContextRelease404] = models.UeContextRelease{
 		Supi:                "",
 		UnauthenticatedSupi: false,
 		NgapCause: &models.NgApCause{
@@ -101,7 +101,7 @@ func init() {
 			Value: 0,
 		},
 	}
-	ConsumerAMFReleaseUEContextRequestTable[UeContextRelease201] = models.UeContextRelease{
+	ConsumerOCFReleaseUEContextRequestTable[UeContextRelease201] = models.UeContextRelease{
 		Supi:                "imsi-2089300007487",
 		UnauthenticatedSupi: true,
 		NgapCause: &models.NgApCause{
@@ -112,10 +112,10 @@ func init() {
 
 }
 
-var ConsumerAMFUEContextTransferRequestTable = make(map[string]models.UeContextTransferRequest)
+var ConsumerOCFUEContextTransferRequestTable = make(map[string]models.UeContextTransferRequest)
 
 func init() {
-	ConsumerAMFUEContextTransferRequestTable[UeContextTransfer404] = models.UeContextTransferRequest{
+	ConsumerOCFUEContextTransferRequestTable[UeContextTransfer404] = models.UeContextTransferRequest{
 		JsonData: &models.UeContextTransferReqData{
 			Reason:            "",
 			AccessType:        "",
@@ -124,7 +124,7 @@ func init() {
 			SupportedFeatures: "",
 		},
 	}
-	ConsumerAMFUEContextTransferRequestTable[UeContextTransferINIT_REG200] = models.UeContextTransferRequest{
+	ConsumerOCFUEContextTransferRequestTable[UeContextTransferINIT_REG200] = models.UeContextTransferRequest{
 		JsonData: &models.UeContextTransferReqData{
 			Reason:            models.TransferReason_INIT_REG,
 			AccessType:        models.AccessType__3_GPP_ACCESS,
@@ -133,7 +133,7 @@ func init() {
 			SupportedFeatures: "",
 		},
 	}
-	ConsumerAMFUEContextTransferRequestTable[UeContextTransferMOBI_REG200] = models.UeContextTransferRequest{
+	ConsumerOCFUEContextTransferRequestTable[UeContextTransferMOBI_REG200] = models.UeContextTransferRequest{
 		JsonData: &models.UeContextTransferReqData{
 			Reason:            models.TransferReason_MOBI_REG,
 			AccessType:        models.AccessType__3_GPP_ACCESS,
@@ -144,15 +144,15 @@ func init() {
 	}
 }
 
-var ConsumerAMFUEContextEBIAssignmentTable = make(map[string]models.AssignEbiData)
+var ConsumerOCFUEContextEBIAssignmentTable = make(map[string]models.AssignEbiData)
 
 func init() {
-	ConsumerAMFUEContextEBIAssignmentTable[AssignEbiData403] = models.AssignEbiData{
+	ConsumerOCFUEContextEBIAssignmentTable[AssignEbiData403] = models.AssignEbiData{
 		PduSessionId:    0,
 		ArpList:         nil,
 		ReleasedEbiList: nil,
 	}
-	ConsumerAMFUEContextEBIAssignmentTable[AssignEbiData200] = models.AssignEbiData{
+	ConsumerOCFUEContextEBIAssignmentTable[AssignEbiData200] = models.AssignEbiData{
 		PduSessionId:    10,
 		ArpList:         nil,
 		ReleasedEbiList: nil,

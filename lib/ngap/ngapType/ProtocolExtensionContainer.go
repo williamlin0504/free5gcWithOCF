@@ -15,27 +15,27 @@ type ProtocolExtensionContainerAllowedNSSAIItemExtIEs struct {
 }
 
 /* Sequence of = 35, FULL Name = struct ProtocolExtensionContainer_6500P2 */
-/* AMFTNLAssociationSetupItemExtIEs */
-type ProtocolExtensionContainerAMFTNLAssociationSetupItemExtIEs struct {
-	List []AMFTNLAssociationSetupItemExtIEs `aper:"sizeLB:1,sizeUB:65535"`
+/* OCFTNLAssociationSetupItemExtIEs */
+type ProtocolExtensionContainerOCFTNLAssociationSetupItemExtIEs struct {
+	List []OCFTNLAssociationSetupItemExtIEs `aper:"sizeLB:1,sizeUB:65535"`
 }
 
 /* Sequence of = 35, FULL Name = struct ProtocolExtensionContainer_6500P3 */
-/* AMFTNLAssociationToAddItemExtIEs */
-type ProtocolExtensionContainerAMFTNLAssociationToAddItemExtIEs struct {
-	List []AMFTNLAssociationToAddItemExtIEs `aper:"sizeLB:1,sizeUB:65535"`
+/* OCFTNLAssociationToAddItemExtIEs */
+type ProtocolExtensionContainerOCFTNLAssociationToAddItemExtIEs struct {
+	List []OCFTNLAssociationToAddItemExtIEs `aper:"sizeLB:1,sizeUB:65535"`
 }
 
 /* Sequence of = 35, FULL Name = struct ProtocolExtensionContainer_6500P4 */
-/* AMFTNLAssociationToRemoveItemExtIEs */
-type ProtocolExtensionContainerAMFTNLAssociationToRemoveItemExtIEs struct {
-	List []AMFTNLAssociationToRemoveItemExtIEs `aper:"sizeLB:1,sizeUB:65535"`
+/* OCFTNLAssociationToRemoveItemExtIEs */
+type ProtocolExtensionContainerOCFTNLAssociationToRemoveItemExtIEs struct {
+	List []OCFTNLAssociationToRemoveItemExtIEs `aper:"sizeLB:1,sizeUB:65535"`
 }
 
 /* Sequence of = 35, FULL Name = struct ProtocolExtensionContainer_6500P5 */
-/* AMFTNLAssociationToUpdateItemExtIEs */
-type ProtocolExtensionContainerAMFTNLAssociationToUpdateItemExtIEs struct {
-	List []AMFTNLAssociationToUpdateItemExtIEs `aper:"sizeLB:1,sizeUB:65535"`
+/* OCFTNLAssociationToUpdateItemExtIEs */
+type ProtocolExtensionContainerOCFTNLAssociationToUpdateItemExtIEs struct {
+	List []OCFTNLAssociationToUpdateItemExtIEs `aper:"sizeLB:1,sizeUB:65535"`
 }
 
 /* Sequence of = 35, FULL Name = struct ProtocolExtensionContainer_6500P6 */

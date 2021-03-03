@@ -8,7 +8,7 @@ type milenageTestSet struct {
 	K      string
 	RAND   string
 	SQN    string
-	AMF    string
+	OCF    string
 	OP     string
 	OPC    string
 	F1     string
@@ -40,7 +40,7 @@ func init() {
 		K:      "5122250214c33e723a5dd523fc145fc0",
 		RAND:   "81e92b6c0ee0e12ebceba8d92a99dfa5",
 		SQN:    "16f3b3f70fc2",
-		AMF:    "c3ab",
+		OCF:    "c3ab",
 		OP:     "c9e8763286b5b9ffbdf56e1297d0887b",
 		OPC:    "981d464c7c52eb6e5036234984ad0bcf",
 		F1:     "2a5c23d15ee351d5",

@@ -478,9 +478,9 @@ paths:
       summary: Retrieves the Session Management subscription data of a UE
       tags:
       - Session Management Subscription Data
-  /subscription-data/{ueId}/context-data/amf-3gpp-access:
+  /subscription-data/{ueId}/context-data/ocf-3gpp-access:
     get:
-      operationId: QueryAmfContext3gpp
+      operationId: QueryOcfContext3gpp
       parameters:
       - description: UE id
         in: path
@@ -509,7 +509,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Amf3GppAccessRegistration'
+                $ref: '#/components/schemas/Ocf3GppAccessRegistration'
           description: Expected response to a valid request
         default:
           content:
@@ -517,11 +517,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
           description: Unexpected error
-      summary: Retrieves the AMF context data of a UE using 3gpp access
+      summary: Retrieves the OCF context data of a UE using 3gpp access
       tags:
-      - AMF 3GPP Access Registration (Document)
+      - OCF 3GPP Access Registration (Document)
     patch:
-      operationId: AmfContext3gpp
+      operationId: OcfContext3gpp
       parameters:
       - description: UE id
         in: path
@@ -552,11 +552,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
           description: Unexpected error
-      summary: To modify the AMF context data of a UE using 3gpp access in the UDR
+      summary: To modify the OCF context data of a UE using 3gpp access in the UDR
       tags:
-      - AMF 3GPP Access Registration (Document)
+      - OCF 3GPP Access Registration (Document)
     put:
-      operationId: CreateAmfContext3gpp
+      operationId: CreateOcfContext3gpp
       parameters:
       - description: UE id
         in: path
@@ -568,7 +568,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Amf3GppAccessRegistration'
+              $ref: '#/components/schemas/Ocf3GppAccessRegistration'
       responses:
         204:
           description: Upon success, an empty response body shall be returned
@@ -578,12 +578,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
           description: Unexpected error
-      summary: To store the AMF context data of a UE using 3gpp access in the UDR
+      summary: To store the OCF context data of a UE using 3gpp access in the UDR
       tags:
-      - AMF 3GPP Access Registration (Document)
-  /subscription-data/{ueId}/context-data/amf-non-3gpp-access:
+      - OCF 3GPP Access Registration (Document)
+  /subscription-data/{ueId}/context-data/ocf-non-3gpp-access:
     get:
-      operationId: QueryAmfContextNon3gpp
+      operationId: QueryOcfContextNon3gpp
       parameters:
       - description: UE id
         in: path
@@ -612,7 +612,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AmfNon3GppAccessRegistration'
+                $ref: '#/components/schemas/OcfNon3GppAccessRegistration'
           description: Expected response to a valid request
         default:
           content:
@@ -620,11 +620,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
           description: Unexpected error
-      summary: Retrieves the AMF context data of a UE using non-3gpp access
+      summary: Retrieves the OCF context data of a UE using non-3gpp access
       tags:
-      - AMF Non-3GPP Access Registration (Document)
+      - OCF Non-3GPP Access Registration (Document)
     patch:
-      operationId: AmfContextNon3gpp
+      operationId: OcfContextNon3gpp
       parameters:
       - description: UE id
         in: path
@@ -655,11 +655,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
           description: Unexpected error
-      summary: To modify the AMF context data of a UE using non 3gpp access in the UDR
+      summary: To modify the OCF context data of a UE using non 3gpp access in the UDR
       tags:
-      - AMF Non-3GPP Access Registration (Document)
+      - OCF Non-3GPP Access Registration (Document)
     put:
-      operationId: CreateAmfContextNon3gpp
+      operationId: CreateOcfContextNon3gpp
       parameters:
       - description: UE id
         in: path
@@ -671,7 +671,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AmfNon3GppAccessRegistration'
+              $ref: '#/components/schemas/OcfNon3GppAccessRegistration'
       responses:
         204:
           description: Upon success, an empty response body shall be returned
@@ -681,9 +681,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
           description: Unexpected error
-      summary: To store the AMF context data of a UE using non-3gpp access in the UDR
+      summary: To store the OCF context data of a UE using non-3gpp access in the UDR
       tags:
-      - AMF Non-3GPP Access Registration (Document)
+      - OCF Non-3GPP Access Registration (Document)
   /subscription-data/{ueId}/context-data/smf-registrations:
     get:
       operationId: QuerySmfRegList
@@ -895,7 +895,7 @@ paths:
       tags:
       - Operator-Specific Data Container (Document)
     patch:
-      operationId: AmfContext3gpp
+      operationId: OcfContext3gpp
       parameters:
       - description: UE id
         in: path
@@ -1444,9 +1444,9 @@ paths:
       summary: Stores an individual ee subscriptions of a UE
       tags:
       - Event Exposure Subscription (Document)
-  /subscription-data/{ueId}/context-data/ee-subscriptions/{subsId}/amf-subscriptions:
+  /subscription-data/{ueId}/context-data/ee-subscriptions/{subsId}/ocf-subscriptions:
     delete:
-      operationId: RemoveAmfSubscriptionsInfo
+      operationId: RemoveOcfSubscriptionsInfo
       parameters:
       - in: path
         name: ueId
@@ -1461,11 +1461,11 @@ paths:
       responses:
         204:
           description: Expected response to a successful subscription removal
-      summary: Deletes AMF Subscription Info for an eeSubscription
+      summary: Deletes OCF Subscription Info for an eeSubscription
       tags:
-      - Event AMF Subscription Info (Document)
+      - Event OCF Subscription Info (Document)
     get:
-      operationId: GetAmfSubscriptionInfo
+      operationId: GetOcfSubscriptionInfo
       parameters:
       - in: path
         name: ueId
@@ -1483,7 +1483,7 @@ paths:
             application/json:
               schema:
                 items:
-                  $ref: '#/components/schemas/AmfSubscriptionInfo'
+                  $ref: '#/components/schemas/OcfSubscriptionInfo'
                 minItems: 1
                 type: array
           description: OK
@@ -1493,11 +1493,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
           description: Unexpected error
-      summary: Retrieve AMF subscription Info
+      summary: Retrieve OCF subscription Info
       tags:
-      - Query AMF Subscription Info (Document)
+      - Query OCF Subscription Info (Document)
     patch:
-      operationId: ModifyAmfSubscriptionInfo
+      operationId: ModifyOcfSubscriptionInfo
       parameters:
       - in: path
         name: ueId
@@ -1532,11 +1532,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
           description: Unexpected error
-      summary: modify the AMF Subscription Info
+      summary: modify the OCF Subscription Info
       tags:
-      - AmfSubscriptionInfo (Document)
+      - OcfSubscriptionInfo (Document)
     put:
-      operationId: Create AMF Subscriptions
+      operationId: Create OCF Subscriptions
       parameters:
       - in: path
         name: ueId
@@ -1553,7 +1553,7 @@ paths:
           application/json:
             schema:
               items:
-                $ref: '#/components/schemas/AmfSubscriptionInfo'
+                $ref: '#/components/schemas/OcfSubscriptionInfo'
               minItems: 1
               type: array
         required: true
@@ -1566,9 +1566,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
           description: Unexpected error
-      summary: Create AmfSubscriptions for an individual ee subscriptions of a UE
+      summary: Create OcfSubscriptions for an individual ee subscriptions of a UE
       tags:
-      - AMF Subscription Info (Document)
+      - OCF Subscription Info (Document)
   /subscription-data/group-data/{ueGroupId}/ee-subscriptions:
     get:
       operationId: QueryEeGroupSubscriptions
@@ -6937,7 +6937,7 @@ components:
       type: object
     Dnn:
       type: string
-    Amf3GppAccessRegistration:
+    Ocf3GppAccessRegistration:
       example:
         deregCallbackUri: deregCallbackUri
         supportedFeatures: supportedFeatures
@@ -6946,35 +6946,35 @@ components:
           plmnId:
             mnc: mnc
             mcc: mcc
-          amfId: amfId
+          ocfId: ocfId
         pei: pei
         drFlag: true
-        amfInstanceId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        ocfInstanceId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         pcscfRestorationCallbackUri: pcscfRestorationCallbackUri
         initialRegistrationInd: true
-        backupAmfInfo:
-        - backupAmf: backupAmf
+        backupOcfInfo:
+        - backupOcf: backupOcf
           guamiList:
           - plmnId:
               mnc: mnc
               mcc: mcc
-            amfId: amfId
+            ocfId: ocfId
           - plmnId:
               mnc: mnc
               mcc: mcc
-            amfId: amfId
-        - backupAmf: backupAmf
+            ocfId: ocfId
+        - backupOcf: backupOcf
           guamiList:
           - plmnId:
               mnc: mnc
               mcc: mcc
-            amfId: amfId
+            ocfId: ocfId
           - plmnId:
               mnc: mnc
               mcc: mcc
-            amfId: amfId
+            ocfId: ocfId
       properties:
-        amfInstanceId:
+        ocfInstanceId:
           format: uuid
           type: string
         supportedFeatures:
@@ -6990,20 +6990,20 @@ components:
         deregCallbackUri:
           description: string providing an URI formatted according to IETF RFC 3986.
           type: string
-        amfServiceNameDereg:
+        ocfServiceNameDereg:
           $ref: '#/components/schemas/ServiceName'
         pcscfRestorationCallbackUri:
           description: string providing an URI formatted according to IETF RFC 3986.
           type: string
-        amfServiceNamePcscfRest:
+        ocfServiceNamePcscfRest:
           $ref: '#/components/schemas/ServiceName'
         initialRegistrationInd:
           type: boolean
         guami:
           $ref: '#/components/schemas/Guami'
-        backupAmfInfo:
+        backupOcfInfo:
           items:
-            $ref: '#/components/schemas/BackupAmfInfo'
+            $ref: '#/components/schemas/BackupOcfInfo'
           minItems: 1
           type: array
         drFlag:
@@ -7011,7 +7011,7 @@ components:
         ratType:
           $ref: '#/components/schemas/RatType'
       required:
-      - amfInstanceId
+      - ocfInstanceId
       - deregCallbackUri
       - guami
       - ratType
@@ -7026,42 +7026,42 @@ components:
       type: string
     DualRegistrationFlag:
       type: boolean
-    AmfNon3GppAccessRegistration:
+    OcfNon3GppAccessRegistration:
       example:
         deregCallbackUri: deregCallbackUri
         supportedFeatures: supportedFeatures
         purgeFlag: true
         pei: pei
-        amfInstanceId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        ocfInstanceId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         pcscfRestorationCallbackUri: pcscfRestorationCallbackUri
         guami:
           plmnId:
             mnc: mnc
             mcc: mcc
-          amfId: amfId
-        backupAmfInfo:
-        - backupAmf: backupAmf
+          ocfId: ocfId
+        backupOcfInfo:
+        - backupOcf: backupOcf
           guamiList:
           - plmnId:
               mnc: mnc
               mcc: mcc
-            amfId: amfId
+            ocfId: ocfId
           - plmnId:
               mnc: mnc
               mcc: mcc
-            amfId: amfId
-        - backupAmf: backupAmf
+            ocfId: ocfId
+        - backupOcf: backupOcf
           guamiList:
           - plmnId:
               mnc: mnc
               mcc: mcc
-            amfId: amfId
+            ocfId: ocfId
           - plmnId:
               mnc: mnc
               mcc: mcc
-            amfId: amfId
+            ocfId: ocfId
       properties:
-        amfInstanceId:
+        ocfInstanceId:
           format: uuid
           type: string
         supportedFeatures:
@@ -7077,24 +7077,24 @@ components:
         deregCallbackUri:
           description: string providing an URI formatted according to IETF RFC 3986.
           type: string
-        amfServiceNameDereg:
+        ocfServiceNameDereg:
           $ref: '#/components/schemas/ServiceName'
         pcscfRestorationCallbackUri:
           description: string providing an URI formatted according to IETF RFC 3986.
           type: string
-        amfServiceNamePcscfRest:
+        ocfServiceNamePcscfRest:
           $ref: '#/components/schemas/ServiceName'
         guami:
           $ref: '#/components/schemas/Guami'
-        backupAmfInfo:
+        backupOcfInfo:
           items:
-            $ref: '#/components/schemas/BackupAmfInfo'
+            $ref: '#/components/schemas/BackupOcfInfo'
           minItems: 1
           type: array
         ratType:
           $ref: '#/components/schemas/RatType'
       required:
-      - amfInstanceId
+      - ocfInstanceId
       - deregCallbackUri
       - guami
       - imsVoPs
@@ -7407,13 +7407,13 @@ components:
     MaxNumOfReports:
       format: int32
       type: integer
-    AmfSubscriptionInfo:
+    OcfSubscriptionInfo:
       example:
-        amfInstanceId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        ocfInstanceId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         subscriptionId: subscriptionId
         subsChangeNotifyCorrelationId: subsChangeNotifyCorrelationId
       properties:
-        amfInstanceId:
+        ocfInstanceId:
           format: uuid
           type: string
         subscriptionId:
@@ -7422,7 +7422,7 @@ components:
         subsChangeNotifyCorrelationId:
           type: string
       required:
-      - amfInstanceId
+      - ocfInstanceId
       - subscriptionId
       type: object
     VarUeGroupId:
@@ -7468,7 +7468,7 @@ components:
         callbackReference:
           description: string providing an URI formatted according to IETF RFC 3986.
           type: string
-        amfServiceName:
+        ocfServiceName:
           $ref: '#/components/schemas/ServiceName'
         monitoredResourceUris:
           items:
@@ -10162,10 +10162,10 @@ components:
       - nudm-ueau
       - nudm-ee
       - nudm-pp
-      - namf-comm
-      - namf-evts
-      - namf-mt
-      - namf-loc
+      - nocf-comm
+      - nocf-evts
+      - nocf-mt
+      - nocf-loc
       - nsmf-pdusession
       - nsmf-event-exposure
       - nausf-auth
@@ -10194,15 +10194,15 @@ components:
         plmnId:
           mnc: mnc
           mcc: mcc
-        amfId: amfId
+        ocfId: ocfId
       properties:
         plmnId:
           $ref: '#/components/schemas/PlmnId'
-        amfId:
+        ocfId:
           pattern: ^[A-Fa-f0-9]{6}$
           type: string
       required:
-      - amfId
+      - ocfId
       - plmnId
       type: object
     PlmnId:
@@ -10226,23 +10226,23 @@ components:
     Mnc:
       pattern: ^\d{2,3}$
       type: string
-    AmfId:
+    OcfId:
       pattern: ^[A-Fa-f0-9]{6}$
       type: string
-    BackupAmfInfo:
+    BackupOcfInfo:
       example:
-        backupAmf: backupAmf
+        backupOcf: backupOcf
         guamiList:
         - plmnId:
             mnc: mnc
             mcc: mcc
-          amfId: amfId
+          ocfId: ocfId
         - plmnId:
             mnc: mnc
             mcc: mcc
-          amfId: amfId
+          ocfId: ocfId
       properties:
-        backupAmf:
+        backupOcf:
           type: string
         guamiList:
           items:
@@ -10250,9 +10250,9 @@ components:
           minItems: 1
           type: array
       required:
-      - backupAmf
+      - backupOcf
       type: object
-    AmfName:
+    OcfName:
       type: string
     PduSessionId:
       format: int32

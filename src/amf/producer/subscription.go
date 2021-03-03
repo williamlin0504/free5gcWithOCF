@@ -3,19 +3,19 @@ package producer
 import (
 	"free5gc/lib/http_wrapper"
 	"free5gc/lib/openapi/models"
-	"free5gc/src/amf/context"
-	"free5gc/src/amf/logger"
+	"free5gc/src/ocf/context"
+	"free5gc/src/ocf/logger"
 	"net/http"
 	"reflect"
 )
 
 // TS 29.518 5.2.2.5.1
-func HandleAMFStatusChangeSubscribeRequest(request *http_wrapper.Request) *http_wrapper.Response {
-	logger.CommLog.Info("Handle AMF Status Change Subscribe Request")
+func HandleOCFStatusChangeSubscribeRequest(request *http_wrapper.Request) *http_wrapper.Response {
+	logger.CommLog.Info("Handle OCF Status Change Subscribe Request")
 
 	subscriptionDataReq := request.Body.(models.SubscriptionData)
 
-	subscriptionDataRsp, locationHeader, problemDetails := AMFStatusChangeSubscribeProcedure(subscriptionDataReq)
+	subscriptionDataRsp, locationHeader, problemDetails := OCFStatusChangeSubscribeProcedure(subscriptionDataReq)
 	if problemDetails != nil {
 		return http_wrapper.NewResponse(int(problemDetails.Status), nil, problemDetails)
 	}
@@ -26,23 +26,23 @@ func HandleAMFStatusChangeSubscribeRequest(request *http_wrapper.Request) *http_
 	return http_wrapper.NewResponse(http.StatusCreated, headers, subscriptionDataRsp)
 }
 
-func AMFStatusChangeSubscribeProcedure(subscriptionDataReq models.SubscriptionData) (
+func OCFStatusChangeSubscribeProcedure(subscriptionDataReq models.SubscriptionData) (
 	subscriptionDataRsp models.SubscriptionData, locationHeader string, problemDetails *models.ProblemDetails) {
-	amfSelf := context.AMF_Self()
+	ocfSelf := context.OCF_Self()
 
 	for _, guami := range subscriptionDataReq.GuamiList {
-		for _, servedGumi := range amfSelf.ServedGuamiList {
+		for _, servedGumi := range ocfSelf.ServedGuamiList {
 			if reflect.DeepEqual(guami, servedGumi) {
-				//AMF status is available
+				//OCF status is available
 				subscriptionDataRsp.GuamiList = append(subscriptionDataRsp.GuamiList, guami)
 			}
 		}
 	}
 
 	if subscriptionDataRsp.GuamiList != nil {
-		newSubscriptionID := amfSelf.NewAMFStatusSubscription(subscriptionDataReq)
-		locationHeader = subscriptionDataReq.AmfStatusUri + "/" + newSubscriptionID
-		logger.CommLog.Infof("new AMF Status Subscription[%s]", newSubscriptionID)
+		newSubscriptionID := ocfSelf.NewOCFStatusSubscription(subscriptionDataReq)
+		locationHeader = subscriptionDataReq.OcfStatusUri + "/" + newSubscriptionID
+		logger.CommLog.Infof("new OCF Status Subscription[%s]", newSubscriptionID)
 		return
 	} else {
 		problemDetails = &models.ProblemDetails{
@@ -54,12 +54,12 @@ func AMFStatusChangeSubscribeProcedure(subscriptionDataReq models.SubscriptionDa
 }
 
 // TS 29.518 5.2.2.5.2
-func HandleAMFStatusChangeUnSubscribeRequest(request *http_wrapper.Request) *http_wrapper.Response {
-	logger.CommLog.Info("Handle AMF Status Change UnSubscribe Request")
+func HandleOCFStatusChangeUnSubscribeRequest(request *http_wrapper.Request) *http_wrapper.Response {
+	logger.CommLog.Info("Handle OCF Status Change UnSubscribe Request")
 
 	subscriptionID := request.Params["subscriptionId"]
 
-	problemDetails := AMFStatusChangeUnSubscribeProcedure(subscriptionID)
+	problemDetails := OCFStatusChangeUnSubscribeProcedure(subscriptionID)
 	if problemDetails != nil {
 		return http_wrapper.NewResponse(int(problemDetails.Status), nil, problemDetails)
 	} else {
@@ -67,29 +67,29 @@ func HandleAMFStatusChangeUnSubscribeRequest(request *http_wrapper.Request) *htt
 	}
 }
 
-func AMFStatusChangeUnSubscribeProcedure(subscriptionID string) (problemDetails *models.ProblemDetails) {
-	amfSelf := context.AMF_Self()
+func OCFStatusChangeUnSubscribeProcedure(subscriptionID string) (problemDetails *models.ProblemDetails) {
+	ocfSelf := context.OCF_Self()
 
-	if _, ok := amfSelf.FindAMFStatusSubscription(subscriptionID); !ok {
+	if _, ok := ocfSelf.FindOCFStatusSubscription(subscriptionID); !ok {
 		problemDetails = &models.ProblemDetails{
 			Status: http.StatusNotFound,
 			Cause:  "SUBSCRIPTION_NOT_FOUND",
 		}
 	} else {
-		logger.CommLog.Debugf("Delete AMF status subscription[%s]", subscriptionID)
-		amfSelf.DeleteAMFStatusSubscription(subscriptionID)
+		logger.CommLog.Debugf("Delete OCF status subscription[%s]", subscriptionID)
+		ocfSelf.DeleteOCFStatusSubscription(subscriptionID)
 	}
 	return
 }
 
 // TS 29.518 5.2.2.5.1.3
-func HandleAMFStatusChangeSubscribeModify(request *http_wrapper.Request) *http_wrapper.Response {
-	logger.CommLog.Info("Handle AMF Status Change Subscribe Modify Request")
+func HandleOCFStatusChangeSubscribeModify(request *http_wrapper.Request) *http_wrapper.Response {
+	logger.CommLog.Info("Handle OCF Status Change Subscribe Modify Request")
 
 	updateSubscriptionData := request.Body.(models.SubscriptionData)
 	subscriptionID := request.Params["subscriptionId"]
 
-	updatedSubscriptionData, problemDetails := AMFStatusChangeSubscribeModifyProcedure(subscriptionID,
+	updatedSubscriptionData, problemDetails := OCFStatusChangeSubscribeModifyProcedure(subscriptionID,
 		updateSubscriptionData)
 	if problemDetails != nil {
 		return http_wrapper.NewResponse(int(problemDetails.Status), nil, problemDetails)
@@ -98,25 +98,25 @@ func HandleAMFStatusChangeSubscribeModify(request *http_wrapper.Request) *http_w
 	}
 }
 
-func AMFStatusChangeSubscribeModifyProcedure(subscriptionID string, subscriptionData models.SubscriptionData) (
+func OCFStatusChangeSubscribeModifyProcedure(subscriptionID string, subscriptionData models.SubscriptionData) (
 	*models.SubscriptionData, *models.ProblemDetails) {
-	amfSelf := context.AMF_Self()
+	ocfSelf := context.OCF_Self()
 
-	if currentSubscriptionData, ok := amfSelf.FindAMFStatusSubscription(subscriptionID); !ok {
+	if currentSubscriptionData, ok := ocfSelf.FindOCFStatusSubscription(subscriptionID); !ok {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusForbidden,
 			Cause:  "Forbidden",
 		}
 		return nil, problemDetails
 	} else {
-		logger.CommLog.Debugf("Modify AMF status subscription[%s]", subscriptionID)
+		logger.CommLog.Debugf("Modify OCF status subscription[%s]", subscriptionID)
 
 		currentSubscriptionData.GuamiList = currentSubscriptionData.GuamiList[:0]
 
 		currentSubscriptionData.GuamiList = append(currentSubscriptionData.GuamiList, subscriptionData.GuamiList...)
-		currentSubscriptionData.AmfStatusUri = subscriptionData.AmfStatusUri
+		currentSubscriptionData.OcfStatusUri = subscriptionData.OcfStatusUri
 
-		amfSelf.AMFStatusSubscriptions.Store(subscriptionID, currentSubscriptionData)
+		ocfSelf.OCFStatusSubscriptions.Store(subscriptionID, currentSubscriptionData)
 		return currentSubscriptionData, nil
 	}
 }

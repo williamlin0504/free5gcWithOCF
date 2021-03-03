@@ -15,12 +15,13 @@ import (
 	"free5gc/lib/openapi/models"
 	"free5gc/src/udr/logger"
 	"free5gc/src/udr/producer"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
-// HTTPAmfContext3gpp - To modify the AMF context data of a UE using 3gpp access in the UDR
-func HTTPAmfContext3gpp(c *gin.Context) {
+// HTTPOcfContext3gpp - To modify the OCF context data of a UE using 3gpp access in the UDR
+func HTTPOcfContext3gpp(c *gin.Context) {
 	var patchItemArray []models.PatchItem
 
 	requestBody, err := c.GetRawData()
@@ -52,7 +53,7 @@ func HTTPAmfContext3gpp(c *gin.Context) {
 	req := http_wrapper.NewRequest(c.Request, patchItemArray)
 	req.Params["ueId"] = c.Params.ByName("ueId")
 
-	rsp := producer.HandleAmfContext3gpp(req)
+	rsp := producer.HandleOcfContext3gpp(req)
 
 	responseBody, err := openapi.Serialize(rsp.Body, "application/json")
 	if err != nil {
@@ -68,9 +69,9 @@ func HTTPAmfContext3gpp(c *gin.Context) {
 	}
 }
 
-// HTTPCreateAmfContext3gpp - To store the AMF context data of a UE using 3gpp access in the UDR
-func HTTPCreateAmfContext3gpp(c *gin.Context) {
-	var amf3GppAccessRegistration models.Amf3GppAccessRegistration
+// HTTPCreateOcfContext3gpp - To store the OCF context data of a UE using 3gpp access in the UDR
+func HTTPCreateOcfContext3gpp(c *gin.Context) {
+	var ocf3GppAccessRegistration models.Ocf3GppAccessRegistration
 
 	requestBody, err := c.GetRawData()
 	if err != nil {
@@ -85,7 +86,7 @@ func HTTPCreateAmfContext3gpp(c *gin.Context) {
 		return
 	}
 
-	err = openapi.Deserialize(&amf3GppAccessRegistration, requestBody, "application/json")
+	err = openapi.Deserialize(&ocf3GppAccessRegistration, requestBody, "application/json")
 	if err != nil {
 		problemDetail := "[Request Body] " + err.Error()
 		rsp := models.ProblemDetails{
@@ -98,10 +99,10 @@ func HTTPCreateAmfContext3gpp(c *gin.Context) {
 		return
 	}
 
-	req := http_wrapper.NewRequest(c.Request, amf3GppAccessRegistration)
+	req := http_wrapper.NewRequest(c.Request, ocf3GppAccessRegistration)
 	req.Params["ueId"] = c.Params.ByName("ueId")
 
-	rsp := producer.HandleCreateAmfContext3gpp(req)
+	rsp := producer.HandleCreateOcfContext3gpp(req)
 
 	responseBody, err := openapi.Serialize(rsp.Body, "application/json")
 	if err != nil {
@@ -117,12 +118,12 @@ func HTTPCreateAmfContext3gpp(c *gin.Context) {
 	}
 }
 
-// HTTPQueryAmfContext3gpp - Retrieves the AMF context data of a UE using 3gpp access
-func HTTPQueryAmfContext3gpp(c *gin.Context) {
+// HTTPQueryOcfContext3gpp - Retrieves the OCF context data of a UE using 3gpp access
+func HTTPQueryOcfContext3gpp(c *gin.Context) {
 	req := http_wrapper.NewRequest(c.Request, nil)
 	req.Params["ueId"] = c.Params.ByName("ueId")
 
-	rsp := producer.HandleQueryAmfContext3gpp(req)
+	rsp := producer.HandleQueryOcfContext3gpp(req)
 
 	responseBody, err := openapi.Serialize(rsp.Body, "application/json")
 	if err != nil {

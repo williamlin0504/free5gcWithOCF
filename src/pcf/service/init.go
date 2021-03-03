@@ -141,19 +141,19 @@ func (pcf *PCF) Start() {
 		initLog.Errorf("PCF register to NRF Error[%s]", err.Error())
 	}
 
-	// subscribe to all Amfs' status change
-	amfInfos := consumer.SearchAvailableAMFs(self.NrfUri, models.ServiceName_NAMF_COMM)
-	for _, amfInfo := range amfInfos {
-		guamiList := util.GetNotSubscribedGuamis(amfInfo.GuamiList)
+	// subscribe to all Ocfs' status change
+	ocfInfos := consumer.SearchAvailableOCFs(self.NrfUri, models.ServiceName_NOCF_COMM)
+	for _, ocfInfo := range ocfInfos {
+		guamiList := util.GetNotSubscribedGuamis(ocfInfo.GuamiList)
 		if len(guamiList) == 0 {
 			continue
 		}
 		var problemDetails *models.ProblemDetails
-		problemDetails, err = consumer.AmfStatusChangeSubscribe(amfInfo)
+		problemDetails, err = consumer.OcfStatusChangeSubscribe(ocfInfo)
 		if problemDetails != nil {
-			logger.InitLog.Warnf("AMF status subscribe Failed[%+v]", problemDetails)
+			logger.InitLog.Warnf("OCF status subscribe Failed[%+v]", problemDetails)
 		} else if err != nil {
-			logger.InitLog.Warnf("AMF status subscribe Error[%+v]", err)
+			logger.InitLog.Warnf("OCF status subscribe Error[%+v]", err)
 		}
 	}
 

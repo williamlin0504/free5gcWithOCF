@@ -10,17 +10,17 @@ import (
 
 const ngapPPID uint32 = 0x3c000000
 
-func getNgapIp(amfIP, ranIP string, amfPort, ranPort int) (amfAddr, ranAddr *sctp.SCTPAddr, err error) {
+func getNgapIp(ocfIP, ranIP string, ocfPort, ranPort int) (ocfAddr, ranAddr *sctp.SCTPAddr, err error) {
 	ips := []net.IPAddr{}
-	if ip, err1 := net.ResolveIPAddr("ip", amfIP); err1 != nil {
-		err = fmt.Errorf("Error resolving address '%s': %v", amfIP, err1)
+	if ip, err1 := net.ResolveIPAddr("ip", ocfIP); err1 != nil {
+		err = fmt.Errorf("Error resolving address '%s': %v", ocfIP, err1)
 		return nil, nil, err
 	} else {
 		ips = append(ips, *ip)
 	}
-	amfAddr = &sctp.SCTPAddr{
+	ocfAddr = &sctp.SCTPAddr{
 		IPAddrs: ips,
-		Port:    amfPort,
+		Port:    ocfPort,
 	}
 	ips = []net.IPAddr{}
 	if ip, err1 := net.ResolveIPAddr("ip", ranIP); err1 != nil {
@@ -33,21 +33,21 @@ func getNgapIp(amfIP, ranIP string, amfPort, ranPort int) (amfAddr, ranAddr *sct
 		IPAddrs: ips,
 		Port:    ranPort,
 	}
-	return amfAddr, ranAddr, nil
+	return ocfAddr, ranAddr, nil
 }
 
-func ConnectToAmf(amfIP, ranIP string, amfPort, ranPort int) (*sctp.SCTPConn, error) {
-	amfAddr, ranAddr, err := getNgapIp(amfIP, ranIP, amfPort, ranPort)
+func ConnectToOcf(ocfIP, ranIP string, ocfPort, ranPort int) (*sctp.SCTPConn, error) {
+	ocfAddr, ranAddr, err := getNgapIp(ocfIP, ranIP, ocfPort, ranPort)
 	if err != nil {
 		return nil, err
 	}
-	conn, err := sctp.DialSCTP("sctp", ranAddr, amfAddr)
+	conn, err := sctp.DialSCTP("sctp", ranAddr, ocfAddr)
 	if err != nil {
 		return nil, err
 	}
 	info, err := conn.GetDefaultSentParam()
 	if err != nil {
-		fatal.Fatalf("conn GetDefaultSentParam error in ConnectToAmf: %+v", err)
+		fatal.Fatalf("conn GetDefaultSentParam error in ConnectToOcf: %+v", err)
 	}
 	info.PPID = ngapPPID
 	err = conn.SetDefaultSentParam(info)

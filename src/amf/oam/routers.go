@@ -2,7 +2,7 @@ package oam
 
 import (
 	"free5gc/lib/logger_util"
-	"free5gc/src/amf/logger"
+	"free5gc/src/ocf/logger"
 	"net/http"
 
 	"github.com/gin-contrib/cors"
@@ -43,7 +43,7 @@ func NewRouter() *gin.Engine {
 }
 
 func AddService(engine *gin.Engine) *gin.RouterGroup {
-	group := engine.Group("/namf-oam/v1")
+	group := engine.Group("/nocf-oam/v1")
 
 	for _, route := range routes {
 		switch route.Method {

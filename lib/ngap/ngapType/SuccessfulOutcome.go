@@ -10,7 +10,7 @@ type SuccessfulOutcome struct {
 
 const (
 	SuccessfulOutcomePresentNothing int = iota /* No components present */
-	SuccessfulOutcomePresentAMFConfigurationUpdateAcknowledge
+	SuccessfulOutcomePresentOCFConfigurationUpdateAcknowledge
 	SuccessfulOutcomePresentHandoverCancelAcknowledge
 	SuccessfulOutcomePresentHandoverCommand
 	SuccessfulOutcomePresentHandoverRequestAcknowledge
@@ -32,7 +32,7 @@ const (
 
 type SuccessfulOutcomeValue struct {
 	Present                           int
-	AMFConfigurationUpdateAcknowledge *AMFConfigurationUpdateAcknowledge `aper:"valueExt,referenceFieldValue:0"`
+	OCFConfigurationUpdateAcknowledge *OCFConfigurationUpdateAcknowledge `aper:"valueExt,referenceFieldValue:0"`
 	HandoverCancelAcknowledge         *HandoverCancelAcknowledge         `aper:"valueExt,referenceFieldValue:10"`
 	HandoverCommand                   *HandoverCommand                   `aper:"valueExt,referenceFieldValue:12"`
 	HandoverRequestAcknowledge        *HandoverRequestAcknowledge        `aper:"valueExt,referenceFieldValue:13"`

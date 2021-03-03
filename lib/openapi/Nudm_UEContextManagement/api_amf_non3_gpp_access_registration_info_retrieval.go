@@ -28,33 +28,33 @@ var (
 	_ context.Context
 )
 
-type AMFNon3GPPAccessRegistrationInfoRetrievalApiService service
+type OCFNon3GPPAccessRegistrationInfoRetrievalApiService service
 
 /*
-AMFNon3GPPAccessRegistrationInfoRetrievalApiService retrieve the AMF registration for non-3GPP access information
+OCFNon3GPPAccessRegistrationInfoRetrievalApiService retrieve the OCF registration for non-3GPP access information
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param ueId Identifier of the UE
- * @param optional nil or *GetAmfNon3gppAccessParamOpts - Optional Parameters:
+ * @param optional nil or *GetOcfNon3gppAccessParamOpts - Optional Parameters:
  * @param "SupportedFeatures" (optional.String) -
-@return models.AmfNon3GppAccessRegistration
+@return models.OcfNon3GppAccessRegistration
 */
 
-type GetAmfNon3gppAccessParamOpts struct {
+type GetOcfNon3gppAccessParamOpts struct {
 	SupportedFeatures optional.String
 }
 
-func (a *AMFNon3GPPAccessRegistrationInfoRetrievalApiService) GetAmfNon3gppAccess(ctx context.Context, ueId string, localVarOptionals *GetAmfNon3gppAccessParamOpts) (models.AmfNon3GppAccessRegistration, *http.Response, error) {
+func (a *OCFNon3GPPAccessRegistrationInfoRetrievalApiService) GetOcfNon3gppAccess(ctx context.Context, ueId string, localVarOptionals *GetOcfNon3gppAccessParamOpts) (models.OcfNon3GppAccessRegistration, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = strings.ToUpper("Get")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  models.AmfNon3GppAccessRegistration
+		localVarReturnValue  models.OcfNon3GppAccessRegistration
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath() + "/{ueId}/registrations/amf-non-3gpp-access"
+	localVarPath := a.client.cfg.BasePath() + "/{ueId}/registrations/ocf-non-3gpp-access"
 	localVarPath = strings.Replace(localVarPath, "{"+"ueId"+"}", fmt.Sprintf("%v", ueId), -1)
 
 	localVarHeaderParams := make(map[string]string)

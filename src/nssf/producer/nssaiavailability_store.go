@@ -25,11 +25,11 @@ import (
 // NSSAIAvailability DELETE method
 func NSSAIAvailabilityDeleteProcedure(nfId string) *models.ProblemDetails {
 	var problemDetails *models.ProblemDetails
-	for i, amfConfig := range factory.NssfConfig.Configuration.AmfList {
-		if amfConfig.NfId == nfId {
-			factory.NssfConfig.Configuration.AmfList = append(
-				factory.NssfConfig.Configuration.AmfList[:i],
-				factory.NssfConfig.Configuration.AmfList[i+1:]...)
+	for i, ocfConfig := range factory.NssfConfig.Configuration.OcfList {
+		if ocfConfig.NfId == nfId {
+			factory.NssfConfig.Configuration.OcfList = append(
+				factory.NssfConfig.Configuration.OcfList[:i],
+				factory.NssfConfig.Configuration.OcfList[i+1:]...)
 			return nil
 		}
 	}
@@ -37,7 +37,7 @@ func NSSAIAvailabilityDeleteProcedure(nfId string) *models.ProblemDetails {
 	*problemDetails = models.ProblemDetails{
 		Title:  util.UNSUPPORTED_RESOURCE,
 		Status: http.StatusNotFound,
-		Detail: fmt.Sprintf("AMF ID '%s' does not exist", nfId),
+		Detail: fmt.Sprintf("OCF ID '%s' does not exist", nfId),
 	}
 	return problemDetails
 }
@@ -50,15 +50,15 @@ func NSSAIAvailabilityPatchProcedure(nssaiAvailabilityUpdateInfo plugin.PatchDoc
 		problemDetails *models.ProblemDetails
 	)
 
-	var amfIdx int
+	var ocfIdx int
 	var original []byte
-	hitAmf := false
+	hitOcf := false
 	factory.ConfigLock.RLock()
-	for amfIdx, amfConfig := range factory.NssfConfig.Configuration.AmfList {
-		if amfConfig.NfId == nfId {
+	for ocfIdx, ocfConfig := range factory.NssfConfig.Configuration.OcfList {
+		if ocfConfig.NfId == nfId {
 			// Since json-patch package does not have idea of optional field of datatype,
 			// provide with null or empty value instead of omitting the field
-			temp := factory.NssfConfig.Configuration.AmfList[amfIdx].SupportedNssaiAvailabilityData
+			temp := factory.NssfConfig.Configuration.OcfList[ocfIdx].SupportedNssaiAvailabilityData
 			const dummyString string = "DUMMY"
 			for i := range temp {
 				for j := range temp[i].SupportedSnssaiList {
@@ -74,18 +74,18 @@ func NSSAIAvailabilityPatchProcedure(nssaiAvailabilityUpdateInfo plugin.PatchDoc
 			}
 			original = bytes.ReplaceAll(original, []byte(dummyString), []byte(""))
 
-			// original, _ = json.Marshal(factory.NssfConfig.Configuration.AmfList[amfIdx].SupportedNssaiAvailabilityData)
+			// original, _ = json.Marshal(factory.NssfConfig.Configuration.OcfList[ocfIdx].SupportedNssaiAvailabilityData)
 
-			hitAmf = true
+			hitOcf = true
 			break
 		}
 	}
 	factory.ConfigLock.RUnlock()
-	if !hitAmf {
+	if !hitOcf {
 		*problemDetails = models.ProblemDetails{
 			Title:  util.UNSUPPORTED_RESOURCE,
 			Status: http.StatusNotFound,
-			Detail: fmt.Sprintf("AMF ID '%s' does not exist", nfId),
+			Detail: fmt.Sprintf("OCF ID '%s' does not exist", nfId),
 		}
 		return nil, problemDetails
 	}
@@ -128,7 +128,7 @@ func NSSAIAvailabilityPatchProcedure(nssaiAvailabilityUpdateInfo plugin.PatchDoc
 	}
 
 	factory.ConfigLock.Lock()
-	err = json.Unmarshal(modified, &factory.NssfConfig.Configuration.AmfList[amfIdx].SupportedNssaiAvailabilityData)
+	err = json.Unmarshal(modified, &factory.NssfConfig.Configuration.OcfList[ocfIdx].SupportedNssaiAvailabilityData)
 	factory.ConfigLock.Unlock()
 	if err != nil {
 		*problemDetails = models.ProblemDetails{
@@ -140,9 +140,9 @@ func NSSAIAvailabilityPatchProcedure(nssaiAvailabilityUpdateInfo plugin.PatchDoc
 	}
 
 	// Return all authorized NSSAI availability information
-	response.AuthorizedNssaiAvailabilityData, err = util.AuthorizeOfAmfFromConfig(nfId)
+	response.AuthorizedNssaiAvailabilityData, err = util.AuthorizeOfOcfFromConfig(nfId)
 	if err != nil {
-		logger.Nssaiavailability.Errorf("util AuthorizeOfAmfFromConfig error in NSSAIAvailabilityPatchProcedure: %+v", err)
+		logger.Nssaiavailability.Errorf("util AuthorizeOfOcfFromConfig error in NSSAIAvailabilityPatchProcedure: %+v", err)
 	}
 
 	// TODO: Return authorized NSSAI availability information of updated TAI only
@@ -173,37 +173,37 @@ func NSSAIAvailabilityPutProcedure(nssaiAvailabilityInfo models.NssaiAvailabilit
 	// TODO: Currently authorize all the provided S-NSSAIs
 	//       Take some issue into consideration e.g. operator policies
 
-	hitAmf := false
-	// Find AMF configuration of given NfId
+	hitOcf := false
+	// Find OCF configuration of given NfId
 	// If found, then update the SupportedNssaiAvailabilityData
 	factory.ConfigLock.Lock()
-	for i, amfConfig := range factory.NssfConfig.Configuration.AmfList {
-		if amfConfig.NfId == nfId {
-			factory.NssfConfig.Configuration.AmfList[i].SupportedNssaiAvailabilityData =
+	for i, ocfConfig := range factory.NssfConfig.Configuration.OcfList {
+		if ocfConfig.NfId == nfId {
+			factory.NssfConfig.Configuration.OcfList[i].SupportedNssaiAvailabilityData =
 				nssaiAvailabilityInfo.SupportedNssaiAvailabilityData
 
-			hitAmf = true
+			hitOcf = true
 			break
 		}
 	}
 	factory.ConfigLock.Unlock()
 
-	// If no AMF record is found, create a new one
-	if !hitAmf {
-		var amfConfig factory.AmfConfig
-		amfConfig.NfId = nfId
-		amfConfig.SupportedNssaiAvailabilityData = nssaiAvailabilityInfo.SupportedNssaiAvailabilityData
+	// If no OCF record is found, create a new one
+	if !hitOcf {
+		var ocfConfig factory.OcfConfig
+		ocfConfig.NfId = nfId
+		ocfConfig.SupportedNssaiAvailabilityData = nssaiAvailabilityInfo.SupportedNssaiAvailabilityData
 		factory.ConfigLock.Lock()
-		factory.NssfConfig.Configuration.AmfList = append(factory.NssfConfig.Configuration.AmfList, amfConfig)
+		factory.NssfConfig.Configuration.OcfList = append(factory.NssfConfig.Configuration.OcfList, ocfConfig)
 		factory.ConfigLock.Unlock()
 	}
 
 	// Return all authorized NSSAI availability information
-	// a.AuthorizedNssaiAvailabilityData, _ = authorizeOfAmfFromConfig(nfId)
+	// a.AuthorizedNssaiAvailabilityData, _ = authorizeOfOcfFromConfig(nfId)
 
 	// Return authorized NSSAI availability information of updated TAI only
 	for _, s := range nssaiAvailabilityInfo.SupportedNssaiAvailabilityData {
-		authorizedNssaiAvailabilityData, err := util.AuthorizeOfAmfTaFromConfig(nfId, *s.Tai)
+		authorizedNssaiAvailabilityData, err := util.AuthorizeOfOcfTaFromConfig(nfId, *s.Tai)
 		if err == nil {
 			response.AuthorizedNssaiAvailabilityData =
 				append(response.AuthorizedNssaiAvailabilityData, authorizedNssaiAvailabilityData)

@@ -64,9 +64,9 @@ var routes = Routes{
 	},
 
 	{
-		"HTTPAmfStatusChangeNotify",
+		"HTTPOcfStatusChangeNotify",
 		strings.ToUpper("Post"),
-		"/amfstatus",
-		HTTPAmfStatusChangeNotify,
+		"/ocfstatus",
+		HTTPOcfStatusChangeNotify,
 	},
 }

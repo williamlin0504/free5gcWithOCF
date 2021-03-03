@@ -122,9 +122,9 @@ components:
           items:
             $ref: '#/components/schemas/ConfiguredSnssai'
           minItems: 1
-        targetAmfSet:
+        targetOcfSet:
           type: string
-        candidateAmfList:
+        candidateOcfList:
           type: array
           items:
             $ref: 'TS29571_CommonData.yaml#/components/schemas/NfInstanceId'
@@ -143,7 +143,7 @@ components:
           $ref: '#/components/schemas/NsiInformation'
         supportedFeatures:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/SupportedFeatures'
-        nrfAmfSet:
+        nrfOcfSet:
           $ref: 'TS29571_CommonData.yaml#/components/schemas/Uri'
       
     SubscribedSnssai:

@@ -13,12 +13,12 @@ import (
  * @k: K = 128-bit subscriber key
  * @_rand: RAND = 128-bit random challenge
  * @sqn: SQN = 48-bit sequence number
- * @amf: AMF = 16-bit authentication management field
+ * @ocf: OCF = 16-bit authentication management field
  * @mac_a: Buffer for MAC-A = 64-bit network authentication code, or %NULL
  * @mac_s: Buffer for MAC-S = 64-bit resync authentication code, or %NULL
  * Returns: 0 on success, -1 on failure
  */
-func milenageF1(opc, k, _rand, sqn, amf, mac_a, mac_s []uint8) error {
+func milenageF1(opc, k, _rand, sqn, ocf, mac_a, mac_s []uint8) error {
 
 	tmp2, tmp3 := make([]uint8, 16), make([]uint8, 16)
 	// var tmp1, tmp2, tmp3 [16]uint8
@@ -41,13 +41,13 @@ func milenageF1(opc, k, _rand, sqn, amf, mac_a, mac_s []uint8) error {
 
 	// fmt.Printf("tmp1: %x\n", tmp1)
 
-	/* tmp2 = IN1 = SQN || AMF || SQN || AMF */
+	/* tmp2 = IN1 = SQN || OCF || SQN || OCF */
 	copy(tmp2[0:], sqn[0:6])
-	copy(tmp2[6:], amf[0:2])
+	copy(tmp2[6:], ocf[0:2])
 	copy(tmp2[8:], tmp2[0:8])
 	/*
 		os_memcpy(tmp2, sqn, 6);
-		os_memcpy(tmp2 + 6, amf, 2);
+		os_memcpy(tmp2 + 6, ocf, 2);
 		os_memcpy(tmp2 + 8, tmp2, 8);
 	*/
 
@@ -244,7 +244,7 @@ func milenageF2345(opc, k, _rand, res, ck, ik, ak, akstar []uint8) error {
 	return nil
 }
 
-func MilenageGenerate(opc, amf, k, sqn, _rand, autn, ik, ck, ak, res []uint8, res_len *uint) {
+func MilenageGenerate(opc, ocf, k, sqn, _rand, autn, ik, ck, ak, res []uint8, res_len *uint) {
 	// var i int
 	mac_a := make([]uint8, 8)
 
@@ -256,7 +256,7 @@ func MilenageGenerate(opc, amf, k, sqn, _rand, autn, ik, ck, ak, res []uint8, re
 		return
 	}
 
-	if milenageF1(opc, k, _rand, sqn, amf, mac_a, nil) != nil ||
+	if milenageF1(opc, k, _rand, sqn, ocf, mac_a, nil) != nil ||
 		milenageF2345(opc, k, _rand, res, ck, ik, ak, nil) != nil {
 		*res_len = 0
 		return
@@ -264,16 +264,16 @@ func MilenageGenerate(opc, amf, k, sqn, _rand, autn, ik, ck, ak, res []uint8, re
 
 	*res_len = 8
 
-	/* AUTN = (SQN ^ AK) || AMF || MAC */
+	/* AUTN = (SQN ^ AK) || OCF || MAC */
 	for i := 0; i < 6; i++ {
 		autn[i] = sqn[i] ^ ak[i]
-		copy(autn[6:], amf[0:2])
+		copy(autn[6:], ocf[0:2])
 		copy(autn[8:], mac_a[0:8])
 	}
 	/*
 		for (i = 0; i < 6; i++)
 		autn[i] = sqn[i] ^ ak[i];
-		os_memcpy(autn + 6, amf, 2);
+		os_memcpy(autn + 6, ocf, 2);
 		os_memcpy(autn + 8, mac_a, 8);
 	*/
 }
@@ -290,11 +290,11 @@ func MilenageGenerate(opc, amf, k, sqn, _rand, autn, ik, ck, ak, res []uint8, re
 //int milenage_auts(const c_uint8_t *opc, const c_uint8_t *k, const c_uint8_t *_rand,
 //    const c_uint8_t *auts, c_uint8_t *sqn)
 func Milenage_auts(opc, k, _rand, auts, sqn []uint8) int {
-	amf := []uint8{0x00, 0x00} // TS 33.102 v7.0.0, 6.3.3
+	ocf := []uint8{0x00, 0x00} // TS 33.102 v7.0.0, 6.3.3
 	ak := make([]uint8, 6)
 	mac_s := make([]uint8, 8)
 	/*
-	   c_uint8_t amf[2] = { 0x00, 0x00 }; // TS 33.102 v7.0.0, 6.3.3
+	   c_uint8_t ocf[2] = { 0x00, 0x00 }; // TS 33.102 v7.0.0, 6.3.3
 	   c_uint8_t ak[6], mac_s[8];
 	   int i;
 	*/
@@ -307,7 +307,7 @@ func Milenage_auts(opc, k, _rand, auts, sqn []uint8) int {
 		sqn[i] = auts[i] ^ ak[i]
 	}
 
-	if milenageF1(opc, k, _rand, sqn, amf, nil, mac_s) != nil || !reflect.DeepEqual(mac_s, auts[6:14]) {
+	if milenageF1(opc, k, _rand, sqn, ocf, nil, mac_s) != nil || !reflect.DeepEqual(mac_s, auts[6:14]) {
 		return -1
 	}
 
@@ -316,7 +316,7 @@ func Milenage_auts(opc, k, _rand, auts, sqn []uint8) int {
 			   return -1;
 		   for (i = 0; i < 6; i++)
 			   sqn[i] = auts[i] ^ ak[i];
-		   if (milenage_f1(opc, k, _rand, sqn, amf, NULL, mac_s) ||
+		   if (milenage_f1(opc, k, _rand, sqn, ocf, NULL, mac_s) ||
 			   os_memcmp_const(mac_s, auts + 6, 8) != 0)
 			   return -1;
 	*/
@@ -386,9 +386,9 @@ func Gsm_milenage(opc, k, _rand, sres, kc []uint8) int {
 func Milenage_check(opc, k, sqn, _rand, autn, ik, ck, res []uint8, res_len *uint, auts []uint8) int {
 
 	mac_a, ak, rx_sqn := make([]uint8, 8), make([]uint8, 6), make([]uint8, 6)
-	var amf []uint8
+	var ocf []uint8
 
-	// fmt.Println(mac_a, amf)
+	// fmt.Println(mac_a, ocf)
 
 	/* TODO
 	d_trace(1, "Milenage: AUTN\n"); d_trace_hex(1, autn, 16);
@@ -411,7 +411,7 @@ func Milenage_check(opc, k, sqn, _rand, autn, ik, ck, res []uint8, res_len *uint
 	d_trace(1, "Milenage: AK\n"); d_trace_hex(1, ak, 6);
 	*/
 
-	/* AUTN = (SQN ^ AK) || AMF || MAC */
+	/* AUTN = (SQN ^ AK) || OCF || MAC */
 	for i := 0; i < 6; i++ {
 		rx_sqn[i] = autn[i] ^ ak[i]
 	}
@@ -423,7 +423,7 @@ func Milenage_check(opc, k, sqn, _rand, autn, ik, ck, res []uint8, res_len *uint
 	//TODO d_trace(1, "Milenage: SQN\n"); d_trace_hex(1, rx_sqn, 6);
 
 	if os_memcmp(rx_sqn, sqn, 6) <= 0 {
-		auts_amf := []uint8{0x00, 0x00} // TS 33.102 v7.0.0, 6.3.3
+		auts_ocf := []uint8{0x00, 0x00} // TS 33.102 v7.0.0, 6.3.3
 
 		if milenageF2345(opc, k, _rand, nil, nil, nil, nil, ak) != nil {
 			return -1
@@ -435,7 +435,7 @@ func Milenage_check(opc, k, sqn, _rand, autn, ik, ck, res []uint8, res_len *uint
 			auts[i] = sqn[i] ^ ak[i]
 		}
 
-		if milenageF1(opc, k, _rand, sqn, auts_amf, nil, auts[6:]) != nil {
+		if milenageF1(opc, k, _rand, sqn, auts_ocf, nil, auts[6:]) != nil {
 			return -1
 		}
 
@@ -445,7 +445,7 @@ func Milenage_check(opc, k, sqn, _rand, autn, ik, ck, res []uint8, res_len *uint
 	}
 	/*
 		if (os_memcmp(rx_sqn, sqn, 6) <= 0) {
-			c_uint8_t auts_amf[2] = { 0x00, 0x00 }; // TS 33.102 v7.0.0, 6.3.3
+			c_uint8_t auts_ocf[2] = { 0x00, 0x00 }; // TS 33.102 v7.0.0, 6.3.3
 			if (milenage_f2345(opc, k, _rand, NULL, NULL, NULL, NULL, ak))
 			return -1;
 			d_trace(1, "Milenage: AK*\n"); d_trace_hex(1, ak, 6);
@@ -454,17 +454,17 @@ func Milenage_check(opc, k, sqn, _rand, autn, ik, ck, res []uint8, res_len *uint
 
 			for (i = 0; i < 6; i++)
 				auts[i] = sqn[i] ^ ak[i];
-			if (milenage_f1(opc, k, _rand, sqn, auts_amf, NULL, auts + 6))
+			if (milenage_f1(opc, k, _rand, sqn, auts_ocf, NULL, auts + 6))
 				return -1;
 			d_trace(1, "Milenage: AUTS*\n"); d_trace_hex(1, auts, 14);
 		return -2;
 		}
 	*/
 
-	amf = autn[6:]
-	//TODO d_trace(1, "Milenage: AMF\n"); d_trace_hex(1, amf, 2);
+	ocf = autn[6:]
+	//TODO d_trace(1, "Milenage: OCF\n"); d_trace_hex(1, ocf, 2);
 
-	if milenageF1(opc, k, _rand, rx_sqn, amf, mac_a, nil) != nil {
+	if milenageF1(opc, k, _rand, rx_sqn, ocf, mac_a, nil) != nil {
 		return -1
 	}
 	//TODO d_trace(1, "Milenage: MAC_A\n"); d_trace_hex(1, mac_a, 8);
@@ -476,9 +476,9 @@ func Milenage_check(opc, k, sqn, _rand, autn, ik, ck, res []uint8, res_len *uint
 		return -1
 	}
 	/*
-		amf = autn + 6;
-		d_trace(1, "Milenage: AMF\n"); d_trace_hex(1, amf, 2);
-		if (milenage_f1(opc, k, _rand, rx_sqn, amf, mac_a, NULL))
+		ocf = autn + 6;
+		d_trace(1, "Milenage: OCF\n"); d_trace_hex(1, ocf, 2);
+		if (milenage_f1(opc, k, _rand, rx_sqn, ocf, mac_a, NULL))
 			return -1;
 
 		d_trace(1, "Milenage: MAC_A\n"); d_trace_hex(1, mac_a, 8);
@@ -508,9 +508,9 @@ func os_memcmp(a, b []uint8, num int) int {
 	return 0
 }
 
-func F1(opc, k, _rand, sqn, amf, mac_a, mac_s []uint8) error {
+func F1(opc, k, _rand, sqn, ocf, mac_a, mac_s []uint8) error {
 
-	error := milenageF1(opc, k, _rand, sqn, amf, mac_a, mac_s)
+	error := milenageF1(opc, k, _rand, sqn, ocf, mac_a, mac_s)
 
 	return error
 }
@@ -540,7 +540,7 @@ func GenerateOPC(k, op []uint8) ([]uint8, error) {
 	return opc, nil
 }
 
-func InsertData(op, k, _rand, sqn, amf []uint8, OP, K, RAND, SQN, AMF string) {
+func InsertData(op, k, _rand, sqn, ocf []uint8, OP, K, RAND, SQN, OCF string) {
 
 	var res uint64
 	var err error
@@ -599,19 +599,19 @@ func InsertData(op, k, _rand, sqn, amf []uint8, OP, K, RAND, SQN, AMF string) {
 	// fmt.Println()
 	fmt.Printf("SQN: %x\n", sqn)
 
-	// load amf
-	// fmt.Print("AMF: ")
+	// load ocf
+	// fmt.Print("OCF: ")
 	for i := 0; i < 2; i++ {
-		res, err = strconv.ParseUint(AMF[i*2:i*2+2], 16, 8)
+		res, err = strconv.ParseUint(OCF[i*2:i*2+2], 16, 8)
 
 		if err == nil {
-			amf[i] = uint8(res)
-			// fmt.Printf("%02x ", amf[i])
+			ocf[i] = uint8(res)
+			// fmt.Printf("%02x ", ocf[i])
 		}
 	}
 
 	// fmt.Println()
-	fmt.Printf("AMF: %x\n", amf)
+	fmt.Printf("OCF: %x\n", ocf)
 	fmt.Println()
 
 }

@@ -333,7 +333,7 @@ func HandlePfcpSessionReportRequest(msg *pfcpUdp.Message) {
 
 			n1n2Request := models.N1N2MessageTransferRequest{}
 
-			// TS 23.502 4.2.3.3 3a. Send Namf_Communication_N1N2MessageTransfer Request, SMF->AMF
+			// TS 23.502 4.2.3.3 3a. Send Nocf_Communication_N1N2MessageTransfer Request, SMF->OCF
 			if n2SmBuf, err := smf_context.BuildPDUSessionResourceSetupRequestTransfer(smContext); err != nil {
 				logger.PduSessLog.Errorln("Build PDUSessionResourceSetupRequestTransfer failed:", err)
 			} else {
@@ -342,7 +342,7 @@ func HandlePfcpSessionReportRequest(msg *pfcpUdp.Message) {
 
 			n1n2Request.JsonData = &models.N1N2MessageTransferReqData{
 				PduSessionId: smContext.PDUSessionID,
-				// Temporarily assign SMF itself, TODO: TS 23.502 4.2.3.3 5. Namf_Communication_N1N2TransferFailureNotification
+				// Temporarily assign SMF itself, TODO: TS 23.502 4.2.3.3 5. Nocf_Communication_N1N2TransferFailureNotification
 				N1n2FailureTxfNotifURI: fmt.Sprintf("%s://%s:%d",
 					smf_context.SMF_Self().URIScheme,
 					smf_context.SMF_Self().RegisterIPv4,
@@ -370,7 +370,7 @@ func HandlePfcpSessionReportRequest(msg *pfcpUdp.Message) {
 				logger.PfcpLog.Warnf("Send N1N2Transfer failed")
 			}
 			if rspData.Cause == models.N1N2MessageTransferCause_ATTEMPTING_TO_REACH_UE {
-				logger.PfcpLog.Infof("Receive %v, AMF is able to page the UE", rspData.Cause)
+				logger.PfcpLog.Infof("Receive %v, OCF is able to page the UE", rspData.Cause)
 			}
 			if rspData.Cause == models.N1N2MessageTransferCause_UE_NOT_RESPONDING {
 				logger.PfcpLog.Warnf("%v", rspData.Cause)

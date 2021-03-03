@@ -13,7 +13,7 @@ import (
 
 var log *logrus.Logger
 var CommTestCommLog *logrus.Entry
-var CommTestAmfLog *logrus.Entry
+var CommTestOcfLog *logrus.Entry
 var CommTestSmfLog *logrus.Entry
 
 func init() {
@@ -39,7 +39,7 @@ func init() {
 	}
 
 	CommTestCommLog = log.WithFields(logrus.Fields{"component": "CommonTest", "category": "Comm"})
-	CommTestAmfLog = log.WithFields(logrus.Fields{"component": "CommonTest", "category": "Amf"})
+	CommTestOcfLog = log.WithFields(logrus.Fields{"component": "CommonTest", "category": "Ocf"})
 	CommTestSmfLog = log.WithFields(logrus.Fields{"component": "CommonTest", "category": "Smf"})
 }
 

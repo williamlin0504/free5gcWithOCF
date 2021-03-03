@@ -1,5 +1,5 @@
 /*
- * AMF Configuration Factory
+ * OCF Configuration Factory
  */
 
 package factory
@@ -10,10 +10,10 @@ import (
 
 	"gopkg.in/yaml.v2"
 
-	"free5gc/src/amf/logger"
+	"free5gc/src/ocf/logger"
 )
 
-var AmfConfig Config
+var OcfConfig Config
 
 func checkErr(err error) {
 	if err != nil {
@@ -27,9 +27,9 @@ func InitConfigFactory(f string) {
 	content, err := ioutil.ReadFile(f)
 	checkErr(err)
 
-	AmfConfig = Config{}
+	OcfConfig = Config{}
 
-	err = yaml.Unmarshal([]byte(content), &AmfConfig)
+	err = yaml.Unmarshal([]byte(content), &OcfConfig)
 	checkErr(err)
 
 	logger.InitLog.Infof("Successfully initialize configuration %s", f)

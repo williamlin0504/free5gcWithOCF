@@ -6,8 +6,8 @@ import (
 	"free5gc/lib/nas/nasConvert"
 	"free5gc/lib/nas/nasMessage"
 	"free5gc/lib/openapi"
-	"free5gc/lib/openapi/Namf_Communication"
 	"free5gc/lib/openapi/Nnrf_NFDiscovery"
+	"free5gc/lib/openapi/Nocf_Communication"
 	"free5gc/lib/openapi/Npcf_SMPolicyControl"
 	"free5gc/lib/openapi/models"
 	"free5gc/lib/pfcp/pfcpType"
@@ -82,9 +82,9 @@ type SMContext struct {
 
 	// Client
 	SMPolicyClient      *Npcf_SMPolicyControl.APIClient
-	CommunicationClient *Namf_Communication.APIClient
+	CommunicationClient *Nocf_Communication.APIClient
 
-	AMFProfile         models.NfProfile
+	OCFProfile         models.NfProfile
 	SelectedPCFProfile models.NfProfile
 	SmStatusNotifyUri  string
 

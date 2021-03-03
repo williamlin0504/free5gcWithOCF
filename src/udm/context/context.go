@@ -17,8 +17,8 @@ import (
 var udmContext UDMContext
 
 const (
-	LocationUriAmf3GppAccessRegistration int = iota
-	LocationUriAmfNon3GppAccessRegistration
+	LocationUriOcf3GppAccessRegistration int = iota
+	LocationUriOcfNon3GppAccessRegistration
 	LocationUriSmfRegistration
 	LocationUriSdmSubscription
 	LocationUriSharedDataSubscription
@@ -53,8 +53,8 @@ type UdmUeContext struct {
 	Gpsi                              string
 	ExternalGroupID                   string
 	Nssai                             *models.Nssai
-	Amf3GppAccessRegistration         *models.Amf3GppAccessRegistration
-	AmfNon3GppAccessRegistration      *models.AmfNon3GppAccessRegistration
+	Ocf3GppAccessRegistration         *models.Ocf3GppAccessRegistration
+	OcfNon3GppAccessRegistration      *models.OcfNon3GppAccessRegistration
 	AccessAndMobilitySubscriptionData *models.AccessAndMobilitySubscriptionData
 	SmfSelSubsData                    *models.SmfSelectionSubscriptionData
 	UeCtxtInSmfData                   *models.UeContextInSmfData
@@ -289,17 +289,17 @@ func (udmUeContext *UdmUeContext) SetAMSubsriptionData(amData *models.AccessAndM
 	udmUeContext.AccessAndMobilitySubscriptionData = amData
 }
 
-func (context *UDMContext) UdmAmf3gppRegContextExists(supi string) bool {
+func (context *UDMContext) UdmOcf3gppRegContextExists(supi string) bool {
 	if ue, ok := context.UdmUeFindBySupi(supi); ok {
-		return ue.Amf3GppAccessRegistration != nil
+		return ue.Ocf3GppAccessRegistration != nil
 	} else {
 		return false
 	}
 }
 
-func (context *UDMContext) UdmAmfNon3gppRegContextExists(supi string) bool {
+func (context *UDMContext) UdmOcfNon3gppRegContextExists(supi string) bool {
 	if ue, ok := context.UdmUeFindBySupi(supi); ok {
-		return ue.AmfNon3GppAccessRegistration != nil
+		return ue.OcfNon3GppAccessRegistration != nil
 	} else {
 		return false
 	}
@@ -313,20 +313,20 @@ func (context *UDMContext) UdmSmfRegContextNotExists(supi string) bool {
 	}
 }
 
-func (context *UDMContext) CreateAmf3gppRegContext(supi string, body models.Amf3GppAccessRegistration) {
+func (context *UDMContext) CreateOcf3gppRegContext(supi string, body models.Ocf3GppAccessRegistration) {
 	ue, ok := context.UdmUeFindBySupi(supi)
 	if !ok {
 		ue = context.NewUdmUe(supi)
 	}
-	ue.Amf3GppAccessRegistration = &body
+	ue.Ocf3GppAccessRegistration = &body
 }
 
-func (context *UDMContext) CreateAmfNon3gppRegContext(supi string, body models.AmfNon3GppAccessRegistration) {
+func (context *UDMContext) CreateOcfNon3gppRegContext(supi string, body models.OcfNon3GppAccessRegistration) {
 	ue, ok := context.UdmUeFindBySupi(supi)
 	if !ok {
 		ue = context.NewUdmUe(supi)
 	}
-	ue.AmfNon3GppAccessRegistration = &body
+	ue.OcfNon3GppAccessRegistration = &body
 }
 
 func (context *UDMContext) CreateSmfRegContext(supi string, pduSessionID string) {
@@ -339,17 +339,17 @@ func (context *UDMContext) CreateSmfRegContext(supi string, pduSessionID string)
 	}
 }
 
-func (context *UDMContext) GetAmf3gppRegContext(supi string) *models.Amf3GppAccessRegistration {
+func (context *UDMContext) GetOcf3gppRegContext(supi string) *models.Ocf3GppAccessRegistration {
 	if ue, ok := context.UdmUeFindBySupi(supi); ok {
-		return ue.Amf3GppAccessRegistration
+		return ue.Ocf3GppAccessRegistration
 	} else {
 		return nil
 	}
 }
 
-func (context *UDMContext) GetAmfNon3gppRegContext(supi string) *models.AmfNon3GppAccessRegistration {
+func (context *UDMContext) GetOcfNon3gppRegContext(supi string) *models.OcfNon3GppAccessRegistration {
 	if ue, ok := context.UdmUeFindBySupi(supi); ok {
-		return ue.AmfNon3GppAccessRegistration
+		return ue.OcfNon3GppAccessRegistration
 	} else {
 		return nil
 	}
@@ -357,10 +357,10 @@ func (context *UDMContext) GetAmfNon3gppRegContext(supi string) *models.AmfNon3G
 
 func (ue *UdmUeContext) GetLocationURI(types int) string {
 	switch types {
-	case LocationUriAmf3GppAccessRegistration:
-		return UDM_Self().GetIPv4Uri() + "/nudm-uecm/v1/" + ue.Supi + "/registrations/amf-3gpp-access"
-	case LocationUriAmfNon3GppAccessRegistration:
-		return UDM_Self().GetIPv4Uri() + "/nudm-uecm/v1/" + ue.Supi + "/registrations/amf-non-3gpp-access"
+	case LocationUriOcf3GppAccessRegistration:
+		return UDM_Self().GetIPv4Uri() + "/nudm-uecm/v1/" + ue.Supi + "/registrations/ocf-3gpp-access"
+	case LocationUriOcfNon3GppAccessRegistration:
+		return UDM_Self().GetIPv4Uri() + "/nudm-uecm/v1/" + ue.Supi + "/registrations/ocf-non-3gpp-access"
 	case LocationUriSmfRegistration:
 		return UDM_Self().GetIPv4Uri() + "/nudm-uecm/v1/" + ue.Supi + "/registrations/smf-registrations/" + ue.PduSessionID
 	}
@@ -378,14 +378,14 @@ func (ue *UdmUeContext) GetLocationURI2(types int, supi string) string {
 }
 
 func (ue *UdmUeContext) SameAsStoredGUAMI3gpp(inGuami models.Guami) bool {
-	if ue.Amf3GppAccessRegistration == nil {
+	if ue.Ocf3GppAccessRegistration == nil {
 		return false
 	}
-	ug := ue.Amf3GppAccessRegistration.Guami
+	ug := ue.Ocf3GppAccessRegistration.Guami
 	if ug != nil {
 		if (ug.PlmnId == nil) == (inGuami.PlmnId == nil) {
 			if ug.PlmnId != nil && ug.PlmnId.Mcc == inGuami.PlmnId.Mcc && ug.PlmnId.Mnc == inGuami.PlmnId.Mnc {
-				if ug.AmfId == inGuami.AmfId {
+				if ug.OcfId == inGuami.OcfId {
 					return true
 				}
 			}
@@ -395,14 +395,14 @@ func (ue *UdmUeContext) SameAsStoredGUAMI3gpp(inGuami models.Guami) bool {
 }
 
 func (ue *UdmUeContext) SameAsStoredGUAMINon3gpp(inGuami models.Guami) bool {
-	if ue.AmfNon3GppAccessRegistration == nil {
+	if ue.OcfNon3GppAccessRegistration == nil {
 		return false
 	}
-	ug := ue.AmfNon3GppAccessRegistration.Guami
+	ug := ue.OcfNon3GppAccessRegistration.Guami
 	if ug != nil {
 		if (ug.PlmnId == nil) == (inGuami.PlmnId == nil) {
 			if ug.PlmnId != nil && ug.PlmnId.Mcc == inGuami.PlmnId.Mcc && ug.PlmnId.Mnc == inGuami.PlmnId.Mnc {
-				if ug.AmfId == inGuami.AmfId {
+				if ug.OcfId == inGuami.OcfId {
 					return true
 				}
 			}

@@ -26,28 +26,28 @@ var (
 	_ context.Context
 )
 
-type AMFRegistrationForNon3GPPAccessApiService service
+type OCFRegistrationForNon3GPPAccessApiService service
 
 /*
-AMFRegistrationForNon3GPPAccessApiService register as AMF for non-3GPP access
+OCFRegistrationForNon3GPPAccessApiService register as OCF for non-3GPP access
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param ueId Identifier of the UE
- * @param amfNon3GppAccessRegistration
-@return models.AmfNon3GppAccessRegistration
+ * @param ocfNon3GppAccessRegistration
+@return models.OcfNon3GppAccessRegistration
 */
 
-func (a *AMFRegistrationForNon3GPPAccessApiService) Register(ctx context.Context, ueId string, amfNon3GppAccessRegistration models.AmfNon3GppAccessRegistration) (models.AmfNon3GppAccessRegistration, *http.Response, error) {
+func (a *OCFRegistrationForNon3GPPAccessApiService) Register(ctx context.Context, ueId string, ocfNon3GppAccessRegistration models.OcfNon3GppAccessRegistration) (models.OcfNon3GppAccessRegistration, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = strings.ToUpper("Put")
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  models.AmfNon3GppAccessRegistration
+		localVarReturnValue  models.OcfNon3GppAccessRegistration
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath() + "/{ueId}/registrations/amf-non-3gpp-access"
+	localVarPath := a.client.cfg.BasePath() + "/{ueId}/registrations/ocf-non-3gpp-access"
 	localVarPath = strings.Replace(localVarPath, "{"+"ueId"+"}", fmt.Sprintf("%v", ueId), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -68,7 +68,7 @@ func (a *AMFRegistrationForNon3GPPAccessApiService) Register(ctx context.Context
 	}
 
 	// body params
-	localVarPostBody = &amfNon3GppAccessRegistration
+	localVarPostBody = &ocfNon3GppAccessRegistration
 
 	r, err := openapi.PrepareRequest(ctx, a.client.cfg, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {

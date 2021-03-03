@@ -5,7 +5,9 @@ import (
 	"encoding/hex"
 	"fmt"
 	"free5gc/lib/http_wrapper"
+
 	"github.com/antihax/optional"
+
 	// "free5gc/lib/CommonConsumerTestData/UDM/TestGenAuthData"
 	cryptoRand "crypto/rand"
 	"free5gc/lib/UeauCommon"
@@ -37,7 +39,7 @@ func aucSQN(opc, k, auts, rand []byte) ([]byte, []byte) {
 	AK, SQNms := make([]byte, 6), make([]byte, 6)
 	macS := make([]byte, 8)
 	ConcSQNms := auts[:6]
-	AMF, err := hex.DecodeString("0000")
+	OCF, err := hex.DecodeString("0000")
 	if err != nil {
 		return nil, nil
 	}
@@ -56,9 +58,9 @@ func aucSQN(opc, k, auts, rand []byte) ([]byte, []byte) {
 	// fmt.Printf("opc=%x\n", opc)
 	// fmt.Printf("k=%x\n", k)
 	// fmt.Printf("rand=%x\n", rand)
-	// fmt.Printf("AMF %x\n", AMF)
+	// fmt.Printf("OCF %x\n", OCF)
 	// fmt.Printf("SQNms %x\n", SQNms)
-	err = milenage.F1(opc, k, rand, SQNms, AMF, nil, macS)
+	err = milenage.F1(opc, k, rand, SQNms, OCF, nil, macS)
 	if err != nil {
 		logger.UeauLog.Errorln("milenage F1 err ", err)
 	}
@@ -178,7 +180,7 @@ func GenerateAuthDataProcedure(authInfoRequest models.AuthenticationInfoRequest,
 	/*
 		K, RAND, CK, IK: 128 bits (16 bytes) (hex len = 32)
 		SQN, AK: 48 bits (6 bytes) (hex len = 12) TS33.102 - 6.3.2
-		AMF: 16 bits (2 bytes) (hex len = 4) TS33.102 - Annex H
+		OCF: 16 bits (2 bytes) (hex len = 4) TS33.102 - Annex H
 	*/
 
 	hasK, hasOP, hasOPC := false, false, false
@@ -315,7 +317,7 @@ func GenerateAuthDataProcedure(authInfoRequest models.AuthenticationInfoRequest,
 		return nil, problemDetails
 	}
 
-	AMF, err := hex.DecodeString("8000")
+	OCF, err := hex.DecodeString("8000")
 	if err != nil {
 		problemDetails = &models.ProblemDetails{
 			Status: http.StatusForbidden,
@@ -327,12 +329,12 @@ func GenerateAuthDataProcedure(authInfoRequest models.AuthenticationInfoRequest,
 		return nil, problemDetails
 	}
 
-	// fmt.Printf("RAND=%x\nAMF=%x\n", RAND, AMF)
+	// fmt.Printf("RAND=%x\nOCF=%x\n", RAND, OCF)
 
 	// for test
 	// RAND, _ = hex.DecodeString(TestGenAuthData.MilenageTestSet19.RAND)
-	// AMF, _ = hex.DecodeString(TestGenAuthData.MilenageTestSet19.AMF)
-	// fmt.Printf("For test: RAND=%x, AMF=%x\n", RAND, AMF)
+	// OCF, _ = hex.DecodeString(TestGenAuthData.MilenageTestSet19.OCF)
+	// fmt.Printf("For test: RAND=%x, OCF=%x\n", RAND, OCF)
 
 	// re-synchroniztion
 	if authInfoRequest.ResynchronizationInfo != nil {
@@ -448,7 +450,7 @@ func GenerateAuthDataProcedure(authInfoRequest models.AuthenticationInfoRequest,
 	AK, AKstar := make([]byte, 6), make([]byte, 6)
 
 	// Generate macA, macS
-	err = milenage.F1(opc, k, RAND, sqn, AMF, macA, macS)
+	err = milenage.F1(opc, k, RAND, sqn, OCF, macA, macS)
 	if err != nil {
 		logger.UeauLog.Errorln("milenage F1 err ", err)
 	}
@@ -463,13 +465,13 @@ func GenerateAuthDataProcedure(authInfoRequest models.AuthenticationInfoRequest,
 
 	// Generate AUTN
 	// fmt.Printf("SQN=%x\nAK =%x\n", SQN, AK)
-	// fmt.Printf("AMF=%x, macA=%x\n", AMF, macA)
+	// fmt.Printf("OCF=%x, macA=%x\n", OCF, macA)
 	SQNxorAK := make([]byte, 6)
 	for i := 0; i < len(sqn); i++ {
 		SQNxorAK[i] = sqn[i] ^ AK[i]
 	}
 	// fmt.Printf("SQN xor AK = %x\n", SQNxorAK)
-	AUTN := append(append(SQNxorAK, AMF...), macA...)
+	AUTN := append(append(SQNxorAK, OCF...), macA...)
 	fmt.Printf("AUTN = %x\n", AUTN)
 
 	var av models.AuthenticationVector

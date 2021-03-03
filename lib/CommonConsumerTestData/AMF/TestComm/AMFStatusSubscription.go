@@ -5,60 +5,60 @@ import (
 )
 
 const (
-	AMFStatusSubscription403      = "AMFStatusSubscription403"
-	AMFStatusSubscription201      = "AMFStatusSubscription201"
-	AMFStatusUnSubscription403    = "AMFStatusUnSubscription403"
-	AMFStatusUnSubscription204    = "AMFStatusUnSubscription204"
-	AMFStatusSubscriptionModfy403 = "AMFStatusSubscriptionModfy403"
-	AMFStatusSubscriptionModfy200 = "AMFStatusSubscriptionModfy200"
+	OCFStatusSubscription403      = "OCFStatusSubscription403"
+	OCFStatusSubscription201      = "OCFStatusSubscription201"
+	OCFStatusUnSubscription403    = "OCFStatusUnSubscription403"
+	OCFStatusUnSubscription204    = "OCFStatusUnSubscription204"
+	OCFStatusSubscriptionModfy403 = "OCFStatusSubscriptionModfy403"
+	OCFStatusSubscriptionModfy200 = "OCFStatusSubscriptionModfy200"
 )
 
-var ConsumerAMFStatusSubscriptionTable = make(map[string]models.SubscriptionData)
+var ConsumerOCFStatusSubscriptionTable = make(map[string]models.SubscriptionData)
 
 func init() {
-	ConsumerAMFStatusSubscriptionTable[AMFStatusSubscription403] = models.SubscriptionData{
-		AmfStatusUri: "",
+	ConsumerOCFStatusSubscriptionTable[OCFStatusSubscription403] = models.SubscriptionData{
+		OcfStatusUri: "",
 		GuamiList:    nil,
 	}
 
-	ConsumerAMFStatusSubscriptionTable[AMFStatusSubscription201] = models.SubscriptionData{
-		AmfStatusUri: "https://127.0.0.1:29333/AMFStatusNotify",
+	ConsumerOCFStatusSubscriptionTable[OCFStatusSubscription201] = models.SubscriptionData{
+		OcfStatusUri: "https://127.0.0.1:29333/OCFStatusNotify",
 		GuamiList: []models.Guami{
 			{
 				PlmnId: &models.PlmnId{
 					Mcc: "208",
 					Mnc: "93",
 				},
-				AmfId: "cafe00",
+				OcfId: "cafe00",
 			},
 		},
 	}
 }
 
-var ConsumerAMFStatusUnSubscriptionTable = make(map[string]string)
+var ConsumerOCFStatusUnSubscriptionTable = make(map[string]string)
 
 func init() {
-	ConsumerAMFStatusUnSubscriptionTable[AMFStatusUnSubscription403] = "0"
-	ConsumerAMFStatusUnSubscriptionTable[AMFStatusUnSubscription204] = "1"
+	ConsumerOCFStatusUnSubscriptionTable[OCFStatusUnSubscription403] = "0"
+	ConsumerOCFStatusUnSubscriptionTable[OCFStatusUnSubscription204] = "1"
 }
 
-var ConsumerAMFStatusChangeSubscribeModfyTable = make(map[string]models.SubscriptionData)
+var ConsumerOCFStatusChangeSubscribeModfyTable = make(map[string]models.SubscriptionData)
 
 func init() {
-	ConsumerAMFStatusChangeSubscribeModfyTable[AMFStatusSubscriptionModfy403] = models.SubscriptionData{
-		AmfStatusUri: "",
+	ConsumerOCFStatusChangeSubscribeModfyTable[OCFStatusSubscriptionModfy403] = models.SubscriptionData{
+		OcfStatusUri: "",
 		GuamiList:    nil,
 	}
 
-	ConsumerAMFStatusChangeSubscribeModfyTable[AMFStatusSubscriptionModfy200] = models.SubscriptionData{
-		AmfStatusUri: "https://127.0.0.1:29333/AMFStatusNotify/1",
+	ConsumerOCFStatusChangeSubscribeModfyTable[OCFStatusSubscriptionModfy200] = models.SubscriptionData{
+		OcfStatusUri: "https://127.0.0.1:29333/OCFStatusNotify/1",
 		GuamiList: []models.Guami{
 			{
 				PlmnId: &models.PlmnId{
 					Mcc: "208",
 					Mnc: "93",
 				},
-				AmfId: "cafe00",
+				OcfId: "cafe00",
 			},
 		},
 	}

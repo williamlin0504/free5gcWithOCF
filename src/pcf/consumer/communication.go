@@ -11,30 +11,30 @@ import (
 	"strings"
 )
 
-func AmfStatusChangeSubscribe(amfInfo pcf_context.AMFStatusSubscriptionData) (
+func OcfStatusChangeSubscribe(ocfInfo pcf_context.OCFStatusSubscriptionData) (
 	problemDetails *models.ProblemDetails, err error) {
-	logger.Consumerlog.Debugf("PCF Subscribe to AMF status[%+v]", amfInfo.AmfUri)
+	logger.Consumerlog.Debugf("PCF Subscribe to OCF status[%+v]", ocfInfo.OcfUri)
 	pcfSelf := pcf_context.PCF_Self()
-	client := util.GetNamfClient(amfInfo.AmfUri)
+	client := util.GetNocfClient(ocfInfo.OcfUri)
 
 	subscriptionData := models.SubscriptionData{
-		AmfStatusUri: fmt.Sprintf("%s/npcf-callback/v1/amfstatus", pcfSelf.GetIPv4Uri()),
-		GuamiList:    amfInfo.GuamiList,
+		OcfStatusUri: fmt.Sprintf("%s/npcf-callback/v1/ocfstatus", pcfSelf.GetIPv4Uri()),
+		GuamiList:    ocfInfo.GuamiList,
 	}
 
 	res, httpResp, localErr :=
-		client.SubscriptionsCollectionDocumentApi.AMFStatusChangeSubscribe(context.Background(), subscriptionData)
+		client.SubscriptionsCollectionDocumentApi.OCFStatusChangeSubscribe(context.Background(), subscriptionData)
 	if localErr == nil {
 		locationHeader := httpResp.Header.Get("Location")
 		logger.Consumerlog.Debugf("location header: %+v", locationHeader)
 
 		subscriptionId := locationHeader[strings.LastIndex(locationHeader, "/")+1:]
-		amfStatusSubsData := pcf_context.AMFStatusSubscriptionData{
-			AmfUri:       amfInfo.AmfUri,
-			AmfStatusUri: res.AmfStatusUri,
+		ocfStatusSubsData := pcf_context.OCFStatusSubscriptionData{
+			OcfUri:       ocfInfo.OcfUri,
+			OcfStatusUri: res.OcfStatusUri,
 			GuamiList:    res.GuamiList,
 		}
-		pcfSelf.AMFStatusSubsData[subscriptionId] = amfStatusSubsData
+		pcfSelf.OCFStatusSubsData[subscriptionId] = ocfStatusSubsData
 	} else if httpResp != nil {
 		if httpResp.Status != localErr.Error() {
 			err = localErr
@@ -43,7 +43,7 @@ func AmfStatusChangeSubscribe(amfInfo pcf_context.AMFStatusSubscriptionData) (
 		problem := localErr.(openapi.GenericOpenAPIError).Model().(models.ProblemDetails)
 		problemDetails = &problem
 	} else {
-		err = openapi.ReportError("%s: server no response", amfInfo.AmfUri)
+		err = openapi.ReportError("%s: server no response", ocfInfo.OcfUri)
 	}
 	return problemDetails, err
 }

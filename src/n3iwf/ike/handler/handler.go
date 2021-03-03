@@ -673,7 +673,7 @@ func HandleIKEAUTH(udpConn *net.UDPConn, n3iwfAddr, ueAddr *net.UDPAddr, message
 		SendIKEMessageToUE(udpConn, n3iwfAddr, ueAddr, responseIKEMessage)
 
 	case EAPSignalling:
-		// If success, N3IWF will send an UPLinkNASTransport to AMF
+		// If success, N3IWF will send an UPLinkNASTransport to OCF
 		if eap != nil {
 			if eap.Code != ike_message.EAPCodeResponse {
 				ikeLog.Error("[IKE][EAP] Received an EAP payload with code other than response. Drop the payload.")
@@ -747,10 +747,10 @@ func HandleIKEAUTH(udpConn *net.UDPConn, n3iwfAddr, ueAddr *net.UDPAddr, message
 
 			// Send Initial UE Message or Uplink NAS Transport
 			if anParameters != nil {
-				// AMF selection
-				selectedAMF := n3iwfSelf.AMFSelection(anParameters.GUAMI)
-				if selectedAMF == nil {
-					ikeLog.Warn("[IKE] No avalible AMF for this UE")
+				// OCF selection
+				selectedOCF := n3iwfSelf.OCFSelection(anParameters.GUAMI)
+				if selectedOCF == nil {
+					ikeLog.Warn("[IKE] No avalible OCF for this UE")
 					return
 				}
 
@@ -760,7 +760,7 @@ func HandleIKEAUTH(udpConn *net.UDPConn, n3iwfAddr, ueAddr *net.UDPAddr, message
 				// Relative context
 				ikeSecurityAssociation.ThisUE = ue
 				ue.N3IWFIKESecurityAssociation = ikeSecurityAssociation
-				ue.AMF = selectedAMF
+				ue.OCF = selectedOCF
 
 				// Store some information in conext
 				ikeSecurityAssociation.MessageID = message.MessageID
@@ -775,10 +775,10 @@ func HandleIKEAUTH(udpConn *net.UDPConn, n3iwfAddr, ueAddr *net.UDPAddr, message
 				ue.RRCEstablishmentCause = int16(anParameters.EstablishmentCause.Value)
 
 				// Send Initial UE Message
-				ngap_message.SendInitialUEMessage(selectedAMF, ue, nasPDU)
+				ngap_message.SendInitialUEMessage(selectedOCF, ue, nasPDU)
 			} else {
 				ue := ikeSecurityAssociation.ThisUE
-				amf := ue.AMF
+				ocf := ue.OCF
 
 				// Store some information in context
 				ikeSecurityAssociation.MessageID = message.MessageID
@@ -790,7 +790,7 @@ func HandleIKEAUTH(udpConn *net.UDPConn, n3iwfAddr, ueAddr *net.UDPAddr, message
 				}
 
 				// Send Uplink NAS Transport
-				ngap_message.SendUplinkNASTransport(amf, ue, nasPDU)
+				ngap_message.SendUplinkNASTransport(ocf, ue, nasPDU)
 			}
 		} else {
 			ikeLog.Error("EAP is nil")
@@ -1218,16 +1218,16 @@ func HandleIKEAUTH(udpConn *net.UDPConn, n3iwfAddr, ueAddr *net.UDPAddr, message
 					SendIKEMessageToUE(udpConn, n3iwfAddr, ueAddr, ikeMessage)
 					break
 				} else {
-					// Send Initial Context Setup Response to AMF
-					ngap_message.SendInitialContextSetupResponse(thisUE.AMF, thisUE,
+					// Send Initial Context Setup Response to OCF
+					ngap_message.SendInitialContextSetupResponse(thisUE.OCF, thisUE,
 						thisUE.TemporaryPDUSessionSetupData.SetupListCxtRes,
 						thisUE.TemporaryPDUSessionSetupData.FailedListCxtRes, nil)
 					break
 				}
 			}
 		} else {
-			// Send Initial Context Setup Response to AMF
-			ngap_message.SendInitialContextSetupResponse(thisUE.AMF, thisUE, nil, nil, nil)
+			// Send Initial Context Setup Response to OCF
+			ngap_message.SendInitialContextSetupResponse(thisUE.OCF, thisUE, nil, nil, nil)
 		}
 	}
 }
@@ -1609,14 +1609,14 @@ func HandleCREATECHILDSA(udpConn *net.UDPConn, n3iwfAddr, ueAddr *net.UDPAddr, m
 			SendIKEMessageToUE(udpConn, n3iwfAddr, ueAddr, ikeMessage)
 			break
 		} else {
-			// Send Response to AMF
+			// Send Response to OCF
 			ngapProcedure := temporaryPDUSessionSetupData.NGAPProcedureCode.Value
 			if ngapProcedure == ngapType.ProcedureCodeInitialContextSetup {
-				ngap_message.SendInitialContextSetupResponse(thisUE.AMF, thisUE,
+				ngap_message.SendInitialContextSetupResponse(thisUE.OCF, thisUE,
 					temporaryPDUSessionSetupData.SetupListCxtRes,
 					temporaryPDUSessionSetupData.FailedListCxtRes, nil)
 			} else {
-				ngap_message.SendPDUSessionResourceSetupResponse(thisUE.AMF, thisUE,
+				ngap_message.SendPDUSessionResourceSetupResponse(thisUE.OCF, thisUE,
 					temporaryPDUSessionSetupData.SetupListSURes,
 					temporaryPDUSessionSetupData.FailedListSURes, nil)
 			}

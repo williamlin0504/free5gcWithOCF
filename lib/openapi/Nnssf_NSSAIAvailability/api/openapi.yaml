@@ -20,7 +20,7 @@ externalDocs:
 paths:
   /nssai-availability/{nfId}:
     put:
-      summary: Updates/replaces the NSSF with the S-NSSAIs the NF service consumer (e.g AMF)supports per TA
+      summary: Updates/replaces the NSSF with the S-NSSAIs the NF service consumer (e.g OCF)supports per TA
       tags:
         - NF Instance ID (Document)
       operationId: NSSAIAvailabilityPut
@@ -70,7 +70,7 @@ paths:
           description: Unexpected error
       
     patch:
-      summary: Updates an already existing S-NSSAIs per TA provided by the NF service consumer (e.g AMF)
+      summary: Updates an already existing S-NSSAIs per TA provided by the NF service consumer (e.g OCF)
       tags:
         - NF Instance ID (Document)
       operationId: NSSAIAvailabilityPatch
@@ -123,7 +123,7 @@ paths:
 
 
     delete:
-      summary: Deletes an already existing S-NSSAIs per TA provided by the NF service consumer (e.g AMF)
+      summary: Deletes an already existing S-NSSAIs per TA provided by the NF service consumer (e.g OCF)
       tags:
         - NF Instance ID (Document)
       operationId: NSSAIAvailabilityDelete

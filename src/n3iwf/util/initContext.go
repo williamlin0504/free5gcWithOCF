@@ -40,30 +40,30 @@ func InitN3IWFContext() bool {
 		return false
 	}
 
-	// AMF SCTP addresses
-	if len(factory.N3iwfConfig.Configuration.AMFSCTPAddresses) == 0 {
-		contextLog.Error("No AMF specified")
+	// OCF SCTP addresses
+	if len(factory.N3iwfConfig.Configuration.OCFSCTPAddresses) == 0 {
+		contextLog.Error("No OCF specified")
 		return false
 	} else {
-		for _, amfAddress := range factory.N3iwfConfig.Configuration.AMFSCTPAddresses {
-			amfSCTPAddr := new(sctp.SCTPAddr)
+		for _, ocfAddress := range factory.N3iwfConfig.Configuration.OCFSCTPAddresses {
+			ocfSCTPAddr := new(sctp.SCTPAddr)
 			// IP addresses
-			for _, ipAddrStr := range amfAddress.IPAddresses {
+			for _, ipAddrStr := range ocfAddress.IPAddresses {
 				if ipAddr, err := net.ResolveIPAddr("ip", ipAddrStr); err != nil {
-					contextLog.Errorf("Resolve AMF IP address failed: %+v", err)
+					contextLog.Errorf("Resolve OCF IP address failed: %+v", err)
 					return false
 				} else {
-					amfSCTPAddr.IPAddrs = append(amfSCTPAddr.IPAddrs, *ipAddr)
+					ocfSCTPAddr.IPAddrs = append(ocfSCTPAddr.IPAddrs, *ipAddr)
 				}
 			}
 			// Port
-			if amfAddress.Port == 0 {
-				amfSCTPAddr.Port = 38412
+			if ocfAddress.Port == 0 {
+				ocfSCTPAddr.Port = 38412
 			} else {
-				amfSCTPAddr.Port = amfAddress.Port
+				ocfSCTPAddr.Port = ocfAddress.Port
 			}
 			// Append to context
-			n3iwfContext.AMFSCTPAddresses = append(n3iwfContext.AMFSCTPAddresses, amfSCTPAddr)
+			n3iwfContext.OCFSCTPAddresses = append(n3iwfContext.OCFSCTPAddresses, ocfSCTPAddr)
 		}
 	}
 

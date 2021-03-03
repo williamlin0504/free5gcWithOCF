@@ -9,28 +9,28 @@ import (
 	"git.cs.nctu.edu.tw/calee/sctp"
 )
 
-type N3IWFAMF struct {
+type N3IWFOCF struct {
 	SCTPAddr              string
 	SCTPConn              *sctp.SCTPConn
-	AMFName               *ngapType.AMFName
+	OCFName               *ngapType.OCFName
 	ServedGUAMIList       *ngapType.ServedGUAMIList
-	RelativeAMFCapacity   *ngapType.RelativeAMFCapacity
+	RelativeOCFCapacity   *ngapType.RelativeOCFCapacity
 	PLMNSupportList       *ngapType.PLMNSupportList
-	AMFTNLAssociationList map[string]*AMFTNLAssociationItem // v4+v6 as key
+	OCFTNLAssociationList map[string]*OCFTNLAssociationItem // v4+v6 as key
 	// Overload related
-	AMFOverloadContent *AMFOverloadContent
+	OCFOverloadContent *OCFOverloadContent
 	// Relative Context
 	N3iwfUeList map[int64]*N3IWFUe // ranUeNgapId as key
 }
 
-type AMFTNLAssociationItem struct {
+type OCFTNLAssociationItem struct {
 	Ipv4                   string
 	Ipv6                   string
 	TNLAssociationUsage    *ngapType.TNLAssociationUsage
 	TNLAddressWeightFactor *int64
 }
 
-type AMFOverloadContent struct {
+type OCFOverloadContent struct {
 	Action     *ngapType.OverloadAction
 	TrafficInd *int64
 	NSSAIList  []SliceOverloadItem
@@ -41,52 +41,52 @@ type SliceOverloadItem struct {
 	TrafficInd *int64
 }
 
-func (amf *N3IWFAMF) init(sctpAddr string, conn *sctp.SCTPConn) {
-	amf.SCTPAddr = sctpAddr
-	amf.SCTPConn = conn
-	amf.AMFTNLAssociationList = make(map[string]*AMFTNLAssociationItem)
-	amf.N3iwfUeList = make(map[int64]*N3IWFUe)
+func (ocf *N3IWFOCF) init(sctpAddr string, conn *sctp.SCTPConn) {
+	ocf.SCTPAddr = sctpAddr
+	ocf.SCTPConn = conn
+	ocf.OCFTNLAssociationList = make(map[string]*OCFTNLAssociationItem)
+	ocf.N3iwfUeList = make(map[int64]*N3IWFUe)
 }
 
-func (amf *N3IWFAMF) FindUeByAmfUeNgapID(id int64) *N3IWFUe {
-	for _, n3iwfUe := range amf.N3iwfUeList {
-		if n3iwfUe.AmfUeNgapId == id {
+func (ocf *N3IWFOCF) FindUeByOcfUeNgapID(id int64) *N3IWFUe {
+	for _, n3iwfUe := range ocf.N3iwfUeList {
+		if n3iwfUe.OcfUeNgapId == id {
 			return n3iwfUe
 		}
 	}
 	return nil
 }
 
-func (amf *N3IWFAMF) RemoveAllRelatedUe() {
-	for _, ue := range amf.N3iwfUeList {
+func (ocf *N3IWFOCF) RemoveAllRelatedUe() {
+	for _, ue := range ocf.N3iwfUeList {
 		ue.Remove()
 	}
 }
 
-func (amf *N3IWFAMF) AddAMFTNLAssociationItem(info ngapType.CPTransportLayerInformation) *AMFTNLAssociationItem {
-	item := &AMFTNLAssociationItem{}
+func (ocf *N3IWFOCF) AddOCFTNLAssociationItem(info ngapType.CPTransportLayerInformation) *OCFTNLAssociationItem {
+	item := &OCFTNLAssociationItem{}
 	item.Ipv4, item.Ipv6 = ngapConvert.IPAddressToString(*info.EndpointIPAddress)
-	amf.AMFTNLAssociationList[item.Ipv4+item.Ipv6] = item
+	ocf.OCFTNLAssociationList[item.Ipv4+item.Ipv6] = item
 	return item
 }
 
-func (amf *N3IWFAMF) FindAMFTNLAssociationItem(info ngapType.CPTransportLayerInformation) *AMFTNLAssociationItem {
+func (ocf *N3IWFOCF) FindOCFTNLAssociationItem(info ngapType.CPTransportLayerInformation) *OCFTNLAssociationItem {
 	v4, v6 := ngapConvert.IPAddressToString(*info.EndpointIPAddress)
-	return amf.AMFTNLAssociationList[v4+v6]
+	return ocf.OCFTNLAssociationList[v4+v6]
 }
 
-func (amf *N3IWFAMF) DeleteAMFTNLAssociationItem(info ngapType.CPTransportLayerInformation) {
+func (ocf *N3IWFOCF) DeleteOCFTNLAssociationItem(info ngapType.CPTransportLayerInformation) {
 	v4, v6 := ngapConvert.IPAddressToString(*info.EndpointIPAddress)
-	delete(amf.AMFTNLAssociationList, v4+v6)
+	delete(ocf.OCFTNLAssociationList, v4+v6)
 }
 
-func (amf *N3IWFAMF) StartOverload(
+func (ocf *N3IWFOCF) StartOverload(
 	resp *ngapType.OverloadResponse, trafloadInd *ngapType.TrafficLoadReductionIndication,
-	nssai *ngapType.OverloadStartNSSAIList) *AMFOverloadContent {
+	nssai *ngapType.OverloadStartNSSAIList) *OCFOverloadContent {
 	if resp == nil && trafloadInd == nil && nssai == nil {
 		return nil
 	}
-	content := AMFOverloadContent{}
+	content := OCFOverloadContent{}
 	if resp != nil {
 		content.Action = resp.OverloadAction
 	}
@@ -108,18 +108,18 @@ func (amf *N3IWFAMF) StartOverload(
 			content.NSSAIList = append(content.NSSAIList, sliceItem)
 		}
 	}
-	amf.AMFOverloadContent = &content
-	return amf.AMFOverloadContent
+	ocf.OCFOverloadContent = &content
+	return ocf.OCFOverloadContent
 }
-func (amf *N3IWFAMF) StopOverload() {
-	amf.AMFOverloadContent = nil
+func (ocf *N3IWFOCF) StopOverload() {
+	ocf.OCFOverloadContent = nil
 }
 
-// FindAvalibleAMFByCompareGUAMI compares the incoming GUAMI with AMF served GUAMI
-// and return if this AMF is avalible for UE
-func (amf *N3IWFAMF) FindAvalibleAMFByCompareGUAMI(ueSpecifiedGUAMI *ngapType.GUAMI) bool {
-	for _, amfServedGUAMI := range amf.ServedGUAMIList.List {
-		codedAMFServedGUAMI, err := aper.MarshalWithParams(&amfServedGUAMI.GUAMI, "valueExt")
+// FindAvalibleOCFByCompareGUAMI compares the incoming GUAMI with OCF served GUAMI
+// and return if this OCF is avalible for UE
+func (ocf *N3IWFOCF) FindAvalibleOCFByCompareGUAMI(ueSpecifiedGUAMI *ngapType.GUAMI) bool {
+	for _, ocfServedGUAMI := range ocf.ServedGUAMIList.List {
+		codedOCFServedGUAMI, err := aper.MarshalWithParams(&ocfServedGUAMI.GUAMI, "valueExt")
 		if err != nil {
 			return false
 		}
@@ -127,7 +127,7 @@ func (amf *N3IWFAMF) FindAvalibleAMFByCompareGUAMI(ueSpecifiedGUAMI *ngapType.GU
 		if err != nil {
 			return false
 		}
-		if !bytes.Equal(codedAMFServedGUAMI, codedUESpecifiedGUAMI) {
+		if !bytes.Equal(codedOCFServedGUAMI, codedUESpecifiedGUAMI) {
 			continue
 		}
 		return true

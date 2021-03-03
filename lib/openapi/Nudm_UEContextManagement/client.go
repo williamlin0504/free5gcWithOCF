@@ -23,12 +23,12 @@ type APIClient struct {
 	common service // Reuse a single struct instead of allocating one for each service on the heap.
 
 	// API Services
-	AMF3GppAccessRegistrationInfoRetrievalApi              *AMF3GppAccessRegistrationInfoRetrievalApiService
-	AMFNon3GPPAccessRegistrationInfoRetrievalApi           *AMFNon3GPPAccessRegistrationInfoRetrievalApiService
-	AMFRegistrationFor3GPPAccessApi                        *AMFRegistrationFor3GPPAccessApiService
-	AMFRegistrationForNon3GPPAccessApi                     *AMFRegistrationForNon3GPPAccessApiService
-	ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi    *ParameterUpdateInTheAMFRegistrationFor3GPPAccessApiService
-	ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApi *ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApiService
+	OCF3GppAccessRegistrationInfoRetrievalApi              *OCF3GppAccessRegistrationInfoRetrievalApiService
+	OCFNon3GPPAccessRegistrationInfoRetrievalApi           *OCFNon3GPPAccessRegistrationInfoRetrievalApiService
+	OCFRegistrationFor3GPPAccessApi                        *OCFRegistrationFor3GPPAccessApiService
+	OCFRegistrationForNon3GPPAccessApi                     *OCFRegistrationForNon3GPPAccessApiService
+	ParameterUpdateInTheOCFRegistrationFor3GPPAccessApi    *ParameterUpdateInTheOCFRegistrationFor3GPPAccessApiService
+	ParameterUpdateInTheOCFRegistrationForNon3GPPAccessApi *ParameterUpdateInTheOCFRegistrationForNon3GPPAccessApiService
 	SMFDeregistrationApi                                   *SMFDeregistrationApiService
 	SMFRegistrationApi                                     *SMFRegistrationApiService
 	SMSF3GPPAccessRegistrationInfoRetrievalApi             *SMSF3GPPAccessRegistrationInfoRetrievalApiService
@@ -59,12 +59,12 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.common.client = c
 
 	// API Services
-	c.AMF3GppAccessRegistrationInfoRetrievalApi = (*AMF3GppAccessRegistrationInfoRetrievalApiService)(&c.common)
-	c.AMFNon3GPPAccessRegistrationInfoRetrievalApi = (*AMFNon3GPPAccessRegistrationInfoRetrievalApiService)(&c.common)
-	c.AMFRegistrationFor3GPPAccessApi = (*AMFRegistrationFor3GPPAccessApiService)(&c.common)
-	c.AMFRegistrationForNon3GPPAccessApi = (*AMFRegistrationForNon3GPPAccessApiService)(&c.common)
-	c.ParameterUpdateInTheAMFRegistrationFor3GPPAccessApi = (*ParameterUpdateInTheAMFRegistrationFor3GPPAccessApiService)(&c.common)
-	c.ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApi = (*ParameterUpdateInTheAMFRegistrationForNon3GPPAccessApiService)(&c.common)
+	c.OCF3GppAccessRegistrationInfoRetrievalApi = (*OCF3GppAccessRegistrationInfoRetrievalApiService)(&c.common)
+	c.OCFNon3GPPAccessRegistrationInfoRetrievalApi = (*OCFNon3GPPAccessRegistrationInfoRetrievalApiService)(&c.common)
+	c.OCFRegistrationFor3GPPAccessApi = (*OCFRegistrationFor3GPPAccessApiService)(&c.common)
+	c.OCFRegistrationForNon3GPPAccessApi = (*OCFRegistrationForNon3GPPAccessApiService)(&c.common)
+	c.ParameterUpdateInTheOCFRegistrationFor3GPPAccessApi = (*ParameterUpdateInTheOCFRegistrationFor3GPPAccessApiService)(&c.common)
+	c.ParameterUpdateInTheOCFRegistrationForNon3GPPAccessApi = (*ParameterUpdateInTheOCFRegistrationForNon3GPPAccessApiService)(&c.common)
 	c.SMFDeregistrationApi = (*SMFDeregistrationApiService)(&c.common)
 	c.SMFRegistrationApi = (*SMFRegistrationApiService)(&c.common)
 	c.SMSF3GPPAccessRegistrationInfoRetrievalApi = (*SMSF3GPPAccessRegistrationInfoRetrievalApiService)(&c.common)

@@ -168,7 +168,7 @@ func TestNasTypeAdditionalGUTIGetSetMNCDigit1(t *testing.T) {
 	}
 }
 
-var nasTypeAMFRegionIDTable = []NasTypeLenuint8Data{
+var nasTypeOCFRegionIDTable = []NasTypeLenuint8Data{
 	{0x0, 0x0},
 	{0x1, 0x1},
 	{0x2, 0x2},
@@ -177,29 +177,29 @@ var nasTypeAMFRegionIDTable = []NasTypeLenuint8Data{
 	{0x5, 0x5},
 }
 
-func TestNasTypeAdditionalGUTIGetSetAMFRegionID(t *testing.T) {
+func TestNasTypeAdditionalGUTIGetSetOCFRegionID(t *testing.T) {
 	a := nasType.NewAdditionalGUTI(nasMessage.RegistrationRequestAdditionalGUTIType)
-	for _, table := range nasTypeAMFRegionIDTable {
-		a.SetAMFRegionID(table.in)
-		assert.Equal(t, table.out, a.GetAMFRegionID())
+	for _, table := range nasTypeOCFRegionIDTable {
+		a.SetOCFRegionID(table.in)
+		assert.Equal(t, table.out, a.GetOCFRegionID())
 	}
 }
 
-var nasTypeAMFSetIDTable = []NasTypeLenUint16Data{
+var nasTypeOCFSetIDTable = []NasTypeLenUint16Data{
 	{0x0000, 0x0000},
 	{0x01FF, 0x01FF},
 	// {0x200, 0x200},
 }
 
-func TestNasTypeAdditionalGUTIGetSetAMFSetID(t *testing.T) {
+func TestNasTypeAdditionalGUTIGetSetOCFSetID(t *testing.T) {
 	a := nasType.NewAdditionalGUTI(nasMessage.RegistrationRequestAdditionalGUTIType)
-	for _, table := range nasTypeAMFSetIDTable {
-		a.SetAMFSetID(table.in)
-		assert.Equal(t, table.out, a.GetAMFSetID())
+	for _, table := range nasTypeOCFSetIDTable {
+		a.SetOCFSetID(table.in)
+		assert.Equal(t, table.out, a.GetOCFSetID())
 	}
 }
 
-var nasTypeAMFPointerTable = []NasTypeLenuint8Data{
+var nasTypeOCFPointerTable = []NasTypeLenuint8Data{
 	{0x0, 0x0},
 	{0x1, 0x1},
 	{0x2, 0x2},
@@ -208,11 +208,11 @@ var nasTypeAMFPointerTable = []NasTypeLenuint8Data{
 	{0x1F, 0x1F},
 }
 
-func TestNasTypeAdditionalGUTIGetSetAMFPointer(t *testing.T) {
+func TestNasTypeAdditionalGUTIGetSetOCFPointer(t *testing.T) {
 	a := nasType.NewAdditionalGUTI(nasMessage.RegistrationRequestAdditionalGUTIType)
-	for _, table := range nasTypeAMFPointerTable {
-		a.SetAMFPointer(table.in)
-		assert.Equal(t, table.out, a.GetAMFPointer())
+	for _, table := range nasTypeOCFPointerTable {
+		a.SetOCFPointer(table.in)
+		assert.Equal(t, table.out, a.GetOCFPointer())
 	}
 }
 
@@ -265,9 +265,9 @@ func TestNasTypeAdditionalGUTI(t *testing.T) {
 		a.SetMCCDigit3(0x0f)
 		a.SetMNCDigit2(0x0f)
 		a.SetMNCDigit1(0x0f)
-		a.SetAMFRegionID(0xFF)
-		a.SetAMFSetID(0x03FF)
-		a.SetAMFPointer(0x3F)
+		a.SetOCFRegionID(0xFF)
+		a.SetOCFSetID(0x03FF)
+		a.SetOCFPointer(0x3F)
 		a.SetTMSI5G([4]uint8{0xFF, 0xFF, 0xFF, 0xFF})
 		assert.Equal(t, table.out.Iei, a.Iei)
 		assert.Equal(t, table.out.Len, a.Len)

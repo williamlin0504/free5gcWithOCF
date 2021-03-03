@@ -3,8 +3,8 @@ package producer
 import (
 	"free5gc/lib/http_wrapper"
 	"free5gc/lib/openapi/models"
-	"free5gc/src/amf/context"
-	"free5gc/src/amf/logger"
+	"free5gc/src/ocf/context"
+	"free5gc/src/ocf/logger"
 	"net/http"
 )
 
@@ -24,9 +24,9 @@ func HandleProvideLocationInfoRequest(request *http_wrapper.Request) *http_wrapp
 
 func ProvideLocationInfoProcedure(requestLocInfo models.RequestLocInfo, ueContextID string) (
 	*models.ProvideLocInfo, *models.ProblemDetails) {
-	amfSelf := context.AMF_Self()
+	ocfSelf := context.OCF_Self()
 
-	ue, ok := amfSelf.AmfUeFindByUeContextID(ueContextID)
+	ue, ok := ocfSelf.OcfUeFindByUeContextID(ueContextID)
 	if !ok {
 		problemDetails := &models.ProblemDetails{
 			Status: http.StatusNotFound,

@@ -6,14 +6,14 @@ import (
 	"free5gc/lib/nas"
 	"free5gc/lib/nas/security"
 	"free5gc/lib/openapi/models"
-	"free5gc/src/amf/context"
-	"free5gc/src/amf/logger"
+	"free5gc/src/ocf/context"
+	"free5gc/src/ocf/logger"
 	"reflect"
 )
 
-func Encode(ue *context.AmfUe, msg *nas.Message) ([]byte, error) {
+func Encode(ue *context.OcfUe, msg *nas.Message) ([]byte, error) {
 	if ue == nil {
-		return nil, fmt.Errorf("amfUe is nil")
+		return nil, fmt.Errorf("ocfUe is nil")
 	}
 	if msg == nil {
 		return nil, fmt.Errorf("Nas Message is empty")
@@ -84,9 +84,9 @@ func Encode(ue *context.AmfUe, msg *nas.Message) ([]byte, error) {
 payload either a security protected 5GS NAS message or a plain 5GS NAS message which
 format is followed TS 24.501 9.1.1
 */
-func Decode(ue *context.AmfUe, accessType models.AccessType, payload []byte) (*nas.Message, error) {
+func Decode(ue *context.OcfUe, accessType models.AccessType, payload []byte) (*nas.Message, error) {
 	if ue == nil {
-		return nil, fmt.Errorf("amfUe is nil")
+		return nil, fmt.Errorf("ocfUe is nil")
 	}
 	if payload == nil {
 		return nil, fmt.Errorf("Nas payload is empty")
@@ -109,7 +109,7 @@ func Decode(ue *context.AmfUe, accessType models.AccessType, payload []byte) (*n
 			}
 
 			// TS 24.501 4.4.4.3: Except the messages listed below, no NAS signalling messages shall be processed
-			// by the receiving 5GMM entity in the AMF or forwarded to the 5GSM entity, unless the secure exchange
+			// by the receiving 5GMM entity in the OCF or forwarded to the 5GSM entity, unless the secure exchange
 			// of NAS messages has been established for the NAS signalling connection
 			switch msg.GmmHeader.GetMessageType() {
 			case nas.MsgTypeRegistrationRequest:

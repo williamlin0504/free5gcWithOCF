@@ -50,9 +50,9 @@ extern "C" {
 
 #define MAX_SDU_LEN                 8192
 #define PLMN_ID_LEN                 3
-#define AMF_REGION_ID_LEN           2
-#define AMF_SET_ID_LEN              4
-#define AMF_POINTER_LEN             4
+#define OCF_REGION_ID_LEN           2
+#define OCF_SET_ID_LEN              4
+#define OCF_POINTER_LEN             4
 #define SST_LEN                     1
 #define SD_LEN                      3
 

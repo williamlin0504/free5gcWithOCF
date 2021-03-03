@@ -15,7 +15,7 @@ type NfType string
 const (
 	NfType_NRF      NfType = "NRF"
 	NfType_UDM      NfType = "UDM"
-	NfType_AMF      NfType = "AMF"
+	NfType_OCF      NfType = "OCF"
 	NfType_OCF      NfType = "OCF"
 	NfType_SMF      NfType = "SMF"
 	NfType_AUSF     NfType = "AUSF"

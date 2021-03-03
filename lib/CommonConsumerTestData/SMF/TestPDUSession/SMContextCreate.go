@@ -6,6 +6,7 @@ import (
 	"free5gc/lib/nas/nasMessage"
 	"free5gc/lib/nas/nasType"
 	"free5gc/lib/openapi/models"
+
 	"github.com/google/uuid"
 )
 
@@ -124,7 +125,7 @@ func init() {
 				Mcc: "208",
 				Mnc: "93",
 			},
-			AmfId: "cafe00",
+			OcfId: "cafe00",
 		},
 		ServingNetwork: &models.PlmnId{
 			Mcc: "208",
@@ -212,7 +213,7 @@ func init() {
 					Mcc: "208",
 					Mnc: "93",
 				},
-				AmfId: "cafe00",
+				OcfId: "cafe00",
 			},
 			ServingNetwork: &models.PlmnId{
 				Mcc: "208",

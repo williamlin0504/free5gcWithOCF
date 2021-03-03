@@ -2,8 +2,8 @@ package gmm
 
 import (
 	"free5gc/lib/fsm"
-	"free5gc/src/amf/context"
-	"free5gc/src/amf/logger"
+	"free5gc/src/ocf/context"
+	"free5gc/src/ocf/logger"
 )
 
 const (
@@ -21,7 +21,7 @@ const (
 )
 
 const (
-	ArgAmfUe               string = "AMF Ue"
+	ArgOcfUe               string = "OCF Ue"
 	ArgNASMessage          string = "NAS Message"
 	ArgProcedureCode       string = "Procedure Code"
 	ArgAccessType          string = "Access Type"

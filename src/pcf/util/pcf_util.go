@@ -4,7 +4,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"free5gc/lib/openapi/Namf_Communication"
+	"free5gc/lib/openapi/Nocf_Communication"
 	"free5gc/lib/openapi/Npcf_AMPolicy"
 	"free5gc/lib/openapi/Npcf_PolicyAuthorization"
 	"free5gc/lib/openapi/Npcf_SMPolicyControl"
@@ -81,10 +81,10 @@ func GetNudrClient(uri string) *Nudr_DataRepository.APIClient {
 	client := Nudr_DataRepository.NewAPIClient(configuration)
 	return client
 }
-func GetNamfClient(uri string) *Namf_Communication.APIClient {
-	configuration := Namf_Communication.NewConfiguration()
+func GetNocfClient(uri string) *Nocf_Communication.APIClient {
+	configuration := Nocf_Communication.NewConfiguration()
 	configuration.SetBasePath(uri)
-	client := Namf_Communication.NewAPIClient(configuration)
+	client := Nocf_Communication.NewAPIClient(configuration)
 	return client
 }
 
@@ -253,7 +253,7 @@ func GetNotSubscribedGuamis(guamisIn []models.Guami) (guamisOut []models.Guami) 
 
 func guamiInSubscriptionData(guami models.Guami) bool {
 	pcfSelf := context.PCF_Self()
-	for _, subscriptionData := range pcfSelf.AMFStatusSubsData {
+	for _, subscriptionData := range pcfSelf.OCFStatusSubsData {
 		for _, sGuami := range subscriptionData.GuamiList {
 			if reflect.DeepEqual(sGuami, guami) {
 				return true

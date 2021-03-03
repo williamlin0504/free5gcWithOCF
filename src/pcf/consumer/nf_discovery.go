@@ -58,8 +58,8 @@ func SendNFIntancesUDR(nrfUri, id string) string {
 	return ""
 }
 
-func SendNFIntancesAMF(nrfUri string, guami models.Guami, serviceName models.ServiceName) string {
-	targetNfType := models.NfType_AMF
+func SendNFIntancesOCF(nrfUri string, guami models.Guami, serviceName models.ServiceName) string {
+	targetNfType := models.NfType_OCF
 	requestNfType := models.NfType_PCF
 
 	localVarOptionals := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{
@@ -85,11 +85,11 @@ func SendNFIntancesAMF(nrfUri string, guami models.Guami, serviceName models.Ser
 	return ""
 }
 
-func SearchAvailableAMFs(nrfUri string, serviceName models.ServiceName) (
-	amfInfos []pcf_context.AMFStatusSubscriptionData) {
+func SearchAvailableOCFs(nrfUri string, serviceName models.ServiceName) (
+	ocfInfos []pcf_context.OCFStatusSubscriptionData) {
 	localVarOptionals := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{}
 
-	result, err := SendSearchNFInstances(nrfUri, models.NfType_AMF, models.NfType_PCF, localVarOptionals)
+	result, err := SendSearchNFInstances(nrfUri, models.NfType_OCF, models.NfType_PCF, localVarOptionals)
 	if err != nil {
 		logger.Consumerlog.Error(err.Error())
 		return
@@ -98,11 +98,11 @@ func SearchAvailableAMFs(nrfUri string, serviceName models.ServiceName) (
 	for _, profile := range result.NfInstances {
 		uri := util.SearchNFServiceUri(profile, serviceName, models.NfServiceStatus_REGISTERED)
 		if uri != "" {
-			item := pcf_context.AMFStatusSubscriptionData{
-				AmfUri:    uri,
-				GuamiList: *profile.AmfInfo.GuamiList,
+			item := pcf_context.OCFStatusSubscriptionData{
+				OcfUri:    uri,
+				GuamiList: *profile.OcfInfo.GuamiList,
 			}
-			amfInfos = append(amfInfos, item)
+			ocfInfos = append(ocfInfos, item)
 		}
 	}
 	return

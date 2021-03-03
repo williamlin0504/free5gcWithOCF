@@ -8,18 +8,18 @@ import (
 
 	"free5gc/lib/nas/security"
 	"free5gc/lib/openapi/models"
-	"free5gc/src/amf/context"
-	"free5gc/src/amf/factory"
-	"free5gc/src/amf/logger"
+	"free5gc/src/ocf/context"
+	"free5gc/src/ocf/factory"
+	"free5gc/src/ocf/logger"
 )
 
-func InitAmfContext(context *context.AMFContext) {
-	config := factory.AmfConfig
-	logger.UtilLog.Infof("amfconfig Info: Version[%s] Description[%s]", config.Info.Version, config.Info.Description)
+func InitOcfContext(context *context.OCFContext) {
+	config := factory.OcfConfig
+	logger.UtilLog.Infof("ocfconfig Info: Version[%s] Description[%s]", config.Info.Version, config.Info.Description)
 	configuration := config.Configuration
 	context.NfId = uuid.New().String()
-	if configuration.AmfName != "" {
-		context.Name = configuration.AmfName
+	if configuration.OcfName != "" {
+		context.Name = configuration.OcfName
 	}
 	if configuration.NgapIpList != nil {
 		context.NgapIpList = configuration.NgapIpList

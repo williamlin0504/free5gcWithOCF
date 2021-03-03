@@ -9,7 +9,7 @@
 
 package models
 
-type Amf3GppAccessRegistrationModificationEpsInterworkingInfo struct {
+type Ocf3GppAccessRegistrationModificationEpsInterworkingInfo struct {
 	// A map (list of key-value pairs where Dnn serves as key) of EpsIwkPgws
 	EpsIwkPgws map[string]EpsIwkPgw `json:"epsIwkPgws,omitempty" yaml:"epsIwkPgws" bson:"epsIwkPgws" mapstructure:"EpsIwkPgws"`
 }

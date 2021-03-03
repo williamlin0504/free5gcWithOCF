@@ -26,16 +26,16 @@ var (
 	_ context.Context
 )
 
-type ParameterUpdateInTheAMFRegistrationFor3GPPAccessApiService service
+type ParameterUpdateInTheOCFRegistrationFor3GPPAccessApiService service
 
 /*
-ParameterUpdateInTheAMFRegistrationFor3GPPAccessApiService Update a parameter in the AMF registration for 3GPP access
+ParameterUpdateInTheOCFRegistrationFor3GPPAccessApiService Update a parameter in the OCF registration for 3GPP access
  * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param ueId Identifier of the UE
- * @param amf3GppAccessRegistrationModification
+ * @param ocf3GppAccessRegistrationModification
 */
 
-func (a *ParameterUpdateInTheAMFRegistrationFor3GPPAccessApiService) Update(ctx context.Context, ueId string, amf3GppAccessRegistrationModification models.Amf3GppAccessRegistrationModification) (*http.Response, error) {
+func (a *ParameterUpdateInTheOCFRegistrationFor3GPPAccessApiService) Update(ctx context.Context, ueId string, ocf3GppAccessRegistrationModification models.Ocf3GppAccessRegistrationModification) (*http.Response, error) {
 	var (
 		localVarHTTPMethod   = strings.ToUpper("Patch")
 		localVarPostBody     interface{}
@@ -45,7 +45,7 @@ func (a *ParameterUpdateInTheAMFRegistrationFor3GPPAccessApiService) Update(ctx 
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath() + "/{ueId}/registrations/amf-3gpp-access"
+	localVarPath := a.client.cfg.BasePath() + "/{ueId}/registrations/ocf-3gpp-access"
 	localVarPath = strings.Replace(localVarPath, "{"+"ueId"+"}", fmt.Sprintf("%v", ueId), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -66,7 +66,7 @@ func (a *ParameterUpdateInTheAMFRegistrationFor3GPPAccessApiService) Update(ctx 
 	}
 
 	// body params
-	localVarPostBody = &amf3GppAccessRegistrationModification
+	localVarPostBody = &ocf3GppAccessRegistrationModification
 
 	r, err := openapi.PrepareRequest(ctx, a.client.cfg, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {

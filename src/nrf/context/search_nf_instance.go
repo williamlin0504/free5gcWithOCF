@@ -20,8 +20,8 @@ type SearchNFInstances struct {
 	NsiList                 []string             `form:"nsi-list" `
 	SmfServingArea          string               `form:"smf-serving-area" `
 	Tai                     models.Tai           `form:"tai" `
-	AmfRegionID             string               `form:"amf-region-id" `
-	AmfSetID                string               `form:"amf-set-id" `
+	OcfRegionID             string               `form:"ocf-region-id" `
+	OcfSetID                string               `form:"ocf-set-id" `
 	Guami                   models.Guami         `form:"guami" `
 	Supi                    string               `form:"supi" `
 	UeIpv4Address           string               `form:"ue-ipv4-address" `

@@ -19,7 +19,7 @@ import (
 )
 
 // HandleNSSAIAvailabilityDelete - Deletes an already existing S-NSSAIs per TA
-// provided by the NF service consumer (e.g AMF)
+// provided by the NF service consumer (e.g OCF)
 func HandleNSSAIAvailabilityDelete(request *http_wrapper.Request) *http_wrapper.Response {
 	logger.Nssaiavailability.Infof("Handle NSSAIAvailabilityDelete")
 
@@ -34,7 +34,7 @@ func HandleNSSAIAvailabilityDelete(request *http_wrapper.Request) *http_wrapper.
 }
 
 // HandleNSSAIAvailabilityPatch - Updates an already existing S-NSSAIs per TA
-// provided by the NF service consumer (e.g AMF)
+// provided by the NF service consumer (e.g OCF)
 func HandleNSSAIAvailabilityPatch(request *http_wrapper.Request) *http_wrapper.Response {
 	logger.Nssaiavailability.Infof("Handle NSSAIAvailabilityPatch")
 
@@ -42,7 +42,7 @@ func HandleNSSAIAvailabilityPatch(request *http_wrapper.Request) *http_wrapper.R
 	nfID := request.Params["nfId"]
 
 	// TODO: Request NfProfile of NfId from NRF
-	//       Check if NfId is valid AMF and obtain AMF Set ID
+	//       Check if NfId is valid OCF and obtain OCF Set ID
 	//       If NfId is invalid, return ProblemDetails with code 404 Not Found
 	//       If NF consumer is not authorized to update NSSAI availability, return ProblemDetails with code 403 Forbidden
 
@@ -61,7 +61,7 @@ func HandleNSSAIAvailabilityPatch(request *http_wrapper.Request) *http_wrapper.R
 }
 
 // HandleNSSAIAvailabilityPut - Updates/replaces the NSSF
-// with the S-NSSAIs the NF service consumer (e.g AMF) supports per TA
+// with the S-NSSAIs the NF service consumer (e.g OCF) supports per TA
 func HandleNSSAIAvailabilityPut(request *http_wrapper.Request) *http_wrapper.Response {
 	logger.Nssaiavailability.Infof("Handle NSSAIAvailabilityPut")
 

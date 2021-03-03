@@ -66,7 +66,7 @@ func TestDecode(t *testing.T) {
 		"UdrInfo":              &models.UdrInfo{},
 		"UdmInfo":              &models.UdmInfo{},
 		"AusfInfo":             &models.AusfInfo{},
-		"AmfInfo":              &models.AmfInfo{},
+		"OcfInfo":              &models.OcfInfo{},
 		"SmfInfo":              &models.SmfInfo{},
 		"UpfInfo":              &models.UpfInfo{},
 		"PcfInfo":              &models.PcfInfo{},

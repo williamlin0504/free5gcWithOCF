@@ -4,17 +4,17 @@ import "free5gc/lib/aper"
 
 // Need to import "free5gc/lib/aper" if it uses "aper"
 
-type AMFPagingTargetExtIEs struct {
+type OCFPagingTargetExtIEs struct {
 	Id          ProtocolIEID
 	Criticality Criticality
-	Value       AMFPagingTargetExtIEsValue `aper:"openType,referenceFieldName:Id"`
+	Value       OCFPagingTargetExtIEsValue `aper:"openType,referenceFieldName:Id"`
 }
 
 const (
-	AMFPagingTargetExtIEsPresentNothing int = iota /* No components present */
+	OCFPagingTargetExtIEsPresentNothing int = iota /* No components present */
 )
 
-type AMFPagingTargetExtIEsValue struct {
+type OCFPagingTargetExtIEsValue struct {
 	Present int
 }
 
@@ -390,7 +390,7 @@ type PDUSessionResourceSetupRequestIEs struct {
 
 const (
 	PDUSessionResourceSetupRequestIEsPresentNothing int = iota /* No components present */
-	PDUSessionResourceSetupRequestIEsPresentAMFUENGAPID
+	PDUSessionResourceSetupRequestIEsPresentOCFUENGAPID
 	PDUSessionResourceSetupRequestIEsPresentRANUENGAPID
 	PDUSessionResourceSetupRequestIEsPresentRANPagingPriority
 	PDUSessionResourceSetupRequestIEsPresentNASPDU
@@ -399,7 +399,7 @@ const (
 
 type PDUSessionResourceSetupRequestIEsValue struct {
 	Present                          int
-	AMFUENGAPID                      *AMFUENGAPID                      `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                      *OCFUENGAPID                      `aper:"referenceFieldValue:10"`
 	RANUENGAPID                      *RANUENGAPID                      `aper:"referenceFieldValue:85"`
 	RANPagingPriority                *RANPagingPriority                `aper:"referenceFieldValue:83"`
 	NASPDU                           *NASPDU                           `aper:"referenceFieldValue:38"`
@@ -414,7 +414,7 @@ type PDUSessionResourceSetupResponseIEs struct {
 
 const (
 	PDUSessionResourceSetupResponseIEsPresentNothing int = iota /* No components present */
-	PDUSessionResourceSetupResponseIEsPresentAMFUENGAPID
+	PDUSessionResourceSetupResponseIEsPresentOCFUENGAPID
 	PDUSessionResourceSetupResponseIEsPresentRANUENGAPID
 	PDUSessionResourceSetupResponseIEsPresentPDUSessionResourceSetupListSURes
 	PDUSessionResourceSetupResponseIEsPresentPDUSessionResourceFailedToSetupListSURes
@@ -423,7 +423,7 @@ const (
 
 type PDUSessionResourceSetupResponseIEsValue struct {
 	Present                                  int
-	AMFUENGAPID                              *AMFUENGAPID                              `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                              *OCFUENGAPID                              `aper:"referenceFieldValue:10"`
 	RANUENGAPID                              *RANUENGAPID                              `aper:"referenceFieldValue:85"`
 	PDUSessionResourceSetupListSURes         *PDUSessionResourceSetupListSURes         `aper:"referenceFieldValue:75"`
 	PDUSessionResourceFailedToSetupListSURes *PDUSessionResourceFailedToSetupListSURes `aper:"referenceFieldValue:58"`
@@ -438,7 +438,7 @@ type PDUSessionResourceReleaseCommandIEs struct {
 
 const (
 	PDUSessionResourceReleaseCommandIEsPresentNothing int = iota /* No components present */
-	PDUSessionResourceReleaseCommandIEsPresentAMFUENGAPID
+	PDUSessionResourceReleaseCommandIEsPresentOCFUENGAPID
 	PDUSessionResourceReleaseCommandIEsPresentRANUENGAPID
 	PDUSessionResourceReleaseCommandIEsPresentRANPagingPriority
 	PDUSessionResourceReleaseCommandIEsPresentNASPDU
@@ -447,7 +447,7 @@ const (
 
 type PDUSessionResourceReleaseCommandIEsValue struct {
 	Present                               int
-	AMFUENGAPID                           *AMFUENGAPID                           `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                           *OCFUENGAPID                           `aper:"referenceFieldValue:10"`
 	RANUENGAPID                           *RANUENGAPID                           `aper:"referenceFieldValue:85"`
 	RANPagingPriority                     *RANPagingPriority                     `aper:"referenceFieldValue:83"`
 	NASPDU                                *NASPDU                                `aper:"referenceFieldValue:38"`
@@ -462,7 +462,7 @@ type PDUSessionResourceReleaseResponseIEs struct {
 
 const (
 	PDUSessionResourceReleaseResponseIEsPresentNothing int = iota /* No components present */
-	PDUSessionResourceReleaseResponseIEsPresentAMFUENGAPID
+	PDUSessionResourceReleaseResponseIEsPresentOCFUENGAPID
 	PDUSessionResourceReleaseResponseIEsPresentRANUENGAPID
 	PDUSessionResourceReleaseResponseIEsPresentPDUSessionResourceReleasedListRelRes
 	PDUSessionResourceReleaseResponseIEsPresentUserLocationInformation
@@ -471,7 +471,7 @@ const (
 
 type PDUSessionResourceReleaseResponseIEsValue struct {
 	Present                              int
-	AMFUENGAPID                          *AMFUENGAPID                          `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                          *OCFUENGAPID                          `aper:"referenceFieldValue:10"`
 	RANUENGAPID                          *RANUENGAPID                          `aper:"referenceFieldValue:85"`
 	PDUSessionResourceReleasedListRelRes *PDUSessionResourceReleasedListRelRes `aper:"referenceFieldValue:70"`
 	UserLocationInformation              *UserLocationInformation              `aper:"referenceFieldValue:121,valueLB:0,valueUB:3"`
@@ -486,7 +486,7 @@ type PDUSessionResourceModifyRequestIEs struct {
 
 const (
 	PDUSessionResourceModifyRequestIEsPresentNothing int = iota /* No components present */
-	PDUSessionResourceModifyRequestIEsPresentAMFUENGAPID
+	PDUSessionResourceModifyRequestIEsPresentOCFUENGAPID
 	PDUSessionResourceModifyRequestIEsPresentRANUENGAPID
 	PDUSessionResourceModifyRequestIEsPresentRANPagingPriority
 	PDUSessionResourceModifyRequestIEsPresentPDUSessionResourceModifyListModReq
@@ -494,7 +494,7 @@ const (
 
 type PDUSessionResourceModifyRequestIEsValue struct {
 	Present                            int
-	AMFUENGAPID                        *AMFUENGAPID                        `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                        *OCFUENGAPID                        `aper:"referenceFieldValue:10"`
 	RANUENGAPID                        *RANUENGAPID                        `aper:"referenceFieldValue:85"`
 	RANPagingPriority                  *RANPagingPriority                  `aper:"referenceFieldValue:83"`
 	PDUSessionResourceModifyListModReq *PDUSessionResourceModifyListModReq `aper:"referenceFieldValue:64"`
@@ -508,7 +508,7 @@ type PDUSessionResourceModifyResponseIEs struct {
 
 const (
 	PDUSessionResourceModifyResponseIEsPresentNothing int = iota /* No components present */
-	PDUSessionResourceModifyResponseIEsPresentAMFUENGAPID
+	PDUSessionResourceModifyResponseIEsPresentOCFUENGAPID
 	PDUSessionResourceModifyResponseIEsPresentRANUENGAPID
 	PDUSessionResourceModifyResponseIEsPresentPDUSessionResourceModifyListModRes
 	PDUSessionResourceModifyResponseIEsPresentPDUSessionResourceFailedToModifyListModRes
@@ -518,7 +518,7 @@ const (
 
 type PDUSessionResourceModifyResponseIEsValue struct {
 	Present                                    int
-	AMFUENGAPID                                *AMFUENGAPID                                `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                                *OCFUENGAPID                                `aper:"referenceFieldValue:10"`
 	RANUENGAPID                                *RANUENGAPID                                `aper:"referenceFieldValue:85"`
 	PDUSessionResourceModifyListModRes         *PDUSessionResourceModifyListModRes         `aper:"referenceFieldValue:65"`
 	PDUSessionResourceFailedToModifyListModRes *PDUSessionResourceFailedToModifyListModRes `aper:"referenceFieldValue:54"`
@@ -534,7 +534,7 @@ type PDUSessionResourceNotifyIEs struct {
 
 const (
 	PDUSessionResourceNotifyIEsPresentNothing int = iota /* No components present */
-	PDUSessionResourceNotifyIEsPresentAMFUENGAPID
+	PDUSessionResourceNotifyIEsPresentOCFUENGAPID
 	PDUSessionResourceNotifyIEsPresentRANUENGAPID
 	PDUSessionResourceNotifyIEsPresentPDUSessionResourceNotifyList
 	PDUSessionResourceNotifyIEsPresentPDUSessionResourceReleasedListNot
@@ -543,7 +543,7 @@ const (
 
 type PDUSessionResourceNotifyIEsValue struct {
 	Present                           int
-	AMFUENGAPID                       *AMFUENGAPID                       `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                       *OCFUENGAPID                       `aper:"referenceFieldValue:10"`
 	RANUENGAPID                       *RANUENGAPID                       `aper:"referenceFieldValue:85"`
 	PDUSessionResourceNotifyList      *PDUSessionResourceNotifyList      `aper:"referenceFieldValue:66"`
 	PDUSessionResourceReleasedListNot *PDUSessionResourceReleasedListNot `aper:"referenceFieldValue:67"`
@@ -558,14 +558,14 @@ type PDUSessionResourceModifyIndicationIEs struct {
 
 const (
 	PDUSessionResourceModifyIndicationIEsPresentNothing int = iota /* No components present */
-	PDUSessionResourceModifyIndicationIEsPresentAMFUENGAPID
+	PDUSessionResourceModifyIndicationIEsPresentOCFUENGAPID
 	PDUSessionResourceModifyIndicationIEsPresentRANUENGAPID
 	PDUSessionResourceModifyIndicationIEsPresentPDUSessionResourceModifyListModInd
 )
 
 type PDUSessionResourceModifyIndicationIEsValue struct {
 	Present                            int
-	AMFUENGAPID                        *AMFUENGAPID                        `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                        *OCFUENGAPID                        `aper:"referenceFieldValue:10"`
 	RANUENGAPID                        *RANUENGAPID                        `aper:"referenceFieldValue:85"`
 	PDUSessionResourceModifyListModInd *PDUSessionResourceModifyListModInd `aper:"referenceFieldValue:63"`
 }
@@ -578,7 +578,7 @@ type PDUSessionResourceModifyConfirmIEs struct {
 
 const (
 	PDUSessionResourceModifyConfirmIEsPresentNothing int = iota /* No components present */
-	PDUSessionResourceModifyConfirmIEsPresentAMFUENGAPID
+	PDUSessionResourceModifyConfirmIEsPresentOCFUENGAPID
 	PDUSessionResourceModifyConfirmIEsPresentRANUENGAPID
 	PDUSessionResourceModifyConfirmIEsPresentPDUSessionResourceModifyListModCfm
 	PDUSessionResourceModifyConfirmIEsPresentPDUSessionResourceFailedToModifyListModCfm
@@ -587,7 +587,7 @@ const (
 
 type PDUSessionResourceModifyConfirmIEsValue struct {
 	Present                                    int
-	AMFUENGAPID                                *AMFUENGAPID                                `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                                *OCFUENGAPID                                `aper:"referenceFieldValue:10"`
 	RANUENGAPID                                *RANUENGAPID                                `aper:"referenceFieldValue:85"`
 	PDUSessionResourceModifyListModCfm         *PDUSessionResourceModifyListModCfm         `aper:"referenceFieldValue:62"`
 	PDUSessionResourceFailedToModifyListModCfm *PDUSessionResourceFailedToModifyListModCfm `aper:"referenceFieldValue:131"`
@@ -602,9 +602,9 @@ type InitialContextSetupRequestIEs struct {
 
 const (
 	InitialContextSetupRequestIEsPresentNothing int = iota /* No components present */
-	InitialContextSetupRequestIEsPresentAMFUENGAPID
+	InitialContextSetupRequestIEsPresentOCFUENGAPID
 	InitialContextSetupRequestIEsPresentRANUENGAPID
-	InitialContextSetupRequestIEsPresentOldAMF
+	InitialContextSetupRequestIEsPresentOldOCF
 	InitialContextSetupRequestIEsPresentUEAggregateMaximumBitRate
 	InitialContextSetupRequestIEsPresentCoreNetworkAssistanceInformation
 	InitialContextSetupRequestIEsPresentGUAMI
@@ -625,9 +625,9 @@ const (
 
 type InitialContextSetupRequestIEsValue struct {
 	Present                            int
-	AMFUENGAPID                        *AMFUENGAPID                        `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                        *OCFUENGAPID                        `aper:"referenceFieldValue:10"`
 	RANUENGAPID                        *RANUENGAPID                        `aper:"referenceFieldValue:85"`
-	OldAMF                             *AMFName                            `aper:"referenceFieldValue:48"`
+	OldOCF                             *OCFName                            `aper:"referenceFieldValue:48"`
 	UEAggregateMaximumBitRate          *UEAggregateMaximumBitRate          `aper:"valueExt,referenceFieldValue:110"`
 	CoreNetworkAssistanceInformation   *CoreNetworkAssistanceInformation   `aper:"valueExt,referenceFieldValue:18"`
 	GUAMI                              *GUAMI                              `aper:"valueExt,referenceFieldValue:28"`
@@ -654,7 +654,7 @@ type InitialContextSetupResponseIEs struct {
 
 const (
 	InitialContextSetupResponseIEsPresentNothing int = iota /* No components present */
-	InitialContextSetupResponseIEsPresentAMFUENGAPID
+	InitialContextSetupResponseIEsPresentOCFUENGAPID
 	InitialContextSetupResponseIEsPresentRANUENGAPID
 	InitialContextSetupResponseIEsPresentPDUSessionResourceSetupListCxtRes
 	InitialContextSetupResponseIEsPresentPDUSessionResourceFailedToSetupListCxtRes
@@ -663,7 +663,7 @@ const (
 
 type InitialContextSetupResponseIEsValue struct {
 	Present                                   int
-	AMFUENGAPID                               *AMFUENGAPID                               `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                               *OCFUENGAPID                               `aper:"referenceFieldValue:10"`
 	RANUENGAPID                               *RANUENGAPID                               `aper:"referenceFieldValue:85"`
 	PDUSessionResourceSetupListCxtRes         *PDUSessionResourceSetupListCxtRes         `aper:"referenceFieldValue:72"`
 	PDUSessionResourceFailedToSetupListCxtRes *PDUSessionResourceFailedToSetupListCxtRes `aper:"referenceFieldValue:55"`
@@ -678,7 +678,7 @@ type InitialContextSetupFailureIEs struct {
 
 const (
 	InitialContextSetupFailureIEsPresentNothing int = iota /* No components present */
-	InitialContextSetupFailureIEsPresentAMFUENGAPID
+	InitialContextSetupFailureIEsPresentOCFUENGAPID
 	InitialContextSetupFailureIEsPresentRANUENGAPID
 	InitialContextSetupFailureIEsPresentPDUSessionResourceFailedToSetupListCxtFail
 	InitialContextSetupFailureIEsPresentCause
@@ -687,7 +687,7 @@ const (
 
 type InitialContextSetupFailureIEsValue struct {
 	Present                                    int
-	AMFUENGAPID                                *AMFUENGAPID                                `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                                *OCFUENGAPID                                `aper:"referenceFieldValue:10"`
 	RANUENGAPID                                *RANUENGAPID                                `aper:"referenceFieldValue:85"`
 	PDUSessionResourceFailedToSetupListCxtFail *PDUSessionResourceFailedToSetupListCxtFail `aper:"referenceFieldValue:132"`
 	Cause                                      *Cause                                      `aper:"referenceFieldValue:15,valueLB:0,valueUB:5"`
@@ -702,7 +702,7 @@ type UEContextReleaseRequestIEs struct {
 
 const (
 	UEContextReleaseRequestIEsPresentNothing int = iota /* No components present */
-	UEContextReleaseRequestIEsPresentAMFUENGAPID
+	UEContextReleaseRequestIEsPresentOCFUENGAPID
 	UEContextReleaseRequestIEsPresentRANUENGAPID
 	UEContextReleaseRequestIEsPresentPDUSessionResourceListCxtRelReq
 	UEContextReleaseRequestIEsPresentCause
@@ -710,7 +710,7 @@ const (
 
 type UEContextReleaseRequestIEsValue struct {
 	Present                         int
-	AMFUENGAPID                     *AMFUENGAPID                     `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                     *OCFUENGAPID                     `aper:"referenceFieldValue:10"`
 	RANUENGAPID                     *RANUENGAPID                     `aper:"referenceFieldValue:85"`
 	PDUSessionResourceListCxtRelReq *PDUSessionResourceListCxtRelReq `aper:"referenceFieldValue:133"`
 	Cause                           *Cause                           `aper:"referenceFieldValue:15,valueLB:0,valueUB:5"`
@@ -742,7 +742,7 @@ type UEContextReleaseCompleteIEs struct {
 
 const (
 	UEContextReleaseCompleteIEsPresentNothing int = iota /* No components present */
-	UEContextReleaseCompleteIEsPresentAMFUENGAPID
+	UEContextReleaseCompleteIEsPresentOCFUENGAPID
 	UEContextReleaseCompleteIEsPresentRANUENGAPID
 	UEContextReleaseCompleteIEsPresentUserLocationInformation
 	UEContextReleaseCompleteIEsPresentInfoOnRecommendedCellsAndRANNodesForPaging
@@ -752,7 +752,7 @@ const (
 
 type UEContextReleaseCompleteIEsValue struct {
 	Present                                    int
-	AMFUENGAPID                                *AMFUENGAPID                                `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                                *OCFUENGAPID                                `aper:"referenceFieldValue:10"`
 	RANUENGAPID                                *RANUENGAPID                                `aper:"referenceFieldValue:85"`
 	UserLocationInformation                    *UserLocationInformation                    `aper:"referenceFieldValue:121,valueLB:0,valueUB:3"`
 	InfoOnRecommendedCellsAndRANNodesForPaging *InfoOnRecommendedCellsAndRANNodesForPaging `aper:"valueExt,referenceFieldValue:32"`
@@ -768,7 +768,7 @@ type UEContextModificationRequestIEs struct {
 
 const (
 	UEContextModificationRequestIEsPresentNothing int = iota /* No components present */
-	UEContextModificationRequestIEsPresentAMFUENGAPID
+	UEContextModificationRequestIEsPresentOCFUENGAPID
 	UEContextModificationRequestIEsPresentRANUENGAPID
 	UEContextModificationRequestIEsPresentRANPagingPriority
 	UEContextModificationRequestIEsPresentSecurityKey
@@ -777,13 +777,13 @@ const (
 	UEContextModificationRequestIEsPresentUESecurityCapabilities
 	UEContextModificationRequestIEsPresentCoreNetworkAssistanceInformation
 	UEContextModificationRequestIEsPresentEmergencyFallbackIndicator
-	UEContextModificationRequestIEsPresentNewAMFUENGAPID
+	UEContextModificationRequestIEsPresentNewOCFUENGAPID
 	UEContextModificationRequestIEsPresentRRCInactiveTransitionReportRequest
 )
 
 type UEContextModificationRequestIEsValue struct {
 	Present                            int
-	AMFUENGAPID                        *AMFUENGAPID                        `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                        *OCFUENGAPID                        `aper:"referenceFieldValue:10"`
 	RANUENGAPID                        *RANUENGAPID                        `aper:"referenceFieldValue:85"`
 	RANPagingPriority                  *RANPagingPriority                  `aper:"referenceFieldValue:83"`
 	SecurityKey                        *SecurityKey                        `aper:"referenceFieldValue:94"`
@@ -792,7 +792,7 @@ type UEContextModificationRequestIEsValue struct {
 	UESecurityCapabilities             *UESecurityCapabilities             `aper:"valueExt,referenceFieldValue:119"`
 	CoreNetworkAssistanceInformation   *CoreNetworkAssistanceInformation   `aper:"valueExt,referenceFieldValue:18"`
 	EmergencyFallbackIndicator         *EmergencyFallbackIndicator         `aper:"valueExt,referenceFieldValue:24"`
-	NewAMFUENGAPID                     *AMFUENGAPID                        `aper:"referenceFieldValue:40"`
+	NewOCFUENGAPID                     *OCFUENGAPID                        `aper:"referenceFieldValue:40"`
 	RRCInactiveTransitionReportRequest *RRCInactiveTransitionReportRequest `aper:"referenceFieldValue:91"`
 }
 
@@ -804,7 +804,7 @@ type UEContextModificationResponseIEs struct {
 
 const (
 	UEContextModificationResponseIEsPresentNothing int = iota /* No components present */
-	UEContextModificationResponseIEsPresentAMFUENGAPID
+	UEContextModificationResponseIEsPresentOCFUENGAPID
 	UEContextModificationResponseIEsPresentRANUENGAPID
 	UEContextModificationResponseIEsPresentRRCState
 	UEContextModificationResponseIEsPresentUserLocationInformation
@@ -813,7 +813,7 @@ const (
 
 type UEContextModificationResponseIEsValue struct {
 	Present                 int
-	AMFUENGAPID             *AMFUENGAPID             `aper:"referenceFieldValue:10"`
+	OCFUENGAPID             *OCFUENGAPID             `aper:"referenceFieldValue:10"`
 	RANUENGAPID             *RANUENGAPID             `aper:"referenceFieldValue:85"`
 	RRCState                *RRCState                `aper:"referenceFieldValue:92"`
 	UserLocationInformation *UserLocationInformation `aper:"referenceFieldValue:121,valueLB:0,valueUB:3"`
@@ -828,7 +828,7 @@ type UEContextModificationFailureIEs struct {
 
 const (
 	UEContextModificationFailureIEsPresentNothing int = iota /* No components present */
-	UEContextModificationFailureIEsPresentAMFUENGAPID
+	UEContextModificationFailureIEsPresentOCFUENGAPID
 	UEContextModificationFailureIEsPresentRANUENGAPID
 	UEContextModificationFailureIEsPresentCause
 	UEContextModificationFailureIEsPresentCriticalityDiagnostics
@@ -836,7 +836,7 @@ const (
 
 type UEContextModificationFailureIEsValue struct {
 	Present                int
-	AMFUENGAPID            *AMFUENGAPID            `aper:"referenceFieldValue:10"`
+	OCFUENGAPID            *OCFUENGAPID            `aper:"referenceFieldValue:10"`
 	RANUENGAPID            *RANUENGAPID            `aper:"referenceFieldValue:85"`
 	Cause                  *Cause                  `aper:"referenceFieldValue:15,valueLB:0,valueUB:5"`
 	CriticalityDiagnostics *CriticalityDiagnostics `aper:"valueExt,referenceFieldValue:19"`
@@ -850,7 +850,7 @@ type RRCInactiveTransitionReportIEs struct {
 
 const (
 	RRCInactiveTransitionReportIEsPresentNothing int = iota /* No components present */
-	RRCInactiveTransitionReportIEsPresentAMFUENGAPID
+	RRCInactiveTransitionReportIEsPresentOCFUENGAPID
 	RRCInactiveTransitionReportIEsPresentRANUENGAPID
 	RRCInactiveTransitionReportIEsPresentRRCState
 	RRCInactiveTransitionReportIEsPresentUserLocationInformation
@@ -858,7 +858,7 @@ const (
 
 type RRCInactiveTransitionReportIEsValue struct {
 	Present                 int
-	AMFUENGAPID             *AMFUENGAPID             `aper:"referenceFieldValue:10"`
+	OCFUENGAPID             *OCFUENGAPID             `aper:"referenceFieldValue:10"`
 	RANUENGAPID             *RANUENGAPID             `aper:"referenceFieldValue:85"`
 	RRCState                *RRCState                `aper:"referenceFieldValue:92"`
 	UserLocationInformation *UserLocationInformation `aper:"referenceFieldValue:121,valueLB:0,valueUB:3"`
@@ -872,7 +872,7 @@ type HandoverRequiredIEs struct {
 
 const (
 	HandoverRequiredIEsPresentNothing int = iota /* No components present */
-	HandoverRequiredIEsPresentAMFUENGAPID
+	HandoverRequiredIEsPresentOCFUENGAPID
 	HandoverRequiredIEsPresentRANUENGAPID
 	HandoverRequiredIEsPresentHandoverType
 	HandoverRequiredIEsPresentCause
@@ -884,7 +884,7 @@ const (
 
 type HandoverRequiredIEsValue struct {
 	Present                            int
-	AMFUENGAPID                        *AMFUENGAPID                        `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                        *OCFUENGAPID                        `aper:"referenceFieldValue:10"`
 	RANUENGAPID                        *RANUENGAPID                        `aper:"referenceFieldValue:85"`
 	HandoverType                       *HandoverType                       `aper:"referenceFieldValue:29"`
 	Cause                              *Cause                              `aper:"referenceFieldValue:15,valueLB:0,valueUB:5"`
@@ -902,7 +902,7 @@ type HandoverCommandIEs struct {
 
 const (
 	HandoverCommandIEsPresentNothing int = iota /* No components present */
-	HandoverCommandIEsPresentAMFUENGAPID
+	HandoverCommandIEsPresentOCFUENGAPID
 	HandoverCommandIEsPresentRANUENGAPID
 	HandoverCommandIEsPresentHandoverType
 	HandoverCommandIEsPresentNASSecurityParametersFromNGRAN
@@ -914,7 +914,7 @@ const (
 
 type HandoverCommandIEsValue struct {
 	Present                              int
-	AMFUENGAPID                          *AMFUENGAPID                          `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                          *OCFUENGAPID                          `aper:"referenceFieldValue:10"`
 	RANUENGAPID                          *RANUENGAPID                          `aper:"referenceFieldValue:85"`
 	HandoverType                         *HandoverType                         `aper:"referenceFieldValue:29"`
 	NASSecurityParametersFromNGRAN       *NASSecurityParametersFromNGRAN       `aper:"referenceFieldValue:39"`
@@ -932,7 +932,7 @@ type HandoverPreparationFailureIEs struct {
 
 const (
 	HandoverPreparationFailureIEsPresentNothing int = iota /* No components present */
-	HandoverPreparationFailureIEsPresentAMFUENGAPID
+	HandoverPreparationFailureIEsPresentOCFUENGAPID
 	HandoverPreparationFailureIEsPresentRANUENGAPID
 	HandoverPreparationFailureIEsPresentCause
 	HandoverPreparationFailureIEsPresentCriticalityDiagnostics
@@ -940,7 +940,7 @@ const (
 
 type HandoverPreparationFailureIEsValue struct {
 	Present                int
-	AMFUENGAPID            *AMFUENGAPID            `aper:"referenceFieldValue:10"`
+	OCFUENGAPID            *OCFUENGAPID            `aper:"referenceFieldValue:10"`
 	RANUENGAPID            *RANUENGAPID            `aper:"referenceFieldValue:85"`
 	Cause                  *Cause                  `aper:"referenceFieldValue:15,valueLB:0,valueUB:5"`
 	CriticalityDiagnostics *CriticalityDiagnostics `aper:"valueExt,referenceFieldValue:19"`
@@ -954,7 +954,7 @@ type HandoverRequestIEs struct {
 
 const (
 	HandoverRequestIEsPresentNothing int = iota /* No components present */
-	HandoverRequestIEsPresentAMFUENGAPID
+	HandoverRequestIEsPresentOCFUENGAPID
 	HandoverRequestIEsPresentHandoverType
 	HandoverRequestIEsPresentCause
 	HandoverRequestIEsPresentUEAggregateMaximumBitRate
@@ -976,7 +976,7 @@ const (
 
 type HandoverRequestIEsValue struct {
 	Present                            int
-	AMFUENGAPID                        *AMFUENGAPID                        `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                        *OCFUENGAPID                        `aper:"referenceFieldValue:10"`
 	HandoverType                       *HandoverType                       `aper:"referenceFieldValue:29"`
 	Cause                              *Cause                              `aper:"referenceFieldValue:15,valueLB:0,valueUB:5"`
 	UEAggregateMaximumBitRate          *UEAggregateMaximumBitRate          `aper:"valueExt,referenceFieldValue:110"`
@@ -1004,7 +1004,7 @@ type HandoverRequestAcknowledgeIEs struct {
 
 const (
 	HandoverRequestAcknowledgeIEsPresentNothing int = iota /* No components present */
-	HandoverRequestAcknowledgeIEsPresentAMFUENGAPID
+	HandoverRequestAcknowledgeIEsPresentOCFUENGAPID
 	HandoverRequestAcknowledgeIEsPresentRANUENGAPID
 	HandoverRequestAcknowledgeIEsPresentPDUSessionResourceAdmittedList
 	HandoverRequestAcknowledgeIEsPresentPDUSessionResourceFailedToSetupListHOAck
@@ -1014,7 +1014,7 @@ const (
 
 type HandoverRequestAcknowledgeIEsValue struct {
 	Present                                  int
-	AMFUENGAPID                              *AMFUENGAPID                              `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                              *OCFUENGAPID                              `aper:"referenceFieldValue:10"`
 	RANUENGAPID                              *RANUENGAPID                              `aper:"referenceFieldValue:85"`
 	PDUSessionResourceAdmittedList           *PDUSessionResourceAdmittedList           `aper:"referenceFieldValue:53"`
 	PDUSessionResourceFailedToSetupListHOAck *PDUSessionResourceFailedToSetupListHOAck `aper:"referenceFieldValue:56"`
@@ -1030,14 +1030,14 @@ type HandoverFailureIEs struct {
 
 const (
 	HandoverFailureIEsPresentNothing int = iota /* No components present */
-	HandoverFailureIEsPresentAMFUENGAPID
+	HandoverFailureIEsPresentOCFUENGAPID
 	HandoverFailureIEsPresentCause
 	HandoverFailureIEsPresentCriticalityDiagnostics
 )
 
 type HandoverFailureIEsValue struct {
 	Present                int
-	AMFUENGAPID            *AMFUENGAPID            `aper:"referenceFieldValue:10"`
+	OCFUENGAPID            *OCFUENGAPID            `aper:"referenceFieldValue:10"`
 	Cause                  *Cause                  `aper:"referenceFieldValue:15,valueLB:0,valueUB:5"`
 	CriticalityDiagnostics *CriticalityDiagnostics `aper:"valueExt,referenceFieldValue:19"`
 }
@@ -1050,14 +1050,14 @@ type HandoverNotifyIEs struct {
 
 const (
 	HandoverNotifyIEsPresentNothing int = iota /* No components present */
-	HandoverNotifyIEsPresentAMFUENGAPID
+	HandoverNotifyIEsPresentOCFUENGAPID
 	HandoverNotifyIEsPresentRANUENGAPID
 	HandoverNotifyIEsPresentUserLocationInformation
 )
 
 type HandoverNotifyIEsValue struct {
 	Present                 int
-	AMFUENGAPID             *AMFUENGAPID             `aper:"referenceFieldValue:10"`
+	OCFUENGAPID             *OCFUENGAPID             `aper:"referenceFieldValue:10"`
 	RANUENGAPID             *RANUENGAPID             `aper:"referenceFieldValue:85"`
 	UserLocationInformation *UserLocationInformation `aper:"referenceFieldValue:121,valueLB:0,valueUB:3"`
 }
@@ -1071,7 +1071,7 @@ type PathSwitchRequestIEs struct {
 const (
 	PathSwitchRequestIEsPresentNothing int = iota /* No components present */
 	PathSwitchRequestIEsPresentRANUENGAPID
-	PathSwitchRequestIEsPresentSourceAMFUENGAPID
+	PathSwitchRequestIEsPresentSourceOCFUENGAPID
 	PathSwitchRequestIEsPresentUserLocationInformation
 	PathSwitchRequestIEsPresentUESecurityCapabilities
 	PathSwitchRequestIEsPresentPDUSessionResourceToBeSwitchedDLList
@@ -1081,7 +1081,7 @@ const (
 type PathSwitchRequestIEsValue struct {
 	Present                                  int
 	RANUENGAPID                              *RANUENGAPID                              `aper:"referenceFieldValue:85"`
-	SourceAMFUENGAPID                        *AMFUENGAPID                              `aper:"referenceFieldValue:100"`
+	SourceOCFUENGAPID                        *OCFUENGAPID                              `aper:"referenceFieldValue:100"`
 	UserLocationInformation                  *UserLocationInformation                  `aper:"referenceFieldValue:121,valueLB:0,valueUB:3"`
 	UESecurityCapabilities                   *UESecurityCapabilities                   `aper:"valueExt,referenceFieldValue:119"`
 	PDUSessionResourceToBeSwitchedDLList     *PDUSessionResourceToBeSwitchedDLList     `aper:"referenceFieldValue:76"`
@@ -1096,7 +1096,7 @@ type PathSwitchRequestAcknowledgeIEs struct {
 
 const (
 	PathSwitchRequestAcknowledgeIEsPresentNothing int = iota /* No components present */
-	PathSwitchRequestAcknowledgeIEsPresentAMFUENGAPID
+	PathSwitchRequestAcknowledgeIEsPresentOCFUENGAPID
 	PathSwitchRequestAcknowledgeIEsPresentRANUENGAPID
 	PathSwitchRequestAcknowledgeIEsPresentUESecurityCapabilities
 	PathSwitchRequestAcknowledgeIEsPresentSecurityContext
@@ -1111,7 +1111,7 @@ const (
 
 type PathSwitchRequestAcknowledgeIEsValue struct {
 	Present                             int
-	AMFUENGAPID                         *AMFUENGAPID                         `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                         *OCFUENGAPID                         `aper:"referenceFieldValue:10"`
 	RANUENGAPID                         *RANUENGAPID                         `aper:"referenceFieldValue:85"`
 	UESecurityCapabilities              *UESecurityCapabilities              `aper:"valueExt,referenceFieldValue:119"`
 	SecurityContext                     *SecurityContext                     `aper:"valueExt,referenceFieldValue:93"`
@@ -1132,7 +1132,7 @@ type PathSwitchRequestFailureIEs struct {
 
 const (
 	PathSwitchRequestFailureIEsPresentNothing int = iota /* No components present */
-	PathSwitchRequestFailureIEsPresentAMFUENGAPID
+	PathSwitchRequestFailureIEsPresentOCFUENGAPID
 	PathSwitchRequestFailureIEsPresentRANUENGAPID
 	PathSwitchRequestFailureIEsPresentPDUSessionResourceReleasedListPSFail
 	PathSwitchRequestFailureIEsPresentCriticalityDiagnostics
@@ -1140,7 +1140,7 @@ const (
 
 type PathSwitchRequestFailureIEsValue struct {
 	Present                              int
-	AMFUENGAPID                          *AMFUENGAPID                          `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                          *OCFUENGAPID                          `aper:"referenceFieldValue:10"`
 	RANUENGAPID                          *RANUENGAPID                          `aper:"referenceFieldValue:85"`
 	PDUSessionResourceReleasedListPSFail *PDUSessionResourceReleasedListPSFail `aper:"referenceFieldValue:69"`
 	CriticalityDiagnostics               *CriticalityDiagnostics               `aper:"valueExt,referenceFieldValue:19"`
@@ -1154,14 +1154,14 @@ type HandoverCancelIEs struct {
 
 const (
 	HandoverCancelIEsPresentNothing int = iota /* No components present */
-	HandoverCancelIEsPresentAMFUENGAPID
+	HandoverCancelIEsPresentOCFUENGAPID
 	HandoverCancelIEsPresentRANUENGAPID
 	HandoverCancelIEsPresentCause
 )
 
 type HandoverCancelIEsValue struct {
 	Present     int
-	AMFUENGAPID *AMFUENGAPID `aper:"referenceFieldValue:10"`
+	OCFUENGAPID *OCFUENGAPID `aper:"referenceFieldValue:10"`
 	RANUENGAPID *RANUENGAPID `aper:"referenceFieldValue:85"`
 	Cause       *Cause       `aper:"referenceFieldValue:15,valueLB:0,valueUB:5"`
 }
@@ -1174,14 +1174,14 @@ type HandoverCancelAcknowledgeIEs struct {
 
 const (
 	HandoverCancelAcknowledgeIEsPresentNothing int = iota /* No components present */
-	HandoverCancelAcknowledgeIEsPresentAMFUENGAPID
+	HandoverCancelAcknowledgeIEsPresentOCFUENGAPID
 	HandoverCancelAcknowledgeIEsPresentRANUENGAPID
 	HandoverCancelAcknowledgeIEsPresentCriticalityDiagnostics
 )
 
 type HandoverCancelAcknowledgeIEsValue struct {
 	Present                int
-	AMFUENGAPID            *AMFUENGAPID            `aper:"referenceFieldValue:10"`
+	OCFUENGAPID            *OCFUENGAPID            `aper:"referenceFieldValue:10"`
 	RANUENGAPID            *RANUENGAPID            `aper:"referenceFieldValue:85"`
 	CriticalityDiagnostics *CriticalityDiagnostics `aper:"valueExt,referenceFieldValue:19"`
 }
@@ -1194,14 +1194,14 @@ type UplinkRANStatusTransferIEs struct {
 
 const (
 	UplinkRANStatusTransferIEsPresentNothing int = iota /* No components present */
-	UplinkRANStatusTransferIEsPresentAMFUENGAPID
+	UplinkRANStatusTransferIEsPresentOCFUENGAPID
 	UplinkRANStatusTransferIEsPresentRANUENGAPID
 	UplinkRANStatusTransferIEsPresentRANStatusTransferTransparentContainer
 )
 
 type UplinkRANStatusTransferIEsValue struct {
 	Present                               int
-	AMFUENGAPID                           *AMFUENGAPID                           `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                           *OCFUENGAPID                           `aper:"referenceFieldValue:10"`
 	RANUENGAPID                           *RANUENGAPID                           `aper:"referenceFieldValue:85"`
 	RANStatusTransferTransparentContainer *RANStatusTransferTransparentContainer `aper:"valueExt,referenceFieldValue:84"`
 }
@@ -1214,14 +1214,14 @@ type DownlinkRANStatusTransferIEs struct {
 
 const (
 	DownlinkRANStatusTransferIEsPresentNothing int = iota /* No components present */
-	DownlinkRANStatusTransferIEsPresentAMFUENGAPID
+	DownlinkRANStatusTransferIEsPresentOCFUENGAPID
 	DownlinkRANStatusTransferIEsPresentRANUENGAPID
 	DownlinkRANStatusTransferIEsPresentRANStatusTransferTransparentContainer
 )
 
 type DownlinkRANStatusTransferIEsValue struct {
 	Present                               int
-	AMFUENGAPID                           *AMFUENGAPID                           `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                           *OCFUENGAPID                           `aper:"referenceFieldValue:10"`
 	RANUENGAPID                           *RANUENGAPID                           `aper:"referenceFieldValue:85"`
 	RANStatusTransferTransparentContainer *RANStatusTransferTransparentContainer `aper:"valueExt,referenceFieldValue:84"`
 }
@@ -1267,7 +1267,7 @@ const (
 	InitialUEMessageIEsPresentUserLocationInformation
 	InitialUEMessageIEsPresentRRCEstablishmentCause
 	InitialUEMessageIEsPresentFiveGSTMSI
-	InitialUEMessageIEsPresentAMFSetID
+	InitialUEMessageIEsPresentOCFSetID
 	InitialUEMessageIEsPresentUEContextRequest
 	InitialUEMessageIEsPresentAllowedNSSAI
 )
@@ -1279,7 +1279,7 @@ type InitialUEMessageIEsValue struct {
 	UserLocationInformation *UserLocationInformation `aper:"referenceFieldValue:121,valueLB:0,valueUB:3"`
 	RRCEstablishmentCause   *RRCEstablishmentCause   `aper:"referenceFieldValue:90"`
 	FiveGSTMSI              *FiveGSTMSI              `aper:"valueExt,referenceFieldValue:26"`
-	AMFSetID                *AMFSetID                `aper:"referenceFieldValue:3"`
+	OCFSetID                *OCFSetID                `aper:"referenceFieldValue:3"`
 	UEContextRequest        *UEContextRequest        `aper:"referenceFieldValue:112"`
 	AllowedNSSAI            *AllowedNSSAI            `aper:"referenceFieldValue:0"`
 }
@@ -1292,9 +1292,9 @@ type DownlinkNASTransportIEs struct {
 
 const (
 	DownlinkNASTransportIEsPresentNothing int = iota /* No components present */
-	DownlinkNASTransportIEsPresentAMFUENGAPID
+	DownlinkNASTransportIEsPresentOCFUENGAPID
 	DownlinkNASTransportIEsPresentRANUENGAPID
-	DownlinkNASTransportIEsPresentOldAMF
+	DownlinkNASTransportIEsPresentOldOCF
 	DownlinkNASTransportIEsPresentRANPagingPriority
 	DownlinkNASTransportIEsPresentNASPDU
 	DownlinkNASTransportIEsPresentMobilityRestrictionList
@@ -1305,9 +1305,9 @@ const (
 
 type DownlinkNASTransportIEsValue struct {
 	Present                   int
-	AMFUENGAPID               *AMFUENGAPID               `aper:"referenceFieldValue:10"`
+	OCFUENGAPID               *OCFUENGAPID               `aper:"referenceFieldValue:10"`
 	RANUENGAPID               *RANUENGAPID               `aper:"referenceFieldValue:85"`
-	OldAMF                    *AMFName                   `aper:"referenceFieldValue:48"`
+	OldOCF                    *OCFName                   `aper:"referenceFieldValue:48"`
 	RANPagingPriority         *RANPagingPriority         `aper:"referenceFieldValue:83"`
 	NASPDU                    *NASPDU                    `aper:"referenceFieldValue:38"`
 	MobilityRestrictionList   *MobilityRestrictionList   `aper:"valueExt,referenceFieldValue:36"`
@@ -1324,7 +1324,7 @@ type UplinkNASTransportIEs struct {
 
 const (
 	UplinkNASTransportIEsPresentNothing int = iota /* No components present */
-	UplinkNASTransportIEsPresentAMFUENGAPID
+	UplinkNASTransportIEsPresentOCFUENGAPID
 	UplinkNASTransportIEsPresentRANUENGAPID
 	UplinkNASTransportIEsPresentNASPDU
 	UplinkNASTransportIEsPresentUserLocationInformation
@@ -1332,7 +1332,7 @@ const (
 
 type UplinkNASTransportIEsValue struct {
 	Present                 int
-	AMFUENGAPID             *AMFUENGAPID             `aper:"referenceFieldValue:10"`
+	OCFUENGAPID             *OCFUENGAPID             `aper:"referenceFieldValue:10"`
 	RANUENGAPID             *RANUENGAPID             `aper:"referenceFieldValue:85"`
 	NASPDU                  *NASPDU                  `aper:"referenceFieldValue:38"`
 	UserLocationInformation *UserLocationInformation `aper:"referenceFieldValue:121,valueLB:0,valueUB:3"`
@@ -1346,7 +1346,7 @@ type NASNonDeliveryIndicationIEs struct {
 
 const (
 	NASNonDeliveryIndicationIEsPresentNothing int = iota /* No components present */
-	NASNonDeliveryIndicationIEsPresentAMFUENGAPID
+	NASNonDeliveryIndicationIEsPresentOCFUENGAPID
 	NASNonDeliveryIndicationIEsPresentRANUENGAPID
 	NASNonDeliveryIndicationIEsPresentNASPDU
 	NASNonDeliveryIndicationIEsPresentCause
@@ -1354,7 +1354,7 @@ const (
 
 type NASNonDeliveryIndicationIEsValue struct {
 	Present     int
-	AMFUENGAPID *AMFUENGAPID `aper:"referenceFieldValue:10"`
+	OCFUENGAPID *OCFUENGAPID `aper:"referenceFieldValue:10"`
 	RANUENGAPID *RANUENGAPID `aper:"referenceFieldValue:85"`
 	NASPDU      *NASPDU      `aper:"referenceFieldValue:38"`
 	Cause       *Cause       `aper:"referenceFieldValue:15,valueLB:0,valueUB:5"`
@@ -1369,18 +1369,18 @@ type RerouteNASRequestIEs struct {
 const (
 	RerouteNASRequestIEsPresentNothing int = iota /* No components present */
 	RerouteNASRequestIEsPresentRANUENGAPID
-	RerouteNASRequestIEsPresentAMFUENGAPID
+	RerouteNASRequestIEsPresentOCFUENGAPID
 	RerouteNASRequestIEsPresentNGAPMessage
-	RerouteNASRequestIEsPresentAMFSetID
+	RerouteNASRequestIEsPresentOCFSetID
 	RerouteNASRequestIEsPresentAllowedNSSAI
 )
 
 type RerouteNASRequestIEsValue struct {
 	Present      int
 	RANUENGAPID  *RANUENGAPID      `aper:"referenceFieldValue:85"`
-	AMFUENGAPID  *AMFUENGAPID      `aper:"referenceFieldValue:10"`
+	OCFUENGAPID  *OCFUENGAPID      `aper:"referenceFieldValue:10"`
 	NGAPMessage  *aper.OctetString `aper:"referenceFieldValue:42"`
-	AMFSetID     *AMFSetID         `aper:"referenceFieldValue:3"`
+	OCFSetID     *OCFSetID         `aper:"referenceFieldValue:3"`
 	AllowedNSSAI *AllowedNSSAI     `aper:"referenceFieldValue:0"`
 }
 
@@ -1414,18 +1414,18 @@ type NGSetupResponseIEs struct {
 
 const (
 	NGSetupResponseIEsPresentNothing int = iota /* No components present */
-	NGSetupResponseIEsPresentAMFName
+	NGSetupResponseIEsPresentOCFName
 	NGSetupResponseIEsPresentServedGUAMIList
-	NGSetupResponseIEsPresentRelativeAMFCapacity
+	NGSetupResponseIEsPresentRelativeOCFCapacity
 	NGSetupResponseIEsPresentPLMNSupportList
 	NGSetupResponseIEsPresentCriticalityDiagnostics
 )
 
 type NGSetupResponseIEsValue struct {
 	Present                int
-	AMFName                *AMFName                `aper:"referenceFieldValue:1"`
+	OCFName                *OCFName                `aper:"referenceFieldValue:1"`
 	ServedGUAMIList        *ServedGUAMIList        `aper:"referenceFieldValue:96"`
-	RelativeAMFCapacity    *RelativeAMFCapacity    `aper:"referenceFieldValue:86"`
+	RelativeOCFCapacity    *RelativeOCFCapacity    `aper:"referenceFieldValue:86"`
 	PLMNSupportList        *PLMNSupportList        `aper:"referenceFieldValue:80"`
 	CriticalityDiagnostics *CriticalityDiagnostics `aper:"valueExt,referenceFieldValue:19"`
 }
@@ -1506,86 +1506,86 @@ type RANConfigurationUpdateFailureIEsValue struct {
 	CriticalityDiagnostics *CriticalityDiagnostics `aper:"valueExt,referenceFieldValue:19"`
 }
 
-type AMFConfigurationUpdateIEs struct {
+type OCFConfigurationUpdateIEs struct {
 	Id          ProtocolIEID
 	Criticality Criticality
-	Value       AMFConfigurationUpdateIEsValue `aper:"openType,referenceFieldName:Id"`
+	Value       OCFConfigurationUpdateIEsValue `aper:"openType,referenceFieldName:Id"`
 }
 
 const (
-	AMFConfigurationUpdateIEsPresentNothing int = iota /* No components present */
-	AMFConfigurationUpdateIEsPresentAMFName
-	AMFConfigurationUpdateIEsPresentServedGUAMIList
-	AMFConfigurationUpdateIEsPresentRelativeAMFCapacity
-	AMFConfigurationUpdateIEsPresentPLMNSupportList
-	AMFConfigurationUpdateIEsPresentAMFTNLAssociationToAddList
-	AMFConfigurationUpdateIEsPresentAMFTNLAssociationToRemoveList
-	AMFConfigurationUpdateIEsPresentAMFTNLAssociationToUpdateList
+	OCFConfigurationUpdateIEsPresentNothing int = iota /* No components present */
+	OCFConfigurationUpdateIEsPresentOCFName
+	OCFConfigurationUpdateIEsPresentServedGUAMIList
+	OCFConfigurationUpdateIEsPresentRelativeOCFCapacity
+	OCFConfigurationUpdateIEsPresentPLMNSupportList
+	OCFConfigurationUpdateIEsPresentOCFTNLAssociationToAddList
+	OCFConfigurationUpdateIEsPresentOCFTNLAssociationToRemoveList
+	OCFConfigurationUpdateIEsPresentOCFTNLAssociationToUpdateList
 )
 
-type AMFConfigurationUpdateIEsValue struct {
+type OCFConfigurationUpdateIEsValue struct {
 	Present                       int
-	AMFName                       *AMFName                       `aper:"referenceFieldValue:1"`
+	OCFName                       *OCFName                       `aper:"referenceFieldValue:1"`
 	ServedGUAMIList               *ServedGUAMIList               `aper:"referenceFieldValue:96"`
-	RelativeAMFCapacity           *RelativeAMFCapacity           `aper:"referenceFieldValue:86"`
+	RelativeOCFCapacity           *RelativeOCFCapacity           `aper:"referenceFieldValue:86"`
 	PLMNSupportList               *PLMNSupportList               `aper:"referenceFieldValue:80"`
-	AMFTNLAssociationToAddList    *AMFTNLAssociationToAddList    `aper:"referenceFieldValue:6"`
-	AMFTNLAssociationToRemoveList *AMFTNLAssociationToRemoveList `aper:"referenceFieldValue:7"`
-	AMFTNLAssociationToUpdateList *AMFTNLAssociationToUpdateList `aper:"referenceFieldValue:8"`
+	OCFTNLAssociationToAddList    *OCFTNLAssociationToAddList    `aper:"referenceFieldValue:6"`
+	OCFTNLAssociationToRemoveList *OCFTNLAssociationToRemoveList `aper:"referenceFieldValue:7"`
+	OCFTNLAssociationToUpdateList *OCFTNLAssociationToUpdateList `aper:"referenceFieldValue:8"`
 }
 
-type AMFConfigurationUpdateAcknowledgeIEs struct {
+type OCFConfigurationUpdateAcknowledgeIEs struct {
 	Id          ProtocolIEID
 	Criticality Criticality
-	Value       AMFConfigurationUpdateAcknowledgeIEsValue `aper:"openType,referenceFieldName:Id"`
+	Value       OCFConfigurationUpdateAcknowledgeIEsValue `aper:"openType,referenceFieldName:Id"`
 }
 
 const (
-	AMFConfigurationUpdateAcknowledgeIEsPresentNothing int = iota /* No components present */
-	AMFConfigurationUpdateAcknowledgeIEsPresentAMFTNLAssociationSetupList
-	AMFConfigurationUpdateAcknowledgeIEsPresentAMFTNLAssociationFailedToSetupList
-	AMFConfigurationUpdateAcknowledgeIEsPresentCriticalityDiagnostics
+	OCFConfigurationUpdateAcknowledgeIEsPresentNothing int = iota /* No components present */
+	OCFConfigurationUpdateAcknowledgeIEsPresentOCFTNLAssociationSetupList
+	OCFConfigurationUpdateAcknowledgeIEsPresentOCFTNLAssociationFailedToSetupList
+	OCFConfigurationUpdateAcknowledgeIEsPresentCriticalityDiagnostics
 )
 
-type AMFConfigurationUpdateAcknowledgeIEsValue struct {
+type OCFConfigurationUpdateAcknowledgeIEsValue struct {
 	Present                            int
-	AMFTNLAssociationSetupList         *AMFTNLAssociationSetupList `aper:"referenceFieldValue:5"`
-	AMFTNLAssociationFailedToSetupList *TNLAssociationList         `aper:"referenceFieldValue:4"`
+	OCFTNLAssociationSetupList         *OCFTNLAssociationSetupList `aper:"referenceFieldValue:5"`
+	OCFTNLAssociationFailedToSetupList *TNLAssociationList         `aper:"referenceFieldValue:4"`
 	CriticalityDiagnostics             *CriticalityDiagnostics     `aper:"valueExt,referenceFieldValue:19"`
 }
 
-type AMFConfigurationUpdateFailureIEs struct {
+type OCFConfigurationUpdateFailureIEs struct {
 	Id          ProtocolIEID
 	Criticality Criticality
-	Value       AMFConfigurationUpdateFailureIEsValue `aper:"openType,referenceFieldName:Id"`
+	Value       OCFConfigurationUpdateFailureIEsValue `aper:"openType,referenceFieldName:Id"`
 }
 
 const (
-	AMFConfigurationUpdateFailureIEsPresentNothing int = iota /* No components present */
-	AMFConfigurationUpdateFailureIEsPresentCause
-	AMFConfigurationUpdateFailureIEsPresentTimeToWait
-	AMFConfigurationUpdateFailureIEsPresentCriticalityDiagnostics
+	OCFConfigurationUpdateFailureIEsPresentNothing int = iota /* No components present */
+	OCFConfigurationUpdateFailureIEsPresentCause
+	OCFConfigurationUpdateFailureIEsPresentTimeToWait
+	OCFConfigurationUpdateFailureIEsPresentCriticalityDiagnostics
 )
 
-type AMFConfigurationUpdateFailureIEsValue struct {
+type OCFConfigurationUpdateFailureIEsValue struct {
 	Present                int
 	Cause                  *Cause                  `aper:"referenceFieldValue:15,valueLB:0,valueUB:5"`
 	TimeToWait             *TimeToWait             `aper:"referenceFieldValue:107"`
 	CriticalityDiagnostics *CriticalityDiagnostics `aper:"valueExt,referenceFieldValue:19"`
 }
 
-type AMFStatusIndicationIEs struct {
+type OCFStatusIndicationIEs struct {
 	Id          ProtocolIEID
 	Criticality Criticality
-	Value       AMFStatusIndicationIEsValue `aper:"openType,referenceFieldName:Id"`
+	Value       OCFStatusIndicationIEsValue `aper:"openType,referenceFieldName:Id"`
 }
 
 const (
-	AMFStatusIndicationIEsPresentNothing int = iota /* No components present */
-	AMFStatusIndicationIEsPresentUnavailableGUAMIList
+	OCFStatusIndicationIEsPresentNothing int = iota /* No components present */
+	OCFStatusIndicationIEsPresentUnavailableGUAMIList
 )
 
-type AMFStatusIndicationIEsValue struct {
+type OCFStatusIndicationIEsValue struct {
 	Present              int
 	UnavailableGUAMIList *UnavailableGUAMIList `aper:"referenceFieldValue:120"`
 }
@@ -1634,7 +1634,7 @@ type ErrorIndicationIEs struct {
 
 const (
 	ErrorIndicationIEsPresentNothing int = iota /* No components present */
-	ErrorIndicationIEsPresentAMFUENGAPID
+	ErrorIndicationIEsPresentOCFUENGAPID
 	ErrorIndicationIEsPresentRANUENGAPID
 	ErrorIndicationIEsPresentCause
 	ErrorIndicationIEsPresentCriticalityDiagnostics
@@ -1642,7 +1642,7 @@ const (
 
 type ErrorIndicationIEsValue struct {
 	Present                int
-	AMFUENGAPID            *AMFUENGAPID            `aper:"referenceFieldValue:10"`
+	OCFUENGAPID            *OCFUENGAPID            `aper:"referenceFieldValue:10"`
 	RANUENGAPID            *RANUENGAPID            `aper:"referenceFieldValue:85"`
 	Cause                  *Cause                  `aper:"referenceFieldValue:15,valueLB:0,valueUB:5"`
 	CriticalityDiagnostics *CriticalityDiagnostics `aper:"valueExt,referenceFieldValue:19"`
@@ -1656,15 +1656,15 @@ type OverloadStartIEs struct {
 
 const (
 	OverloadStartIEsPresentNothing int = iota /* No components present */
-	OverloadStartIEsPresentAMFOverloadResponse
-	OverloadStartIEsPresentAMFTrafficLoadReductionIndication
+	OverloadStartIEsPresentOCFOverloadResponse
+	OverloadStartIEsPresentOCFTrafficLoadReductionIndication
 	OverloadStartIEsPresentOverloadStartNSSAIList
 )
 
 type OverloadStartIEsValue struct {
 	Present                           int
-	AMFOverloadResponse               *OverloadResponse               `aper:"referenceFieldValue:2,valueLB:0,valueUB:1"`
-	AMFTrafficLoadReductionIndication *TrafficLoadReductionIndication `aper:"referenceFieldValue:9"`
+	OCFOverloadResponse               *OverloadResponse               `aper:"referenceFieldValue:2,valueLB:0,valueUB:1"`
+	OCFTrafficLoadReductionIndication *TrafficLoadReductionIndication `aper:"referenceFieldValue:9"`
 	OverloadStartNSSAIList            *OverloadStartNSSAIList         `aper:"referenceFieldValue:49"`
 }
 
@@ -1864,7 +1864,7 @@ type DownlinkUEAssociatedNRPPaTransportIEs struct {
 
 const (
 	DownlinkUEAssociatedNRPPaTransportIEsPresentNothing int = iota /* No components present */
-	DownlinkUEAssociatedNRPPaTransportIEsPresentAMFUENGAPID
+	DownlinkUEAssociatedNRPPaTransportIEsPresentOCFUENGAPID
 	DownlinkUEAssociatedNRPPaTransportIEsPresentRANUENGAPID
 	DownlinkUEAssociatedNRPPaTransportIEsPresentRoutingID
 	DownlinkUEAssociatedNRPPaTransportIEsPresentNRPPaPDU
@@ -1872,7 +1872,7 @@ const (
 
 type DownlinkUEAssociatedNRPPaTransportIEsValue struct {
 	Present     int
-	AMFUENGAPID *AMFUENGAPID `aper:"referenceFieldValue:10"`
+	OCFUENGAPID *OCFUENGAPID `aper:"referenceFieldValue:10"`
 	RANUENGAPID *RANUENGAPID `aper:"referenceFieldValue:85"`
 	RoutingID   *RoutingID   `aper:"referenceFieldValue:89"`
 	NRPPaPDU    *NRPPaPDU    `aper:"referenceFieldValue:46"`
@@ -1886,7 +1886,7 @@ type UplinkUEAssociatedNRPPaTransportIEs struct {
 
 const (
 	UplinkUEAssociatedNRPPaTransportIEsPresentNothing int = iota /* No components present */
-	UplinkUEAssociatedNRPPaTransportIEsPresentAMFUENGAPID
+	UplinkUEAssociatedNRPPaTransportIEsPresentOCFUENGAPID
 	UplinkUEAssociatedNRPPaTransportIEsPresentRANUENGAPID
 	UplinkUEAssociatedNRPPaTransportIEsPresentRoutingID
 	UplinkUEAssociatedNRPPaTransportIEsPresentNRPPaPDU
@@ -1894,7 +1894,7 @@ const (
 
 type UplinkUEAssociatedNRPPaTransportIEsValue struct {
 	Present     int
-	AMFUENGAPID *AMFUENGAPID `aper:"referenceFieldValue:10"`
+	OCFUENGAPID *OCFUENGAPID `aper:"referenceFieldValue:10"`
 	RANUENGAPID *RANUENGAPID `aper:"referenceFieldValue:85"`
 	RoutingID   *RoutingID   `aper:"referenceFieldValue:89"`
 	NRPPaPDU    *NRPPaPDU    `aper:"referenceFieldValue:46"`
@@ -1944,14 +1944,14 @@ type TraceStartIEs struct {
 
 const (
 	TraceStartIEsPresentNothing int = iota /* No components present */
-	TraceStartIEsPresentAMFUENGAPID
+	TraceStartIEsPresentOCFUENGAPID
 	TraceStartIEsPresentRANUENGAPID
 	TraceStartIEsPresentTraceActivation
 )
 
 type TraceStartIEsValue struct {
 	Present         int
-	AMFUENGAPID     *AMFUENGAPID     `aper:"referenceFieldValue:10"`
+	OCFUENGAPID     *OCFUENGAPID     `aper:"referenceFieldValue:10"`
 	RANUENGAPID     *RANUENGAPID     `aper:"referenceFieldValue:85"`
 	TraceActivation *TraceActivation `aper:"valueExt,referenceFieldValue:108"`
 }
@@ -1964,7 +1964,7 @@ type TraceFailureIndicationIEs struct {
 
 const (
 	TraceFailureIndicationIEsPresentNothing int = iota /* No components present */
-	TraceFailureIndicationIEsPresentAMFUENGAPID
+	TraceFailureIndicationIEsPresentOCFUENGAPID
 	TraceFailureIndicationIEsPresentRANUENGAPID
 	TraceFailureIndicationIEsPresentNGRANTraceID
 	TraceFailureIndicationIEsPresentCause
@@ -1972,7 +1972,7 @@ const (
 
 type TraceFailureIndicationIEsValue struct {
 	Present      int
-	AMFUENGAPID  *AMFUENGAPID  `aper:"referenceFieldValue:10"`
+	OCFUENGAPID  *OCFUENGAPID  `aper:"referenceFieldValue:10"`
 	RANUENGAPID  *RANUENGAPID  `aper:"referenceFieldValue:85"`
 	NGRANTraceID *NGRANTraceID `aper:"referenceFieldValue:44"`
 	Cause        *Cause        `aper:"referenceFieldValue:15,valueLB:0,valueUB:5"`
@@ -1986,14 +1986,14 @@ type DeactivateTraceIEs struct {
 
 const (
 	DeactivateTraceIEsPresentNothing int = iota /* No components present */
-	DeactivateTraceIEsPresentAMFUENGAPID
+	DeactivateTraceIEsPresentOCFUENGAPID
 	DeactivateTraceIEsPresentRANUENGAPID
 	DeactivateTraceIEsPresentNGRANTraceID
 )
 
 type DeactivateTraceIEsValue struct {
 	Present      int
-	AMFUENGAPID  *AMFUENGAPID  `aper:"referenceFieldValue:10"`
+	OCFUENGAPID  *OCFUENGAPID  `aper:"referenceFieldValue:10"`
 	RANUENGAPID  *RANUENGAPID  `aper:"referenceFieldValue:85"`
 	NGRANTraceID *NGRANTraceID `aper:"referenceFieldValue:44"`
 }
@@ -2006,7 +2006,7 @@ type CellTrafficTraceIEs struct {
 
 const (
 	CellTrafficTraceIEsPresentNothing int = iota /* No components present */
-	CellTrafficTraceIEsPresentAMFUENGAPID
+	CellTrafficTraceIEsPresentOCFUENGAPID
 	CellTrafficTraceIEsPresentRANUENGAPID
 	CellTrafficTraceIEsPresentNGRANTraceID
 	CellTrafficTraceIEsPresentNGRANCGI
@@ -2015,7 +2015,7 @@ const (
 
 type CellTrafficTraceIEsValue struct {
 	Present                        int
-	AMFUENGAPID                    *AMFUENGAPID           `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                    *OCFUENGAPID           `aper:"referenceFieldValue:10"`
 	RANUENGAPID                    *RANUENGAPID           `aper:"referenceFieldValue:85"`
 	NGRANTraceID                   *NGRANTraceID          `aper:"referenceFieldValue:44"`
 	NGRANCGI                       *NGRANCGI              `aper:"referenceFieldValue:43,valueLB:0,valueUB:2"`
@@ -2030,14 +2030,14 @@ type LocationReportingControlIEs struct {
 
 const (
 	LocationReportingControlIEsPresentNothing int = iota /* No components present */
-	LocationReportingControlIEsPresentAMFUENGAPID
+	LocationReportingControlIEsPresentOCFUENGAPID
 	LocationReportingControlIEsPresentRANUENGAPID
 	LocationReportingControlIEsPresentLocationReportingRequestType
 )
 
 type LocationReportingControlIEsValue struct {
 	Present                      int
-	AMFUENGAPID                  *AMFUENGAPID                  `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                  *OCFUENGAPID                  `aper:"referenceFieldValue:10"`
 	RANUENGAPID                  *RANUENGAPID                  `aper:"referenceFieldValue:85"`
 	LocationReportingRequestType *LocationReportingRequestType `aper:"valueExt,referenceFieldValue:33"`
 }
@@ -2050,14 +2050,14 @@ type LocationReportingFailureIndicationIEs struct {
 
 const (
 	LocationReportingFailureIndicationIEsPresentNothing int = iota /* No components present */
-	LocationReportingFailureIndicationIEsPresentAMFUENGAPID
+	LocationReportingFailureIndicationIEsPresentOCFUENGAPID
 	LocationReportingFailureIndicationIEsPresentRANUENGAPID
 	LocationReportingFailureIndicationIEsPresentCause
 )
 
 type LocationReportingFailureIndicationIEsValue struct {
 	Present     int
-	AMFUENGAPID *AMFUENGAPID `aper:"referenceFieldValue:10"`
+	OCFUENGAPID *OCFUENGAPID `aper:"referenceFieldValue:10"`
 	RANUENGAPID *RANUENGAPID `aper:"referenceFieldValue:85"`
 	Cause       *Cause       `aper:"referenceFieldValue:15,valueLB:0,valueUB:5"`
 }
@@ -2070,7 +2070,7 @@ type LocationReportIEs struct {
 
 const (
 	LocationReportIEsPresentNothing int = iota /* No components present */
-	LocationReportIEsPresentAMFUENGAPID
+	LocationReportIEsPresentOCFUENGAPID
 	LocationReportIEsPresentRANUENGAPID
 	LocationReportIEsPresentUserLocationInformation
 	LocationReportIEsPresentUEPresenceInAreaOfInterestList
@@ -2079,7 +2079,7 @@ const (
 
 type LocationReportIEsValue struct {
 	Present                        int
-	AMFUENGAPID                    *AMFUENGAPID                    `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                    *OCFUENGAPID                    `aper:"referenceFieldValue:10"`
 	RANUENGAPID                    *RANUENGAPID                    `aper:"referenceFieldValue:85"`
 	UserLocationInformation        *UserLocationInformation        `aper:"referenceFieldValue:121,valueLB:0,valueUB:3"`
 	UEPresenceInAreaOfInterestList *UEPresenceInAreaOfInterestList `aper:"referenceFieldValue:116"`
@@ -2094,13 +2094,13 @@ type UETNLABindingReleaseRequestIEs struct {
 
 const (
 	UETNLABindingReleaseRequestIEsPresentNothing int = iota /* No components present */
-	UETNLABindingReleaseRequestIEsPresentAMFUENGAPID
+	UETNLABindingReleaseRequestIEsPresentOCFUENGAPID
 	UETNLABindingReleaseRequestIEsPresentRANUENGAPID
 )
 
 type UETNLABindingReleaseRequestIEsValue struct {
 	Present     int
-	AMFUENGAPID *AMFUENGAPID `aper:"referenceFieldValue:10"`
+	OCFUENGAPID *OCFUENGAPID `aper:"referenceFieldValue:10"`
 	RANUENGAPID *RANUENGAPID `aper:"referenceFieldValue:85"`
 }
 
@@ -2112,7 +2112,7 @@ type UERadioCapabilityInfoIndicationIEs struct {
 
 const (
 	UERadioCapabilityInfoIndicationIEsPresentNothing int = iota /* No components present */
-	UERadioCapabilityInfoIndicationIEsPresentAMFUENGAPID
+	UERadioCapabilityInfoIndicationIEsPresentOCFUENGAPID
 	UERadioCapabilityInfoIndicationIEsPresentRANUENGAPID
 	UERadioCapabilityInfoIndicationIEsPresentUERadioCapability
 	UERadioCapabilityInfoIndicationIEsPresentUERadioCapabilityForPaging
@@ -2120,7 +2120,7 @@ const (
 
 type UERadioCapabilityInfoIndicationIEsValue struct {
 	Present                    int
-	AMFUENGAPID                *AMFUENGAPID                `aper:"referenceFieldValue:10"`
+	OCFUENGAPID                *OCFUENGAPID                `aper:"referenceFieldValue:10"`
 	RANUENGAPID                *RANUENGAPID                `aper:"referenceFieldValue:85"`
 	UERadioCapability          *UERadioCapability          `aper:"referenceFieldValue:117"`
 	UERadioCapabilityForPaging *UERadioCapabilityForPaging `aper:"valueExt,referenceFieldValue:118"`
@@ -2134,14 +2134,14 @@ type UERadioCapabilityCheckRequestIEs struct {
 
 const (
 	UERadioCapabilityCheckRequestIEsPresentNothing int = iota /* No components present */
-	UERadioCapabilityCheckRequestIEsPresentAMFUENGAPID
+	UERadioCapabilityCheckRequestIEsPresentOCFUENGAPID
 	UERadioCapabilityCheckRequestIEsPresentRANUENGAPID
 	UERadioCapabilityCheckRequestIEsPresentUERadioCapability
 )
 
 type UERadioCapabilityCheckRequestIEsValue struct {
 	Present           int
-	AMFUENGAPID       *AMFUENGAPID       `aper:"referenceFieldValue:10"`
+	OCFUENGAPID       *OCFUENGAPID       `aper:"referenceFieldValue:10"`
 	RANUENGAPID       *RANUENGAPID       `aper:"referenceFieldValue:85"`
 	UERadioCapability *UERadioCapability `aper:"referenceFieldValue:117"`
 }
@@ -2154,7 +2154,7 @@ type UERadioCapabilityCheckResponseIEs struct {
 
 const (
 	UERadioCapabilityCheckResponseIEsPresentNothing int = iota /* No components present */
-	UERadioCapabilityCheckResponseIEsPresentAMFUENGAPID
+	UERadioCapabilityCheckResponseIEsPresentOCFUENGAPID
 	UERadioCapabilityCheckResponseIEsPresentRANUENGAPID
 	UERadioCapabilityCheckResponseIEsPresentIMSVoiceSupportIndicator
 	UERadioCapabilityCheckResponseIEsPresentCriticalityDiagnostics
@@ -2162,7 +2162,7 @@ const (
 
 type UERadioCapabilityCheckResponseIEsValue struct {
 	Present                  int
-	AMFUENGAPID              *AMFUENGAPID              `aper:"referenceFieldValue:10"`
+	OCFUENGAPID              *OCFUENGAPID              `aper:"referenceFieldValue:10"`
 	RANUENGAPID              *RANUENGAPID              `aper:"referenceFieldValue:85"`
 	IMSVoiceSupportIndicator *IMSVoiceSupportIndicator `aper:"referenceFieldValue:30"`
 	CriticalityDiagnostics   *CriticalityDiagnostics   `aper:"valueExt,referenceFieldValue:19"`

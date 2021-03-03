@@ -1,13 +1,13 @@
 package util
 
 import (
-	"free5gc/src/amf/context"
-	"free5gc/src/amf/logger"
+	"free5gc/src/ocf/context"
+	"free5gc/src/ocf/logger"
 )
 
-func StopT3513(ue *context.AmfUe) {
+func StopT3513(ue *context.OcfUe) {
 	if ue == nil {
-		logger.UtilLog.Errorln("AmfUe is nil")
+		logger.UtilLog.Errorln("OcfUe is nil")
 		return
 	}
 
@@ -18,9 +18,9 @@ func StopT3513(ue *context.AmfUe) {
 	ue.T3513RetryTimes = 0
 }
 
-func StopT3522(ue *context.AmfUe) {
+func StopT3522(ue *context.OcfUe) {
 	if ue == nil {
-		logger.UtilLog.Errorln("AmfUe is nil")
+		logger.UtilLog.Errorln("OcfUe is nil")
 		return
 	}
 
@@ -31,9 +31,9 @@ func StopT3522(ue *context.AmfUe) {
 	ue.T3522RetryTimes = 0
 }
 
-func StopT3550(ue *context.AmfUe) {
+func StopT3550(ue *context.OcfUe) {
 	if ue == nil {
-		logger.UtilLog.Errorln("AmfUe is nil")
+		logger.UtilLog.Errorln("OcfUe is nil")
 		return
 	}
 
@@ -44,9 +44,9 @@ func StopT3550(ue *context.AmfUe) {
 	ue.T3550RetryTimes = 0
 }
 
-func StopT3560(ue *context.AmfUe) {
+func StopT3560(ue *context.OcfUe) {
 	if ue == nil {
-		logger.UtilLog.Errorln("AmfUe is nil")
+		logger.UtilLog.Errorln("OcfUe is nil")
 		return
 	}
 
@@ -57,9 +57,9 @@ func StopT3560(ue *context.AmfUe) {
 	ue.T3560RetryTimes = 0
 }
 
-func StopT3565(ue *context.AmfUe) {
+func StopT3565(ue *context.OcfUe) {
 	if ue == nil {
-		logger.UtilLog.Errorln("AmfUe is nil")
+		logger.UtilLog.Errorln("OcfUe is nil")
 		return
 	}
 

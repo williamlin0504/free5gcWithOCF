@@ -10,7 +10,7 @@ class UEInfoDetail extends Component {
 
         super(props);
 
-        this.getAMFUEContexts = this.getAMFUEContexts.bind(this)
+        this.getOCFUEContexts = this.getOCFUEContexts.bind(this)
         this.getSMFInfo = this.getSMFInfo.bind(this)
         this.getPCFInfo = this.getPCFInfo.bind(this)
 
@@ -47,11 +47,11 @@ class UEInfoDetail extends Component {
 
       }
 
-    getAMFUEContexts() {
+    getOCFUEContexts() {
 
         var Arr = []
-        var UEContexts = this.props.amfInfo
-        var PduSessions = this.props.amfInfo.PduSessions
+        var UEContexts = this.props.ocfInfo
+        var PduSessions = this.props.ocfInfo.PduSessions
 
         if (PduSessions === undefined) {
             return Arr
@@ -178,7 +178,7 @@ class UEInfoDetail extends Component {
                         <div className="col-md-12">
                             <div className="card">
                                 <div className="header subscribers__header">
-                                    <h4>{`AMF Information [SUPI:${this.props.amfInfo.Supi}]`}</h4><br></br>
+                                    <h4>{`OCF Information [SUPI:${this.props.ocfInfo.Supi}]`}</h4><br></br>
                                 </div>
                                 <div className="content subscribers__content">
                                     <Table className="subscribers__table" striped bordered condensed hover>
@@ -189,7 +189,7 @@ class UEInfoDetail extends Component {
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        {this.getAMFUEContexts()}
+                                        {this.getOCFUEContexts()}
 
                                     </tbody>
                                     </Table>
@@ -200,7 +200,7 @@ class UEInfoDetail extends Component {
                             </div>
                             <div className="card">
                                 <div className="header subscribers__header">
-                                    <h4>{`SMF Information [SUPI:${this.props.amfInfo.Supi}]`}</h4>
+                                    <h4>{`SMF Information [SUPI:${this.props.ocfInfo.Supi}]`}</h4>
                                 </div>
                                 <div className="content subscribers__content">
                                     <Table className="subscribers__table" striped bordered condensed hover>
@@ -228,7 +228,7 @@ class UEInfoDetail extends Component {
 }
 
 const mapStateToProps = state => ({
-    amfInfo: state.ueinfo.amfInfo,
+    ocfInfo: state.ueinfo.ocfInfo,
     smfInfo: state.ueinfo.smfInfo,
     pcfInfo: state.ueinfo.ueInfoDetail.pcfInfo
 

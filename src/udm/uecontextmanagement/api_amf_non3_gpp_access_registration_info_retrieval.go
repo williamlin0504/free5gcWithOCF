@@ -15,17 +15,18 @@ import (
 	"free5gc/lib/openapi/models"
 	"free5gc/src/udm/logger"
 	"free5gc/src/udm/producer"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
-// GetAmfNon3gppAccess - retrieve the AMF registration for non-3GPP access information
-func HTTPGetAmfNon3gppAccess(c *gin.Context) {
+// GetOcfNon3gppAccess - retrieve the OCF registration for non-3GPP access information
+func HTTPGetOcfNon3gppAccess(c *gin.Context) {
 	req := http_wrapper.NewRequest(c.Request, nil)
 	req.Params["ueId"] = c.Param("ueId")
 	req.Query.Add("supported-features", c.Query("supported-features"))
 
-	rsp := producer.HandleGetAmfNon3gppAccessRequest(req)
+	rsp := producer.HandleGetOcfNon3gppAccessRequest(req)
 
 	responseBody, err := openapi.Serialize(rsp.Body, "application/json")
 	if err != nil {

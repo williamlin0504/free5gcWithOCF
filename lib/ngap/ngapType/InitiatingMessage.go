@@ -10,7 +10,7 @@ type InitiatingMessage struct {
 
 const (
 	InitiatingMessagePresentNothing int = iota /* No components present */
-	InitiatingMessagePresentAMFConfigurationUpdate
+	InitiatingMessagePresentOCFConfigurationUpdate
 	InitiatingMessagePresentHandoverCancel
 	InitiatingMessagePresentHandoverRequired
 	InitiatingMessagePresentHandoverRequest
@@ -28,7 +28,7 @@ const (
 	InitiatingMessagePresentUEContextReleaseCommand
 	InitiatingMessagePresentUERadioCapabilityCheckRequest
 	InitiatingMessagePresentWriteReplaceWarningRequest
-	InitiatingMessagePresentAMFStatusIndication
+	InitiatingMessagePresentOCFStatusIndication
 	InitiatingMessagePresentCellTrafficTrace
 	InitiatingMessagePresentDeactivateTrace
 	InitiatingMessagePresentDownlinkNASTransport
@@ -66,7 +66,7 @@ const (
 
 type InitiatingMessageValue struct {
 	Present                               int
-	AMFConfigurationUpdate                *AMFConfigurationUpdate                `aper:"valueExt,referenceFieldValue:0"`
+	OCFConfigurationUpdate                *OCFConfigurationUpdate                `aper:"valueExt,referenceFieldValue:0"`
 	HandoverCancel                        *HandoverCancel                        `aper:"valueExt,referenceFieldValue:10"`
 	HandoverRequired                      *HandoverRequired                      `aper:"valueExt,referenceFieldValue:12"`
 	HandoverRequest                       *HandoverRequest                       `aper:"valueExt,referenceFieldValue:13"`
@@ -84,7 +84,7 @@ type InitiatingMessageValue struct {
 	UEContextReleaseCommand               *UEContextReleaseCommand               `aper:"valueExt,referenceFieldValue:41"`
 	UERadioCapabilityCheckRequest         *UERadioCapabilityCheckRequest         `aper:"valueExt,referenceFieldValue:43"`
 	WriteReplaceWarningRequest            *WriteReplaceWarningRequest            `aper:"valueExt,referenceFieldValue:51"`
-	AMFStatusIndication                   *AMFStatusIndication                   `aper:"valueExt,referenceFieldValue:1"`
+	OCFStatusIndication                   *OCFStatusIndication                   `aper:"valueExt,referenceFieldValue:1"`
 	CellTrafficTrace                      *CellTrafficTrace                      `aper:"valueExt,referenceFieldValue:2"`
 	DeactivateTrace                       *DeactivateTrace                       `aper:"valueExt,referenceFieldValue:3"`
 	DownlinkNASTransport                  *DownlinkNASTransport                  `aper:"valueExt,referenceFieldValue:4"`
