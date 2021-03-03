@@ -1,13 +1,13 @@
 openapi: 3.0.0
 info:
-  description: AMF Event Exposure Service
-  title: Namf_EventExposure
+  description: OCF Event Exposure Service
+  title: Nocf_EventExposure
   version: 1.0.0
 externalDocs:
   description: 3GPP TS 29.518 V15.2.0; 5G System; Access and Mobility Management Services
   url: http://www.3gpp.org/ftp/Specs/archive/29_series/29.518/
 servers:
-- url: '{apiRoot}/namf-evts/v1'
+- url: '{apiRoot}/nocf-evts/v1'
   variables:
     apiRoot:
       default: https://example.com
@@ -15,7 +15,7 @@ servers:
 security:
 - {}
 - oAuth2Clientcredentials:
-  - namf-evts
+  - nocf-evts
 paths:
   /subscriptions:
     post:
@@ -28,7 +28,7 @@ paths:
                 content:
                   application/json:
                     schema:
-                      $ref: '#/components/schemas/AmfEventNotification'
+                      $ref: '#/components/schemas/OcfEventNotification'
                 required: true
               responses:
                 204:
@@ -87,7 +87,7 @@ paths:
                 content:
                   application/json:
                     schema:
-                      $ref: '#/components/schemas/AmfEventNotification'
+                      $ref: '#/components/schemas/OcfEventNotification'
                 required: true
               responses:
                 204:
@@ -143,19 +143,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AmfCreateEventSubscription'
+              $ref: '#/components/schemas/OcfCreateEventSubscription'
         required: true
       responses:
         201:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AmfCreatedEventSubscription'
+                $ref: '#/components/schemas/OcfCreatedEventSubscription'
           description: Subsription Created
           headers:
             Location:
               description: 'Contains the URI of the newly created resource, according
-                to the structure: {apiRoot}/namf-evts/v1/subscriptions/{subscriptionId}'
+                to the structure: {apiRoot}/nocf-evts/v1/subscriptions/{subscriptionId}'
               explode: false
               required: true
               schema:
@@ -211,7 +211,7 @@ paths:
           description: Service Unavailable
         default:
           description: Unexpected error
-      summary: Namf_EventExposure Subscribe service Operation
+      summary: Nocf_EventExposure Subscribe service Operation
       tags:
       - Subscriptions collection (Document)
   /subscriptions/{subscriptionId}:
@@ -279,7 +279,7 @@ paths:
           description: Service Unavailable
         default:
           description: Unexpected error
-      summary: Namf_EventExposure Unsubscribe service Operation
+      summary: Nocf_EventExposure Unsubscribe service Operation
       tags:
       - Individual subscription (Document)
     patch:
@@ -304,7 +304,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AmfUpdatedEventSubscription'
+                $ref: '#/components/schemas/OcfUpdatedEventSubscription'
           description: Subsription modified successfully
         400:
           content:
@@ -362,12 +362,12 @@ paths:
           description: Service Unavailable
         default:
           description: Unexpected error
-      summary: Namf_EventExposure Subscribe Modify service Operation
+      summary: Nocf_EventExposure Subscribe Modify service Operation
       tags:
       - Individual subscription (Document)
 components:
   schemas:
-    AmfEventSubscription:
+    OcfEventSubscription:
       example:
         eventNotifyUri: eventNotifyUri
         nfId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
@@ -594,7 +594,7 @@ components:
       properties:
         eventList:
           items:
-            $ref: '#/components/schemas/AmfEvent'
+            $ref: '#/components/schemas/OcfEvent'
           minItems: 1
           type: array
         eventNotifyUri:
@@ -623,14 +623,14 @@ components:
         anyUE:
           type: boolean
         options:
-          $ref: '#/components/schemas/AmfEventMode'
+          $ref: '#/components/schemas/OcfEventMode'
       required:
       - eventNotifyUri
       - events
       - nfId
       - notifyCorrelationId
       type: object
-    AmfEvent:
+    OcfEvent:
       example:
         subscribedDataFilterList:
         - null
@@ -738,12 +738,12 @@ components:
         immediateFlag: true
       properties:
         type:
-          $ref: '#/components/schemas/AmfEventType'
+          $ref: '#/components/schemas/OcfEventType'
         immediateFlag:
           type: boolean
         areaList:
           items:
-            $ref: '#/components/schemas/AmfEventArea'
+            $ref: '#/components/schemas/OcfEventArea'
           minItems: 1
           type: array
         locationFilterList:
@@ -759,7 +759,7 @@ components:
       required:
       - type
       type: object
-    AmfEventNotification:
+    OcfEventNotification:
       example:
         reportList:
         - timezone: timezone
@@ -1141,11 +1141,11 @@ components:
           type: string
         reportList:
           items:
-            $ref: '#/components/schemas/AmfEventReport'
+            $ref: '#/components/schemas/OcfEventReport'
           minItems: 1
           type: array
       type: object
-    AmfEventReport:
+    OcfEventReport:
       example:
         timezone: timezone
         areaList:
@@ -1334,9 +1334,9 @@ components:
           nasReleaseCode: nasReleaseCode
       properties:
         type:
-          $ref: '#/components/schemas/AmfEventType'
+          $ref: '#/components/schemas/OcfEventType'
         state:
-          $ref: '#/components/schemas/AmfEventState'
+          $ref: '#/components/schemas/OcfEventState'
         timeStamp:
           format: date-time
           type: string
@@ -1349,7 +1349,7 @@ components:
           type: string
         areaList:
           items:
-            $ref: '#/components/schemas/AmfEventArea'
+            $ref: '#/components/schemas/OcfEventArea'
           minItems: 1
           type: array
         gpsi:
@@ -1391,13 +1391,13 @@ components:
       - timeStamp
       - type
       type: object
-    AmfEventMode:
+    OcfEventMode:
       example:
         expiry: 2000-01-23T04:56:07.000+00:00
         maxReports: 6
       properties:
         trigger:
-          $ref: '#/components/schemas/AmfEventTrigger'
+          $ref: '#/components/schemas/OcfEventTrigger'
         maxReports:
           format: int32
           type: integer
@@ -1407,7 +1407,7 @@ components:
       required:
       - trigger
       type: object
-    AmfEventState:
+    OcfEventState:
       example:
         remainDuration: 5
         active: true
@@ -1470,7 +1470,7 @@ components:
         ranReleaseCode:
           $ref: '#/components/schemas/NgApCause'
       type: object
-    AmfCreateEventSubscription:
+    OcfCreateEventSubscription:
       example:
         supportedFeatures: supportedFeatures
         subscription:
@@ -1698,14 +1698,14 @@ components:
           gpsi: gpsi
       properties:
         subscription:
-          $ref: '#/components/schemas/AmfEventSubscription'
+          $ref: '#/components/schemas/OcfEventSubscription'
         supportedFeatures:
           pattern: ^[A-Fa-f0-9]*$
           type: string
       required:
       - subscription
       type: object
-    AmfCreatedEventSubscription:
+    OcfCreatedEventSubscription:
       example:
         supportedFeatures: supportedFeatures
         reportList:
@@ -2305,12 +2305,12 @@ components:
         subscriptionId: subscriptionId
       properties:
         subscription:
-          $ref: '#/components/schemas/AmfEventSubscription'
+          $ref: '#/components/schemas/OcfEventSubscription'
         subscriptionId:
           type: string
         reportList:
           items:
-            $ref: '#/components/schemas/AmfEventReport'
+            $ref: '#/components/schemas/OcfEventReport'
           minItems: 1
           type: array
         supportedFeatures:
@@ -2320,12 +2320,12 @@ components:
       - subscription
       - subscriptionId
       type: object
-    AmfUpdateEventSubscriptionItem:
+    OcfUpdateEventSubscriptionItem:
       items:
-        $ref: '#/components/schemas/AmfUpdateEventSubscriptionItem_inner'
+        $ref: '#/components/schemas/OcfUpdateEventSubscriptionItem_inner'
       minItems: 1
       type: array
-    AmfUpdateEventOptionItem:
+    OcfUpdateEventOptionItem:
       properties:
         op:
           enum:
@@ -2342,7 +2342,7 @@ components:
       - path
       - value
       type: object
-    AmfUpdatedEventSubscription:
+    OcfUpdatedEventSubscription:
       example:
         subscription:
           eventNotifyUri: eventNotifyUri
@@ -2569,11 +2569,11 @@ components:
           gpsi: gpsi
       properties:
         subscription:
-          $ref: '#/components/schemas/AmfEventSubscription'
+          $ref: '#/components/schemas/OcfEventSubscription'
       required:
       - subscription
       type: object
-    AmfEventArea:
+    OcfEventArea:
       example:
         presenceInfo:
           ecgiList:
@@ -2648,7 +2648,7 @@ components:
     RfspIndex:
       format: int32
       type: integer
-    AmfEventType:
+    OcfEventType:
       enum:
       - LOCATION_REPORT
       - PRESENCE_IN_AOI_REPORT
@@ -2663,7 +2663,7 @@ components:
       - SUBSCRIPTION_ID_CHANGE
       - SUBSCRIPTION_ID_ADDITION
       type: string
-    AmfEventTrigger:
+    OcfEventTrigger:
       enum:
       - ONE_TIME
       - CONTINUOUS
@@ -3202,9 +3202,9 @@ components:
       type: string
     ModifySubscription_request:
       oneOf:
-      - $ref: '#/components/schemas/AmfUpdateEventSubscriptionItem'
-      - $ref: '#/components/schemas/AmfUpdateEventOptionItem'
-    AmfUpdateEventSubscriptionItem_inner:
+      - $ref: '#/components/schemas/OcfUpdateEventSubscriptionItem'
+      - $ref: '#/components/schemas/OcfUpdateEventOptionItem'
+    OcfUpdateEventSubscriptionItem_inner:
       properties:
         op:
           enum:
@@ -3216,7 +3216,7 @@ components:
           pattern: \/eventList\/[0-]$|\/eventList\/[1-9][0-9]*$
           type: string
         value:
-          $ref: '#/components/schemas/AmfEvent'
+          $ref: '#/components/schemas/OcfEvent'
       required:
       - op
       - path
@@ -3226,6 +3226,6 @@ components:
       flows:
         clientCredentials:
           scopes:
-            namf-evts: Access to the Namf_EventExposure API
+            nocf-evts: Access to the Nocf_EventExposure API
           tokenUrl: '{nrfApiRoot}/oauth2/token'
       type: oauth2

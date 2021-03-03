@@ -1,4 +1,4 @@
-package Namf_Communication
+package Nocf_Communication
 
 import (
 	"context"

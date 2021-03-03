@@ -1,13 +1,13 @@
 openapi: 3.0.0
 info:
-  description: AMF Communication Service
-  title: Namf_Communication
+  description: OCF Communication Service
+  title: Nocf_Communication
   version: 1.0.0
 externalDocs:
   description: 3GPP TS 29.518 V15.2.0; 5G System; Access and Mobility Management Services
   url: http://www.3gpp.org/ftp/Specs/archive/29_series/29.518/
 servers:
-- url: '{apiRoot}/namf-comm/v1'
+- url: '{apiRoot}/nocf-comm/v1'
   variables:
     apiRoot:
       default: https://example.com
@@ -15,7 +15,7 @@ servers:
 security:
 - {}
 - oAuth2Clientcredentials:
-  - namf-comm
+  - nocf-comm
 paths:
   /ue-contexts/{ueContextId}:
     put:
@@ -102,7 +102,7 @@ paths:
           headers:
             Location:
               description: 'Contains the URI of the newly created resource, according
-                to the structure: {apiRoot}/namf-comm/v1/ue-contexts/{ueContextId}'
+                to the structure: {apiRoot}/nocf-comm/v1/ue-contexts/{ueContextId}'
               explode: false
               required: true
               schema:
@@ -158,7 +158,7 @@ paths:
           description: Service Unavailable
         default:
           description: Unexpected error
-      summary: Namf_Communication CreateUEContext service Operation
+      summary: Nocf_Communication CreateUEContext service Operation
       tags:
       - Individual ueContext (Document)
   /ue-contexts/{ueContextId}/release:
@@ -239,7 +239,7 @@ paths:
           description: Service Unavailable
         default:
           description: Unexpected error
-      summary: Namf_Communication ReleaseUEContext service Operation
+      summary: Nocf_Communication ReleaseUEContext service Operation
       tags:
       - Individual ueContext (Document)
   /ue-contexts/{ueContextId}/assign-ebi:
@@ -318,7 +318,7 @@ paths:
           description: Service Unavailable
         default:
           description: Unexpected error
-      summary: Namf_Communication EBI Assignment service Operation
+      summary: Nocf_Communication EBI Assignment service Operation
       tags:
       - Individual ueContext (Document)
   /ue-contexts/{ueContextId}/transfer:
@@ -429,7 +429,7 @@ paths:
           description: Service Unavailable
         default:
           description: Unexpected error
-      summary: Namf_Communication UEContextTransfer service Operation
+      summary: Nocf_Communication UEContextTransfer service Operation
       tags:
       - Individual ueContext (Document)
   /ue-contexts/{ueContextId}/transfer-update:
@@ -514,7 +514,7 @@ paths:
           description: Service Unavailable
         default:
           description: Generic Error
-      summary: Namf_Communication RegistrationStatusUpdate service Operation
+      summary: Nocf_Communication RegistrationStatusUpdate service Operation
       tags:
       - Individual ueContext (Document)
   /ue-contexts/{ueContextId}/n1-n2-messages:
@@ -575,7 +575,7 @@ paths:
                       schema:
                         $ref: '#/components/schemas/ProblemDetails'
                   description: Service Unavailable
-              summary: Namf_Communication N1N2Transfer Failure Notification service Operation
+              summary: Nocf_Communication N1N2Transfer Failure Notification service Operation
               tags:
               - N1N2 Transfer Failure Notification
               x-callback-request: true
@@ -708,7 +708,7 @@ paths:
           description: Gateway Timeout
         default:
           description: Unexpected error
-      summary: Namf_Communication N1N2 Message Transfer (UE Specific) service Operation
+      summary: Nocf_Communication N1N2 Message Transfer (UE Specific) service Operation
       tags:
       - n1N2Message collection (Document)
   /ue-contexts/{ueContextId}/n1-n2-messages/subscriptions:
@@ -794,7 +794,7 @@ paths:
                       schema:
                         $ref: '#/components/schemas/ProblemDetails'
                   description: Service Unavailable
-              summary: Namf_Communication N1 Message Notify service Operation
+              summary: Nocf_Communication N1 Message Notify service Operation
               tags:
               - N1 Message Notify
               x-callback-request: true
@@ -883,7 +883,7 @@ paths:
                       schema:
                         $ref: '#/components/schemas/ProblemDetails'
                   description: Service Unavailable
-              summary: Namf_Communication N2 Info Notify (UE Specific) service Operation
+              summary: Nocf_Communication N2 Info Notify (UE Specific) service Operation
               tags:
               - N2 Info Notify
               x-callback-request: true
@@ -914,7 +914,7 @@ paths:
           headers:
             Location:
               description: 'Contains the URI of the newly created resource, according
-                to the structure: {apiRoot}/namf-comm/v1/{ueContextId}/n1-n2-messages/subscriptions/{subscriptionId}'
+                to the structure: {apiRoot}/nocf-comm/v1/{ueContextId}/n1-n2-messages/subscriptions/{subscriptionId}'
               explode: false
               required: true
               schema:
@@ -964,7 +964,7 @@ paths:
           description: Service Unavailable
         default:
           description: Unexpected error
-      summary: Namf_Communication N1N2 Message Subscribe (UE Specific) service Operation
+      summary: Nocf_Communication N1N2 Message Subscribe (UE Specific) service Operation
       tags:
       - N1N2 Subscriptions Collection for Individual UE Contexts (Document)
   /ue-contexts/{ueContextId}/n1-n2-messages/subscriptions/{subscriptionId}:
@@ -1033,7 +1033,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
           description: Service Unavailable
-      summary: Namf_Communication N1N2 Message UnSubscribe (UE Specific) service Operation
+      summary: Nocf_Communication N1N2 Message UnSubscribe (UE Specific) service Operation
       tags:
       - N1N2 Individual Subscription (Document)
   /non-ue-n2-messages/transfer:
@@ -1124,7 +1124,7 @@ paths:
           description: Service Unavailable
         default:
           description: Unexpected error
-      summary: Namf_Communication Non UE N2 Message Transfer service Operation
+      summary: Nocf_Communication Non UE N2 Message Transfer service Operation
       tags:
       - Non UE N2Messages collection (Document)
   /non-ue-n2-messages/subscriptions:
@@ -1207,7 +1207,7 @@ paths:
                       schema:
                         $ref: '#/components/schemas/ProblemDetails'
                   description: Service Unavailable
-              summary: Namf_Communication Non UE N2 Info Notify service Operation
+              summary: Nocf_Communication Non UE N2 Info Notify service Operation
               tags:
               - Non UE N2 Info Notify
               x-callback-request: true
@@ -1228,7 +1228,7 @@ paths:
           headers:
             Location:
               description: 'Contains the URI of the newly created resource, according
-                to the structure: {apiRoot}/namf-comm/v1/non-ue-n2-messages/subscriptions/{n2NotifySubscriptionId}'
+                to the structure: {apiRoot}/nocf-comm/v1/non-ue-n2-messages/subscriptions/{n2NotifySubscriptionId}'
               explode: false
               required: true
               schema:
@@ -1284,7 +1284,7 @@ paths:
           description: Service Unavailable
         default:
           description: Unexpected error
-      summary: Namf_Communication Non UE N2 Info Subscribe service Operation
+      summary: Nocf_Communication Non UE N2 Info Subscribe service Operation
       tags:
       - Non UE N2Messages Subscriptions collection (Document)
   /non-ue-n2-messages/subscriptions/{n2NotifySubscriptionId}:
@@ -1326,22 +1326,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
           description: Service Unavailable
-      summary: Namf_Communication Non UE N2 Info UnSubscribe service Operation
+      summary: Nocf_Communication Non UE N2 Info UnSubscribe service Operation
       tags:
       - Non UE N2 Message Notification Individual Subscription (Document)
   /subscriptions:
     post:
       callbacks:
-        onAmfStatusChange:
-          '{$request.body#/amfStatusUri}':
+        onOcfStatusChange:
+          '{$request.body#/ocfStatusUri}':
             post:
-              operationId: AmfStatusChangeNotify
+              operationId: OcfStatusChangeNotify
               requestBody:
                 content:
                   application/json:
                     schema:
-                      $ref: '#/components/schemas/AmfStatusChangeNotification'
-                description: Amf Status Change Notification
+                      $ref: '#/components/schemas/OcfStatusChangeNotification'
+                description: Ocf Status Change Notification
               responses:
                 204:
                   description: Expected response to a successful callback processing
@@ -1393,11 +1393,11 @@ paths:
                       schema:
                         $ref: '#/components/schemas/ProblemDetails'
                   description: Service Unavailable
-              summary: Amf Status Change Notify service Operation
+              summary: Ocf Status Change Notify service Operation
               tags:
-              - Amf Status Change Notify
+              - Ocf Status Change Notify
               x-callback-request: true
-      operationId: AMFStatusChangeSubscribe
+      operationId: OCFStatusChangeSubscribe
       requestBody:
         content:
           application/json:
@@ -1414,7 +1414,7 @@ paths:
           headers:
             Location:
               description: 'Contains the URI of the newly created resource, according
-                to the structure: {apiRoot}/namf-comm/v1/subscriptions/{subscriptionId}'
+                to the structure: {apiRoot}/nocf-comm/v1/subscriptions/{subscriptionId}'
               explode: false
               required: true
               schema:
@@ -1470,14 +1470,14 @@ paths:
           description: Service Unavailable
         default:
           description: Unexpected error
-      summary: Namf_Communication AMF Status Change Subscribe service Operation
+      summary: Nocf_Communication OCF Status Change Subscribe service Operation
       tags:
       - subscriptions collection (Document)
   /subscriptions/{subscriptionId}:
     delete:
-      operationId: AMFStatusChangeUnSubscribe
+      operationId: OCFStatusChangeUnSubscribe
       parameters:
-      - description: AMF Status Change Subscription Identifier
+      - description: OCF Status Change Subscription Identifier
         explode: false
         in: path
         name: subscriptionId
@@ -1520,21 +1520,21 @@ paths:
           description: Service Unavailable
         default:
           description: Unexpected error
-      summary: Namf_Communication AMF Status Change UnSubscribe service Operation
+      summary: Nocf_Communication OCF Status Change UnSubscribe service Operation
       tags:
       - individual subscription (Document)
     put:
       callbacks:
-        OnAmfStatusChange:
-          '{$request.body#/amfStatusUri}':
+        OnOcfStatusChange:
+          '{$request.body#/ocfStatusUri}':
             post:
-              operationId: AmfStatusChangeNOtify
+              operationId: OcfStatusChangeNOtify
               requestBody:
                 content:
                   application/json:
                     schema:
-                      $ref: '#/components/schemas/AmfStatusChangeNotification'
-                description: Amf Status Change Notification
+                      $ref: '#/components/schemas/OcfStatusChangeNotification'
+                description: Ocf Status Change Notification
               responses:
                 204:
                   description: Expected response to a successful callback processing
@@ -1586,13 +1586,13 @@ paths:
                       schema:
                         $ref: '#/components/schemas/ProblemDetails'
                   description: Service Unavailable
-              summary: Amf Status Change Notify service Operation
+              summary: Ocf Status Change Notify service Operation
               tags:
-              - Amf Status Change Notify
+              - Ocf Status Change Notify
               x-callback-request: true
-      operationId: AMFStatusChangeSubscribeModfy
+      operationId: OCFStatusChangeSubscribeModfy
       parameters:
-      - description: AMF Status Change Subscription Identifier
+      - description: OCF Status Change Subscription Identifier
         explode: false
         in: path
         name: subscriptionId
@@ -1663,25 +1663,25 @@ paths:
           description: Service Unavailable
         default:
           description: Unexpected error
-      summary: Namf_Communication AMF Status Change Subscribe Modify service Operation
+      summary: Nocf_Communication OCF Status Change Subscribe Modify service Operation
       tags:
       - individual subscription (Document)
 components:
   schemas:
     SubscriptionData:
       example:
-        amfStatusUri: amfStatusUri
+        ocfStatusUri: ocfStatusUri
         guamiList:
         - plmnId:
             mnc: mnc
             mcc: mcc
-          amfId: amfId
+          ocfId: ocfId
         - plmnId:
             mnc: mnc
             mcc: mcc
-          amfId: amfId
+          ocfId: ocfId
       properties:
-        amfStatusUri:
+        ocfStatusUri:
           type: string
         guamiList:
           items:
@@ -1689,55 +1689,55 @@ components:
           minItems: 1
           type: array
       required:
-      - amfStatusUri
+      - ocfStatusUri
       type: object
-    AmfStatusChangeNotification:
+    OcfStatusChangeNotification:
       example:
-        amfStatusInfoList:
-        - targetAmfFailure: targetAmfFailure
+        ocfStatusInfoList:
+        - targetOcfFailure: targetOcfFailure
           guamiList:
           - plmnId:
               mnc: mnc
               mcc: mcc
-            amfId: amfId
+            ocfId: ocfId
           - plmnId:
               mnc: mnc
               mcc: mcc
-            amfId: amfId
-          targetAmfRemoval: targetAmfRemoval
-        - targetAmfFailure: targetAmfFailure
+            ocfId: ocfId
+          targetOcfRemoval: targetOcfRemoval
+        - targetOcfFailure: targetOcfFailure
           guamiList:
           - plmnId:
               mnc: mnc
               mcc: mcc
-            amfId: amfId
+            ocfId: ocfId
           - plmnId:
               mnc: mnc
               mcc: mcc
-            amfId: amfId
-          targetAmfRemoval: targetAmfRemoval
+            ocfId: ocfId
+          targetOcfRemoval: targetOcfRemoval
       properties:
-        amfStatusInfoList:
+        ocfStatusInfoList:
           items:
-            $ref: '#/components/schemas/AmfStatusInfo'
+            $ref: '#/components/schemas/OcfStatusInfo'
           minItems: 1
           type: array
       required:
-      - amfStatusInfo
+      - ocfStatusInfo
       type: object
-    AmfStatusInfo:
+    OcfStatusInfo:
       example:
-        targetAmfFailure: targetAmfFailure
+        targetOcfFailure: targetOcfFailure
         guamiList:
         - plmnId:
             mnc: mnc
             mcc: mcc
-          amfId: amfId
+          ocfId: ocfId
         - plmnId:
             mnc: mnc
             mcc: mcc
-          amfId: amfId
-        targetAmfRemoval: targetAmfRemoval
+          ocfId: ocfId
+        targetOcfRemoval: targetOcfRemoval
       properties:
         guamiList:
           items:
@@ -1746,9 +1746,9 @@ components:
           type: array
         statusChange:
           $ref: '#/components/schemas/StatusChange'
-        targetAmfRemoval:
+        targetOcfRemoval:
           type: string
-        targetAmfFailure:
+        targetOcfFailure:
           type: string
       required:
       - guamis
@@ -2112,7 +2112,7 @@ components:
           type: integer
         ranNodeId:
           $ref: '#/components/schemas/GlobalRanNodeId'
-        initialAmfName:
+        initialOcfName:
           type: string
         userLocation:
           $ref: '#/components/schemas/UserLocation'
@@ -2148,7 +2148,7 @@ components:
       required:
       - anN2ApId
       - anType
-      - initialAmfName
+      - initialOcfName
       - ranNodeId
       - ueContext
       - userLocation
@@ -2187,12 +2187,12 @@ components:
           - null
           - null
           seafData:
-            keyAmfChangeInd: true
+            keyOcfChangeInd: true
             ngKsi:
               ksi: 0
-            keyAmf:
+            keyOcf:
               keyVal: keyVal
-            keyAmfHDerivationInd: true
+            keyOcfHDerivationInd: true
             nh: nh
             ncc: 4
           eventSubscriptionList:
@@ -3042,12 +3042,12 @@ components:
         - null
         - null
         seafData:
-          keyAmfChangeInd: true
+          keyOcfChangeInd: true
           ngKsi:
             ksi: 0
-          keyAmf:
+          keyOcf:
             keyVal: keyVal
-          keyAmfHDerivationInd: true
+          keyOcfHDerivationInd: true
           nh: nh
           ncc: 4
         eventSubscriptionList:
@@ -3957,7 +3957,7 @@ components:
           type: array
         eventSubscriptionList:
           items:
-            $ref: '#/components/schemas/AmfEventSubscription'
+            $ref: '#/components/schemas/OcfEventSubscription'
           minItems: 1
           type: array
         mmContextList:
@@ -4298,19 +4298,19 @@ components:
       type: object
     SeafData:
       example:
-        keyAmfChangeInd: true
+        keyOcfChangeInd: true
         ngKsi:
           ksi: 0
-        keyAmf:
+        keyOcf:
           keyVal: keyVal
-        keyAmfHDerivationInd: true
+        keyOcfHDerivationInd: true
         nh: nh
         ncc: 4
       properties:
         ngKsi:
           $ref: '#/components/schemas/NgKsi'
-        keyAmf:
-          $ref: '#/components/schemas/KeyAmf'
+        keyOcf:
+          $ref: '#/components/schemas/KeyOcf'
         nh:
           pattern: ^[A-Fa-f0-9]+$
           type: string
@@ -4319,12 +4319,12 @@ components:
           maximum: 7
           minimum: 0
           type: integer
-        keyAmfChangeInd:
+        keyOcfChangeInd:
           type: boolean
-        keyAmfHDerivationInd:
+        keyOcfHDerivationInd:
           type: boolean
       required:
-      - keyAmf
+      - keyOcf
       - ngKsi
       type: object
     NasSecurityMode:
@@ -4481,12 +4481,12 @@ components:
           - null
           - null
           seafData:
-            keyAmfChangeInd: true
+            keyOcfChangeInd: true
             ngKsi:
               ksi: 0
-            keyAmf:
+            keyOcf:
               keyVal: keyVal
-            keyAmfHDerivationInd: true
+            keyOcfHDerivationInd: true
             nh: nh
             ncc: 4
           eventSubscriptionList:
@@ -5446,11 +5446,11 @@ components:
       type: object
     PWSErrorData:
       properties:
-        namfCause:
+        nocfCause:
           format: int32
           type: integer
       required:
-      - namfCause
+      - nocfCause
       type: object
     N2InformationTransferError:
       properties:
@@ -5476,12 +5476,12 @@ components:
       - ksi
       - tsc
       type: object
-    KeyAmf:
+    KeyOcf:
       example:
         keyVal: keyVal
       properties:
         keyType:
-          $ref: '#/components/schemas/KeyAmfType'
+          $ref: '#/components/schemas/KeyOcfType'
         keyVal:
           type: string
       required:
@@ -5658,8 +5658,8 @@ components:
       type: string
     StatusChange:
       enum:
-      - AMF_UNAVAILABLE
-      - AMF_AVAILABLE
+      - OCF_UNAVAILABLE
+      - OCF_AVAILABLE
       type: string
     N2InformationClass:
       enum:
@@ -5722,10 +5722,10 @@ components:
       - NATIVE
       - MAPPED
       type: string
-    KeyAmfType:
+    KeyOcfType:
       enum:
-      - KAMF
-      - KPRIMEAMF
+      - KOCF
+      - KPRIMEOCF
       type: string
     TransferReason:
       enum:
@@ -5801,15 +5801,15 @@ components:
         plmnId:
           mnc: mnc
           mcc: mcc
-        amfId: amfId
+        ocfId: ocfId
       properties:
         plmnId:
           $ref: '#/components/schemas/PlmnId'
-        amfId:
+        ocfId:
           pattern: ^[A-Fa-f0-9]{6}$
           type: string
       required:
-      - amfId
+      - ocfId
       - plmnId
       type: object
     PlmnId:
@@ -5833,10 +5833,10 @@ components:
     Mnc:
       pattern: ^\d{2,3}$
       type: string
-    AmfId:
+    OcfId:
       pattern: ^[A-Fa-f0-9]{6}$
       type: string
-    AmfName:
+    OcfName:
       type: string
     PduSessionId:
       format: int32
@@ -6452,7 +6452,7 @@ components:
       - 5GC
       - EPC
       type: string
-    AmfEventSubscription:
+    OcfEventSubscription:
       example:
         eventNotifyUri: eventNotifyUri
         nfId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
@@ -6679,7 +6679,7 @@ components:
       properties:
         eventList:
           items:
-            $ref: '#/components/schemas/AmfEvent'
+            $ref: '#/components/schemas/OcfEvent'
           minItems: 1
           type: array
         eventNotifyUri:
@@ -6708,14 +6708,14 @@ components:
         anyUE:
           type: boolean
         options:
-          $ref: '#/components/schemas/AmfEventMode'
+          $ref: '#/components/schemas/OcfEventMode'
       required:
       - eventNotifyUri
       - events
       - nfId
       - notifyCorrelationId
       type: object
-    AmfEvent:
+    OcfEvent:
       example:
         subscribedDataFilterList:
         - null
@@ -6823,12 +6823,12 @@ components:
         immediateFlag: true
       properties:
         type:
-          $ref: '#/components/schemas/AmfEventType'
+          $ref: '#/components/schemas/OcfEventType'
         immediateFlag:
           type: boolean
         areaList:
           items:
-            $ref: '#/components/schemas/AmfEventArea'
+            $ref: '#/components/schemas/OcfEventArea'
           minItems: 1
           type: array
         locationFilterList:
@@ -6844,7 +6844,7 @@ components:
       required:
       - type
       type: object
-    AmfEventType:
+    OcfEventType:
       enum:
       - LOCATION_REPORT
       - PRESENCE_IN_AOI_REPORT
@@ -6859,7 +6859,7 @@ components:
       - SUBSCRIPTION_ID_CHANGE
       - SUBSCRIPTION_ID_ADDITION
       type: string
-    AmfEventArea:
+    OcfEventArea:
       example:
         presenceInfo:
           ecgiList:
@@ -6939,13 +6939,13 @@ components:
       - SARI
       - RFSP_INDEX
       type: string
-    AmfEventMode:
+    OcfEventMode:
       example:
         expiry: 2000-01-23T04:56:07.000+00:00
         maxReports: 7
       properties:
         trigger:
-          $ref: '#/components/schemas/AmfEventTrigger'
+          $ref: '#/components/schemas/OcfEventTrigger'
         maxReports:
           format: int32
           type: integer
@@ -6955,7 +6955,7 @@ components:
       required:
       - trigger
       type: object
-    AmfEventTrigger:
+    OcfEventTrigger:
       enum:
       - ONE_TIME
       - CONTINUOUS
@@ -7160,6 +7160,6 @@ components:
       flows:
         clientCredentials:
           scopes:
-            namf-comm: Access to the Namf_Communication API
+            nocf-comm: Access to the Nocf_Communication API
           tokenUrl: '{nrfApiRoot}/oauth2/token'
       type: oauth2

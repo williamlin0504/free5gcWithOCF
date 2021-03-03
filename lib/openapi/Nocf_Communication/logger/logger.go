@@ -12,7 +12,7 @@ import (
 )
 
 var log *logrus.Logger
-var NamfCommLog *logrus.Entry
+var NocfCommLog *logrus.Entry
 
 func init() {
 	log = logrus.New()
@@ -31,20 +31,20 @@ func init() {
 		log.Hooks.Add(free5gcLogHook)
 	}
 
-	selfLogHook, err := logger_util.NewFileHook(logger_conf.LibLogDir+"namf_communication.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
+	selfLogHook, err := logger_util.NewFileHook(logger_conf.LibLogDir+"nocf_communication.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
 	if err == nil {
 		log.Hooks.Add(selfLogHook)
 	}
 
-	NamfCommLog = log.WithFields(logrus.Fields{"component": "OAPI", "category": "NamfComm"})
+	NocfCommLog = log.WithFields(logrus.Fields{"component": "OAPI", "category": "NocfComm"})
 }
 
 func SetLogLevel(level logrus.Level) {
-	NamfCommLog.Infoln("set log level :", level)
+	NocfCommLog.Infoln("set log level :", level)
 	log.SetLevel(level)
 }
 
 func SetReportCaller(bool bool) {
-	NamfCommLog.Infoln("set report call :", bool)
+	NocfCommLog.Infoln("set report call :", bool)
 	log.SetReportCaller(bool)
 }
