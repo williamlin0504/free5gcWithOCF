@@ -12,5 +12,4 @@ package models
 type Guami struct {
 	PlmnId *PlmnId `json:"plmnId" yaml:"plmnId" bson:"plmnId" mapstructure:"PlmnId"`
 	OcfId  string  `json:"ocfId" yaml:"ocfId" bson:"ocfId" mapstructure:"OcfId"`
-	OcfId  string  `json:"ocfId" yaml:"ocfId" bson:"ocfId" mapstructure:"OcfId"`
 }
