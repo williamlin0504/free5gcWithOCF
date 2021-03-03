@@ -4,8 +4,8 @@ import (
 	"errors"
 	"net"
 
-	"free5gcWithOCFWithOCF/src/ocf/context"
-	"free5gcWithOCFWithOCF/src/ocf/logger"
+	"free5gcWithOCF/src/ocf/context"
+	"free5gcWithOCF/src/ocf/logger"
 
 	"github.com/sirupsen/logrus"
 	gtpv1 "github.com/wmnsk/go-gtp/v1"

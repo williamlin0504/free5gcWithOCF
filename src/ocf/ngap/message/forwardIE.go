@@ -1,8 +1,8 @@
 package message
 
 import (
-	"free5gcWithOCFWithOCF/lib/aper"
-	"free5gcWithOCFWithOCF/lib/ngap/ngapType"
+	"free5gcWithOCF/lib/aper"
+	"free5gcWithOCF/lib/ngap/ngapType"
 )
 
 func AppendPDUSessionResourceSetupListCxtRes(

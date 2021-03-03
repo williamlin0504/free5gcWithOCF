@@ -7,8 +7,8 @@ import (
 	formatter "github.com/antonfisher/nested-logrus-formatter"
 	"github.com/sirupsen/logrus"
 
-	"free5gcWithOCFWithOCF/lib/logger_conf"
-	"free5gcWithOCFWithOCF/lib/logger_util"
+	"free5gcWithOCF/lib/logger_conf"
+	"free5gcWithOCF/lib/logger_util"
 )
 
 var log *logrus.Logger
@@ -36,9 +36,9 @@ func init() {
 		FieldsOrder:     []string{"component", "category"},
 	}
 
-	free5gcWithOCFWithOCFLogHook, err := logger_util.NewFileHook(logger_conf.Free5gcLogFile, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
+	free5gcWithOCFLogHook, err := logger_util.NewFileHook(logger_conf.Free5gcLogFile, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
 	if err == nil {
-		log.Hooks.Add(free5gcWithOCFWithOCFLogHook)
+		log.Hooks.Add(free5gcWithOCFLogHook)
 	}
 
 	selfLogHook, err := logger_util.NewFileHook(logger_conf.NfLogDir+"ocf.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)

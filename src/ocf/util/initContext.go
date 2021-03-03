@@ -12,10 +12,10 @@ import (
 	"git.cs.nctu.edu.tw/calee/sctp"
 	"github.com/sirupsen/logrus"
 
-	"free5gcWithOCFWithOCF/lib/path_util"
-	"free5gcWithOCFWithOCF/src/ocf/context"
-	"free5gcWithOCFWithOCF/src/ocf/factory"
-	"free5gcWithOCFWithOCF/src/ocf/logger"
+	"free5gcWithOCF/lib/path_util"
+	"free5gcWithOCF/src/ocf/context"
+	"free5gcWithOCF/src/ocf/factory"
+	"free5gcWithOCF/src/ocf/logger"
 )
 
 var contextLog *logrus.Entry
@@ -113,7 +113,7 @@ func InitOCFContext() bool {
 
 		if factory.OcfConfig.Configuration.PrivateKey == "" {
 			contextLog.Warn("No private key file path specified, load default key file...")
-			keyPath = path_util.Gofree5gcWithOCFWithOCFPath("free5gcWithOCFWithOCF/support/TLS/ocf.key")
+			keyPath = path_util.Gofree5gcWithOCFPath("free5gcWithOCF/support/TLS/ocf.key")
 		} else {
 			keyPath = factory.OcfConfig.Configuration.PrivateKey
 		}
@@ -154,7 +154,7 @@ func InitOCFContext() bool {
 
 		if factory.OcfConfig.Configuration.CertificateAuthority == "" {
 			contextLog.Warn("No certificate authority file path specified, load default CA certificate...")
-			keyPath = path_util.Gofree5gcWithOCFWithOCFPath("free5gcWithOCFWithOCF/support/TLS/ocf.pem")
+			keyPath = path_util.Gofree5gcWithOCFPath("free5gcWithOCF/support/TLS/ocf.pem")
 		} else {
 			keyPath = factory.OcfConfig.Configuration.CertificateAuthority
 		}
@@ -193,7 +193,7 @@ func InitOCFContext() bool {
 
 		if factory.OcfConfig.Configuration.Certificate == "" {
 			contextLog.Warn("No certificate file path specified, load default certificate...")
-			keyPath = path_util.Gofree5gcWithOCFWithOCFPath("free5gcWithOCFWithOCF/support/TLS/ocf.pem")
+			keyPath = path_util.Gofree5gcWithOCFPath("free5gcWithOCF/support/TLS/ocf.pem")
 		} else {
 			keyPath = factory.OcfConfig.Configuration.Certificate
 		}

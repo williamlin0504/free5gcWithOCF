@@ -4,9 +4,9 @@ import (
 	"git.cs.nctu.edu.tw/calee/sctp"
 	"github.com/sirupsen/logrus"
 
-	"free5gcWithOCFWithOCF/lib/ngap/ngapType"
-	"free5gcWithOCFWithOCF/src/ocf/context"
-	"free5gcWithOCFWithOCF/src/ocf/logger"
+	"free5gcWithOCF/lib/ngap/ngapType"
+	"free5gcWithOCF/src/ocf/context"
+	"free5gcWithOCF/src/ocf/logger"
 )
 
 var ngaplog *logrus.Entry
