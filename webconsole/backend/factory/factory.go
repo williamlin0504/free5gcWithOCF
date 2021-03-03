@@ -10,7 +10,7 @@ import (
 
 	"gopkg.in/yaml.v2"
 
-	"free5gc/webconsole/backend/logger"
+	"free5gcWithOCF/webconsole/backend/logger"
 )
 
 var WebUIConfig Config

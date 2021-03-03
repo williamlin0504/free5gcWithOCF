@@ -10,7 +10,7 @@ import (
 
 	"gopkg.in/yaml.v2"
 
-	"free5gc/src/ausf/logger"
+	"free5gcWithOCF/src/ausf/logger"
 )
 
 var AusfConfig Config

@@ -1,9 +1,9 @@
 package ike
 
 import (
-	"free5gcWithOCF/src/ocf/ike/handler"
-	ike_message "free5gcWithOCF/src/ocf/ike/message"
-	"free5gcWithOCF/src/ocf/logger"
+	"free5gcWithOCFWithOCF/src/ocf/ike/handler"
+	ike_message "free5gcWithOCFWithOCF/src/ocf/ike/message"
+	"free5gcWithOCFWithOCF/src/ocf/logger"
 	"net"
 
 	"github.com/sirupsen/logrus"

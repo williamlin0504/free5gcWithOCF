@@ -2,10 +2,10 @@ package context
 
 import (
 	"fmt"
-	"free5gc/lib/idgenerator"
-	"free5gc/lib/pfcp/pfcpType"
-	"free5gc/lib/pfcp/pfcpUdp"
-	"free5gc/src/smf/logger"
+	"free5gcWithOCF/lib/idgenerator"
+	"free5gcWithOCF/lib/pfcp/pfcpType"
+	"free5gcWithOCF/lib/pfcp/pfcpUdp"
+	"free5gcWithOCF/src/smf/logger"
 	"math"
 	"net"
 	"reflect"

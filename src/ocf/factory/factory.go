@@ -10,7 +10,7 @@ import (
 
 	"gopkg.in/yaml.v2"
 
-	"free5gcWithOCF/src/ocf/logger"
+	"free5gcWithOCFWithOCF/src/ocf/logger"
 )
 
 var OcfConfig Config

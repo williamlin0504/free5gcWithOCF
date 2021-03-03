@@ -1,12 +1,12 @@
 package producer
 
 import (
-	"free5gc/lib/flowdesc"
-	"free5gc/lib/pfcp/pfcpType"
-	"free5gc/lib/pfcp/pfcpUdp"
-	"free5gc/src/smf/context"
-	"free5gc/src/smf/logger"
-	"free5gc/src/smf/pfcp/message"
+	"free5gcWithOCF/lib/flowdesc"
+	"free5gcWithOCF/lib/pfcp/pfcpType"
+	"free5gcWithOCF/lib/pfcp/pfcpUdp"
+	"free5gcWithOCF/src/smf/context"
+	"free5gcWithOCF/src/smf/logger"
+	"free5gcWithOCF/src/smf/pfcp/message"
 	"net"
 	"reflect"
 )

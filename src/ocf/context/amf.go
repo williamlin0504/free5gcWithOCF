@@ -2,9 +2,9 @@ package context
 
 import (
 	"bytes"
-	"free5gcWithAMF/lib/aper"
-	"free5gcWithAMF/lib/ngap/ngapConvert"
-	"free5gcWithAMF/lib/ngap/ngapType"
+	"free5gcWithOCFWithOCF/lib/aper"
+	"free5gcWithOCFWithOCF/lib/ngap/ngapConvert"
+	"free5gcWithOCFWithOCF/lib/ngap/ngapType"
 
 	"git.cs.nctu.edu.tw/calee/sctp"
 )

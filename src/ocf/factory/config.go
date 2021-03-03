@@ -4,7 +4,7 @@
 
 package factory
 
-import "free5gcWithOCF/src/ocf/context"
+import "free5gcWithOCFWithOCF/src/ocf/context"
 
 type Config struct {
 	Info *Info `yaml:"info"`
@@ -26,7 +26,7 @@ type Configuration struct {
 	IPSecGatewayAddr     string `yaml:"IPSecInterfaceAddress"`
 	GTPBindAddr          string `yaml:"GTPBindAddress"`
 	TCPPort              uint16 `yaml:"NASTCPPort"`
-	FQDN                 string `yaml:"FQDN"`                 // e.g. ocf.free5gcWithOCF.org
+	FQDN                 string `yaml:"FQDN"`                 // e.g. ocf.free5gcWithOCFWithOCF.org
 	PrivateKey           string `yaml:"PrivateKey"`           // file path
 	CertificateAuthority string `yaml:"CertificateAuthority"` // file path
 	Certificate          string `yaml:"Certificate"`          // file path

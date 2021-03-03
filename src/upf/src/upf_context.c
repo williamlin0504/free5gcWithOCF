@@ -138,7 +138,7 @@ Status UpfContextInit() {
     TimerListInit(&self.timerServiceList);
 
     // TODO: Read from config
-    strncpy(self.buffSockPath, "/tmp/free5gc_unix_sock", MAX_SOCK_PATH_LEN);
+    strncpy(self.buffSockPath, "/tmp/free5gcWithOCF_unix_sock", MAX_SOCK_PATH_LEN);
     self.sessionHash = HashMake();
     self.bufPacketHash = HashMake();
     // spin lock protect write data instead of mutex protect code block

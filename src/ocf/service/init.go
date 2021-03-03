@@ -9,15 +9,15 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 
-	"free5gcWithOCF/lib/path_util"
-	"free5gcWithOCF/src/app"
-	"free5gcWithOCF/src/ocf/factory"
-	ike_service "free5gcWithOCF/src/ocf/ike/service"
-	"free5gcWithOCF/src/ocf/logger"
-	ngap_service "free5gcWithOCF/src/ocf/ngap/service"
-	nwucp_service "free5gcWithOCF/src/ocf/nwucp/service"
-	nwuup_service "free5gcWithOCF/src/ocf/nwuup/service"
-	"free5gcWithOCF/src/ocf/util"
+	"free5gcWithOCFWithOCF/lib/path_util"
+	"free5gcWithOCFWithOCF/src/app"
+	"free5gcWithOCFWithOCF/src/ocf/factory"
+	ike_service "free5gcWithOCFWithOCF/src/ocf/ike/service"
+	"free5gcWithOCFWithOCF/src/ocf/logger"
+	ngap_service "free5gcWithOCFWithOCF/src/ocf/ngap/service"
+	nwucp_service "free5gcWithOCFWithOCF/src/ocf/nwucp/service"
+	nwuup_service "free5gcWithOCFWithOCF/src/ocf/nwuup/service"
+	"free5gcWithOCFWithOCF/src/ocf/util"
 )
 
 type OCF struct{}
@@ -33,7 +33,7 @@ var config Config
 
 var ocfCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  "free5gcWithOCFcfg",
+		Name:  "free5gcWithOCFWithOCFcfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
@@ -61,7 +61,7 @@ func (*OCF) Initialize(c *cli.Context) {
 	if config.ocfcfg != "" {
 		factory.InitConfigFactory(config.ocfcfg)
 	} else {
-		DefaultOcfConfigPath := path_util.Gofree5gcWithOCFPath("free5gcWithOCF/config/ocfcfg.conf")
+		DefaultOcfConfigPath := path_util.Gofree5gcWithOCFWithOCFPath("free5gcWithOCFWithOCF/config/ocfcfg.conf")
 		factory.InitConfigFactory(DefaultOcfConfigPath)
 	}
 

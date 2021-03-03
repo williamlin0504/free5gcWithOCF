@@ -10,15 +10,16 @@
 package pdusession
 
 import (
-	"free5gc/lib/http_wrapper"
-	"free5gc/lib/openapi"
-	"free5gc/lib/openapi/models"
-	"free5gc/src/smf/logger"
-	"free5gc/src/smf/producer"
-	"github.com/gin-gonic/gin"
+	"free5gcWithOCF/lib/http_wrapper"
+	"free5gcWithOCF/lib/openapi"
+	"free5gcWithOCF/lib/openapi/models"
+	"free5gcWithOCF/src/smf/logger"
+	"free5gcWithOCF/src/smf/producer"
 	"log"
 	"net/http"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
 // HTTPReleaseSmContext - Release SM Context

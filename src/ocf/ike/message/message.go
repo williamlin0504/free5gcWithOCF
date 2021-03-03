@@ -8,7 +8,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"free5gcWithOCF/src/ocf/logger"
+	"free5gcWithOCFWithOCF/src/ocf/logger"
 )
 
 // Log

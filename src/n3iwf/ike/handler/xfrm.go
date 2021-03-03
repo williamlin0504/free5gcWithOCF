@@ -2,8 +2,8 @@ package handler
 
 import (
 	"errors"
-	"free5gc/src/n3iwf/context"
-	"free5gc/src/n3iwf/ike/message"
+	"free5gcWithOCF/src/n3iwf/context"
+	"free5gcWithOCF/src/n3iwf/ike/message"
 
 	"github.com/vishvananda/netlink"
 )

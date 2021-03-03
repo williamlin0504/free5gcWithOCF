@@ -2,19 +2,20 @@ package producer
 
 import (
 	"encoding/json"
-	"free5gc/lib/MongoDBLibrary"
-	"free5gc/lib/TimeDecode"
-	"free5gc/lib/http_wrapper"
-	"free5gc/lib/openapi/models"
-	"free5gc/src/nrf/context"
-	"free5gc/src/nrf/logger"
-	"go.mongodb.org/mongo-driver/bson"
+	"free5gcWithOCF/lib/MongoDBLibrary"
+	"free5gcWithOCF/lib/TimeDecode"
+	"free5gcWithOCF/lib/http_wrapper"
+	"free5gcWithOCF/lib/openapi/models"
+	"free5gcWithOCF/src/nrf/context"
+	"free5gcWithOCF/src/nrf/logger"
 	"math/big"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
+
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 func HandleNFDiscoveryRequest(request *http_wrapper.Request) *http_wrapper.Response {

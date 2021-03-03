@@ -321,7 +321,7 @@ class SubscriberModal extends Component {
       },
       "AmPolicyData": {
         "subscCats": [
-          "free5gc"
+          "free5gcWithOCF"
         ]
       },
       "SmPolicyData": {

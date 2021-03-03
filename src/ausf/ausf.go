@@ -10,10 +10,10 @@ package main
 
 import (
 	"fmt"
-	"free5gc/src/app"
-	"free5gc/src/ausf/logger"
-	"free5gc/src/ausf/service"
-	"free5gc/src/ausf/version"
+	"free5gcWithOCF/src/app"
+	"free5gcWithOCF/src/ausf/logger"
+	"free5gcWithOCF/src/ausf/service"
+	"free5gcWithOCF/src/ausf/version"
 	"os"
 
 	"github.com/sirupsen/logrus"
@@ -33,7 +33,7 @@ func main() {
 	app.Name = "ausf"
 	fmt.Print(app.Name, "\n")
 	appLog.Infoln("AUSF version: ", version.GetVersion())
-	app.Usage = "-free5gccfg common configuration file -ausfcfg ausf configuration file"
+	app.Usage = "-free5gcWithOCFcfg common configuration file -ausfcfg ausf configuration file"
 	app.Action = action
 	app.Flags = AUSF.GetCliCmd()
 
@@ -44,7 +44,7 @@ func main() {
 }
 
 func action(c *cli.Context) {
-	app.AppInitializeWillInitialize(c.String("free5gccfg"))
+	app.AppInitializeWillInitialize(c.String("free5gcWithOCFcfg"))
 	AUSF.Initialize(c)
 	AUSF.Start()
 }

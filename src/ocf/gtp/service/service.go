@@ -6,8 +6,8 @@ import (
 	"net"
 	"syscall"
 
-	ocf_context "free5gcWithOCF/src/ocf/context"
-	"free5gcWithOCF/src/ocf/logger"
+	ocf_context "free5gcWithOCFWithOCF/src/ocf/context"
+	"free5gcWithOCFWithOCF/src/ocf/logger"
 
 	"github.com/sirupsen/logrus"
 	gtpv1 "github.com/wmnsk/go-gtp/v1"
