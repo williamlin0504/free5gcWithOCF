@@ -1488,7 +1488,7 @@ func BuildUERadioCapabilityCheckResponse(
 	return ngap.Encoder(pdu)
 }
 
-func BuildOCFConfigurationUpdateAcknowledge(
+func BuildAMFConfigurationUpdateAcknowledge(
 	setupList *ngapType.AMFTNLAssociationSetupList,
 	failList *ngapType.TNLAssociationList,
 	diagnostics *ngapType.CriticalityDiagnostics) ([]byte, error) {
@@ -1550,7 +1550,7 @@ func BuildOCFConfigurationUpdateAcknowledge(
 
 }
 
-func BuildOCFConfigurationUpdateFailure(
+func BuildAMFConfigurationUpdateFailure(
 	ngCause ngapType.Cause,
 	time *ngapType.TimeToWait,
 	diagnostics *ngapType.CriticalityDiagnostics) ([]byte, error) {
