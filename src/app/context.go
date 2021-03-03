@@ -7,28 +7,26 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-/*
 type config struct {
 	Path     string `yaml:"path"`
 	document []byte
-}*/
+}
 
 type context struct {
-	Path     string `yaml:"path"`
-	document []byte
-	DbUri    string `yaml:"db_uri"`
-	Logger   Logger `yaml:"logger"`
+	config
+	DbUri  string `yaml:"db_uri"`
+	Logger Logger `yaml:"logger"`
 }
 
 type Logger struct {
-	OCF                OCF                `yaml:"OCF"`
+	AMF                AMF                `yaml:"AMF"`
 	UDM                UDM                `yaml:"UDM"`
 	SMF                SMF                `yaml:"SMF"`
 	NAS                NAS                `yaml:"NAS"`
 	FSM                FSM                `yaml:"FSM"`
 	NGAP               NGAP               `yaml:"NGAP"`
-	NocfComm           NocfComm           `yaml:"NocfComm"`
-	NocfEventExposure  NocfEventExposure  `yaml:"NocfEventExposure"`
+	NamfComm           NamfComm           `yaml:"NamfComm"`
+	NamfEventExposure  NamfEventExposure  `yaml:"NamfEventExposure"`
 	NsmfPDUSession     NsmfPDUSession     `yaml:"NsmfPDUSession"`
 	NudrDataRepository NudrDataRepository `yaml:"NudrDataRepository"`
 	OpenApi            OpenApi            `yaml:"OpenApi"`
@@ -43,7 +41,7 @@ type Logger struct {
 	WEBUI              WEBUI              `yaml:"WEBUI"`
 }
 
-type OCF struct {
+type AMF struct {
 	DebugLevel   string `yaml:"debugLevel"`
 	ReportCaller bool   `yaml:"ReportCaller"`
 }
@@ -103,12 +101,12 @@ type NGAP struct {
 	ReportCaller bool   `yaml:"ReportCaller"`
 }
 
-type NocfComm struct {
+type NamfComm struct {
 	DebugLevel   string `yaml:"debugLevel"`
 	ReportCaller bool   `yaml:"ReportCaller"`
 }
 
-type NocfEventExposure struct {
+type NamfEventExposure struct {
 	DebugLevel   string `yaml:"debugLevel"`
 	ReportCaller bool   `yaml:"ReportCaller"`
 }
@@ -144,13 +142,11 @@ type WEBUI struct {
 }
 
 var self context
-
-// Unused code
-//var context_initialized = 0
+var context_initialized = 0
 
 func init() {
 	self = context{}
-	//context_initialized = 1
+	context_initialized = 1
 }
 
 func ContextSelf() *context {

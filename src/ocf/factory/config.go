@@ -4,10 +4,7 @@
 
 package factory
 
-import (
-	"free5gc/lib/openapi/models"
-	"free5gc/src/ocf/context"
-)
+import "free5gcWithOCF/src/ocf/context"
 
 type Config struct {
 	Info *Info `yaml:"info"`
@@ -22,44 +19,17 @@ type Info struct {
 }
 
 type Configuration struct {
-	OcfName string `yaml:"ocfName,omitempty"`
+	OCFInfo          context.OCFNFInfo          `yaml:"OCFInformation"`
+	OCFSCTPAddresses []context.OCFSCTPAddresses `yaml:"OCFSCTPAddresses"`
 
-	NgapIpList []string `yaml:"ngapIpList,omitempty"`
-
-	Sbi *Sbi `yaml:"sbi,omitempty"`
-
-	ServiceNameList []string `yaml:"serviceNameList,omitempty"`
-
-	ServedGumaiList []models.Guami `yaml:"servedGuamiList,omitempty"`
-
-	SupportTAIList []models.Tai `yaml:"supportTaiList,omitempty"`
-
-	PlmnSupportList []context.PlmnSupportItem `yaml:"plmnSupportList,omitempty"`
-
-	SupportDnnList []string `yaml:"supportDnnList,omitempty"`
-
-	NrfUri string `yaml:"nrfUri,omitempty"`
-
-	Security *Security `yaml:"security,omitempty"`
-
-	NetworkName context.NetworkName `yaml:"networkName,omitempty"`
-
-	T3502 int `yaml:"t3502,omitempty"`
-
-	T3512 int `yaml:"t3512,omitempty"`
-
-	Non3gppDeregistrationTimer int `yaml:"mon3gppDeregistrationTimer,omitempty"`
-}
-
-type Sbi struct {
-	Scheme       string `yaml:"scheme"`
-	RegisterIPv4 string `yaml:"registerIPv4,omitempty"` // IP that is registered at NRF.
-	// IPv6Addr string `yaml:"ipv6Addr,omitempty"`
-	BindingIPv4 string `yaml:"bindingIPv4,omitempty"` // IP used to run the server in the node.
-	Port        int    `yaml:"port,omitempty"`
-}
-
-type Security struct {
-	IntegrityOrder []string `yaml:"integrityOrder,omitempty"`
-	CipheringOrder []string `yaml:"cipheringOrder,omitempty"`
+	IKEBindAddr          string `yaml:"IKEBindAddress"`
+	IPSecGatewayAddr     string `yaml:"IPSecInterfaceAddress"`
+	GTPBindAddr          string `yaml:"GTPBindAddress"`
+	TCPPort              uint16 `yaml:"NASTCPPort"`
+	FQDN                 string `yaml:"FQDN"`                 // e.g. ocf.free5gcWithOCF.org
+	PrivateKey           string `yaml:"PrivateKey"`           // file path
+	CertificateAuthority string `yaml:"CertificateAuthority"` // file path
+	Certificate          string `yaml:"Certificate"`          // file path
+	UEIPAddressRange     string `yaml:"UEIPAddressRange"`     // e.g. 10.0.1.0/24
+	InterfaceMark        uint32 `yaml:"IPSecInterfaceMark"`   // must != 0, if not specified, random one
 }

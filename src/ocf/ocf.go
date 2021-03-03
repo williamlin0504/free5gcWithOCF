@@ -1,10 +1,10 @@
 package main
 
 import (
-	"free5gc/src/app"
-	"free5gc/src/ocf/logger"
-	"free5gc/src/ocf/service"
-	"free5gc/src/ocf/version"
+	"free5gcWithOCF/src/app"
+	"free5gcWithOCF/src/ocf/logger"
+	"free5gcWithOCF/src/ocf/service"
+	"free5gcWithOCF/src/ocf/version"
 	"os"
 
 	"github.com/sirupsen/logrus"
@@ -24,16 +24,16 @@ func main() {
 	app.Name = "ocf"
 	appLog.Infoln(app.Name)
 	appLog.Infoln("OCF version: ", version.GetVersion())
-	app.Usage = "-free5gccfg common configuration file -ocfcfg ocf configuration file"
+	app.Usage = "-free5gcWithOCFcfg common configuration file -ocfcfg ocf configuration file"
 	app.Action = action
 	app.Flags = OCF.GetCliCmd()
 	if err := app.Run(os.Args); err != nil {
-		logger.AppLog.Errorf("OCF Run error: %v", err)
+		logger.AppLog.Errorf("OCF Run Error: %v", err)
 	}
 }
 
 func action(c *cli.Context) {
-	app.AppInitializeWillInitialize(c.String("free5gccfg"))
+	app.AppInitializeWillInitialize(c.String("free5gcWithOCFcfg"))
 	OCF.Initialize(c)
 	OCF.Start()
 }

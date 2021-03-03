@@ -29,7 +29,7 @@ do
 done
 shift $(($OPTIND - 1))
 
-TEST_POOL="TestRegistration|TestGUTIRegistration|TestServiceRequest|TestXnHandover|TestN2Handover|TestDeregistration|TestPDUSessionReleaseRequest|TestPaging|TestNon3GPP|TestReSynchronisation"
+TEST_POOL="TestRegistration|TestServiceRequest|TestXnHandover|TestN2Handover|TestDeregistration|TestPDUSessionReleaseRequest|TestPaging|TestNon3GPP"
 if [[ ! "$1" =~ $TEST_POOL ]]
 then
     echo "Usage: $0 [ ${TEST_POOL//|/ | } ]"
@@ -72,12 +72,12 @@ if [ ${DUMP_NS} ]
 then
     ${EXEC_UPFNS} tcpdump -i any -w ${UPFNS}.pcap &
     TCPDUMP_PID=$(sudo ip netns pids ${UPFNS})
-    sudo -E tcpdump -i lo -w default_ns.pcap &
-    LOCALDUMP=$!
 fi
 
 cd src/upf/build && ${EXEC_UPFNS} ./bin/free5gc-upfd -f config/upfcfg.test.yaml &
 sleep 2
+
+${EXEC_UPFNS} ip link set dev upfgtp0 mtu 1500
 
 if [[ "$1" == "TestNon3GPP" ]]
 then
@@ -102,8 +102,8 @@ then
     sudo ip link set ipsec0 up
 
     # Configuration
-    cp -f config/ocfcfg.conf config/ocfcfg.conf.bak
-    cp -f config/ocfcfg.n3test.conf config/ocfcfg.conf
+    cp -f config/amfcfg.conf config/amfcfg.conf.bak
+    cp -f config/amfcfg.n3test.conf config/amfcfg.conf
 
     # Run CN
     cd src/test && $GOROOT/bin/go test -v -vet=off -timeout 0 -run TestCN &
@@ -122,14 +122,13 @@ else
     $GOROOT/bin/go test -v -vet=off -run $1
 fi
 
-sleep 3
+sleep 1
 sudo killall -15 free5gc-upfd
 sleep 1
 
 if [ ${DUMP_NS} ]
 then
     ${EXEC_UPFNS} kill -SIGINT ${TCPDUMP_PID}
-    sudo -E kill -SIGINT ${LOCALDUMP}
 fi
 
 cd ../..
@@ -152,8 +151,8 @@ then
     sudo ip netns del ${UENS}
     sudo killall n3iwf
     killall test.test
-    cp -f config/ocfcfg.conf.bak config/ocfcfg.conf
-    rm -f config/ocfcfg.conf.bak
+    cp -f config/amfcfg.conf.bak config/amfcfg.conf
+    rm -f config/amfcfg.conf.bak
 fi
 
 sleep 2

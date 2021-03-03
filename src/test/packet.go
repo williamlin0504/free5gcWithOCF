@@ -29,29 +29,27 @@ func GetInitialUEMessage(ranUeNgapID int64, nasPdu []byte, fiveGSTmsi string) ([
 	return ngap.Encoder(message)
 }
 
-func GetUplinkNASTransport(ocfUeNgapID, ranUeNgapID int64, nasPdu []byte) ([]byte, error) {
-	message := ngapTestpacket.BuildUplinkNasTransport(ocfUeNgapID, ranUeNgapID, nasPdu)
+func GetUplinkNASTransport(amfUeNgapID, ranUeNgapID int64, nasPdu []byte) ([]byte, error) {
+	message := ngapTestpacket.BuildUplinkNasTransport(amfUeNgapID, ranUeNgapID, nasPdu)
 	return ngap.Encoder(message)
 }
 
-func GetInitialContextSetupResponse(ocfUeNgapID int64, ranUeNgapID int64) ([]byte, error) {
-	message := ngapTestpacket.BuildInitialContextSetupResponseForRegistraionTest(ocfUeNgapID, ranUeNgapID)
+func GetInitialContextSetupResponse(amfUeNgapID int64, ranUeNgapID int64) ([]byte, error) {
+	message := ngapTestpacket.BuildInitialContextSetupResponseForRegistraionTest(amfUeNgapID, ranUeNgapID)
 
 	return ngap.Encoder(message)
 }
 
-func GetInitialContextSetupResponseForServiceRequest(
-	ocfUeNgapID int64, ranUeNgapID int64, ipv4 string) ([]byte, error) {
-	message := ngapTestpacket.BuildInitialContextSetupResponse(ocfUeNgapID, ranUeNgapID, ipv4, nil)
+func GetInitialContextSetupResponseForServiceRequest(amfUeNgapID int64, ranUeNgapID int64, ipv4 string) ([]byte, error) {
+	message := ngapTestpacket.BuildInitialContextSetupResponse(amfUeNgapID, ranUeNgapID, ipv4, nil)
 	return ngap.Encoder(message)
 }
 
-func GetPDUSessionResourceSetupResponse(ocfUeNgapID int64, ranUeNgapID int64, ipv4 string) ([]byte, error) {
-	message := ngapTestpacket.BuildPDUSessionResourceSetupResponseForRegistrationTest(ocfUeNgapID, ranUeNgapID, ipv4)
+func GetPDUSessionResourceSetupResponse(amfUeNgapID int64, ranUeNgapID int64, ipv4 string) ([]byte, error) {
+	message := ngapTestpacket.BuildPDUSessionResourceSetupResponseForRegistrationTest(amfUeNgapID, ranUeNgapID, ipv4)
 	return ngap.Encoder(message)
 }
-func EncodeNasPduWithSecurity(ue *RanUeContext, pdu []byte, securityHeaderType uint8,
-	securityContextAvailable, newSecurityContext bool) ([]byte, error) {
+func EncodeNasPduWithSecurity(ue *RanUeContext, pdu []byte) ([]byte, error) {
 	m := nas.NewMessage()
 	err := m.PlainNasDecode(&pdu)
 	if err != nil {
@@ -59,49 +57,47 @@ func EncodeNasPduWithSecurity(ue *RanUeContext, pdu []byte, securityHeaderType u
 	}
 	m.SecurityHeader = nas.SecurityHeader{
 		ProtocolDiscriminator: nasMessage.Epd5GSMobilityManagementMessage,
-		SecurityHeaderType:    securityHeaderType,
+		SecurityHeaderType:    nas.SecurityHeaderTypeIntegrityProtectedAndCiphered,
 	}
-	return NASEncode(ue, m, securityContextAvailable, newSecurityContext)
+	return NASEncode(ue, m)
 }
 
-func GetUEContextReleaseComplete(ocfUeNgapID int64, ranUeNgapID int64, pduSessionIDList []int64) ([]byte, error) {
-	message := ngapTestpacket.BuildUEContextReleaseComplete(ocfUeNgapID, ranUeNgapID, pduSessionIDList)
+func GetUEContextReleaseComplete(amfUeNgapID int64, ranUeNgapID int64, pduSessionIDList []int64) ([]byte, error) {
+	message := ngapTestpacket.BuildUEContextReleaseComplete(amfUeNgapID, ranUeNgapID, pduSessionIDList)
 	return ngap.Encoder(message)
 }
 
-func GetUEContextReleaseRequest(ocfUeNgapID int64, ranUeNgapID int64, pduSessionIDList []int64) ([]byte, error) {
-	message := ngapTestpacket.BuildUEContextReleaseRequest(ocfUeNgapID, ranUeNgapID, pduSessionIDList)
+func GetUEContextReleaseRequest(amfUeNgapID int64, ranUeNgapID int64, pduSessionIDList []int64) ([]byte, error) {
+	message := ngapTestpacket.BuildUEContextReleaseRequest(amfUeNgapID, ranUeNgapID, pduSessionIDList)
 	return ngap.Encoder(message)
 }
 
-func GetPDUSessionResourceReleaseResponse(ocfUeNgapID int64, ranUeNgapID int64) ([]byte, error) {
-	message := ngapTestpacket.BuildPDUSessionResourceReleaseResponseForReleaseTest(ocfUeNgapID, ranUeNgapID)
+func GetPDUSessionResourceReleaseResponse(amfUeNgapID int64, ranUeNgapID int64) ([]byte, error) {
+	message := ngapTestpacket.BuildPDUSessionResourceReleaseResponseForReleaseTest(amfUeNgapID, ranUeNgapID)
 	return ngap.Encoder(message)
 }
-func GetPathSwitchRequest(ocfUeNgapID int64, ranUeNgapID int64) ([]byte, error) {
-	message := ngapTestpacket.BuildPathSwitchRequest(ocfUeNgapID, ranUeNgapID)
-	message.InitiatingMessage.Value.PathSwitchRequest.ProtocolIEs.List =
-		message.InitiatingMessage.Value.PathSwitchRequest.ProtocolIEs.List[0:5]
-	return ngap.Encoder(message)
-}
-
-func GetHandoverRequired(
-	ocfUeNgapID int64, ranUeNgapID int64, targetGNBID []byte, targetCellID []byte) ([]byte, error) {
-	message := ngapTestpacket.BuildHandoverRequired(ocfUeNgapID, ranUeNgapID, targetGNBID, targetCellID)
+func GetPathSwitchRequest(amfUeNgapID int64, ranUeNgapID int64) ([]byte, error) {
+	message := ngapTestpacket.BuildPathSwitchRequest(amfUeNgapID, ranUeNgapID)
+	message.InitiatingMessage.Value.PathSwitchRequest.ProtocolIEs.List = message.InitiatingMessage.Value.PathSwitchRequest.ProtocolIEs.List[0:5]
 	return ngap.Encoder(message)
 }
 
-func GetHandoverRequestAcknowledge(ocfUeNgapID int64, ranUeNgapID int64) ([]byte, error) {
-	message := ngapTestpacket.BuildHandoverRequestAcknowledge(ocfUeNgapID, ranUeNgapID)
+func GetHandoverRequired(amfUeNgapID int64, ranUeNgapID int64, targetGNBID []byte, targetCellID []byte) ([]byte, error) {
+	message := ngapTestpacket.BuildHandoverRequired(amfUeNgapID, ranUeNgapID, targetGNBID, targetCellID)
 	return ngap.Encoder(message)
 }
 
-func GetHandoverNotify(ocfUeNgapID int64, ranUeNgapID int64) ([]byte, error) {
-	message := ngapTestpacket.BuildHandoverNotify(ocfUeNgapID, ranUeNgapID)
+func GetHandoverRequestAcknowledge(amfUeNgapID int64, ranUeNgapID int64) ([]byte, error) {
+	message := ngapTestpacket.BuildHandoverRequestAcknowledge(amfUeNgapID, ranUeNgapID)
 	return ngap.Encoder(message)
 }
 
-func GetPDUSessionResourceSetupResponseForPaging(ocfUeNgapID int64, ranUeNgapID int64, ipv4 string) ([]byte, error) {
-	message := ngapTestpacket.BuildPDUSessionResourceSetupResponseForPaging(ocfUeNgapID, ranUeNgapID, ipv4)
+func GetHandoverNotify(amfUeNgapID int64, ranUeNgapID int64) ([]byte, error) {
+	message := ngapTestpacket.BuildHandoverNotify(amfUeNgapID, ranUeNgapID)
+	return ngap.Encoder(message)
+}
+
+func GetPDUSessionResourceSetupResponseForPaging(amfUeNgapID int64, ranUeNgapID int64, ipv4 string) ([]byte, error) {
+	message := ngapTestpacket.BuildPDUSessionResourceSetupResponseForPaging(amfUeNgapID, ranUeNgapID, ipv4)
 	return ngap.Encoder(message)
 }

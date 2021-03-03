@@ -1,407 +1,289 @@
 package context
 
 import (
-	"fmt"
-	"free5gc/lib/idgenerator"
-	"free5gc/lib/openapi/models"
-	"free5gc/src/ocf/logger"
+	"crypto/rand"
+	"crypto/rsa"
 	"math"
+	"math/big"
 	"net"
-	"reflect"
-	"strconv"
-	"strings"
 	"sync"
-	"time"
+
+	"git.cs.nctu.edu.tw/calee/sctp"
+	"github.com/sirupsen/logrus"
+	gtpv1 "github.com/wmnsk/go-gtp/v1"
+	"golang.org/x/net/ipv4"
+
+	"free5gcWithOCF/lib/idgenerator"
+	"free5gcWithOCF/lib/ngap/ngapType"
+	"free5gcWithOCF/src/ocf/logger"
 )
 
-var ocfContext = OCFContext{}
-var tmsiGenerator *idgenerator.IDGenerator = nil
-var ocfUeNGAPIDGenerator *idgenerator.IDGenerator = nil
-var ocfStatusSubscriptionIDGenerator *idgenerator.IDGenerator = nil
+var contextLog *logrus.Entry
 
-func init() {
-	OCF_Self().LadnPool = make(map[string]*LADN)
-	OCF_Self().EventSubscriptionIDGenerator = idgenerator.NewGenerator(1, math.MaxInt32)
-	OCF_Self().Name = "ocf"
-	OCF_Self().UriScheme = models.UriScheme_HTTPS
-	OCF_Self().RelativeCapacity = 0xff
-	OCF_Self().ServedGuamiList = make([]models.Guami, 0, MaxNumOfServedGuamiList)
-	OCF_Self().PlmnSupportList = make([]PlmnSupportItem, 0, MaxNumOfPLMNs)
-	OCF_Self().NfService = make(map[models.ServiceName]models.NfService)
-	OCF_Self().NetworkName.Full = "free5GC"
-	tmsiGenerator = idgenerator.NewGenerator(1, math.MaxInt32)
-	ocfStatusSubscriptionIDGenerator = idgenerator.NewGenerator(1, math.MaxInt32)
-	ocfUeNGAPIDGenerator = idgenerator.NewGenerator(1, MaxValueOfOcfUeNgapId)
-}
+var ocfContext = OCFContext{}
 
 type OCFContext struct {
-	EventSubscriptionIDGenerator    *idgenerator.IDGenerator
-	EventSubscriptions              sync.Map
-	UePool                          sync.Map         // map[supi]*OcfUe
-	RanUePool                       sync.Map         // map[OcfUeNgapID]*RanUe
-	OcfRanPool                      sync.Map         // map[net.Conn]*OcfRan
-	LadnPool                        map[string]*LADN // dnn as key
-	SupportTaiLists                 []models.Tai
-	ServedGuamiList                 []models.Guami
-	PlmnSupportList                 []PlmnSupportItem
-	RelativeCapacity                int64
-	NfId                            string
-	Name                            string
-	NfService                       map[models.ServiceName]models.NfService // nfservice that ocf support
-	UriScheme                       models.UriScheme
-	BindingIPv4                     string
-	SBIPort                         int
-	RegisterIPv4                    string
-	HttpIPv6Address                 string
-	TNLWeightFactor                 int64
-	SupportDnnLists                 []string
-	OCFStatusSubscriptions          sync.Map // map[subscriptionID]models.SubscriptionData
-	NrfUri                          string
-	SecurityAlgorithm               SecurityAlgorithm
-	NetworkName                     NetworkName
-	NgapIpList                      []string // NGAP Server IP
-	T3502Value                      int      // unit is second
-	T3512Value                      int      // unit is second
-	Non3gppDeregistrationTimerValue int      // unit is second
+	NFInfo           OCFNFInfo
+	OCFSCTPAddresses []*sctp.SCTPAddr
+
+	// ID generator
+	RANUENGAPIDGenerator *idgenerator.IDGenerator
+	TEIDGenerator        *idgenerator.IDGenerator
+
+	// Pools
+	UePool                 sync.Map // map[int64]*OCFUe, RanUeNgapID as key
+	OCFPool                sync.Map // map[string]*OCFOCF, SCTPAddr as key
+	OCFReInitAvailableList sync.Map // map[string]bool, SCTPAddr as key
+	IKESA                  sync.Map // map[uint64]*IKESecurityAssociation, SPI as key
+	ChildSA                sync.Map // map[uint32]*ChildSecurityAssociation, SPI as key
+	GTPConnectionWithUPF   sync.Map // map[string]*gtpv1.UPlaneConn, UPF address as key
+	AllocatedUEIPAddress   sync.Map // map[string]*OCFUe, IPAddr as key
+	AllocatedUETEID        sync.Map // map[uint32]*OCFUe, TEID as key
+
+	// OCF FQDN
+	FQDN string
+
+	// Security data
+	CertificateAuthority []byte
+	OCFCertificate       []byte
+	OCFPrivateKey        *rsa.PrivateKey
+
+	// UEIPAddressRange
+	Subnet *net.IPNet
+
+	// Network interface mark for xfrm
+	Mark uint32
+
+	// OCF local address
+	IKEBindAddress      string
+	IPSecGatewayAddress string
+	GTPBindAddress      string
+	TCPPort             uint16
+
+	// OCF NWu interface raw socket
+	NWuRawSocket *ipv4.RawConn
 }
 
-type OCFContextEventSubscription struct {
-	IsAnyUe           bool
-	IsGroupUe         bool
-	UeSupiList        []string
-	Expiry            *time.Time
-	EventSubscription models.OcfEventSubscription
-}
+func init() {
+	// init log
+	contextLog = logger.ContextLog
 
-type PlmnSupportItem struct {
-	PlmnId     models.PlmnId   `yaml:"plmnId"`
-	SNssaiList []models.Snssai `yaml:"snssaiList,omitempty"`
-}
-
-type NetworkName struct {
-	Full  string `yaml:"full"`
-	Short string `yaml:"short,omitempty"`
-}
-
-type SecurityAlgorithm struct {
-	IntegrityOrder []uint8 // slice of security.AlgIntegrityXXX
-	CipheringOrder []uint8 // slice of security.AlgCipheringXXX
-}
-
-func NewPlmnSupportItem() (item PlmnSupportItem) {
-	item.SNssaiList = make([]models.Snssai, 0, MaxNumOfSlice)
-	return
-}
-
-func (context *OCFContext) TmsiAllocate() int32 {
-	tmsi, err := tmsiGenerator.Allocate()
-	if err != nil {
-		logger.ContextLog.Errorf("Allocate TMSI error: %+v", err)
-		return -1
-	}
-	return int32(tmsi)
-}
-
-func (context *OCFContext) AllocateOcfUeNgapID() (int64, error) {
-	return ocfUeNGAPIDGenerator.Allocate()
-}
-
-func (context *OCFContext) AllocateGutiToUe(ue *OcfUe) {
-	servedGuami := context.ServedGuamiList[0]
-	ue.Tmsi = context.TmsiAllocate()
-
-	plmnID := servedGuami.PlmnId.Mcc + servedGuami.PlmnId.Mnc
-	tmsiStr := fmt.Sprintf("%08x", ue.Tmsi)
-	ue.Guti = plmnID + servedGuami.OcfId + tmsiStr
-}
-
-func (context *OCFContext) AllocateRegistrationArea(ue *OcfUe, anType models.AccessType) {
-
-	// clear the previous registration area if need
-	if len(ue.RegistrationArea[anType]) > 0 {
-		ue.RegistrationArea[anType] = nil
-	}
-
-	// allocate a new tai list as a registration area to ue
-	// TODO: algorithm to choose TAI list
-	for _, supportTai := range context.SupportTaiLists {
-		if reflect.DeepEqual(supportTai, ue.Tai) {
-			ue.RegistrationArea[anType] = append(ue.RegistrationArea[anType], supportTai)
-			break
-		}
-	}
-}
-
-func (context *OCFContext) NewOCFStatusSubscription(subscriptionData models.SubscriptionData) (subscriptionID string) {
-	id, err := ocfStatusSubscriptionIDGenerator.Allocate()
-	if err != nil {
-		logger.ContextLog.Errorf("Allocate subscriptionID error: %+v", err)
-		return ""
-	}
-
-	subscriptionID = strconv.Itoa(int(id))
-	context.OCFStatusSubscriptions.Store(subscriptionID, subscriptionData)
-	return
-}
-
-// Return Value: (subscriptionData *models.SubScriptionData, ok bool)
-func (context *OCFContext) FindOCFStatusSubscription(subscriptionID string) (*models.SubscriptionData, bool) {
-	if value, ok := context.OCFStatusSubscriptions.Load(subscriptionID); ok {
-		subscriptionData := value.(models.SubscriptionData)
-		return &subscriptionData, ok
-	} else {
-		return nil, false
-	}
-}
-
-func (context *OCFContext) DeleteOCFStatusSubscription(subscriptionID string) {
-	context.OCFStatusSubscriptions.Delete(subscriptionID)
-	if id, err := strconv.ParseInt(subscriptionID, 10, 64); err != nil {
-		logger.ContextLog.Error(err)
-	} else {
-		ocfStatusSubscriptionIDGenerator.FreeID(id)
-	}
-}
-
-func (context *OCFContext) NewEventSubscription(subscriptionID string, subscription *OCFContextEventSubscription) {
-	context.EventSubscriptions.Store(subscriptionID, subscription)
-}
-
-func (context *OCFContext) FindEventSubscription(subscriptionID string) (*OCFContextEventSubscription, bool) {
-	if value, ok := context.EventSubscriptions.Load(subscriptionID); ok {
-		return value.(*OCFContextEventSubscription), ok
-	} else {
-		return nil, false
-	}
-}
-func (context *OCFContext) DeleteEventSubscription(subscriptionID string) {
-	context.EventSubscriptions.Delete(subscriptionID)
-	if id, err := strconv.ParseInt(subscriptionID, 10, 32); err != nil {
-		logger.ContextLog.Error(err)
-	} else {
-		context.EventSubscriptionIDGenerator.FreeID(id)
-	}
-}
-
-func (context *OCFContext) AddOcfUeToUePool(ue *OcfUe, supi string) {
-	if len(supi) == 0 {
-		logger.ContextLog.Errorf("Supi is nil")
-	}
-	ue.Supi = supi
-	context.UePool.Store(ue.Supi, ue)
-}
-
-func (context *OCFContext) NewOcfUe(supi string) *OcfUe {
-	ue := OcfUe{}
-	ue.init()
-
-	if supi != "" {
-		context.AddOcfUeToUePool(&ue, supi)
-	}
-
-	context.AllocateGutiToUe(&ue)
-
-	return &ue
-}
-
-func (context *OCFContext) OcfUeFindByUeContextID(ueContextID string) (*OcfUe, bool) {
-	if strings.HasPrefix(ueContextID, "imsi") {
-		return context.OcfUeFindBySupi(ueContextID)
-	}
-	if strings.HasPrefix(ueContextID, "imei") {
-		return context.OcfUeFindByPei(ueContextID)
-	}
-	if strings.HasPrefix(ueContextID, "5g-guti") {
-		guti := ueContextID[strings.LastIndex(ueContextID, "-")+1:]
-		return context.OcfUeFindByGuti(guti)
-	}
-	return nil, false
-}
-
-func (context *OCFContext) OcfUeFindBySupi(supi string) (ue *OcfUe, ok bool) {
-	if value, loadOk := context.UePool.Load(supi); loadOk {
-		ue = value.(*OcfUe)
-		ok = loadOk
-	}
-	return
-}
-
-func (context *OCFContext) OcfUeFindByPei(pei string) (ue *OcfUe, ok bool) {
-	context.UePool.Range(func(key, value interface{}) bool {
-		candidate := value.(*OcfUe)
-		if ok = (candidate.Pei == pei); ok {
-			ue = candidate
-			return false
-		}
-		return true
-	})
-	return
-}
-
-func (context *OCFContext) NewOcfRan(conn net.Conn) *OcfRan {
-	ran := OcfRan{}
-	ran.SupportedTAList = make([]SupportedTAI, 0, MaxNumOfTAI*MaxNumOfBroadcastPLMNs)
-	ran.Conn = conn
-	context.OcfRanPool.Store(conn, &ran)
-	return &ran
-}
-
-// use net.Conn to find RAN context, return *OcfRan and ok bit
-func (context *OCFContext) OcfRanFindByConn(conn net.Conn) (*OcfRan, bool) {
-	if value, ok := context.OcfRanPool.Load(conn); ok {
-		return value.(*OcfRan), ok
-	}
-	return nil, false
-}
-
-// use ranNodeID to find RAN context, return *OcfRan and ok bit
-func (context *OCFContext) OcfRanFindByRanID(ranNodeID models.GlobalRanNodeId) (*OcfRan, bool) {
-	var ran *OcfRan
-	var ok bool
-	context.OcfRanPool.Range(func(key, value interface{}) bool {
-		ocfRan := value.(*OcfRan)
-		switch ocfRan.RanPresent {
-		case RanPresentGNbId:
-			logger.ContextLog.Infof("aaa: %+v\n", ocfRan.RanId.GNbId)
-			if ocfRan.RanId.GNbId.GNBValue == ranNodeID.GNbId.GNBValue {
-				ran = ocfRan
-				ok = true
-				return false
-			}
-		case RanPresentNgeNbId:
-			if ocfRan.RanId.NgeNbId == ranNodeID.NgeNbId {
-				ran = ocfRan
-				ok = true
-				return false
-			}
-		case RanPresentN3IwfId:
-			if ocfRan.RanId.N3IwfId == ranNodeID.N3IwfId {
-				ran = ocfRan
-				ok = true
-				return false
-			}
-		}
-		return true
-	})
-	return ran, ok
-}
-
-func (context *OCFContext) DeleteOcfRan(conn net.Conn) {
-	context.OcfRanPool.Delete(conn)
-}
-
-func (context *OCFContext) InSupportDnnList(targetDnn string) bool {
-	for _, dnn := range context.SupportDnnLists {
-		if dnn == targetDnn {
-			return true
-		}
-	}
-	return false
-}
-
-func (context *OCFContext) OcfUeFindByGuti(guti string) (ue *OcfUe, ok bool) {
-	context.UePool.Range(func(key, value interface{}) bool {
-		candidate := value.(*OcfUe)
-		if ok = (candidate.Guti == guti); ok {
-			ue = candidate
-			return false
-		}
-		return true
-	})
-	return
-}
-
-func (context *OCFContext) OcfUeFindByPolicyAssociationID(polAssoId string) (ue *OcfUe, ok bool) {
-	context.UePool.Range(func(key, value interface{}) bool {
-		candidate := value.(*OcfUe)
-		if ok = (candidate.PolicyAssociationId == polAssoId); ok {
-			ue = candidate
-			return false
-		}
-		return true
-	})
-	return
-}
-
-func (context *OCFContext) RanUeFindByOcfUeNgapID(ocfUeNgapID int64) *RanUe {
-	if value, ok := context.RanUePool.Load(ocfUeNgapID); ok {
-		return value.(*RanUe)
-	} else {
-		return nil
-	}
-}
-
-func (context *OCFContext) GetIPv4Uri() string {
-	return fmt.Sprintf("%s://%s:%d", context.UriScheme, context.RegisterIPv4, context.SBIPort)
-}
-
-func (context *OCFContext) InitNFService(serivceName []string, version string) {
-	tmpVersion := strings.Split(version, ".")
-	versionUri := "v" + tmpVersion[0]
-	for index, nameString := range serivceName {
-		name := models.ServiceName(nameString)
-		context.NfService[name] = models.NfService{
-			ServiceInstanceId: strconv.Itoa(index),
-			ServiceName:       name,
-			Versions: &[]models.NfServiceVersion{
-				{
-					ApiFullVersion:  version,
-					ApiVersionInUri: versionUri,
-				},
-			},
-			Scheme:          context.UriScheme,
-			NfServiceStatus: models.NfServiceStatus_REGISTERED,
-			ApiPrefix:       context.GetIPv4Uri(),
-			IpEndPoints: &[]models.IpEndPoint{
-				{
-					Ipv4Address: context.RegisterIPv4,
-					Transport:   models.TransportProtocol_TCP,
-					Port:        int32(context.SBIPort),
-				},
-			},
-		}
-	}
-}
-
-// Reset OCF Context
-func (context *OCFContext) Reset() {
-	context.OcfRanPool.Range(func(key, value interface{}) bool {
-		context.UePool.Delete(key)
-		return true
-	})
-	for key := range context.LadnPool {
-		delete(context.LadnPool, key)
-	}
-	context.RanUePool.Range(func(key, value interface{}) bool {
-		context.RanUePool.Delete(key)
-		return true
-	})
-	context.UePool.Range(func(key, value interface{}) bool {
-		context.UePool.Delete(key)
-		return true
-	})
-	context.EventSubscriptions.Range(func(key, value interface{}) bool {
-		context.DeleteEventSubscription(key.(string))
-		return true
-	})
-	for key := range context.NfService {
-		delete(context.NfService, key)
-	}
-	context.SupportTaiLists = context.SupportTaiLists[:0]
-	context.PlmnSupportList = context.PlmnSupportList[:0]
-	context.ServedGuamiList = context.ServedGuamiList[:0]
-	context.RelativeCapacity = 0xff
-	context.NfId = ""
-	context.UriScheme = models.UriScheme_HTTPS
-	context.SBIPort = 0
-	context.BindingIPv4 = ""
-	context.RegisterIPv4 = ""
-	context.HttpIPv6Address = ""
-	context.Name = "ocf"
-	context.NrfUri = ""
+	// init ID generator
+	ocfContext.RANUENGAPIDGenerator = idgenerator.NewGenerator(0, math.MaxInt64)
+	ocfContext.TEIDGenerator = idgenerator.NewGenerator(1, math.MaxUint32)
 }
 
 // Create new OCF context
-func OCF_Self() *OCFContext {
+func OCFSelf() *OCFContext {
 	return &ocfContext
+}
+
+func (context *OCFContext) NewOcfUe() *OCFUe {
+	ranUeNgapId, err := context.RANUENGAPIDGenerator.Allocate()
+	if err != nil {
+		contextLog.Errorf("New OCF UE failed: %+v", err)
+		return nil
+	}
+	ocfUe := new(OCFUe)
+	ocfUe.init(ranUeNgapId)
+	context.UePool.Store(ranUeNgapId, ocfUe)
+	return ocfUe
+}
+
+func (context *OCFContext) DeleteOcfUe(ranUeNgapId int64) {
+	context.UePool.Delete(ranUeNgapId)
+}
+
+func (context *OCFContext) UePoolLoad(ranUeNgapId int64) (*OCFUe, bool) {
+	ue, ok := context.UePool.Load(ranUeNgapId)
+	if ok {
+		return ue.(*OCFUe), ok
+	} else {
+		return nil, ok
+	}
+}
+
+func (context *OCFContext) NewOcfOcf(sctpAddr string, conn *sctp.SCTPConn) *OCFOCF {
+	amf := new(OCFOCF)
+	amf.init(sctpAddr, conn)
+	if item, loaded := context.OCFPool.LoadOrStore(sctpAddr, amf); loaded {
+		contextLog.Warn("[Context] NewOcfOcf(): OCF entry already exists.")
+		return item.(*OCFOCF)
+	} else {
+		return amf
+	}
+}
+
+func (context *OCFContext) DeleteOcfOcf(sctpAddr string) {
+	context.OCFPool.Delete(sctpAddr)
+}
+
+func (context *OCFContext) OCFPoolLoad(sctpAddr string) (*OCFOCF, bool) {
+	amf, ok := context.OCFPool.Load(sctpAddr)
+	if ok {
+		return amf.(*OCFOCF), ok
+	} else {
+		return nil, ok
+	}
+}
+
+func (context *OCFContext) DeleteOCFReInitAvailableFlag(sctpAddr string) {
+	context.OCFReInitAvailableList.Delete(sctpAddr)
+}
+
+func (context *OCFContext) OCFReInitAvailableListLoad(sctpAddr string) (bool, bool) {
+	flag, ok := context.OCFReInitAvailableList.Load(sctpAddr)
+	if ok {
+		return flag.(bool), ok
+	} else {
+		return true, ok
+	}
+}
+
+func (context *OCFContext) OCFReInitAvailableListStore(sctpAddr string, flag bool) {
+	context.OCFReInitAvailableList.Store(sctpAddr, flag)
+}
+
+func (context *OCFContext) NewIKESecurityAssociation() *IKESecurityAssociation {
+	ikeSecurityAssociation := new(IKESecurityAssociation)
+
+	var maxSPI *big.Int = new(big.Int).SetUint64(math.MaxUint64)
+	var localSPIuint64 uint64
+
+	for {
+		localSPI, err := rand.Int(rand.Reader, maxSPI)
+		if err != nil {
+			contextLog.Error("[Context] Error occurs when generate new IKE SPI")
+			return nil
+		}
+		localSPIuint64 = localSPI.Uint64()
+		if _, duplicate := context.IKESA.LoadOrStore(localSPIuint64, ikeSecurityAssociation); !duplicate {
+			break
+		}
+	}
+
+	ikeSecurityAssociation.LocalSPI = localSPIuint64
+
+	return ikeSecurityAssociation
+}
+
+func (context *OCFContext) DeleteIKESecurityAssociation(spi uint64) {
+	context.IKESA.Delete(spi)
+}
+
+func (context *OCFContext) IKESALoad(spi uint64) (*IKESecurityAssociation, bool) {
+	securityAssociation, ok := context.IKESA.Load(spi)
+	if ok {
+		return securityAssociation.(*IKESecurityAssociation), ok
+	} else {
+		return nil, ok
+	}
+}
+
+func (context *OCFContext) DeleteGTPConnection(upfAddr string) {
+	context.GTPConnectionWithUPF.Delete(upfAddr)
+}
+
+func (context *OCFContext) GTPConnectionWithUPFLoad(upfAddr string) (*gtpv1.UPlaneConn, bool) {
+	conn, ok := context.GTPConnectionWithUPF.Load(upfAddr)
+	if ok {
+		return conn.(*gtpv1.UPlaneConn), ok
+	} else {
+		return nil, ok
+	}
+}
+
+func (context *OCFContext) GTPConnectionWithUPFStore(upfAddr string, conn *gtpv1.UPlaneConn) {
+	context.GTPConnectionWithUPF.Store(upfAddr, conn)
+}
+
+func (context *OCFContext) NewInternalUEIPAddr(ue *OCFUe) net.IP {
+	var ueIPAddr net.IP
+
+	// TODO: Check number of allocated IP to detect running out of IPs
+	for {
+		ueIPAddr = generateRandomIPinRange(context.Subnet)
+		if ueIPAddr != nil {
+			if ueIPAddr.String() == context.IPSecGatewayAddress {
+				continue
+			}
+			if _, ok := context.AllocatedUEIPAddress.LoadOrStore(ueIPAddr.String(), ue); !ok {
+				break
+			}
+		}
+	}
+
+	return ueIPAddr
+}
+
+func (context *OCFContext) DeleteInternalUEIPAddr(ipAddr string) {
+	context.AllocatedUEIPAddress.Delete(ipAddr)
+}
+
+func (context *OCFContext) AllocatedUEIPAddressLoad(ipAddr string) (*OCFUe, bool) {
+	ue, ok := context.AllocatedUEIPAddress.Load(ipAddr)
+	if ok {
+		return ue.(*OCFUe), ok
+	} else {
+		return nil, ok
+	}
+}
+
+func (context *OCFContext) NewTEID(ue *OCFUe) uint32 {
+	teid64, err := context.TEIDGenerator.Allocate()
+	if err != nil {
+		contextLog.Errorf("New TEID failed: %+v", err)
+		return 0
+	}
+	teid32 := uint32(teid64)
+
+	context.AllocatedUETEID.Store(teid32, ue)
+
+	return teid32
+}
+
+func (context *OCFContext) DeleteTEID(teid uint32) {
+	context.AllocatedUETEID.Delete(teid)
+}
+
+func (context *OCFContext) AllocatedUETEIDLoad(teid uint32) (*OCFUe, bool) {
+	ue, ok := context.AllocatedUETEID.Load(teid)
+	if ok {
+		return ue.(*OCFUe), ok
+	} else {
+		return nil, ok
+	}
+}
+
+func (context *OCFContext) OCFSelection(ueSpecifiedGUAMI *ngapType.GUAMI) *OCFOCF {
+	var availableOCF *OCFOCF
+	context.OCFPool.Range(func(key, value interface{}) bool {
+		amf := value.(*OCFOCF)
+		if amf.FindAvalibleOCFByCompareGUAMI(ueSpecifiedGUAMI) {
+			availableOCF = amf
+			return false
+		} else {
+			return true
+		}
+	})
+	return availableOCF
+}
+
+func generateRandomIPinRange(subnet *net.IPNet) net.IP {
+	ipAddr := make([]byte, 4)
+	randomNumber := make([]byte, 4)
+
+	_, err := rand.Read(randomNumber)
+	if err != nil {
+		contextLog.Errorf("Generate random number for IP address failed: %+v", err)
+		return nil
+	}
+
+	// TODO: elimenate network name, gateway, and broadcast
+	for i := 0; i < 4; i++ {
+		alter := randomNumber[i] & (subnet.Mask[i] ^ 255)
+		ipAddr[i] = subnet.IP[i] + alter
+	}
+
+	return net.IPv4(ipAddr[0], ipAddr[1], ipAddr[2], ipAddr[3])
 }

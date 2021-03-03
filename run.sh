@@ -7,10 +7,11 @@ sudo -E ./bin/free5gc-upfd &
 PID_LIST+=($!)
 
 sleep 1
+sudo ip link set dev upfgtp0 mtu 1500
 
 cd ../../..
 
-NF_LIST="nrf ocf smf udr pcf udm nssf ausf"
+NF_LIST="nrf amf smf udr pcf udm nssf ausf"
 
 export GIN_MODE=release
 
@@ -20,14 +21,11 @@ for NF in ${NF_LIST}; do
 done
 
 sudo ./bin/n3iwf &
-SUDO_N3IWF_PID=$!
-sleep 1
-N3IWF_PID=$(pgrep -P $SUDO_N3IWF_PID)
-PID_LIST+=($SUDO_N3IWF_PID $N3IWF_PID)
+PID_LIST+=($!)
 
 function terminate()
 {
-    # kill ocf first
+    # kill amf first
     while $(sudo kill -SIGINT ${PID_LIST[2]} 2>/dev/null); do
         sleep 2
     done

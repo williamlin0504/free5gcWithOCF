@@ -7,28 +7,22 @@ import (
 	formatter "github.com/antonfisher/nested-logrus-formatter"
 	"github.com/sirupsen/logrus"
 
-	"free5gc/lib/logger_conf"
-	"free5gc/lib/logger_util"
+	"free5gcWithOCF/lib/logger_conf"
+	"free5gcWithOCF/lib/logger_util"
 )
 
 var log *logrus.Logger
+
 var AppLog *logrus.Entry
 var InitLog *logrus.Entry
 var ContextLog *logrus.Entry
 var NgapLog *logrus.Entry
-var HandlerLog *logrus.Entry
-var HttpLog *logrus.Entry
-var GmmLog *logrus.Entry
-var MtLog *logrus.Entry
-var ProducerLog *logrus.Entry
-var LocationLog *logrus.Entry
-var CommLog *logrus.Entry
-var CallbackLog *logrus.Entry
+var IKELog *logrus.Entry
+var GTPLog *logrus.Entry
+var NWuCPLog *logrus.Entry
+var NWuUPLog *logrus.Entry
+var RelayLog *logrus.Entry
 var UtilLog *logrus.Entry
-var NasLog *logrus.Entry
-var ConsumerLog *logrus.Entry
-var EeLog *logrus.Entry
-var GinLog *logrus.Entry
 
 func init() {
 	log = logrus.New()
@@ -42,9 +36,9 @@ func init() {
 		FieldsOrder:     []string{"component", "category"},
 	}
 
-	free5gcLogHook, err := logger_util.NewFileHook(logger_conf.Free5gcLogFile, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
+	free5gcWithOCFLogHook, err := logger_util.NewFileHook(logger_conf.Free5gcLogFile, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
 	if err == nil {
-		log.Hooks.Add(free5gcLogHook)
+		log.Hooks.Add(free5gcWithOCFLogHook)
 	}
 
 	selfLogHook, err := logger_util.NewFileHook(logger_conf.NfLogDir+"ocf.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
@@ -56,19 +50,12 @@ func init() {
 	InitLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "Init"})
 	ContextLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "Context"})
 	NgapLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "NGAP"})
-	HandlerLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "Handler"})
-	HttpLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "HTTP"})
-	GmmLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "Gmm"})
-	MtLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "MT"})
-	ProducerLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "Producer"})
-	LocationLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "LocInfo"})
-	CommLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "Comm"})
-	CallbackLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "Callback"})
+	IKELog = log.WithFields(logrus.Fields{"component": "OCF", "category": "IKE"})
+	GTPLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "GTP"})
+	NWuCPLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "NWuCP"})
+	NWuUPLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "NWuUP"})
+	RelayLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "Relay"})
 	UtilLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "Util"})
-	NasLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "NAS"})
-	ConsumerLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "Consumer"})
-	EeLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "EventExposure"})
-	GinLog = log.WithFields(logrus.Fields{"component": "OCF", "category": "GIN"})
 }
 
 func SetLogLevel(level logrus.Level) {
