@@ -11,13 +11,13 @@ import (
 
 	"free5gcWithOCF/lib/path_util"
 	"free5gcWithOCF/src/app"
-	"free5gcWithOCF/src/ocf/factory"
-	ike_service "free5gcWithOCF/src/ocf/ike/service"
-	"free5gcWithOCF/src/ocf/logger"
-	ngap_service "free5gcWithOCF/src/ocf/ngap/service"
-	nwucp_service "free5gcWithOCF/src/ocf/nwucp/service"
-	nwuup_service "free5gcWithOCF/src/ocf/nwuup/service"
-	"free5gcWithOCF/src/ocf/util"
+	"free5gcWithOCF/src/ccf/factory"
+	ike_service "free5gcWithOCF/src/ccf/ike/service"
+	"free5gcWithOCF/src/ccf/logger"
+	ngap_service "free5gcWithOCF/src/ccf/ngap/service"
+	nwucp_service "free5gcWithOCF/src/ccf/nwucp/service"
+	nwuup_service "free5gcWithOCF/src/ccf/nwuup/service"
+	"free5gcWithOCF/src/ccf/util"
 )
 
 type CCF struct{}
@@ -38,7 +38,7 @@ var ocfCLi = []cli.Flag{
 	},
 	cli.StringFlag{
 		Name:  "ocfcfg",
-		Usage: "ocf config file",
+		Usage: "ccf config file",
 	},
 }
 
@@ -83,8 +83,8 @@ func (*CCF) Initialize(c *cli.Context) {
 
 }
 
-func (ocf *CCF) FilterCli(c *cli.Context) (args []string) {
-	for _, flag := range ocf.GetCliCmd() {
+func (ccf *CCF) FilterCli(c *cli.Context) (args []string) {
+	for _, flag := range ccf.GetCliCmd() {
 		name := flag.GetName()
 		value := fmt.Sprint(c.Generic(name))
 		if value == "" {
@@ -96,7 +96,7 @@ func (ocf *CCF) FilterCli(c *cli.Context) (args []string) {
 	return args
 }
 
-func (ocf *CCF) Start() {
+func (ccf *CCF) Start() {
 	initLog.Infoln("Server started")
 
 	if !util.InitCCFContext() {
@@ -147,14 +147,14 @@ func (ocf *CCF) Start() {
 
 }
 
-func (ocf *CCF) Exec(c *cli.Context) error {
+func (ccf *CCF) Exec(c *cli.Context) error {
 
 	//CCF.Initialize(cfgPath, c)
 
 	initLog.Traceln("args:", c.String("ocfcfg"))
-	args := ocf.FilterCli(c)
+	args := ccf.FilterCli(c)
 	initLog.Traceln("filter: ", args)
-	command := exec.Command("./ocf", args...)
+	command := exec.Command("./ccf", args...)
 
 	wg := sync.WaitGroup{}
 	wg.Add(3)

@@ -15,7 +15,7 @@ import (
 
 	"free5gcWithOCF/lib/idgenerator"
 	"free5gcWithOCF/lib/ngap/ngapType"
-	"free5gcWithOCF/src/ocf/logger"
+	"free5gcWithOCF/src/ccf/logger"
 )
 
 var contextLog *logrus.Entry

@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"free5gcWithOCF/lib/ngap/ngapType"
-	ike_message "free5gcWithOCF/src/ocf/ike/message"
+	ike_message "free5gcWithOCF/src/ccf/ike/message"
 	"net"
 
 	gtpv1 "github.com/wmnsk/go-gtp/v1"

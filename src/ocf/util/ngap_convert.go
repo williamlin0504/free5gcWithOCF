@@ -5,8 +5,8 @@ import (
 	"encoding/hex"
 	"free5gcWithOCF/lib/aper"
 	"free5gcWithOCF/lib/ngap/ngapType"
-	"free5gcWithOCF/src/ocf/context"
-	"free5gcWithOCF/src/ocf/logger"
+	"free5gcWithOCF/src/ccf/context"
+	"free5gcWithOCF/src/ccf/logger"
 	"strings"
 )
 

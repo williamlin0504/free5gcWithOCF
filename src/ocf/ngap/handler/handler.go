@@ -9,12 +9,12 @@ import (
 	"free5gcWithOCF/lib/aper"
 	"free5gcWithOCF/lib/ngap/ngapConvert"
 	"free5gcWithOCF/lib/ngap/ngapType"
-	"free5gcWithOCF/src/ocf/context"
-	gtp_service "free5gcWithOCF/src/ocf/gtp/service"
-	"free5gcWithOCF/src/ocf/ike/handler"
-	ike_message "free5gcWithOCF/src/ocf/ike/message"
-	"free5gcWithOCF/src/ocf/logger"
-	ngap_message "free5gcWithOCF/src/ocf/ngap/message"
+	"free5gcWithOCF/src/ccf/context"
+	gtp_service "free5gcWithOCF/src/ccf/gtp/service"
+	"free5gcWithOCF/src/ccf/ike/handler"
+	ike_message "free5gcWithOCF/src/ccf/ike/message"
+	"free5gcWithOCF/src/ccf/logger"
+	ngap_message "free5gcWithOCF/src/ccf/ngap/message"
 
 	"git.cs.nctu.edu.tw/calee/sctp"
 	"github.com/sirupsen/logrus"
@@ -2206,7 +2206,7 @@ func HandlePDUSessionResourceReleaseCommand(amf *context.CCF, message *ngapType.
 	}
 
 	// if rANPagingPriority != nil {
-	//ocf does not support paging
+	//ccf does not support paging
 	// }
 
 	releaseList := ngapType.PDUSessionResourceReleasedListRelRes{}
