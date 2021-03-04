@@ -21,7 +21,7 @@ func BuildNFInstance(context *chf_context.CHFContext) (profile models.NfProfile,
 		service = append(service, nfService)
 	}
 	profile.NfServices = &service
-	profile.ChfInfo = &models.ChfInfo{
+	profile.CcfInfo = &models.CcfInfo{
 		DnnList: []string{
 			"free5gcWithOCF",
 			"internet",
