@@ -25,7 +25,7 @@ func main() {
 	app.Name = "udm"
 	fmt.Print(app.Name, "\n")
 	appLog.Infoln("UDM version: ", version.GetVersion())
-	app.Usage = "-free5gcWithOCFcfg common configuration file -udmcfg udm configuration file"
+	app.Usage = "-free5gccfg common configuration file -udmcfg udm configuration file"
 	app.Action = action
 	app.Flags = UDM.GetCliCmd()
 	if err := app.Run(os.Args); err != nil {
@@ -37,7 +37,7 @@ func main() {
 }
 
 func action(c *cli.Context) {
-	app.AppInitializeWillInitialize(c.String("free5gcWithOCFcfg"))
+	app.AppInitializeWillInitialize(c.String("free5gccfg"))
 	UDM.Initialize(c)
 	UDM.Start()
 }

@@ -54,7 +54,7 @@ func init() {
 		flagSet := flag.NewFlagSet("free5gcWithOCF", 0)
 		flagSet.String("smfcfg", "", "SMF Config Path")
 		cli := cli.NewContext(nil, flagSet, nil)
-		err := cli.Set("smfcfg", path_util.Gofree5gcWithOCFPath("free5gcWithOCF/config/test/smfcfg.test.conf"))
+		err := cli.Set("smfcfg", path_util.Gofree5gcPath("free5gcWithOCF/config/test/smfcfg.test.conf"))
 		if err != nil {
 			log.Fatal("SMF test config error")
 			return
@@ -101,7 +101,7 @@ func TestCN(t *testing.T) {
 	// New UE
 	ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA2, security.AlgIntegrity128NIA2)
 	// ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA0)
-	ue.AmfUENGAPID = 1
+	ue.AmfUeNgapId = 1
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
 		TestGenAuthData.MilenageTestSet19.OPC,
 		TestGenAuthData.MilenageTestSet19.OP)

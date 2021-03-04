@@ -15,7 +15,7 @@ import (
 
 func TestInit() {
 	// load config
-	DefaultAusfConfigPath := path_util.Gofree5gcWithOCFPath("free5gcWithOCF/config/ausfcfg.conf")
+	DefaultAusfConfigPath := path_util.Gofree5gcPath("free5gcWithOCF/config/ausfcfg.conf")
 	factory.InitConfigFactory(DefaultAusfConfigPath)
 	Init()
 }

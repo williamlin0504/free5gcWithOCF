@@ -36,7 +36,7 @@ var config Config
 
 var nrfCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  "free5gcWithOCFcfg",
+		Name:  "free5gccfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
@@ -64,7 +64,7 @@ func (*NRF) Initialize(c *cli.Context) {
 	if config.nrfcfg != "" {
 		factory.InitConfigFactory(config.nrfcfg)
 	} else {
-		DefaultNrfConfigPath := path_util.Gofree5gcWithOCFPath("free5gcWithOCF/config/nrfcfg.conf")
+		DefaultNrfConfigPath := path_util.Gofree5gcPath("free5gcWithOCF/config/nrfcfg.conf")
 		factory.InitConfigFactory(DefaultNrfConfigPath)
 	}
 

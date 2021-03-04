@@ -44,15 +44,6 @@ func RanIdToModels(ranNodeId ngapType.GlobalRANNodeID) (ranId models.GlobalRanNo
 			choiceN3IWFID := ngapN3IWFID.N3IWFID.N3IWFID
 			ranId.N3IwfId = BitStringToHex(choiceN3IWFID)
 		}
-
-	case ngapType.GlobalRANNodeIDPresentGlobalOCFID:
-		ngapOCFID := ranNodeId.GlobalOCFID
-		plmnid := PlmnIdToModels(ngapOCFID.PLMNIdentity)
-		ranId.PlmnId = &plmnid
-		if ngapOCFID.OCFID.Present == ngapType.OCFIDPresentOCFID {
-			choiceOCFID := ngapOCFID.OCFID.OCFID
-			ranId.OcfId = BitStringToHex(choiceOCFID)
-		}
 	}
 
 	return ranId
@@ -100,15 +91,6 @@ func RanIDToNgap(modelsRanNodeId models.GlobalRanNodeId) ngapType.GlobalRANNodeI
 		globalN3IWFID.N3IWFID.Present = ngapType.N3IWFIDPresentN3IWFID
 		globalN3IWFID.N3IWFID.N3IWFID = new(aper.BitString)
 		*globalN3IWFID.N3IWFID.N3IWFID = HexToBitString(modelsRanNodeId.N3IwfId, len(modelsRanNodeId.N3IwfId)*4)
-
-		ngapRanNodeId.Present = ngapType.GlobalRANNodeIDPresentGlobalOCFID
-		ngapRanNodeId.GlobalOCFID = new(ngapType.GlobalOCFID)
-		globalOCFID := ngapRanNodeId.GlobalOCFID
-
-		globalOCFID.PLMNIdentity = PlmnIdToNgap(*modelsRanNodeId.PlmnId)
-		globalOCFID.OCFID.Present = ngapType.OCFIDPresentOCFID
-		globalOCFID.OCFID.OCFID = new(aper.BitString)
-		*globalOCFID.OCFID.OCFID = HexToBitString(modelsRanNodeId.OcfId, len(modelsRanNodeId.OcfId)*4)
 	}
 
 	return ngapRanNodeId

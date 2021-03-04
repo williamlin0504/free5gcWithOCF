@@ -29,9 +29,9 @@ type NetworkFunction interface {
 func AppInitializeWillInitialize(cfgPath string) {
 
 	if cfgPath == "" {
-		ContextSelf().Path = path_util.Gofree5gcWithOCFPath("free5gcWithOCF/config/free5GC.conf")
+		ContextSelf().Path = path_util.Gofree5gcPath("free5gcWithOCF/config/free5GC.conf")
 	} else {
-		ContextSelf().Path = path_util.Gofree5gcWithOCFPath(cfgPath)
+		ContextSelf().Path = path_util.Gofree5gcPath(cfgPath)
 	}
 	fmt.Println("CommonConfig file:", ContextSelf().Path)
 

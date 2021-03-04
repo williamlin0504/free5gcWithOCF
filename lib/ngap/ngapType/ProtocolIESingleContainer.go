@@ -51,10 +51,6 @@ type ProtocolIESingleContainerN3IWFIDExtIEs struct {
 }
 
 // Open type declare
-type ProtocolIESingleContainerOCFIDExtIEs struct {
-}
-
-// Open type declare
 type ProtocolIESingleContainerNgENBIDExtIEs struct {
 }
 

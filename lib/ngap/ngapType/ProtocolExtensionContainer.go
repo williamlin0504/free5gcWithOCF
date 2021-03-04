@@ -344,12 +344,6 @@ type ProtocolExtensionContainerGlobalN3IWFIDExtIEs struct {
 	List []GlobalN3IWFIDExtIEs `aper:"sizeLB:1,sizeUB:65535"`
 }
 
-/* Sequence of = 35, FULL Name = struct ProtocolExtensionContainer_6500P56 */
-/* GlobalOCFIDExtIEs */
-type ProtocolExtensionContainerGlobalOCFIDExtIEs struct {
-	List []GlobalOCFIDExtIEs `aper:"sizeLB:1,sizeUB:65535"`
-}
-
 /* Sequence of = 35, FULL Name = struct ProtocolExtensionContainer_6500P57 */
 /* GlobalNgENBIDExtIEs */
 type ProtocolExtensionContainerGlobalNgENBIDExtIEs struct {
@@ -1092,12 +1086,6 @@ type ProtocolExtensionContainerUserLocationInformationEUTRAExtIEs struct {
 /* UserLocationInformationN3IWFExtIEs */
 type ProtocolExtensionContainerUserLocationInformationN3IWFExtIEs struct {
 	List []UserLocationInformationN3IWFExtIEs `aper:"sizeLB:1,sizeUB:65535"`
-}
-
-/* Sequence of = 35, FULL Name = struct ProtocolExtensionContainer_6500P180 */
-/* UserLocationInformationOCFExtIEs */
-type ProtocolExtensionContainerUserLocationInformationOCFExtIEs struct {
-	List []UserLocationInformationOCFExtIEs `aper:"sizeLB:1,sizeUB:65535"`
 }
 
 /* Sequence of = 35, FULL Name = struct ProtocolExtensionContainer_6500P181 */

@@ -12,13 +12,13 @@ import (
 )
 
 const (
-	AmfUENGAPIDUnspecified int64 = 0xffffffffff
+	AmfUeNgapIdUnspecified int64 = 0xffffffffff
 )
 
 type N3IWFUe struct {
 	/* UE identity*/
 	RanUeNgapId           int64
-	AmfUENGAPID           int64
+	AmfUeNgapId           int64
 	IPAddrv4              string
 	IPAddrv6              string
 	PortNumber            int32
@@ -185,7 +185,7 @@ type UDPSocketInfo struct {
 
 func (ue *N3IWFUe) init(ranUeNgapId int64) {
 	ue.RanUeNgapId = ranUeNgapId
-	ue.AmfUENGAPID = AmfUENGAPIDUnspecified
+	ue.AmfUeNgapId = AmfUeNgapIdUnspecified
 	ue.PduSessionList = make(map[int64]*PDUSession)
 }
 

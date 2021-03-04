@@ -13,7 +13,7 @@ import (
 
 var (
 	ConfigFileFromArgs string
-	DefaultConfigFile  string = path_util.Gofree5gcWithOCFPath("free5gcWithOCF/src/nssf/test/conf/test_nssf_config.yaml")
+	DefaultConfigFile  string = path_util.Gofree5gcPath("free5gcWithOCF/src/nssf/test/conf/test_nssf_config.yaml")
 )
 
 type TestingUtil struct {

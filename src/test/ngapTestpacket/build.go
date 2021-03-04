@@ -2,12 +2,11 @@ package ngapTestpacket
 
 import (
 	"encoding/hex"
+	"free5gcWithOCF/lib/aper"
+	"free5gcWithOCF/lib/ngap/ngapConvert"
+	"free5gcWithOCF/lib/ngap/ngapType"
 
 	"github.com/calee0219/fatal"
-
-	"github.com/free5gcWithOCF/aper"
-	"github.com/free5gcWithOCF/ngap/ngapConvert"
-	"github.com/free5gcWithOCF/ngap/ngapType"
 )
 
 // TODO: check test data
@@ -1693,8 +1692,8 @@ func BuildPDUSessionResourceModifyResponse(amfUeNgapID, ranUeNgapID int64) (pdu 
 	pDUSessionResourceModifyResponseItem := ngapType.PDUSessionResourceModifyItemModRes{}
 	pDUSessionResourceModifyResponseItem.PDUSessionID.Value = 10
 	// transfer := GetPDUSessionResourceModifyResponseTransfer()
-
-	pDUSessionResourceModifyResponseItem.PDUSessionResourceModifyResponseTransfer =
+	pDUSessionResourceModifyResponseItem.PDUSessionResourceModifyResponseTransfer = new(aper.OctetString)
+	*pDUSessionResourceModifyResponseItem.PDUSessionResourceModifyResponseTransfer =
 		GetPDUSessionResourceModifyResponseTransfer()
 
 	pDUSessionResourceModifyListModRes.List =
@@ -2048,6 +2047,7 @@ func BuildRRCInactiveTransitionReport() (pdu ngapType.NGAPPDU) {
 		userLocationInformation := ie.Value.UserLocationInformation
 		userLocationInformation.Present = ngapType.UserLocationInformationPresentUserLocationInformationEUTRA
 		userLocationInformation.UserLocationInformationEUTRA = new(ngapType.UserLocationInformationEUTRA)
+
 		userLocationInformationEUTRA := userLocationInformation.UserLocationInformationEUTRA
 		userLocationInformationEUTRA.EUTRACGI.EUTRACellIdentity.Value = aper.BitString{
 			Bytes:     []byte{0x02, 0x42, 0x07, 0x30},
@@ -2056,6 +2056,7 @@ func BuildRRCInactiveTransitionReport() (pdu ngapType.NGAPPDU) {
 		userLocationInformationEUTRA.EUTRACGI.PLMNIdentity.Value = aper.OctetString("\x0f\x01\x22")
 		userLocationInformationEUTRA.TAI.PLMNIdentity.Value = aper.OctetString("\x0f\x01\x22")
 		userLocationInformationEUTRA.TAI.TAC.Value = aper.OctetString("\x0f\x01\x22")
+
 		//optional
 		userLocationInformationEUTRA.TimeStamp = new(ngapType.TimeStamp)
 		userLocationInformationEUTRA.TimeStamp.Value = aper.OctetString("\x0f\x01\x22\x21")
@@ -2504,8 +2505,8 @@ func BuildUplinkRanConfigurationTransfer() (pdu ngapType.NGAPPDU) {
 	// xnTNLConfigurationInfo := sONInformation.SONInformationReply.XnTNLConfigurationInfo
 
 	// Xn TNL Configuration Info [C-ifSONInformationRequest]
-	xnTNLConfigurationInfo := sONConfigurationTransferUL.XnTNLConfigurationInfo
-	xnTransportLayerAddresses := xnTNLConfigurationInfo.XnTransportLayerAddresses
+	xnTNLConfigurationInfo := &sONConfigurationTransferUL.XnTNLConfigurationInfo
+	xnTransportLayerAddresses := &xnTNLConfigurationInfo.XnTransportLayerAddresses
 
 	TLA := ngapType.TransportLayerAddress{}
 	TLA.Value = aper.BitString{
@@ -3228,7 +3229,7 @@ func BuildCellTrafficTrace(amfUeNgapID, ranUeNgapID int64) (pdu ngapType.NGAPPDU
 func buildPDUSessionResourceSetupResponseTransfer(ipv4 string) (data ngapType.PDUSessionResourceSetupResponseTransfer) {
 
 	// QoS Flow per TNL Information
-	qosFlowPerTNLInformation := &data.DLQosFlowPerTNLInformation
+	qosFlowPerTNLInformation := &data.QosFlowPerTNLInformation
 	qosFlowPerTNLInformation.UPTransportLayerInformation.Present = ngapType.UPTransportLayerInformationPresentGTPTunnel
 
 	// UP Transport Layer Information in QoS Flow per TNL Information
@@ -3301,7 +3302,7 @@ func buildPDUSessionResourceNotifyTransfer(
 		data.QosFlowNotifyList = new(ngapType.QosFlowNotifyList)
 	}
 	if len(relQfis) > 0 {
-		data.QosFlowReleasedList = new(ngapType.QosFlowListWithCause)
+		data.QosFlowReleasedList = new(ngapType.QosFlowList)
 	}
 	for i, qfi := range qfis {
 		item := ngapType.QosFlowNotifyItem{
@@ -3315,7 +3316,7 @@ func buildPDUSessionResourceNotifyTransfer(
 		data.QosFlowNotifyList.List = append(data.QosFlowNotifyList.List, item)
 	}
 	for _, qfi := range relQfis {
-		item := ngapType.QosFlowWithCauseItem{
+		item := ngapType.QosFlowItem{
 			QosFlowIdentifier: ngapType.QosFlowIdentifier{
 				Value: qfi,
 			},
@@ -3367,13 +3368,16 @@ func buildPDUSessionResourceModifyIndicationTransfer() (
 	data ngapType.PDUSessionResourceModifyIndicationTransfer) {
 
 	// DL UP TNL Information
-	data.DLQosFlowPerTNLInformation = ngapType.QosFlowPerTNLInformation{
-		UPTransportLayerInformation: ngapType.UPTransportLayerInformation{
-			Present: ngapType.UPTransportLayerInformationPresentGTPTunnel,
-			GTPTunnel: &ngapType.GTPTunnel{
-				TransportLayerAddress: ngapConvert.IPAddressToNgap("127.0.0.1", ""),
-				GTPTEID: ngapType.GTPTEID{
-					Value: aper.OctetString("\x00\x00\x00\x01"),
+	data.DLUPTNLInformation = &ngapType.UPTNLInformation{
+		Present: ngapType.UPTNLInformationPresentSingleTNLInformation,
+		SingleTNLInformation: &ngapType.SingleTNLInformation{
+			UPTransportLayerInformation: ngapType.UPTransportLayerInformation{
+				Present: ngapType.UPTransportLayerInformationPresentGTPTunnel,
+				GTPTunnel: &ngapType.GTPTunnel{
+					TransportLayerAddress: ngapConvert.IPAddressToNgap("127.0.0.1", ""),
+					GTPTEID: ngapType.GTPTEID{
+						Value: aper.OctetString("\x00\x00\x00\x01"),
+					},
 				},
 			},
 		},
@@ -3441,7 +3445,7 @@ func buildHandoverRequestAcknowledgeTransfer() (data ngapType.HandoverRequestAck
 	upTransportLayerInformation.GTPTunnel.TransportLayerAddress = ngapConvert.IPAddressToNgap("10.200.200.2", "")
 
 	// Qos Flow Setup Response List
-	qosFlowSetupResponseItem := ngapType.QosFlowItemWithDataForwarding{
+	qosFlowSetupResponseItem := ngapType.QosFlowSetupResponseItemHOReqAck{
 		QosFlowIdentifier: ngapType.QosFlowIdentifier{
 			Value: 1,
 		},
@@ -3711,7 +3715,7 @@ func BuildInitialContextSetupResponseForRegistraionTest(amfUeNgapID, ranUeNgapID
 }
 
 func BuildPDUSessionResourceSetupResponseForRegistrationTest(
-	pduSessionId int64, amfUeNgapID, ranUeNgapID int64, ipv4 string) (pdu ngapType.NGAPPDU) {
+	amfUeNgapID, ranUeNgapID int64, ipv4 string) (pdu ngapType.NGAPPDU) {
 
 	pdu.Present = ngapType.NGAPPDUPresentSuccessfulOutcome
 	pdu.SuccessfulOutcome = new(ngapType.SuccessfulOutcome)
@@ -3761,7 +3765,7 @@ func BuildPDUSessionResourceSetupResponseForRegistrationTest(
 
 	// PDU Session Resource Setup Response Item in PDU Session Resource Setup Response List
 	pDUSessionResourceSetupItemSURes := ngapType.PDUSessionResourceSetupItemSURes{}
-	pDUSessionResourceSetupItemSURes.PDUSessionID.Value = pduSessionId
+	pDUSessionResourceSetupItemSURes.PDUSessionID.Value = 10
 
 	pDUSessionResourceSetupItemSURes.PDUSessionResourceSetupResponseTransfer =
 		GetPDUSessionResourceSetupResponseTransfer(ipv4)

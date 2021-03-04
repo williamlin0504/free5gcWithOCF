@@ -36,7 +36,7 @@ var config Config
 
 var udrCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  "free5gcWithOCFcfg",
+		Name:  "free5gccfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
@@ -64,7 +64,7 @@ func (*UDR) Initialize(c *cli.Context) {
 	if config.udrcfg != "" {
 		factory.InitConfigFactory(config.udrcfg)
 	} else {
-		DefaultUdrConfigPath := path_util.Gofree5gcWithOCFPath("free5gcWithOCF/config/udrcfg.conf")
+		DefaultUdrConfigPath := path_util.Gofree5gcPath("free5gcWithOCF/config/udrcfg.conf")
 		factory.InitConfigFactory(DefaultUdrConfigPath)
 	}
 

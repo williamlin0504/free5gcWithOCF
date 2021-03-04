@@ -800,20 +800,6 @@ type GlobalN3IWFIDExtIEsExtensionValue struct {
 	Present int
 }
 
-type GlobalOCFIDExtIEs struct {
-	Id             ProtocolExtensionID
-	Criticality    Criticality
-	ExtensionValue GlobalOCFIDExtIEsExtensionValue `aper:"openType,referenceFieldName:Id"`
-}
-
-const (
-	GlobalOCFIDExtIEsPresentNothing int = iota /* No components present */
-)
-
-type GlobalOCFIDExtIEsExtensionValue struct {
-	Present int
-}
-
 type GlobalNgENBIDExtIEs struct {
 	Id             ProtocolExtensionID
 	Criticality    Criticality
@@ -2547,20 +2533,6 @@ const (
 )
 
 type UserLocationInformationN3IWFExtIEsExtensionValue struct {
-	Present int
-}
-
-type UserLocationInformationOCFExtIEs struct {
-	Id             ProtocolExtensionID
-	Criticality    Criticality
-	ExtensionValue UserLocationInformationOCFExtIEsExtensionValue `aper:"openType,referenceFieldName:Id"`
-}
-
-const (
-	UserLocationInformationOCFExtIEsPresentNothing int = iota /* No components present */
-)
-
-type UserLocationInformationOCFExtIEsExtensionValue struct {
 	Present int
 }
 

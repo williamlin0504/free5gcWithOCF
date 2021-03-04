@@ -48,9 +48,9 @@ func (amf *N3IWFAMF) init(sctpAddr string, conn *sctp.SCTPConn) {
 	amf.N3iwfUeList = make(map[int64]*N3IWFUe)
 }
 
-func (amf *N3IWFAMF) FindUeByAmfUENGAPID(id int64) *N3IWFUe {
+func (amf *N3IWFAMF) FindUeByAmfUeNgapID(id int64) *N3IWFUe {
 	for _, n3iwfUe := range amf.N3iwfUeList {
-		if n3iwfUe.AmfUENGAPID == id {
+		if n3iwfUe.AmfUeNgapId == id {
 			return n3iwfUe
 		}
 	}

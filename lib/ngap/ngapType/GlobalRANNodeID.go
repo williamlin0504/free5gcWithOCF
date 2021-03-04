@@ -7,7 +7,6 @@ const (
 	GlobalRANNodeIDPresentGlobalGNBID
 	GlobalRANNodeIDPresentGlobalNgENBID
 	GlobalRANNodeIDPresentGlobalN3IWFID
-	GlobalRANNodeIDPresentGlobalOCFID
 	GlobalRANNodeIDPresentChoiceExtensions
 )
 
@@ -16,6 +15,5 @@ type GlobalRANNodeID struct {
 	GlobalGNBID      *GlobalGNBID   `aper:"valueExt"`
 	GlobalNgENBID    *GlobalNgENBID `aper:"valueExt"`
 	GlobalN3IWFID    *GlobalN3IWFID `aper:"valueExt"`
-	GlobalOCFID      *GlobalOCFID   `aper:"valueExt"`
 	ChoiceExtensions *ProtocolIESingleContainerGlobalRANNodeIDExtIEs
 }

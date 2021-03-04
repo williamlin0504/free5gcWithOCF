@@ -48,7 +48,7 @@ var config Config
 
 var amfCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  "free5gcWithOCFcfg",
+		Name:  "free5gccfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
@@ -76,7 +76,7 @@ func (*AMF) Initialize(c *cli.Context) {
 	if config.amfcfg != "" {
 		factory.InitConfigFactory(config.amfcfg)
 	} else {
-		DefaultAmfConfigPath := path_util.Gofree5gcWithOCFPath("free5gcWithOCF/config/amfcfg.conf")
+		DefaultAmfConfigPath := path_util.Gofree5gcPath("free5gcWithOCF/config/amfcfg.conf")
 		factory.InitConfigFactory(DefaultAmfConfigPath)
 	}
 

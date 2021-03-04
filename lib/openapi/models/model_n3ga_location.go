@@ -12,7 +12,6 @@ package models
 type N3gaLocation struct {
 	N3gppTai   *Tai   `json:"n3gppTai,omitempty" yaml:"n3gppTai" bson:"n3gppTai"`
 	N3IwfId    string `json:"n3IwfId,omitempty" yaml:"n3IwfId" bson:"n3IwfId"`
-	OcfId      string `json:"ocfId,omitempty" yaml:"ocfId" bson:"ocfId"`
 	UeIpv4Addr string `json:"ueIpv4Addr,omitempty" yaml:"ueIpv4Addr" bson:"ueIpv4Addr"`
 	UeIpv6Addr string `json:"ueIpv6Addr,omitempty" yaml:"ueIpv6Addr" bson:"ueIpv6Addr"`
 	PortNumber int32  `json:"portNumber,omitempty" yaml:"portNumber" bson:"portNumber"`

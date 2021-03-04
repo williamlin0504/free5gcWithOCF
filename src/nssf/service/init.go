@@ -39,7 +39,7 @@ var config Config
 
 var nssfCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  "free5gcWithOCFcfg",
+		Name:  "free5gccfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
@@ -66,7 +66,7 @@ func (*NSSF) Initialize(c *cli.Context) {
 	if config.nssfcfg != "" {
 		factory.InitConfigFactory(config.nssfcfg)
 	} else {
-		DefaultNssfConfigPath := path_util.Gofree5gcWithOCFPath("free5gcWithOCF/config/nssfcfg.conf")
+		DefaultNssfConfigPath := path_util.Gofree5gcPath("free5gcWithOCF/config/nssfcfg.conf")
 		factory.InitConfigFactory(DefaultNssfConfigPath)
 	}
 

@@ -7,7 +7,6 @@ const (
 	UserLocationInformationPresentUserLocationInformationEUTRA
 	UserLocationInformationPresentUserLocationInformationNR
 	UserLocationInformationPresentUserLocationInformationN3IWF
-	UserLocationInformationPresentUserLocationInformationOCF
 	UserLocationInformationPresentChoiceExtensions
 )
 
@@ -16,6 +15,5 @@ type UserLocationInformation struct {
 	UserLocationInformationEUTRA *UserLocationInformationEUTRA `aper:"valueExt"`
 	UserLocationInformationNR    *UserLocationInformationNR    `aper:"valueExt"`
 	UserLocationInformationN3IWF *UserLocationInformationN3IWF `aper:"valueExt"`
-	UserLocationInformationOCF   *UserLocationInformationOCF   `aper:"valueExt"`
 	ChoiceExtensions             *ProtocolIESingleContainerUserLocationInformationExtIEs
 }

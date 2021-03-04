@@ -43,7 +43,7 @@ var config Config
 
 var smfCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  "free5gcWithOCFcfg",
+		Name:  "free5gccfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
@@ -76,14 +76,14 @@ func (*SMF) Initialize(c *cli.Context) {
 	if config.smfcfg != "" {
 		factory.InitConfigFactory(config.smfcfg)
 	} else {
-		DefaultSmfConfigPath := path_util.Gofree5gcWithOCFPath("free5gcWithOCF/config/smfcfg.conf")
+		DefaultSmfConfigPath := path_util.Gofree5gcPath("free5gcWithOCF/config/smfcfg.conf")
 		factory.InitConfigFactory(DefaultSmfConfigPath)
 	}
 
 	if config.uerouting != "" {
 		factory.InitRoutingConfigFactory(config.uerouting)
 	} else {
-		DefaultUERoutingPath := path_util.Gofree5gcWithOCFPath("free5gcWithOCF/config/uerouting.yaml")
+		DefaultUERoutingPath := path_util.Gofree5gcPath("free5gcWithOCF/config/uerouting.yaml")
 		factory.InitRoutingConfigFactory(DefaultUERoutingPath)
 	}
 

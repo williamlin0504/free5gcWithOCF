@@ -30,7 +30,7 @@ func main() {
 	app.Name = "nrf"
 	fmt.Print(app.Name, "\n")
 	appLog.Infoln("NRF version: ", version.GetVersion())
-	app.Usage = "-free5gcWithOCFcfg common configuration file -nrfcfg nrf configuration file"
+	app.Usage = "-free5gccfg common configuration file -nrfcfg nrf configuration file"
 	app.Action = action
 	app.Flags = NRF.GetCliCmd()
 
@@ -41,7 +41,7 @@ func main() {
 }
 
 func action(c *cli.Context) {
-	app.AppInitializeWillInitialize(c.String("free5gcWithOCFcfg"))
+	app.AppInitializeWillInitialize(c.String("free5gccfg"))
 	NRF.Initialize(c)
 	NRF.Start()
 }
