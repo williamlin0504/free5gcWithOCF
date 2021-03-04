@@ -5,14 +5,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"free5gcWithOCF/lib/openapi/Namf_Communication"
-	"free5gcWithOCF/lib/openapi/Nccf_AMPolicy"
-	"free5gcWithOCF/lib/openapi/Nccf_PolicyAuthorization"
-	"free5gcWithOCF/lib/openapi/Nccf_SMPolicyControl"
+	"free5gcWithOCF/lib/openapi/Nchf_AMPolicy"
+	"free5gcWithOCF/lib/openapi/Nchf_PolicyAuthorization"
+	"free5gcWithOCF/lib/openapi/Nchf_SMPolicyControl"
 	"free5gcWithOCF/lib/openapi/Nudr_DataRepository"
 	"free5gcWithOCF/lib/openapi/models"
 	"free5gcWithOCF/lib/path_util"
-	"free5gcWithOCF/src/ccf/context"
-	"free5gcWithOCF/src/ccf/logger"
+	"free5gcWithOCF/src/chf/context"
+	"free5gcWithOCF/src/chf/logger"
 	"net/http"
 	"reflect"
 	"time"
@@ -22,11 +22,11 @@ const TimeFormat = time.RFC3339
 
 // Path of HTTP2 key and log file
 var (
-	CCF_LOG_PATH                                 = path_util.Gofree5gcPath("free5gcWithOCF/ccfsslkey.log")
-	CCF_PEM_PATH                                 = path_util.Gofree5gcPath("free5gcWithOCF/support/TLS/ccf.pem")
-	CCF_KEY_PATH                                 = path_util.Gofree5gcPath("free5gcWithOCF/support/TLS/ccf.key")
-	CCF_CONFIG_PATH                              = path_util.Gofree5gcPath("free5gcWithOCF/config/ccfcfg.conf")
-	CCF_BASIC_PATH                               = "https://localhost:29507"
+	CHF_LOG_PATH                                 = path_util.Gofree5gcPath("free5gcWithOCF/chfsslkey.log")
+	CHF_PEM_PATH                                 = path_util.Gofree5gcPath("free5gcWithOCF/support/TLS/chf.pem")
+	CHF_KEY_PATH                                 = path_util.Gofree5gcPath("free5gcWithOCF/support/TLS/chf.key")
+	CHF_CONFIG_PATH                              = path_util.Gofree5gcPath("free5gcWithOCF/config/chfcfg.conf")
+	CHF_BASIC_PATH                               = "https://localhost:29507"
 	ERROR_REQUEST_PARAMETERS                     = "ERROR_REQUEST_PARAMETERS"
 	USER_UNKNOWN                                 = "USER_UNKNOWN"
 	CONTEXT_NOT_FOUND                            = "CONTEXT_NOT_FOUND"
@@ -57,21 +57,21 @@ var (
 	}
 )
 
-func GetNccfAMPolicyCallbackClient() *Nccf_AMPolicy.APIClient {
-	configuration := Nccf_AMPolicy.NewConfiguration()
-	client := Nccf_AMPolicy.NewAPIClient(configuration)
+func GetNchfAMPolicyCallbackClient() *Nchf_AMPolicy.APIClient {
+	configuration := Nchf_AMPolicy.NewConfiguration()
+	client := Nchf_AMPolicy.NewAPIClient(configuration)
 	return client
 }
 
-func GetNccfSMPolicyCallbackClient() *Nccf_SMPolicyControl.APIClient {
-	configuration := Nccf_SMPolicyControl.NewConfiguration()
-	client := Nccf_SMPolicyControl.NewAPIClient(configuration)
+func GetNchfSMPolicyCallbackClient() *Nchf_SMPolicyControl.APIClient {
+	configuration := Nchf_SMPolicyControl.NewConfiguration()
+	client := Nchf_SMPolicyControl.NewAPIClient(configuration)
 	return client
 }
 
-func GetNccfPolicyAuthorizationCallbackClient() *Nccf_PolicyAuthorization.APIClient {
-	configuration := Nccf_PolicyAuthorization.NewConfiguration()
-	client := Nccf_PolicyAuthorization.NewAPIClient(configuration)
+func GetNchfPolicyAuthorizationCallbackClient() *Nchf_PolicyAuthorization.APIClient {
+	configuration := Nchf_PolicyAuthorization.NewConfiguration()
+	client := Nchf_PolicyAuthorization.NewAPIClient(configuration)
 	return client
 }
 
@@ -190,7 +190,7 @@ func AndBytes(bytes1, bytes2 []byte) []byte {
 	return nil
 }
 
-// Negotiate Support Feture with CCF
+// Negotiate Support Feture with CHF
 func GetNegotiateSuppFeat(suppFeat string, serviceSuppFeat []byte) string {
 	if serviceSuppFeat == nil {
 		return ""
@@ -204,10 +204,10 @@ func GetNegotiateSuppFeat(suppFeat string, serviceSuppFeat []byte) string {
 }
 
 var serviceUriMap = map[models.ServiceName]string{
-	models.ServiceName_NCCF_AM_POLICY_CONTROL:   "policies",
-	models.ServiceName_NCCF_SMPOLICYCONTROL:     "sm-policies",
-	models.ServiceName_NCCF_BDTPOLICYCONTROL:    "bdtpolicies",
-	models.ServiceName_NCCF_POLICYAUTHORIZATION: "app-sessions",
+	models.ServiceName_NCHF_AM_POLICY_CONTROL:   "policies",
+	models.ServiceName_NCHF_SMPOLICYCONTROL:     "sm-policies",
+	models.ServiceName_NCHF_BDTPOLICYCONTROL:    "bdtpolicies",
+	models.ServiceName_NCHF_POLICYAUTHORIZATION: "app-sessions",
 }
 
 // Get Resource Uri (location Header) with param id string
@@ -252,8 +252,8 @@ func GetNotSubscribedGuamis(guamisIn []models.Guami) (guamisOut []models.Guami) 
 }
 
 func guamiInSubscriptionData(guami models.Guami) bool {
-	ccfSelf := context.CCF_Self()
-	for _, subscriptionData := range ccfSelf.AMFStatusSubsData {
+	chfSelf := context.CHF_Self()
+	for _, subscriptionData := range chfSelf.AMFStatusSubsData {
 		for _, sGuami := range subscriptionData.GuamiList {
 			if reflect.DeepEqual(sGuami, guami) {
 				return true

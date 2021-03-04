@@ -17,38 +17,38 @@ import (
 	"free5gcWithOCF/lib/openapi/models"
 	"free5gcWithOCF/lib/path_util"
 	"free5gcWithOCF/src/app"
-	"free5gcWithOCF/src/ccf/ampolicy"
-	"free5gcWithOCF/src/ccf/bdtpolicy"
-	"free5gcWithOCF/src/ccf/consumer"
-	"free5gcWithOCF/src/ccf/context"
-	"free5gcWithOCF/src/ccf/factory"
-	"free5gcWithOCF/src/ccf/httpcallback"
-	"free5gcWithOCF/src/ccf/logger"
-	"free5gcWithOCF/src/ccf/oam"
-	"free5gcWithOCF/src/ccf/policyauthorization"
-	"free5gcWithOCF/src/ccf/smpolicy"
-	"free5gcWithOCF/src/ccf/uepolicy"
-	"free5gcWithOCF/src/ccf/util"
+	"free5gcWithOCF/src/chf/ampolicy"
+	"free5gcWithOCF/src/chf/bdtpolicy"
+	"free5gcWithOCF/src/chf/consumer"
+	"free5gcWithOCF/src/chf/context"
+	"free5gcWithOCF/src/chf/factory"
+	"free5gcWithOCF/src/chf/httpcallback"
+	"free5gcWithOCF/src/chf/logger"
+	"free5gcWithOCF/src/chf/oam"
+	"free5gcWithOCF/src/chf/policyauthorization"
+	"free5gcWithOCF/src/chf/smpolicy"
+	"free5gcWithOCF/src/chf/uepolicy"
+	"free5gcWithOCF/src/chf/util"
 )
 
-type CCF struct{}
+type CHF struct{}
 
 type (
 	// Config information.
 	Config struct {
-		ccfcfg string
+		chfcfg string
 	}
 )
 
 var config Config
 
-var ccfCLi = []cli.Flag{
+var chfCLi = []cli.Flag{
 	cli.StringFlag{
 		Name:  "free5gcWithOCFcfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
-		Name:  "ccfcfg",
+		Name:  "chfcfg",
 		Usage: "config file",
 	},
 }
@@ -59,26 +59,26 @@ func init() {
 	initLog = logger.InitLog
 }
 
-func (*CCF) GetCliCmd() (flags []cli.Flag) {
-	return ccfCLi
+func (*CHF) GetCliCmd() (flags []cli.Flag) {
+	return chfCLi
 }
 
-func (*CCF) Initialize(c *cli.Context) {
+func (*CHF) Initialize(c *cli.Context) {
 
 	config = Config{
-		ccfcfg: c.String("ccfcfg"),
+		chfcfg: c.String("chfcfg"),
 	}
-	if config.ccfcfg != "" {
-		factory.InitConfigFactory(config.ccfcfg)
+	if config.chfcfg != "" {
+		factory.InitConfigFactory(config.chfcfg)
 	} else {
-		DefaultCcfConfigPath := path_util.Gofree5gcPath("free5gcWithOCF/config/ccfcfg.conf")
-		factory.InitConfigFactory(DefaultCcfConfigPath)
+		DefaultChfConfigPath := path_util.Gofree5gcPath("free5gcWithOCF/config/chfcfg.conf")
+		factory.InitConfigFactory(DefaultChfConfigPath)
 	}
 
-	if app.ContextSelf().Logger.CCF.DebugLevel != "" {
-		level, err := logrus.ParseLevel(app.ContextSelf().Logger.CCF.DebugLevel)
+	if app.ContextSelf().Logger.CHF.DebugLevel != "" {
+		level, err := logrus.ParseLevel(app.ContextSelf().Logger.CHF.DebugLevel)
 		if err != nil {
-			initLog.Warnf("Log level [%s] is not valid, set to [info] level", app.ContextSelf().Logger.CCF.DebugLevel)
+			initLog.Warnf("Log level [%s] is not valid, set to [info] level", app.ContextSelf().Logger.CHF.DebugLevel)
 			logger.SetLogLevel(logrus.InfoLevel)
 		} else {
 			logger.SetLogLevel(level)
@@ -89,11 +89,11 @@ func (*CCF) Initialize(c *cli.Context) {
 		logger.SetLogLevel(logrus.InfoLevel)
 	}
 
-	logger.SetReportCaller(app.ContextSelf().Logger.CCF.ReportCaller)
+	logger.SetReportCaller(app.ContextSelf().Logger.CHF.ReportCaller)
 }
 
-func (ccf *CCF) FilterCli(c *cli.Context) (args []string) {
-	for _, flag := range ccf.GetCliCmd() {
+func (chf *CHF) FilterCli(c *cli.Context) (args []string) {
+	for _, flag := range chf.GetCliCmd() {
 		name := flag.GetName()
 		value := fmt.Sprint(c.Generic(name))
 		if value == "" {
@@ -105,7 +105,7 @@ func (ccf *CCF) FilterCli(c *cli.Context) (args []string) {
 	return args
 }
 
-func (ccf *CCF) Start() {
+func (chf *CHF) Start() {
 	initLog.Infoln("Server started")
 	router := logger_util.NewGinWithLogrus(logger.GinLog)
 
@@ -127,18 +127,18 @@ func (ccf *CCF) Start() {
 		MaxAge:           86400,
 	}))
 
-	self := context.CCF_Self()
-	util.InitccfContext(self)
+	self := context.CHF_Self()
+	util.InitchfContext(self)
 
 	addr := fmt.Sprintf("%s:%d", self.BindingIPv4, self.SBIPort)
 
 	profile, err := consumer.BuildNFInstance(self)
 	if err != nil {
-		initLog.Error("Build CCF Profile Error")
+		initLog.Error("Build CHF Profile Error")
 	}
 	_, self.NfId, err = consumer.SendRegisterNFInstance(self.NrfUri, self.NfId, profile)
 	if err != nil {
-		initLog.Errorf("CCF register to NRF Error[%s]", err.Error())
+		initLog.Errorf("CHF register to NRF Error[%s]", err.Error())
 	}
 
 	// subscribe to all Amfs' status change
@@ -162,7 +162,7 @@ func (ccf *CCF) Start() {
 	param := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{
 		ServiceNames: optional.NewInterface([]models.ServiceName{models.ServiceName_NUDR_DR}),
 	}
-	resp, err := consumer.SendSearchNFInstances(self.NrfUri, models.NfType_UDR, models.NfType_CCF, param)
+	resp, err := consumer.SendSearchNFInstances(self.NrfUri, models.NfType_UDR, models.NfType_CHF, param)
 	for _, nfProfile := range resp.NfInstances {
 		udruri := util.SearchNFServiceUri(nfProfile, models.ServiceName_NUDR_DR, models.NfServiceStatus_REGISTERED)
 		if udruri != "" {
@@ -173,7 +173,7 @@ func (ccf *CCF) Start() {
 	if err != nil {
 		initLog.Errorln(err)
 	}
-	server, err := http2_util.NewServer(addr, util.CCF_LOG_PATH, router)
+	server, err := http2_util.NewServer(addr, util.CHF_LOG_PATH, router)
 	if server == nil {
 		initLog.Errorf("Initialize HTTP server failed: %+v", err)
 		return
@@ -183,11 +183,11 @@ func (ccf *CCF) Start() {
 		initLog.Warnf("Initialize HTTP server: +%v", err)
 	}
 
-	serverScheme := factory.CcfConfig.Configuration.Sbi.Scheme
+	serverScheme := factory.ChfConfig.Configuration.Sbi.Scheme
 	if serverScheme == "http" {
 		err = server.ListenAndServe()
 	} else if serverScheme == "https" {
-		err = server.ListenAndServeTLS(util.CCF_PEM_PATH, util.CCF_KEY_PATH)
+		err = server.ListenAndServeTLS(util.CHF_PEM_PATH, util.CHF_KEY_PATH)
 	}
 
 	if err != nil {
@@ -195,11 +195,11 @@ func (ccf *CCF) Start() {
 	}
 }
 
-func (ccf *CCF) Exec(c *cli.Context) error {
-	initLog.Traceln("args:", c.String("ccfcfg"))
-	args := ccf.FilterCli(c)
+func (chf *CHF) Exec(c *cli.Context) error {
+	initLog.Traceln("args:", c.String("chfcfg"))
+	args := chf.FilterCli(c)
 	initLog.Traceln("filter: ", args)
-	command := exec.Command("./ccf", args...)
+	command := exec.Command("./chf", args...)
 
 	stdout, err := command.StdoutPipe()
 	if err != nil {
@@ -221,7 +221,7 @@ func (ccf *CCF) Exec(c *cli.Context) error {
 	}
 	go func() {
 		in := bufio.NewScanner(stderr)
-		fmt.Println("CCF log start")
+		fmt.Println("CHF log start")
 		for in.Scan() {
 			fmt.Println(in.Text())
 		}
@@ -229,11 +229,11 @@ func (ccf *CCF) Exec(c *cli.Context) error {
 	}()
 
 	go func() {
-		fmt.Println("CCF start")
+		fmt.Println("CHF start")
 		if err = command.Start(); err != nil {
 			fmt.Printf("command.Start() error: %v", err)
 		}
-		fmt.Println("CCF end")
+		fmt.Println("CHF end")
 		wg.Done()
 	}()
 

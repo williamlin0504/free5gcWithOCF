@@ -7,19 +7,19 @@ import (
 
 	"free5gcWithOCF/lib/openapi"
 	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/src/ccf/context"
-	"free5gcWithOCF/src/ccf/factory"
-	"free5gcWithOCF/src/ccf/logger"
+	"free5gcWithOCF/src/chf/context"
+	"free5gcWithOCF/src/chf/factory"
+	"free5gcWithOCF/src/chf/logger"
 )
 
-// Init CCF Context from config flie
-func InitccfContext(context *context.CCFContext) {
-	config := factory.CcfConfig
-	logger.UtilLog.Infof("ccfconfig Info: Version[%s] Description[%s]", config.Info.Version, config.Info.Description)
+// Init CHF Context from config flie
+func InitchfContext(context *context.CHFContext) {
+	config := factory.ChfConfig
+	logger.UtilLog.Infof("chfconfig Info: Version[%s] Description[%s]", config.Info.Version, config.Info.Description)
 	configuration := config.Configuration
 	context.NfId = uuid.New().String()
-	if configuration.CcfName != "" {
-		context.Name = configuration.CcfName
+	if configuration.ChfName != "" {
+		context.Name = configuration.ChfName
 	}
 	sbi := configuration.Sbi
 	context.NrfUri = configuration.NrfUri
@@ -59,9 +59,9 @@ func InitccfContext(context *context.CCFContext) {
 	context.DefaultBdtRefId = configuration.DefaultBdtRefId
 	for _, service := range context.NfService {
 		var err error
-		context.CcfServiceUris[service.ServiceName] =
+		context.ChfServiceUris[service.ServiceName] =
 			service.ApiPrefix + "/" + string(service.ServiceName) + "/" + (*service.Versions)[0].ApiVersionInUri
-		context.CcfSuppFeats[service.ServiceName], err = openapi.NewSupportedFeature(service.SupportedFeatures)
+		context.ChfSuppFeats[service.ServiceName], err = openapi.NewSupportedFeature(service.SupportedFeatures)
 		if err != nil {
 			logger.UtilLog.Errorf("openapi NewSupportedFeature error: %+v", err)
 		}

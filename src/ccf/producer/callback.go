@@ -3,12 +3,12 @@ package producer
 import (
 	"free5gcWithOCF/lib/http_wrapper"
 	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/src/ccf/logger"
+	"free5gcWithOCF/src/chf/logger"
 	"net/http"
 )
 
 func HandleAmfStatusChangeNotify(request *http_wrapper.Request) *http_wrapper.Response {
-	logger.CallbackLog.Warnf("[CCF] Handle Amf Status Change Notify is not implemented.")
+	logger.CallbackLog.Warnf("[CHF] Handle Amf Status Change Notify is not implemented.")
 
 	notification := request.Body.(models.AmfStatusChangeNotification)
 
@@ -23,7 +23,7 @@ func AmfStatusChangeNotifyProcedure(notification models.AmfStatusChangeNotificat
 }
 
 func HandleSmPolicyNotify(request *http_wrapper.Request) *http_wrapper.Response {
-	logger.CallbackLog.Warnf("[CCF] Handle Sm Policy Notify is not implemented.")
+	logger.CallbackLog.Warnf("[CHF] Handle Sm Policy Notify is not implemented.")
 
 	notification := request.Body.(models.PolicyDataChangeNotification)
 	supi := request.Params["ReqURI"]

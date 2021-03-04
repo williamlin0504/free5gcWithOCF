@@ -34,7 +34,7 @@ func main() {
 	app.Name = "smf"
 	fmt.Print(app.Name, "\n")
 	appLog.Infoln("SMF version: ", version.GetVersion())
-	app.Usage = "-free5gccfg common configuration file -smfcfg smf configuration file"
+	app.Usage = "-free5gchfg common configuration file -smfcfg smf configuration file"
 	app.Action = action
 	app.Flags = SMF.GetCliCmd()
 
@@ -44,7 +44,7 @@ func main() {
 }
 
 func action(c *cli.Context) {
-	app.AppInitializeWillInitialize(c.String("free5gccfg"))
+	app.AppInitializeWillInitialize(c.String("free5gchfg"))
 	SMF.Initialize(c)
 	SMF.Start()
 }

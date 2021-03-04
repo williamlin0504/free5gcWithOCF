@@ -7,10 +7,10 @@ import (
 	"free5gcWithOCF/lib/openapi/Nnrf_NFDiscovery"
 	"free5gcWithOCF/lib/openapi/Nudr_DataRepository"
 	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/src/ccf/consumer"
-	ccf_context "free5gcWithOCF/src/ccf/context"
-	"free5gcWithOCF/src/ccf/logger"
-	"free5gcWithOCF/src/ccf/util"
+	"free5gcWithOCF/src/chf/consumer"
+	chf_context "free5gcWithOCF/src/chf/context"
+	"free5gcWithOCF/src/chf/logger"
+	"free5gcWithOCF/src/chf/util"
 	"net/http"
 
 	"github.com/google/uuid"
@@ -46,8 +46,8 @@ func HandleGetBDTPolicyContextRequest(request *http_wrapper.Request) *http_wrapp
 func getBDTPolicyContextProcedure(bdtPolicyID string) (
 	response *models.BdtPolicy, problemDetails *models.ProblemDetails) {
 	logger.Bdtpolicylog.Traceln("Handle BDT Policy GET")
-	// check bdtPolicyID from ccfUeContext
-	if value, ok := ccf_context.CCF_Self().BdtPolicyPool.Load(bdtPolicyID); ok {
+	// check bdtPolicyID from chfUeContext
+	if value, ok := chf_context.CHF_Self().BdtPolicyPool.Load(bdtPolicyID); ok {
 		bdtPolicy := value.(*models.BdtPolicy)
 		return bdtPolicy, nil
 	} else {
@@ -87,11 +87,11 @@ func HandleUpdateBDTPolicyContextProcedure(request *http_wrapper.Request) *http_
 func updateBDTPolicyContextProcedure(request models.BdtPolicyDataPatch, bdtPolicyID string) (
 	response *models.BdtPolicy, problemDetails *models.ProblemDetails) {
 	logger.Bdtpolicylog.Infoln("Handle BDTPolicyUpdate")
-	// check bdtPolicyID from ccfUeContext
-	ccfSelf := ccf_context.CCF_Self()
+	// check bdtPolicyID from chfUeContext
+	chfSelf := chf_context.CHF_Self()
 
 	var bdtPolicy *models.BdtPolicy
-	if value, ok := ccf_context.CCF_Self().BdtPolicyPool.Load(bdtPolicyID); ok {
+	if value, ok := chf_context.CHF_Self().BdtPolicyPool.Load(bdtPolicyID); ok {
 		bdtPolicy = value.(*models.BdtPolicy)
 	} else {
 		// not found
@@ -116,7 +116,7 @@ func updateBDTPolicyContextProcedure(request models.BdtPolicyDataPatch, bdtPolic
 			param := Nudr_DataRepository.PolicyDataBdtDataBdtReferenceIdPutParamOpts{
 				BdtData: optional.NewInterface(bdtData),
 			}
-			client := util.GetNudrClient(getDefaultUdrUri(ccfSelf))
+			client := util.GetNudrClient(getDefaultUdrUri(chfSelf))
 			_, err := client.DefaultApi.PolicyDataBdtDataBdtReferenceIdPut(context.Background(), bdtData.BdtRefId, &param)
 			if err != nil {
 				logger.Bdtpolicylog.Warnf("UDR Put BdtDate error[%s]", err.Error())
@@ -162,19 +162,19 @@ func createBDTPolicyContextProcedure(request *models.BdtReqData) (
 	response = &models.BdtPolicy{}
 	logger.Bdtpolicylog.Traceln("Handle BDT Policy Create")
 
-	ccfSelf := ccf_context.CCF_Self()
-	udrUri := getDefaultUdrUri(ccfSelf)
+	chfSelf := chf_context.CHF_Self()
+	udrUri := getDefaultUdrUri(chfSelf)
 	if udrUri == "" {
 		// Can't find any UDR support this Ue
 		problemDetails = &models.ProblemDetails{
 			Status: http.StatusServiceUnavailable,
-			Detail: "Can't find any UDR which supported to this CCF",
+			Detail: "Can't find any UDR which supported to this CHF",
 		}
 		logger.Bdtpolicylog.Warnf(problemDetails.Detail)
 		return nil, nil, problemDetails
 	}
-	ccfSelf.DefaultUdrURI = udrUri
-	ccfSelf.SetDefaultUdrURI(udrUri)
+	chfSelf.DefaultUdrURI = udrUri
+	chfSelf.SetDefaultUdrURI(udrUri)
 
 	// Query BDT DATA array from UDR
 	client := util.GetNudrClient(udrUri)
@@ -219,7 +219,7 @@ func createBDTPolicyContextProcedure(request *models.BdtReqData) (
 	bdtPolicyData.BdtRefId = bdtData.BdtRefId
 	bdtPolicyData.TransfPolicies = append(bdtPolicyData.TransfPolicies, bdtData.TransPolicy)
 	response.BdtPolData = &bdtPolicyData
-	bdtPolicyID, err := ccfSelf.AllocBdtPolicyID()
+	bdtPolicyID, err := chfSelf.AllocBdtPolicyID()
 
 	if err != nil {
 		problemDetails = &models.ProblemDetails{
@@ -230,7 +230,7 @@ func createBDTPolicyContextProcedure(request *models.BdtReqData) (
 		return nil, nil, problemDetails
 	}
 
-	ccfSelf.BdtPolicyPool.Store(bdtPolicyID, response)
+	chfSelf.BdtPolicyPool.Store(bdtPolicyID, response)
 
 	// Update UDR BDT Data(PUT)
 	param := Nudr_DataRepository.PolicyDataBdtDataBdtReferenceIdPutParamOpts{
@@ -241,7 +241,7 @@ func createBDTPolicyContextProcedure(request *models.BdtReqData) (
 		logger.Bdtpolicylog.Warnf("UDR  Put BdtDate error[%s]", err.Error())
 	}
 
-	locationHeader := util.GetResourceUri(models.ServiceName_NCCF_BDTPOLICYCONTROL, bdtPolicyID)
+	locationHeader := util.GetResourceUri(models.ServiceName_NCHF_BDTPOLICYCONTROL, bdtPolicyID)
 	header = http.Header{
 		"Location": {locationHeader},
 	}
@@ -249,7 +249,7 @@ func createBDTPolicyContextProcedure(request *models.BdtReqData) (
 	return header, response, problemDetails
 }
 
-func getDefaultUdrUri(context *ccf_context.CCFContext) string {
+func getDefaultUdrUri(context *chf_context.CHFContext) string {
 	context.DefaultUdrURILock.RLock()
 	defer context.DefaultUdrURILock.RUnlock()
 	if context.DefaultUdrURI != "" {
@@ -258,7 +258,7 @@ func getDefaultUdrUri(context *ccf_context.CCFContext) string {
 	param := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{
 		ServiceNames: optional.NewInterface([]models.ServiceName{models.ServiceName_NUDR_DR}),
 	}
-	resp, err := consumer.SendSearchNFInstances(context.NrfUri, models.NfType_UDR, models.NfType_CCF, param)
+	resp, err := consumer.SendSearchNFInstances(context.NrfUri, models.NfType_UDR, models.NfType_CHF, param)
 	if err != nil {
 		return ""
 	}

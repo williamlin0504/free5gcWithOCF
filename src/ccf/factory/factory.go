@@ -1,5 +1,5 @@
 /*
- * CCF Configuration Factory
+ * CHF Configuration Factory
  */
 
 package factory
@@ -10,10 +10,10 @@ import (
 
 	"gopkg.in/yaml.v2"
 
-	"free5gcWithOCF/src/ccf/logger"
+	"free5gcWithOCF/src/chf/logger"
 )
 
-var CcfConfig Config
+var ChfConfig Config
 
 func checkErr(err error) {
 	if err != nil {
@@ -27,9 +27,9 @@ func InitConfigFactory(f string) {
 	content, err := ioutil.ReadFile(f)
 	checkErr(err)
 
-	CcfConfig = Config{}
+	ChfConfig = Config{}
 
-	err = yaml.Unmarshal([]byte(content), &CcfConfig)
+	err = yaml.Unmarshal([]byte(content), &ChfConfig)
 	checkErr(err)
 
 	logger.InitLog.Infof("Successfully initialize configuration %s", f)

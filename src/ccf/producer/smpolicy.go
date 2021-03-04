@@ -7,9 +7,9 @@ import (
 	"free5gcWithOCF/lib/openapi"
 	"free5gcWithOCF/lib/openapi/Nudr_DataRepository"
 	"free5gcWithOCF/lib/openapi/models"
-	ccf_context "free5gcWithOCF/src/ccf/context"
-	"free5gcWithOCF/src/ccf/logger"
-	"free5gcWithOCF/src/ccf/util"
+	chf_context "free5gcWithOCF/src/chf/context"
+	"free5gcWithOCF/src/chf/logger"
+	"free5gcWithOCF/src/chf/util"
 	"net/http"
 	"strconv"
 	"strings"
@@ -49,15 +49,15 @@ func createSMPolicyProcedure(request models.SmPolicyContextData) (
 		return nil, nil, &problemDetail
 	}
 
-	ccfSelf := ccf_context.CCF_Self()
-	var ue *ccf_context.UeContext
-	if val, exist := ccfSelf.UePool.Load(request.Supi); exist {
-		ue = val.(*ccf_context.UeContext)
+	chfSelf := chf_context.CHF_Self()
+	var ue *chf_context.UeContext
+	if val, exist := chfSelf.UePool.Load(request.Supi); exist {
+		ue = val.(*chf_context.UeContext)
 	}
 
 	if ue == nil {
-		problemDetail := util.GetProblemDetail("Supi is not supported in CCF", util.USER_UNKNOWN)
-		logger.SMpolicylog.Warnf("Supi[%s] is not supported in CCF", request.Supi)
+		problemDetail := util.GetProblemDetail("Supi is not supported in CHF", util.USER_UNKNOWN)
+		logger.SMpolicylog.Warnf("Supi[%s] is not supported in CHF", request.Supi)
 		return nil, nil, &problemDetail
 
 	}
@@ -137,7 +137,7 @@ func createSMPolicyProcedure(request models.SmPolicyContextData) (
 		// Set Aggregate GBR if exist
 		if dnnData.GbrDl != "" {
 			var gbrDL float64
-			gbrDL, err = ccf_context.ConvertBitRateToKbps(dnnData.GbrDl)
+			gbrDL, err = chf_context.ConvertBitRateToKbps(dnnData.GbrDl)
 			if err != nil {
 				logger.SMpolicylog.Warnf(err.Error())
 			} else {
@@ -147,7 +147,7 @@ func createSMPolicyProcedure(request models.SmPolicyContextData) (
 		}
 		if dnnData.GbrUl != "" {
 			var gbrUL float64
-			gbrUL, err = ccf_context.ConvertBitRateToKbps(dnnData.GbrUl)
+			gbrUL, err = chf_context.ConvertBitRateToKbps(dnnData.GbrUl)
 			if err != nil {
 				logger.SMpolicylog.Warnf(err.Error())
 			} else {
@@ -168,13 +168,13 @@ func createSMPolicyProcedure(request models.SmPolicyContextData) (
 		logger.SMpolicylog.Errorf("openapi NewSupportedFeature error: %+v", err)
 	}
 	decision.SuppFeat =
-		ccfSelf.CcfSuppFeats[models.ServiceName_NCCF_SMPOLICYCONTROL].NegotiateWith(requestSuppFeat).String()
+		chfSelf.ChfSuppFeats[models.ServiceName_NCHF_SMPOLICYCONTROL].NegotiateWith(requestSuppFeat).String()
 	decision.QosFlowUsage = request.QosFlowUsage
 	// TODO: Trigger about UMC, ADC, NetLoc,...
 	decision.PolicyCtrlReqTriggers = util.PolicyControlReqTrigToArray(0x40780f)
 	smPolicyData.PolicyDecision = &decision
 	// TODO: PCC rule, PraInfo ...
-	locationHeader := util.GetResourceUri(models.ServiceName_NCCF_SMPOLICYCONTROL, smPolicyID)
+	locationHeader := util.GetResourceUri(models.ServiceName_NCHF_SMPOLICYCONTROL, smPolicyID)
 	header = http.Header{
 		"Location": {locationHeader},
 	}
@@ -206,14 +206,14 @@ func HandleDeleteSmPolicyContextRequest(request *http_wrapper.Request) *http_wra
 func deleteSmPolicyContextProcedure(smPolicyID string) *models.ProblemDetails {
 	logger.AMpolicylog.Traceln("Handle SM Policy Delete")
 
-	ue := ccf_context.CCF_Self().CCFUeFindByPolicyId(smPolicyID)
+	ue := chf_context.CHF_Self().CHFUeFindByPolicyId(smPolicyID)
 	if ue == nil || ue.SmPolicyData[smPolicyID] == nil {
-		problemDetail := util.GetProblemDetail("smPolicyID not found in CCF", util.CONTEXT_NOT_FOUND)
+		problemDetail := util.GetProblemDetail("smPolicyID not found in CHF", util.CONTEXT_NOT_FOUND)
 		logger.SMpolicylog.Warnf(problemDetail.Detail)
 		return &problemDetail
 	}
 
-	ccfSelf := ccf_context.CCF_Self()
+	chfSelf := chf_context.CHF_Self()
 	smPolicy := ue.SmPolicyData[smPolicyID]
 
 	// Unsubscrice UDR
@@ -225,10 +225,10 @@ func deleteSmPolicyContextProcedure(smPolicyID string) *models.ProblemDetails {
 		TermCause: models.TerminationCause_PDU_SESSION_TERMINATION,
 	}
 	for appSessionID := range smPolicy.AppSessions {
-		if val, exist := ccfSelf.AppSessionPool.Load(appSessionID); exist {
-			appSession := val.(*ccf_context.AppSessionData)
+		if val, exist := chfSelf.AppSessionPool.Load(appSessionID); exist {
+			appSession := val.(*chf_context.AppSessionData)
 			SendAppSessionTermination(appSession, terminationInfo)
-			ccfSelf.AppSessionPool.Delete(appSessionID)
+			chfSelf.AppSessionPool.Delete(appSessionID)
 			logger.SMpolicylog.Tracef("SMPolicy[%s] DELETE Related AppSession[%s]", smPolicyID, appSessionID)
 		}
 	}
@@ -263,9 +263,9 @@ func getSmPolicyContextProcedure(smPolicyID string) (
 	response *models.SmPolicyControl, problemDetails *models.ProblemDetails) {
 	logger.SMpolicylog.Traceln("Handle GET SM Policy Request")
 
-	ue := ccf_context.CCF_Self().CCFUeFindByPolicyId(smPolicyID)
+	ue := chf_context.CHF_Self().CHFUeFindByPolicyId(smPolicyID)
 	if ue == nil || ue.SmPolicyData[smPolicyID] == nil {
-		problemDetail := util.GetProblemDetail("smPolicyID not found in CCF", util.CONTEXT_NOT_FOUND)
+		problemDetail := util.GetProblemDetail("smPolicyID not found in CHF", util.CONTEXT_NOT_FOUND)
 		logger.SMpolicylog.Warnf(problemDetail.Detail)
 		return nil, &problemDetail
 	}
@@ -308,9 +308,9 @@ func updateSmPolicyContextProcedure(request models.SmPolicyUpdateContextData, sm
 	response *models.SmPolicyDecision, problemDetails *models.ProblemDetails) {
 	logger.SMpolicylog.Traceln("Handle updateSmPolicyContext")
 
-	ue := ccf_context.CCF_Self().CCFUeFindByPolicyId(smPolicyID)
+	ue := chf_context.CHF_Self().CHFUeFindByPolicyId(smPolicyID)
 	if ue == nil || ue.SmPolicyData[smPolicyID] == nil {
-		problemDetail := util.GetProblemDetail("smPolicyID not found in CCF", util.CONTEXT_NOT_FOUND)
+		problemDetail := util.GetProblemDetail("smPolicyID not found in CHF", util.CONTEXT_NOT_FOUND)
 		logger.SMpolicylog.Warnf(problemDetail.Detail)
 		return nil, &problemDetail
 	}
@@ -502,7 +502,7 @@ func updateSmPolicyContextProcedure(request models.SmPolicyUpdateContextData, sm
 			}
 			afEventsNotification.EvNotifs = append(afEventsNotification.EvNotifs, afNotif)
 			logger.SMpolicylog.Tracef("SM Policy Update(%s) Successfully", trigger)
-		case models.PolicyControlRequestTrigger_UE_IP_CH: // SMF notice CCF "ipv4Address" & ipv6AddressPrefix (always)
+		case models.PolicyControlRequestTrigger_UE_IP_CH: // SMF notice CHF "ipv4Address" & ipv6AddressPrefix (always)
 			// TODO: Decide new Session Rule / Pcc rule
 			if request.RelIpv4Address == smPolicyContext.Ipv4Address {
 				smPolicyContext.Ipv4Address = ""
@@ -517,7 +517,7 @@ func updateSmPolicyContextProcedure(request models.SmPolicyUpdateContextData, sm
 				smPolicyContext.Ipv6AddressPrefix = request.Ipv6AddressPrefix
 			}
 			logger.SMpolicylog.Tracef("SM Policy Update(%s) Successfully", trigger)
-		case models.PolicyControlRequestTrigger_UE_MAC_CH: // SMF notice CCF when SMF detect new UE MAC
+		case models.PolicyControlRequestTrigger_UE_MAC_CH: // SMF notice CHF when SMF detect new UE MAC
 		case models.PolicyControlRequestTrigger_AN_CH_COR:
 		// Access Network Charging Correlation Info (subsclause 4.2.6.5.1, 4.2.4.13 in TS29512)
 		// request.AccNetChIds
@@ -577,7 +577,7 @@ func updateSmPolicyContextProcedure(request models.SmPolicyUpdateContextData, sm
 			*smPolicyDecision.SessRules[sessRuleId].AuthSessAmbr = *request.SubsSessAmbr
 			logger.SMpolicylog.Tracef("SM Policy Update(%s) Successfully", trigger)
 		case models.PolicyControlRequestTrigger_QOS_NOTIF:
-			// SMF notify CCF when receiving from RAN that QoS can/can't be guaranteed (subsclause 4.2.4.20 in TS29512) (always)
+			// SMF notify CHF when receiving from RAN that QoS can/can't be guaranteed (subsclause 4.2.4.20 in TS29512) (always)
 			// request.QncReports
 			afNotif := models.AfEventNotification{
 				Event: models.AfEvent_QOS_NOTIF,
@@ -604,8 +604,8 @@ func updateSmPolicyContextProcedure(request models.SmPolicyUpdateContextData, sm
 		case models.PolicyControlRequestTrigger_RE_TIMEOUT: // Revalidation TimeOut (subsclause 4.2.4.13 in TS29512)
 			// formatTimeStr := time.Now()
 			// formatTimeStr = formatTimeStr.Add(time.Second * 60)
-			// formatTimeStrAdd := formatTimeStr.Format(ccf_context.GetTimeformat())
-			// formatTime, err := time.Parse(ccf_context.GetTimeformat(), formatTimeStrAdd)
+			// formatTimeStrAdd := formatTimeStr.Format(chf_context.GetTimeformat())
+			// formatTime, err := time.Parse(chf_context.GetTimeformat(), formatTimeStrAdd)
 			// if err == nil {
 			// 	smPolicyDecision.RevalidationTime = &formatTime
 			// }
@@ -678,13 +678,13 @@ func updateSmPolicyContextProcedure(request models.SmPolicyUpdateContextData, sm
 
 }
 
-func sendSmPolicyRelatedAppSessionNotification(smPolicy *ccf_context.UeSmPolicyData,
+func sendSmPolicyRelatedAppSessionNotification(smPolicy *chf_context.UeSmPolicyData,
 	notification models.EventsNotification, usageReports []models.AccuUsageReport,
 	successRules, failRules []models.RuleReport) {
 
 	for appSessionId := range smPolicy.AppSessions {
-		if val, exist := ccf_context.CCF_Self().AppSessionPool.Load(appSessionId); exist {
-			appSession := val.(*ccf_context.AppSessionData)
+		if val, exist := chf_context.CHF_Self().AppSessionPool.Load(appSessionId); exist {
+			appSession := val.(*chf_context.AppSessionData)
 			if len(appSession.Events) == 0 {
 				continue
 			}
@@ -853,7 +853,7 @@ func sendSmPolicyRelatedAppSessionNotification(smPolicy *ccf_context.UeSmPolicyD
 }
 
 func SendSMPolicyUpdateNotification(
-	ue *ccf_context.UeContext, smPolId string, request models.SmPolicyNotification) {
+	ue *chf_context.UeContext, smPolId string, request models.SmPolicyNotification) {
 	if ue == nil {
 		logger.SMpolicylog.Warnln("SM Policy Update Notification Error[Ue is nil]")
 		return
@@ -864,7 +864,7 @@ func SendSMPolicyUpdateNotification(
 			"SM Policy Update Notification Error[Can't find smPolId[%s] in UE(%s)]", smPolId, ue.Supi)
 		return
 	}
-	client := util.GetNccfSMPolicyCallbackClient()
+	client := util.GetNchfSMPolicyCallbackClient()
 	uri := smPolicyData.PolicyContext.NotificationUri
 	if uri != "" {
 		logger.SMpolicylog.Infof("Send SM Policy Update Notification to SMF")
@@ -891,7 +891,7 @@ func SendSMPolicyUpdateNotification(
 }
 
 func SendSMPolicyTerminationRequestNotification(
-	ue *ccf_context.UeContext, smPolId string, request models.TerminationNotification) {
+	ue *chf_context.UeContext, smPolId string, request models.TerminationNotification) {
 	logger.SMpolicylog.Tracef("Send SM Policy Termination Request Notification")
 	if ue == nil {
 		logger.SMpolicylog.Warnln("SM Policy Termination Request Notification Error[Ue is nil]")
@@ -903,7 +903,7 @@ func SendSMPolicyTerminationRequestNotification(
 			"SM Policy Update Notification Error[Can't find smPolId[%s] in UE(%s)]", smPolId, ue.Supi)
 		return
 	}
-	client := util.GetNccfSMPolicyCallbackClient()
+	client := util.GetNchfSMPolicyCallbackClient()
 	uri := smPolicyData.PolicyContext.NotificationUri
 	if uri != "" {
 		rsp, err :=

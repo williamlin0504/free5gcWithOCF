@@ -5,29 +5,29 @@ import (
 	"free5gcWithOCF/lib/idgenerator"
 	"free5gcWithOCF/lib/openapi"
 	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/src/ccf/factory"
-	"free5gcWithOCF/src/ccf/logger"
+	"free5gcWithOCF/src/chf/factory"
+	"free5gcWithOCF/src/chf/logger"
 	"math"
 	"strconv"
 	"strings"
 	"sync"
 )
 
-var ccfContext = CCFContext{}
+var chfContext = CHFContext{}
 
 func init() {
-	CCF_Self().Name = "ccf"
-	CCF_Self().UriScheme = models.UriScheme_HTTPS
-	CCF_Self().TimeFormat = "2006-01-02 15:04:05"
-	CCF_Self().DefaultBdtRefId = "BdtPolicyId-"
-	CCF_Self().NfService = make(map[models.ServiceName]models.NfService)
-	CCF_Self().CcfServiceUris = make(map[models.ServiceName]string)
-	CCF_Self().CcfSuppFeats = make(map[models.ServiceName]openapi.SupportedFeature)
-	CCF_Self().BdtPolicyIDGenerator = idgenerator.NewGenerator(1, math.MaxInt64)
-	CCF_Self().AMFStatusSubsData = make(map[string]AMFStatusSubscriptionData)
+	CHF_Self().Name = "chf"
+	CHF_Self().UriScheme = models.UriScheme_HTTPS
+	CHF_Self().TimeFormat = "2006-01-02 15:04:05"
+	CHF_Self().DefaultBdtRefId = "BdtPolicyId-"
+	CHF_Self().NfService = make(map[models.ServiceName]models.NfService)
+	CHF_Self().ChfServiceUris = make(map[models.ServiceName]string)
+	CHF_Self().ChfSuppFeats = make(map[models.ServiceName]openapi.SupportedFeature)
+	CHF_Self().BdtPolicyIDGenerator = idgenerator.NewGenerator(1, math.MaxInt64)
+	CHF_Self().AMFStatusSubsData = make(map[string]AMFStatusSubscriptionData)
 }
 
-type CCFContext struct {
+type CHFContext struct {
 	NfId            string
 	Name            string
 	UriScheme       models.UriScheme
@@ -37,8 +37,8 @@ type CCFContext struct {
 	TimeFormat      string
 	DefaultBdtRefId string
 	NfService       map[models.ServiceName]models.NfService
-	CcfServiceUris  map[models.ServiceName]string
-	CcfSuppFeats    map[models.ServiceName]openapi.SupportedFeature
+	ChfServiceUris  map[models.ServiceName]string
+	ChfSuppFeats    map[models.ServiceName]openapi.SupportedFeature
 	NrfUri          string
 	DefaultUdrURI   string
 	//UePool          map[string]*UeContext
@@ -74,34 +74,34 @@ type AppSessionData struct {
 	SmPolicyData *UeSmPolicyData
 }
 
-// Create new CCF context
-func CCF_Self() *CCFContext {
-	return &ccfContext
+// Create new CHF context
+func CHF_Self() *CHFContext {
+	return &chfContext
 }
 func GetTimeformat() string {
-	return ccfContext.TimeFormat
+	return chfContext.TimeFormat
 }
 func GetUri(name models.ServiceName) string {
-	return ccfContext.CcfServiceUris[name]
+	return chfContext.ChfServiceUris[name]
 }
 
-var PolicyAuthorizationUri = "/nccf-policyauthorization/v1/app-sessions/"
-var SmUri = "/nccf-smpolicycontrol/v1"
+var PolicyAuthorizationUri = "/nchf-policyauthorization/v1/app-sessions/"
+var SmUri = "/nchf-smpolicycontrol/v1"
 var IPv4Address = "192.168."
 var IPv6Address = "ffab::"
-var CheckNotifiUri = "/nccf-callback/v1/nudr-notify/"
+var CheckNotifiUri = "/nchf-callback/v1/nudr-notify/"
 var Ipv4_pool = make(map[string]string)
 var Ipv6_pool = make(map[string]string)
 
 // BdtPolicy default value
 const DefaultBdtRefId = "BdtPolicyId-"
 
-func (context *CCFContext) GetIPv4Uri() string {
+func (context *CHFContext) GetIPv4Uri() string {
 	return fmt.Sprintf("%s://%s:%d", context.UriScheme, context.RegisterIPv4, context.SBIPort)
 }
 
 // Init NfService with supported service list ,and version of services
-func (context *CCFContext) InitNFService(serviceList []factory.Service, version string) {
+func (context *CHFContext) InitNFService(serviceList []factory.Service, version string) {
 	tmpVersion := strings.Split(version, ".")
 	versionUri := "v" + tmpVersion[0]
 	for index, service := range serviceList {
@@ -130,8 +130,8 @@ func (context *CCFContext) InitNFService(serviceList []factory.Service, version 
 	}
 }
 
-// Allocate CCF Ue with supi and add to ccf Context and returns allocated ue
-func (context *CCFContext) NewCCFUe(Supi string) (*UeContext, error) {
+// Allocate CHF Ue with supi and add to chf Context and returns allocated ue
+func (context *CHFContext) NewCHFUe(Supi string) (*UeContext, error) {
 	if strings.HasPrefix(Supi, "imsi-") {
 		newUeContext := &UeContext{}
 		newUeContext.SmPolicyData = make(map[string]*UeSmPolicyData)
@@ -147,7 +147,7 @@ func (context *CCFContext) NewCCFUe(Supi string) (*UeContext, error) {
 }
 
 // Return Bdt Policy Id with format "BdtPolicyId-%d" which be allocated
-func (context *CCFContext) AllocBdtPolicyID() (bdtPolicyID string, err error) {
+func (context *CHFContext) AllocBdtPolicyID() (bdtPolicyID string, err error) {
 	var allocID int64
 	if allocID, err = context.BdtPolicyIDGenerator.Allocate(); err != nil {
 		logger.CtxLog.Warnf("Allocate pathID error: %+v", err)
@@ -158,8 +158,8 @@ func (context *CCFContext) AllocBdtPolicyID() (bdtPolicyID string, err error) {
 	return bdtPolicyID, nil
 }
 
-// Find CcfUe which the policyId belongs to
-func (context *CCFContext) CCFUeFindByPolicyId(PolicyId string) *UeContext {
+// Find ChfUe which the policyId belongs to
+func (context *CHFContext) CHFUeFindByPolicyId(PolicyId string) *UeContext {
 	index := strings.LastIndex(PolicyId, "-")
 	if index == -1 {
 		return nil
@@ -174,8 +174,8 @@ func (context *CCFContext) CCFUeFindByPolicyId(PolicyId string) *UeContext {
 	return nil
 }
 
-// Find CcfUe which the AppSessionId belongs to
-func (context *CCFContext) CCFUeFindByAppSessionId(appSessionId string) *UeContext {
+// Find ChfUe which the AppSessionId belongs to
+func (context *CHFContext) CHFUeFindByAppSessionId(appSessionId string) *UeContext {
 	index := strings.LastIndex(appSessionId, "-")
 	if index == -1 {
 		return nil
@@ -190,8 +190,8 @@ func (context *CCFContext) CCFUeFindByAppSessionId(appSessionId string) *UeConte
 	return nil
 }
 
-// Find CcfUe which Ipv4 belongs to
-func (context *CCFContext) CcfUeFindByIPv4(v4 string) *UeContext {
+// Find ChfUe which Ipv4 belongs to
+func (context *CHFContext) ChfUeFindByIPv4(v4 string) *UeContext {
 	var ue *UeContext
 	context.UePool.Range(func(key, value interface{}) bool {
 		ue = value.(*UeContext)
@@ -205,8 +205,8 @@ func (context *CCFContext) CcfUeFindByIPv4(v4 string) *UeContext {
 	return ue
 }
 
-// Find CcfUe which Ipv6 belongs to
-func (context *CCFContext) CcfUeFindByIPv6(v6 string) *UeContext {
+// Find ChfUe which Ipv6 belongs to
+func (context *CHFContext) ChfUeFindByIPv6(v6 string) *UeContext {
 	var ue *UeContext
 	context.UePool.Range(func(key, value interface{}) bool {
 		ue = value.(*UeContext)
@@ -243,7 +243,7 @@ func ueSMPolicyFindByAppSessionContext(ue *UeContext, req *models.AppSessionCont
 }
 
 // SessionBinding from application request to get corresponding Sm policy
-func (context *CCFContext) SessionBinding(req *models.AppSessionContextReqData) (*UeSmPolicyData, error) {
+func (context *CHFContext) SessionBinding(req *models.AppSessionContextReqData) (*UeSmPolicyData, error) {
 	var selectedUE *UeContext
 	var policy *UeSmPolicyData
 	var err error
@@ -282,7 +282,7 @@ func (context *CCFContext) SessionBinding(req *models.AppSessionContextReqData) 
 }
 
 //SetDefaultUdrURI ... function to set DefaultUdrURI
-func (context *CCFContext) SetDefaultUdrURI(uri string) {
+func (context *CHFContext) SetDefaultUdrURI(uri string) {
 	context.DefaultUdrURILock.Lock()
 	defer context.DefaultUdrURILock.Unlock()
 	context.DefaultUdrURI = uri

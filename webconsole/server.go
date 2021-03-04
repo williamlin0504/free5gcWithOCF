@@ -22,7 +22,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "webui"
 	appLog.Infoln(app.Name)
-	app.Usage = "-free5gccfg common configuration file -webuicfg webui configuration file"
+	app.Usage = "-free5gchfg common configuration file -webuicfg webui configuration file"
 	app.Action = action
 	app.Flags = WEBUI.GetCliCmd()
 	if err := app.Run(os.Args); err != nil {
@@ -31,7 +31,7 @@ func main() {
 }
 
 func action(c *cli.Context) {
-	app.AppInitializeWillInitialize(c.String("free5gccfg"))
+	app.AppInitializeWillInitialize(c.String("free5gchfg"))
 	WEBUI.Initialize(c)
 	WEBUI.Start()
 }

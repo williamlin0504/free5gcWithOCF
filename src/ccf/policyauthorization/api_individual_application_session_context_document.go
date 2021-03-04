@@ -1,5 +1,5 @@
 /*
- * Nccf_PolicyAuthorization Service API
+ * Nchf_PolicyAuthorization Service API
  *
  * This is the Policy Authorization Service
  *
@@ -13,8 +13,8 @@ import (
 	"free5gcWithOCF/lib/http_wrapper"
 	"free5gcWithOCF/lib/openapi"
 	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/src/ccf/logger"
-	"free5gcWithOCF/src/ccf/producer"
+	"free5gcWithOCF/src/chf/logger"
+	"free5gcWithOCF/src/chf/producer"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

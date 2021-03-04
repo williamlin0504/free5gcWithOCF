@@ -1,8 +1,8 @@
 /*
- * Nccf_BDTPolicyControl Service API
+ * Nchf_BDTPolicyControl Service API
  *
- * The Nccf_BDTPolicyControl Service is used by an NF service consumer to
- * retrieve background data transfer policies from the CCF and to update the CCF with
+ * The Nchf_BDTPolicyControl Service is used by an NF service consumer to
+ * retrieve background data transfer policies from the CHF and to update the CHF with
  * the background data transfer policy selected by the NF service consumer.
  *
  * API version: 1.0.0
@@ -14,16 +14,16 @@ package main
 import (
 	"fmt"
 	"free5gcWithOCF/src/app"
-	"free5gcWithOCF/src/ccf/logger"
-	"free5gcWithOCF/src/ccf/service"
-	"free5gcWithOCF/src/ccf/version"
+	"free5gcWithOCF/src/chf/logger"
+	"free5gcWithOCF/src/chf/service"
+	"free5gcWithOCF/src/chf/version"
 	"os"
 
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 )
 
-var CCF = &service.CCF{}
+var CHF = &service.CHF{}
 
 var appLog *logrus.Entry
 
@@ -33,21 +33,21 @@ func init() {
 
 func main() {
 	app := cli.NewApp()
-	app.Name = "ccf"
+	app.Name = "chf"
 	fmt.Print(app.Name, "\n")
-	appLog.Infoln("CCF version: ", version.GetVersion())
-	app.Usage = "-free5gcWithOCFcfg common configuration file -ccfcfg ccf configuration file"
+	appLog.Infoln("CHF version: ", version.GetVersion())
+	app.Usage = "-free5gcWithOCFcfg common configuration file -chfcfg chf configuration file"
 	app.Action = action
-	app.Flags = CCF.GetCliCmd()
+	app.Flags = CHF.GetCliCmd()
 
 	if err := app.Run(os.Args); err != nil {
-		fmt.Printf("CCF Run err: %v", err)
+		fmt.Printf("CHF Run err: %v", err)
 	}
 
 }
 
 func action(c *cli.Context) {
 	app.AppInitializeWillInitialize(c.String("free5gcWithOCFcfg"))
-	CCF.Initialize(c)
-	CCF.Start()
+	CHF.Initialize(c)
+	CHF.Start()
 }

@@ -24,7 +24,7 @@ func main() {
 	app.Name = "udr"
 	appLog.Infoln(app.Name)
 	appLog.Infoln("UDR version: ", version.GetVersion())
-	app.Usage = "-free5gccfg common configuration file -udrcfg udr configuration file"
+	app.Usage = "-free5gchfg common configuration file -udrcfg udr configuration file"
 	app.Action = action
 	app.Flags = UDR.GetCliCmd()
 	if err := app.Run(os.Args); err != nil {
@@ -33,7 +33,7 @@ func main() {
 }
 
 func action(c *cli.Context) {
-	app.AppInitializeWillInitialize(c.String("free5gccfg"))
+	app.AppInitializeWillInitialize(c.String("free5gchfg"))
 	UDR.Initialize(c)
 	UDR.Start()
 }

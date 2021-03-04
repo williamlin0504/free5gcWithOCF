@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"free5gcWithOCF/lib/openapi/Nnrf_NFDiscovery"
 	"free5gcWithOCF/lib/openapi/models"
-	ccf_context "free5gcWithOCF/src/ccf/context"
-	"free5gcWithOCF/src/ccf/logger"
-	"free5gcWithOCF/src/ccf/util"
+	chf_context "free5gcWithOCF/src/chf/context"
+	"free5gcWithOCF/src/chf/logger"
+	"free5gcWithOCF/src/chf/util"
 	"net/http"
 
 	"github.com/antihax/optional"
@@ -32,7 +32,7 @@ func SendSearchNFInstances(
 
 func SendNFIntancesUDR(nrfUri, id string) string {
 	targetNfType := models.NfType_UDR
-	requestNfType := models.NfType_CCF
+	requestNfType := models.NfType_CHF
 	localVarOptionals := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{
 		// 	DataSet: optional.NewInterface(models.DataSetId_SUBSCRIPTION),
 	}
@@ -60,7 +60,7 @@ func SendNFIntancesUDR(nrfUri, id string) string {
 
 func SendNFIntancesAMF(nrfUri string, guami models.Guami, serviceName models.ServiceName) string {
 	targetNfType := models.NfType_AMF
-	requestNfType := models.NfType_CCF
+	requestNfType := models.NfType_CHF
 
 	localVarOptionals := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{
 		Guami: optional.NewInterface(util.MarshToJsonString(guami)),
@@ -86,10 +86,10 @@ func SendNFIntancesAMF(nrfUri string, guami models.Guami, serviceName models.Ser
 }
 
 func SearchAvailableAMFs(nrfUri string, serviceName models.ServiceName) (
-	amfInfos []ccf_context.AMFStatusSubscriptionData) {
+	amfInfos []chf_context.AMFStatusSubscriptionData) {
 	localVarOptionals := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{}
 
-	result, err := SendSearchNFInstances(nrfUri, models.NfType_AMF, models.NfType_CCF, localVarOptionals)
+	result, err := SendSearchNFInstances(nrfUri, models.NfType_AMF, models.NfType_CHF, localVarOptionals)
 	if err != nil {
 		logger.Consumerlog.Error(err.Error())
 		return
@@ -98,7 +98,7 @@ func SearchAvailableAMFs(nrfUri string, serviceName models.ServiceName) (
 	for _, profile := range result.NfInstances {
 		uri := util.SearchNFServiceUri(profile, serviceName, models.NfServiceStatus_REGISTERED)
 		if uri != "" {
-			item := ccf_context.AMFStatusSubscriptionData{
+			item := chf_context.AMFStatusSubscriptionData{
 				AmfUri:    uri,
 				GuamiList: *profile.AmfInfo.GuamiList,
 			}
