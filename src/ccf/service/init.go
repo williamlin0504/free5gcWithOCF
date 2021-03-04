@@ -71,7 +71,7 @@ func (*CCF) Initialize(c *cli.Context) {
 	if config.ccfcfg != "" {
 		factory.InitConfigFactory(config.ccfcfg)
 	} else {
-		DefaultCcfConfigPath := path_util.Gofree5gcWithOCFPath("free5gcWithOCF/config/ccfcfg.conf")
+		DefaultCcfConfigPath := path_util.Gofree5gcPath("free5gcWithOCF/config/ccfcfg.conf")
 		factory.InitConfigFactory(DefaultCcfConfigPath)
 	}
 
