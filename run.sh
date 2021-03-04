@@ -19,11 +19,11 @@ for NF in ${NF_LIST}; do
     PID_LIST+=($!)
 done
 
-sudo ./bin/n3iwf &
-SUDO_N3IWF_PID=$!
-sleep 1
-N3IWF_PID=$(pgrep -P $SUDO_N3IWF_PID)
-PID_LIST+=($SUDO_N3IWF_PID $N3IWF_PID)
+#sudo ./bin/n3iwf &
+#SUDO_N3IWF_PID=$!
+#sleep 1
+#N3IWF_PID=$(pgrep -P $SUDO_N3IWF_PID)
+#PID_LIST+=($SUDO_N3IWF_PID $N3IWF_PID)
 
 function terminate()
 {
