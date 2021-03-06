@@ -10,8 +10,8 @@
 package Nnrf_NFManagement
 
 import (
-	"free5gcWithOCF/lib/openapi"
-	"free5gcWithOCF/lib/openapi/models"
+	"free5gc/lib/openapi"
+	"free5gc/lib/openapi/models"
 
 	"context"
 	"fmt"

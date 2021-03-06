@@ -1,8 +1,8 @@
 package pfcp_test
 
 import (
-	"free5gcWithOCF/lib/pfcp"
-	"free5gcWithOCF/lib/pfcp/pfcpType"
+	"free5gc/lib/pfcp"
+	"free5gc/lib/pfcp/pfcpType"
 	"net"
 	"testing"
 

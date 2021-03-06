@@ -2,7 +2,7 @@ package version_test
 
 import (
 	"fmt"
-	"free5gcWithOCF/src/n3iwf/version"
+	"free5gc/src/n3iwf/version"
 	"os/exec"
 	"runtime"
 	"strings"

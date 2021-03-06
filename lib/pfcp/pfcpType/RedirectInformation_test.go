@@ -1,16 +1,15 @@
 package pfcpType
 
 import (
-	"testing"
-
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestMarshalRedirectInformation(t *testing.T) {
 	testData := RedirectInformation{
 		RedirectAddressType:         2,
 		RedirectServerAddressLength: 13,
-		RedirectServerAddress:       []byte("free5gcWithOCF.local"),
+		RedirectServerAddress:       []byte("free5gc.local"),
 	}
 	buf, err := testData.MarshalBinary()
 
@@ -27,7 +26,7 @@ func TestUnmarshalRedirectInformation(t *testing.T) {
 	expectData := RedirectInformation{
 		RedirectAddressType:         2,
 		RedirectServerAddressLength: 13,
-		RedirectServerAddress:       []byte("free5gcWithOCF.local"),
+		RedirectServerAddress:       []byte("free5gc.local"),
 	}
 	assert.Equal(t, expectData, testData)
 }

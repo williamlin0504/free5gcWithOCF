@@ -10,17 +10,17 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 
-	"free5gcWithOCF/lib/MongoDBLibrary"
-	"free5gcWithOCF/lib/http2_util"
-	"free5gcWithOCF/lib/logger_util"
-	"free5gcWithOCF/lib/path_util"
-	"free5gcWithOCF/src/app"
-	"free5gcWithOCF/src/udr/consumer"
-	udr_context "free5gcWithOCF/src/udr/context"
-	"free5gcWithOCF/src/udr/datarepository"
-	"free5gcWithOCF/src/udr/factory"
-	"free5gcWithOCF/src/udr/logger"
-	"free5gcWithOCF/src/udr/util"
+	"free5gc/lib/MongoDBLibrary"
+	"free5gc/lib/http2_util"
+	"free5gc/lib/logger_util"
+	"free5gc/lib/path_util"
+	"free5gc/src/app"
+	"free5gc/src/udr/consumer"
+	udr_context "free5gc/src/udr/context"
+	"free5gc/src/udr/datarepository"
+	"free5gc/src/udr/factory"
+	"free5gc/src/udr/logger"
+	"free5gc/src/udr/util"
 )
 
 type UDR struct{}
@@ -36,7 +36,7 @@ var config Config
 
 var udrCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  "free5gchfg",
+		Name:  "free5gccfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
@@ -64,7 +64,7 @@ func (*UDR) Initialize(c *cli.Context) {
 	if config.udrcfg != "" {
 		factory.InitConfigFactory(config.udrcfg)
 	} else {
-		DefaultUdrConfigPath := path_util.Gofree5gcPath("free5gcWithOCF/config/udrcfg.conf")
+		DefaultUdrConfigPath := path_util.Gofree5gcPath("free5gc/config/udrcfg.conf")
 		factory.InitConfigFactory(DefaultUdrConfigPath)
 	}
 

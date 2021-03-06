@@ -4,19 +4,17 @@ import (
 	"context"
 	"encoding/hex"
 	"fmt"
-	"free5gcWithOCF/lib/http_wrapper"
-
+	"free5gc/lib/http_wrapper"
 	"github.com/antihax/optional"
-
-	// "free5gcWithOCF/lib/CommonConsumerTestData/UDM/TestGenAuthData"
+	// "free5gc/lib/CommonConsumerTestData/UDM/TestGenAuthData"
 	cryptoRand "crypto/rand"
-	"free5gcWithOCF/lib/UeauCommon"
-	"free5gcWithOCF/lib/milenage"
-	"free5gcWithOCF/lib/openapi"
-	"free5gcWithOCF/lib/openapi/Nudr_DataRepository"
-	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/lib/util_3gpp/suci"
-	"free5gcWithOCF/src/udm/logger"
+	"free5gc/lib/UeauCommon"
+	"free5gc/lib/milenage"
+	"free5gc/lib/openapi"
+	"free5gc/lib/openapi/Nudr_DataRepository"
+	"free5gc/lib/openapi/models"
+	"free5gc/lib/util_3gpp/suci"
+	"free5gc/src/udm/logger"
 	"math/big"
 	"math/rand"
 	"net/http"
@@ -515,7 +513,7 @@ func GenerateAuthDataProcedure(authInfoRequest models.AuthenticationInfoRequest,
 
 		// For TS 35.208 test set 19 & RFC 5448 test vector 1
 		// CK': 0093 962d 0dd8 4aa5 684b 045c 9edf fa04
-		// IK': chfc 230c a74f cc96 c0a5 d611 64f5 a76
+		// IK': ccfc 230c a74f cc96 c0a5 d611 64f5 a76
 
 		ckPrime := kdfVal[:len(kdfVal)/2]
 		ikPrime := kdfVal[len(kdfVal)/2:]

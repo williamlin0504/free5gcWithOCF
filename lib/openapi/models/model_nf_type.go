@@ -20,7 +20,6 @@ const (
 	NfType_AUSF     NfType = "AUSF"
 	NfType_NEF      NfType = "NEF"
 	NfType_PCF      NfType = "PCF"
-	NfType_CCF      NfType = "CCF"
 	NfType_SMSF     NfType = "SMSF"
 	NfType_NSSF     NfType = "NSSF"
 	NfType_UDR      NfType = "UDR"

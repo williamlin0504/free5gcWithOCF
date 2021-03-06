@@ -13,26 +13,26 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 
-	"free5gcWithOCF/lib/http2_util"
-	"free5gcWithOCF/lib/logger_util"
-	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/lib/path_util"
-	"free5gcWithOCF/src/amf/communication"
-	"free5gcWithOCF/src/amf/consumer"
-	"free5gcWithOCF/src/amf/context"
-	"free5gcWithOCF/src/amf/eventexposure"
-	"free5gcWithOCF/src/amf/factory"
-	"free5gcWithOCF/src/amf/httpcallback"
-	"free5gcWithOCF/src/amf/location"
-	"free5gcWithOCF/src/amf/logger"
-	"free5gcWithOCF/src/amf/mt"
-	"free5gcWithOCF/src/amf/ngap"
-	ngap_message "free5gcWithOCF/src/amf/ngap/message"
-	ngap_service "free5gcWithOCF/src/amf/ngap/service"
-	"free5gcWithOCF/src/amf/oam"
-	"free5gcWithOCF/src/amf/producer/callback"
-	"free5gcWithOCF/src/amf/util"
-	"free5gcWithOCF/src/app"
+	"free5gc/lib/http2_util"
+	"free5gc/lib/logger_util"
+	"free5gc/lib/openapi/models"
+	"free5gc/lib/path_util"
+	"free5gc/src/amf/communication"
+	"free5gc/src/amf/consumer"
+	"free5gc/src/amf/context"
+	"free5gc/src/amf/eventexposure"
+	"free5gc/src/amf/factory"
+	"free5gc/src/amf/httpcallback"
+	"free5gc/src/amf/location"
+	"free5gc/src/amf/logger"
+	"free5gc/src/amf/mt"
+	"free5gc/src/amf/ngap"
+	ngap_message "free5gc/src/amf/ngap/message"
+	ngap_service "free5gc/src/amf/ngap/service"
+	"free5gc/src/amf/oam"
+	"free5gc/src/amf/producer/callback"
+	"free5gc/src/amf/util"
+	"free5gc/src/app"
 )
 
 type AMF struct{}
@@ -48,7 +48,7 @@ var config Config
 
 var amfCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  "free5gchfg",
+		Name:  "free5gccfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
@@ -76,7 +76,7 @@ func (*AMF) Initialize(c *cli.Context) {
 	if config.amfcfg != "" {
 		factory.InitConfigFactory(config.amfcfg)
 	} else {
-		DefaultAmfConfigPath := path_util.Gofree5gcPath("free5gcWithOCF/config/amfcfg.conf")
+		DefaultAmfConfigPath := path_util.Gofree5gcPath("free5gc/config/amfcfg.conf")
 		factory.InitConfigFactory(DefaultAmfConfigPath)
 	}
 

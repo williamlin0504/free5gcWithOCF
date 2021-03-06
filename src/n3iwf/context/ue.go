@@ -4,8 +4,8 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"free5gcWithOCF/lib/ngap/ngapType"
-	ike_message "free5gcWithOCF/src/n3iwf/ike/message"
+	"free5gc/lib/ngap/ngapType"
+	ike_message "free5gc/src/n3iwf/ike/message"
 	"net"
 
 	gtpv1 "github.com/wmnsk/go-gtp/v1"

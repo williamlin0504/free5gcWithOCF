@@ -2,10 +2,9 @@ package tlv_test
 
 import (
 	"encoding/hex"
-	"free5gcWithOCF/lib/tlv"
-	"testing"
-
 	"github.com/stretchr/testify/assert"
+	"free5gc/lib/tlv"
+	"testing"
 )
 
 func TestUnmarshal(t *testing.T) {

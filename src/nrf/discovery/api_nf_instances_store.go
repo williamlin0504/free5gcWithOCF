@@ -10,14 +10,13 @@
 package discovery
 
 import (
-	"free5gcWithOCF/lib/http_wrapper"
-	"free5gcWithOCF/lib/openapi"
-	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/src/nrf/logger"
-	"free5gcWithOCF/src/nrf/producer"
-	"net/http"
-
+	"free5gc/lib/http_wrapper"
+	"free5gc/lib/openapi"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/nrf/logger"
+	"free5gc/src/nrf/producer"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 // SearchNFInstances - Search a collection of NF Instances

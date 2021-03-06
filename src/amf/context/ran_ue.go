@@ -3,10 +3,10 @@ package context
 import (
 	"encoding/hex"
 	"fmt"
-	"free5gcWithOCF/lib/ngap/ngapConvert"
-	"free5gcWithOCF/lib/ngap/ngapType"
-	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/src/amf/logger"
+	"free5gc/lib/ngap/ngapConvert"
+	"free5gc/lib/ngap/ngapType"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/amf/logger"
 	"time"
 
 	"github.com/mohae/deepcopy"

@@ -12,10 +12,10 @@ import (
 	"git.cs.nctu.edu.tw/calee/sctp"
 	"github.com/sirupsen/logrus"
 
-	"free5gcWithOCF/lib/path_util"
-	"free5gcWithOCF/src/n3iwf/context"
-	"free5gcWithOCF/src/n3iwf/factory"
-	"free5gcWithOCF/src/n3iwf/logger"
+	"free5gc/lib/path_util"
+	"free5gc/src/n3iwf/context"
+	"free5gc/src/n3iwf/factory"
+	"free5gc/src/n3iwf/logger"
 )
 
 var contextLog *logrus.Entry
@@ -113,7 +113,7 @@ func InitN3IWFContext() bool {
 
 		if factory.N3iwfConfig.Configuration.PrivateKey == "" {
 			contextLog.Warn("No private key file path specified, load default key file...")
-			keyPath = path_util.Gofree5gcPath("free5gcWithOCF/support/TLS/n3iwf.key")
+			keyPath = path_util.Gofree5gcPath("free5gc/support/TLS/n3iwf.key")
 		} else {
 			keyPath = factory.N3iwfConfig.Configuration.PrivateKey
 		}
@@ -154,7 +154,7 @@ func InitN3IWFContext() bool {
 
 		if factory.N3iwfConfig.Configuration.CertificateAuthority == "" {
 			contextLog.Warn("No certificate authority file path specified, load default CA certificate...")
-			keyPath = path_util.Gofree5gcPath("free5gcWithOCF/support/TLS/n3iwf.pem")
+			keyPath = path_util.Gofree5gcPath("free5gc/support/TLS/n3iwf.pem")
 		} else {
 			keyPath = factory.N3iwfConfig.Configuration.CertificateAuthority
 		}
@@ -193,7 +193,7 @@ func InitN3IWFContext() bool {
 
 		if factory.N3iwfConfig.Configuration.Certificate == "" {
 			contextLog.Warn("No certificate file path specified, load default certificate...")
-			keyPath = path_util.Gofree5gcPath("free5gcWithOCF/support/TLS/n3iwf.pem")
+			keyPath = path_util.Gofree5gcPath("free5gc/support/TLS/n3iwf.pem")
 		} else {
 			keyPath = factory.N3iwfConfig.Configuration.Certificate
 		}

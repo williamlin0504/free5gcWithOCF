@@ -3,8 +3,8 @@ package context
 import (
 	"encoding/binary"
 	"fmt"
-	"free5gcWithOCF/lib/aper"
-	"free5gcWithOCF/lib/ngap/ngapType"
+	"free5gc/lib/aper"
+	"free5gc/lib/ngap/ngapType"
 )
 
 func BuildPDUSessionResourceSetupRequestTransfer(ctx *SMContext) ([]byte, error) {

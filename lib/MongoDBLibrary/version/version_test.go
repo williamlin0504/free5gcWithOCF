@@ -1,10 +1,9 @@
 package version_test
 
 import (
-	"free5gcWithOCF/lib/MongoDBLibrary/version"
-	"testing"
-
+	"free5gc/lib/MongoDBLibrary/version"
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestVersion(t *testing.T) {

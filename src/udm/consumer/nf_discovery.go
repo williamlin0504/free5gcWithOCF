@@ -5,11 +5,11 @@ import (
 	"fmt"
 
 	// "github.com/antihax/optional"
-	"free5gcWithOCF/lib/openapi/Nnrf_NFDiscovery"
-	"free5gcWithOCF/lib/openapi/models"
-	udm_context "free5gcWithOCF/src/udm/context"
-	"free5gcWithOCF/src/udm/logger"
-	"free5gcWithOCF/src/udm/util"
+	"free5gc/lib/openapi/Nnrf_NFDiscovery"
+	"free5gc/lib/openapi/models"
+	udm_context "free5gc/src/udm/context"
+	"free5gc/src/udm/logger"
+	"free5gc/src/udm/util"
 	"net/http"
 )
 

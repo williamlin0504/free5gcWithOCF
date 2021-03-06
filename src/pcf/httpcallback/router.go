@@ -1,8 +1,8 @@
 package httpcallback
 
 import (
-	"free5gcWithOCF/lib/logger_util"
-	"free5gcWithOCF/src/pcf/logger"
+	"free5gc/lib/logger_util"
+	"free5gc/src/pcf/logger"
 	"net/http"
 	"strings"
 

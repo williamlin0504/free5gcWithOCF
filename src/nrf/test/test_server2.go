@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	"free5gcWithOCF/lib/http2_util"
-	"free5gcWithOCF/lib/logger_util"
-	. "free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/lib/path_util"
-	"free5gcWithOCF/src/nrf/logger"
+	"free5gc/lib/http2_util"
+	"free5gc/lib/logger_util"
+	. "free5gc/lib/openapi/models"
+	"free5gc/lib/path_util"
+	"free5gc/src/nrf/logger"
 	"log"
 	"net/http"
 
@@ -14,9 +14,9 @@ import (
 )
 
 var (
-	NrfLogPath = path_util.Gofree5gcPath("free5gcWithOCF/src/nrf/management/sslkeylog.log")
-	NrfPemPath = path_util.Gofree5gcPath("free5gcWithOCF/support/TLS/nrf.pem")
-	NrfKeyPath = path_util.Gofree5gcPath("free5gcWithOCF/support/TLS/nrf.key")
+	NrfLogPath = path_util.Gofree5gcPath("free5gc/src/nrf/management/sslkeylog.log")
+	NrfPemPath = path_util.Gofree5gcPath("free5gc/support/TLS/nrf.pem")
+	NrfKeyPath = path_util.Gofree5gcPath("free5gc/support/TLS/nrf.key")
 )
 
 func main() {

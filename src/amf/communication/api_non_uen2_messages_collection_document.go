@@ -10,10 +10,9 @@
 package communication
 
 import (
-	"free5gcWithOCF/src/amf/logger"
-	"net/http"
-
+	"free5gc/src/amf/logger"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 // NonUeN2MessageTransfer - Namf_Communication Non UE N2 Message Transfer service Operation

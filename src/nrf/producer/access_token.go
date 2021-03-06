@@ -1,12 +1,11 @@
 package producer
 
 import (
-	"free5gcWithOCF/lib/http_wrapper"
-	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/src/nrf/logger"
-	"net/http"
-
+	"free5gc/lib/http_wrapper"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/nrf/logger"
 	"github.com/dgrijalva/jwt-go"
+	"net/http"
 )
 
 func HandleAccessTokenRequest(request *http_wrapper.Request) *http_wrapper.Response {

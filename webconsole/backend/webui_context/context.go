@@ -2,13 +2,12 @@ package webui_context
 
 import (
 	"fmt"
-	"free5gcWithOCF/lib/MongoDBLibrary"
-	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/webconsole/backend/logger"
+	"free5gc/lib/MongoDBLibrary"
+	"free5gc/lib/openapi/models"
+	"free5gc/webconsole/backend/logger"
+	"github.com/mitchellh/mapstructure"
 	"reflect"
 	"time"
-
-	"github.com/mitchellh/mapstructure"
 )
 
 var webuiContext = WEBUIContext{}

@@ -3,7 +3,7 @@ package TestSMPolicy
 import (
 	"time"
 
-	"free5gcWithOCF/lib/openapi/models"
+	"free5gc/lib/openapi/models"
 )
 
 func CreateTestData() models.SmPolicyContextData {
@@ -69,7 +69,7 @@ func CreateTestData() models.SmPolicyContextData {
 		UeTimeZone:        "+08:00+1h",
 		Ipv4Address:       "45.45.0.2",
 		Ipv6AddressPrefix: "2001:db8:abcd:12::0/64",
-		IpDomain:          "free5gcWithOCF.org",
+		IpDomain:          "free5gc.org",
 		SubsSessAmbr: &models.Ambr{
 			Uplink:   "800 Kbps",
 			Downlink: "1000 Kbps",

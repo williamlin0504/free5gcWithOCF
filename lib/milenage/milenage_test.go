@@ -3,8 +3,7 @@ package milenage_test
 import (
 	"encoding/hex"
 	"fmt"
-	"free5gcWithOCF/lib/milenage"
-
+	"free5gc/lib/milenage"
 	// "math/rand"
 	"reflect"
 	"strings"
@@ -89,7 +88,7 @@ func init() {
 
 	Testf1TestTable[f1Test3] = &f1Test{
 		K:           "fec86ba6eb707ed08905757b1bb44b8f",
-		RAND:        "9f7c8d021achf4db213chff0c7f71a6a",
+		RAND:        "9f7c8d021accf4db213ccff0c7f71a6a",
 		SQN:         "9d0277595ffc",
 		AMF:         "725c",
 		OP:          "dbc59adcb6f9a0ef735477b7fadf8374",
@@ -153,7 +152,7 @@ func init() {
 
 	Testf2f5f3TestTable[f2f5f3Test3] = &f2f5f3Test{
 		K:           "fec86ba6eb707ed08905757b1bb44b8f",
-		RAND:        "9f7c8d021achf4db213chff0c7f71a6a",
+		RAND:        "9f7c8d021accf4db213ccff0c7f71a6a",
 		OP:          "dbc59adcb6f9a0ef735477b7fadf8374",
 		ExpectedOPc: "1006020f0a478bf6b699f15c062e42b3",
 		ExpectedRES: "8011c48c0c214ed2",
@@ -201,7 +200,7 @@ func init() {
 
 	Testf4f5StarTestTable[f4f5StarTest3] = &f4f5StarTest{
 		K:              "fec86ba6eb707ed08905757b1bb44b8f",
-		RAND:           "9f7c8d021achf4db213chff0c7f71a6a",
+		RAND:           "9f7c8d021accf4db213ccff0c7f71a6a",
 		OP:             "dbc59adcb6f9a0ef735477b7fadf8374",
 		ExpectedOPc:    "1006020f0a478bf6b699f15c062e42b3",
 		ExpectedIK:     "59a92d3b476a0443487055cf88b2307b",

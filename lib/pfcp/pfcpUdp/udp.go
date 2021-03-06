@@ -2,8 +2,8 @@ package pfcpUdp
 
 import (
 	"fmt"
-	"free5gcWithOCF/lib/pfcp"
-	"free5gcWithOCF/lib/pfcp/logger"
+	"free5gc/lib/pfcp"
+	"free5gc/lib/pfcp/logger"
 	"net"
 )
 

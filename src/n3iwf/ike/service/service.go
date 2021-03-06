@@ -4,9 +4,9 @@ import (
 	"errors"
 	"net"
 
-	"free5gcWithOCF/src/n3iwf/context"
-	"free5gcWithOCF/src/n3iwf/ike"
-	"free5gcWithOCF/src/n3iwf/logger"
+	"free5gc/src/n3iwf/context"
+	"free5gc/src/n3iwf/ike"
+	"free5gc/src/n3iwf/logger"
 
 	"github.com/sirupsen/logrus"
 )

@@ -2,9 +2,9 @@ package context
 
 import (
 	"fmt"
-	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/src/nrf/factory"
-	"free5gcWithOCF/src/nrf/logger"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/nrf/factory"
+	"free5gc/src/nrf/logger"
 	"strconv"
 	"strings"
 

@@ -9,21 +9,21 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 
-	"free5gcWithOCF/lib/http2_util"
-	"free5gcWithOCF/lib/logger_util"
-	"free5gcWithOCF/lib/path_util"
-	"free5gcWithOCF/src/app"
-	"free5gcWithOCF/src/udm/consumer"
-	"free5gcWithOCF/src/udm/context"
-	"free5gcWithOCF/src/udm/eventexposure"
-	"free5gcWithOCF/src/udm/factory"
-	"free5gcWithOCF/src/udm/httpcallback"
-	"free5gcWithOCF/src/udm/logger"
-	"free5gcWithOCF/src/udm/parameterprovision"
-	"free5gcWithOCF/src/udm/subscriberdatamanagement"
-	"free5gcWithOCF/src/udm/ueauthentication"
-	"free5gcWithOCF/src/udm/uecontextmanagement"
-	"free5gcWithOCF/src/udm/util"
+	"free5gc/lib/http2_util"
+	"free5gc/lib/logger_util"
+	"free5gc/lib/path_util"
+	"free5gc/src/app"
+	"free5gc/src/udm/consumer"
+	"free5gc/src/udm/context"
+	"free5gc/src/udm/eventexposure"
+	"free5gc/src/udm/factory"
+	"free5gc/src/udm/httpcallback"
+	"free5gc/src/udm/logger"
+	"free5gc/src/udm/parameterprovision"
+	"free5gc/src/udm/subscriberdatamanagement"
+	"free5gc/src/udm/ueauthentication"
+	"free5gc/src/udm/uecontextmanagement"
+	"free5gc/src/udm/util"
 )
 
 type UDM struct{}
@@ -39,7 +39,7 @@ var config Config
 
 var udmCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  "free5gchfg",
+		Name:  "free5gccfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
@@ -67,7 +67,7 @@ func (*UDM) Initialize(c *cli.Context) {
 	if config.udmcfg != "" {
 		factory.InitConfigFactory(config.udmcfg)
 	} else {
-		DefaultUdmConfigPath := path_util.Gofree5gcPath("free5gcWithOCF/config/udmcfg.conf")
+		DefaultUdmConfigPath := path_util.Gofree5gcPath("free5gc/config/udmcfg.conf")
 		factory.InitConfigFactory(DefaultUdmConfigPath)
 	}
 
@@ -121,9 +121,9 @@ func (udm *UDM) Start() {
 	ueauthentication.AddService(router)
 	uecontextmanagement.AddService(router)
 
-	udmLogPath := path_util.Gofree5gcPath("free5gcWithOCF/udmsslkey.log")
-	udmPemPath := path_util.Gofree5gcPath("free5gcWithOCF/support/TLS/udm.pem")
-	udmKeyPath := path_util.Gofree5gcPath("free5gcWithOCF/support/TLS/udm.key")
+	udmLogPath := path_util.Gofree5gcPath("free5gc/udmsslkey.log")
+	udmPemPath := path_util.Gofree5gcPath("free5gc/support/TLS/udm.pem")
+	udmKeyPath := path_util.Gofree5gcPath("free5gc/support/TLS/udm.key")
 	if sbi.Tls != nil {
 		udmLogPath = path_util.Gofree5gcPath(sbi.Tls.Log)
 		udmPemPath = path_util.Gofree5gcPath(sbi.Tls.Pem)

@@ -1,14 +1,13 @@
 package pfcpType
 
 import (
-	"testing"
-
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestMarshalApplicationID(t *testing.T) {
 	testData := ApplicationID{
-		ApplicationIdentifier: []byte("free5gcWithOCF.local"),
+		ApplicationIdentifier: []byte("free5gc.local"),
 	}
 	buf, err := testData.MarshalBinary()
 
@@ -23,7 +22,7 @@ func TestUnmarshalApplicationID(t *testing.T) {
 
 	assert.Nil(t, err)
 	expectData := ApplicationID{
-		ApplicationIdentifier: []byte("free5gcWithOCF.local"),
+		ApplicationIdentifier: []byte("free5gc.local"),
 	}
 	assert.Equal(t, expectData, testData)
 }

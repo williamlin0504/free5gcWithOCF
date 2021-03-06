@@ -1,15 +1,14 @@
 package pfcpType
 
 import (
-	"testing"
-
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestMarshalNodeID(t *testing.T) {
 	testData := NodeID{
 		NodeIdType:  NodeIdTypeFqdn,
-		NodeIdValue: []byte("free5gcWithOCF.local"),
+		NodeIdValue: []byte("free5gc.local"),
 	}
 	buf, err := testData.MarshalBinary()
 
@@ -25,7 +24,7 @@ func TestUnmarshalNodeID(t *testing.T) {
 	assert.Nil(t, err)
 	expectData := NodeID{
 		NodeIdType:  NodeIdTypeFqdn,
-		NodeIdValue: []byte("free5gcWithOCF.local"),
+		NodeIdValue: []byte("free5gc.local"),
 	}
 	assert.Equal(t, expectData, testData)
 }

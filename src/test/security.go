@@ -2,8 +2,8 @@ package test
 
 import (
 	"fmt"
-	"free5gcWithOCF/lib/nas"
-	"free5gcWithOCF/lib/nas/security"
+	"free5gc/lib/nas"
+	"free5gc/lib/nas/security"
 	"reflect"
 )
 

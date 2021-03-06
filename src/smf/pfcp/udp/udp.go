@@ -4,10 +4,10 @@ import (
 	"net"
 	"time"
 
-	"free5gcWithOCF/lib/pfcp"
-	"free5gcWithOCF/lib/pfcp/pfcpUdp"
-	"free5gcWithOCF/src/smf/context"
-	"free5gcWithOCF/src/smf/logger"
+	"free5gc/lib/pfcp"
+	"free5gc/lib/pfcp/pfcpUdp"
+	"free5gc/src/smf/context"
+	"free5gc/src/smf/logger"
 )
 
 const MaxPfcpUdpDataSize = 1024

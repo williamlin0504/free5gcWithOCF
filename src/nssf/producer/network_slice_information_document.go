@@ -16,11 +16,11 @@ import (
 	"net/url"
 	"strings"
 
-	"free5gcWithOCF/lib/http_wrapper"
-	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/src/nssf/logger"
-	"free5gcWithOCF/src/nssf/plugin"
-	"free5gcWithOCF/src/nssf/util"
+	"free5gc/lib/http_wrapper"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/nssf/logger"
+	"free5gc/src/nssf/plugin"
+	"free5gc/src/nssf/util"
 )
 
 // Parse NSSelectionGet query parameter

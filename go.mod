@@ -1,4 +1,4 @@
-module free5gcWithOCF
+module free5gc
 
 go 1.14
 

@@ -3,21 +3,21 @@ package test_test
 import (
 	"flag"
 	"fmt"
-	"free5gcWithOCF/lib/CommonConsumerTestData/UDM/TestGenAuthData"
-	"free5gcWithOCF/lib/MongoDBLibrary"
-	"free5gcWithOCF/lib/nas/security"
-	"free5gcWithOCF/lib/ngap"
-	"free5gcWithOCF/lib/path_util"
-	amf_service "free5gcWithOCF/src/amf/service"
-	"free5gcWithOCF/src/app"
-	ausf_service "free5gcWithOCF/src/ausf/service"
-	nrf_service "free5gcWithOCF/src/nrf/service"
-	nssf_service "free5gcWithOCF/src/nssf/service"
-	pcf_service "free5gcWithOCF/src/pcf/service"
-	smf_service "free5gcWithOCF/src/smf/service"
-	"free5gcWithOCF/src/test"
-	udm_service "free5gcWithOCF/src/udm/service"
-	udr_service "free5gcWithOCF/src/udr/service"
+	"free5gc/lib/CommonConsumerTestData/UDM/TestGenAuthData"
+	"free5gc/lib/MongoDBLibrary"
+	"free5gc/lib/nas/security"
+	"free5gc/lib/ngap"
+	"free5gc/lib/path_util"
+	amf_service "free5gc/src/amf/service"
+	"free5gc/src/app"
+	ausf_service "free5gc/src/ausf/service"
+	nrf_service "free5gc/src/nrf/service"
+	nssf_service "free5gc/src/nssf/service"
+	pcf_service "free5gc/src/pcf/service"
+	smf_service "free5gc/src/smf/service"
+	"free5gc/src/test"
+	udm_service "free5gc/src/udm/service"
+	udr_service "free5gc/src/udr/service"
 	"log"
 	"os"
 	"sync"
@@ -51,10 +51,10 @@ func init() {
 
 	if init {
 		app.AppInitializeWillInitialize("")
-		flagSet := flag.NewFlagSet("free5gcWithOCF", 0)
+		flagSet := flag.NewFlagSet("free5gc", 0)
 		flagSet.String("smfcfg", "", "SMF Config Path")
 		cli := cli.NewContext(nil, flagSet, nil)
-		err := cli.Set("smfcfg", path_util.Gofree5gcPath("free5gcWithOCF/config/test/smfcfg.test.conf"))
+		err := cli.Set("smfcfg", path_util.Gofree5gcPath("free5gc/config/test/smfcfg.test.conf"))
 		if err != nil {
 			log.Fatal("SMF test config error")
 			return
@@ -66,7 +66,7 @@ func init() {
 			time.Sleep(200 * time.Millisecond)
 		}
 	} else {
-		MongoDBLibrary.SetMongoDB("free5gcWithOCF", "mongodb://127.0.0.1:27017")
+		MongoDBLibrary.SetMongoDB("free5gc", "mongodb://127.0.0.1:27017")
 		fmt.Println("MongoDB Set")
 	}
 
@@ -82,7 +82,7 @@ func TestNGSetup(t *testing.T) {
 	assert.Nil(t, err)
 
 	// send NGSetupRequest Msg
-	sendMsg, err = test.GetNGSetupRequest([]byte("\x00\x01\x02"), 24, "free5gcWithOCF")
+	sendMsg, err = test.GetNGSetupRequest([]byte("\x00\x01\x02"), 24, "free5gc")
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
