@@ -10,12 +10,12 @@
 package ampolicy
 
 import (
-	"free5gc/lib/http_wrapper"
-	"free5gc/lib/openapi"
-	"free5gc/lib/openapi/models"
-	"free5gc/src/ccf/logger"
-	"free5gc/src/ccf/producer"
-	"free5gc/src/ccf/util"
+	"free5gcWithOCF/lib/http_wrapper"
+	"free5gcWithOCF/lib/openapi"
+	"free5gcWithOCF/lib/openapi/models"
+	"free5gcWithOCF/src/ccf/logger"
+	"free5gcWithOCF/src/ccf/producer"
+	"free5gcWithOCF/src/ccf/util"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

@@ -7,10 +7,10 @@ package main
 
 import (
 	"fmt"
-	"free5gc/src/app"
-	"free5gc/src/nrf/logger"
-	nrf_service "free5gc/src/nrf/service"
-	"free5gc/src/nrf/version"
+	"free5gcWithOCF/src/app"
+	"free5gcWithOCF/src/nrf/logger"
+	nrf_service "free5gcWithOCF/src/nrf/service"
+	"free5gcWithOCF/src/nrf/version"
 	"os"
 
 	"github.com/sirupsen/logrus"
@@ -30,7 +30,7 @@ func main() {
 	app.Name = "nrf"
 	fmt.Print(app.Name, "\n")
 	appLog.Infoln("NRF version: ", version.GetVersion())
-	app.Usage = "-free5gccfg common configuration file -nrfcfg nrf configuration file"
+	app.Usage = "-free5gcWithOCFcfg common configuration file -nrfcfg nrf configuration file"
 	app.Action = action
 	app.Flags = NRF.GetCliCmd()
 
@@ -41,7 +41,7 @@ func main() {
 }
 
 func action(c *cli.Context) {
-	app.AppInitializeWillInitialize(c.String("free5gccfg"))
+	app.AppInitializeWillInitialize(c.String("free5gcWithOCFcfg"))
 	NRF.Initialize(c)
 	NRF.Start()
 }

@@ -3,11 +3,11 @@ package consumer
 import (
 	"context"
 	"fmt"
-	"free5gc/lib/openapi/Nnrf_NFDiscovery"
-	"free5gc/lib/openapi/models"
-	ccf_context "free5gc/src/ccf/context"
-	"free5gc/src/ccf/logger"
-	"free5gc/src/ccf/util"
+	"free5gcWithOCF/lib/openapi/Nnrf_NFDiscovery"
+	"free5gcWithOCF/lib/openapi/models"
+	ccf_context "free5gcWithOCF/src/ccf/context"
+	"free5gcWithOCF/src/ccf/logger"
+	"free5gcWithOCF/src/ccf/util"
 	"net/http"
 
 	"github.com/antihax/optional"

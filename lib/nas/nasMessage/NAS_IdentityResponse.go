@@ -3,7 +3,7 @@ package nasMessage
 import (
 	"bytes"
 	"encoding/binary"
-	"free5gc/lib/nas/nasType"
+	"free5gcWithOCF/lib/nas/nasType"
 )
 
 type IdentityResponse struct {

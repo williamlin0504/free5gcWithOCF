@@ -10,8 +10,8 @@
 package sorprotection
 
 import (
-	"free5gc/lib/logger_util"
-	"free5gc/src/ausf/logger"
+	"free5gcWithOCF/lib/logger_util"
+	"free5gcWithOCF/src/ausf/logger"
 	"net/http"
 	"strings"
 

@@ -7,9 +7,9 @@ import (
 	"fmt"
 
 	"encoding/binary"
-	"free5gc/lib/aper"
-	"free5gc/lib/ngap/ngapType"
-	"free5gc/lib/pfcp/pfcpType"
+	"free5gcWithOCF/lib/aper"
+	"free5gcWithOCF/lib/ngap/ngapType"
+	"free5gcWithOCF/lib/pfcp/pfcpType"
 )
 
 func HandlePDUSessionResourceSetupResponseTransfer(b []byte, ctx *SMContext) (err error) {

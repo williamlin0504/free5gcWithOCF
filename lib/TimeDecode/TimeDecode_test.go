@@ -1,8 +1,8 @@
 package TimeDecode_test
 
 import (
-	"free5gc/lib/TimeDecode"
-	"free5gc/lib/openapi/models"
+	"free5gcWithOCF/lib/TimeDecode"
+	"free5gcWithOCF/lib/openapi/models"
 	"log"
 	"testing"
 	"time"

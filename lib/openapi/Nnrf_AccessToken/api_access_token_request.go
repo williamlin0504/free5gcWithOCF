@@ -10,8 +10,8 @@
 package Nnrf_AccessToken
 
 import (
-	"free5gc/lib/openapi"
-	"free5gc/lib/openapi/models"
+	"free5gcWithOCF/lib/openapi"
+	"free5gcWithOCF/lib/openapi/models"
 
 	"context"
 	"io/ioutil"

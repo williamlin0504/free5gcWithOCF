@@ -6,7 +6,7 @@ const Footer = () => (
       <nav className="pull-left">
         <ul>
           {/*<li>*/}
-          {/*  <a href="https://free5gc.org" target="_blank">free5gc.org</a>*/}
+          {/*  <a href="https://free5gcWithOCF.org" target="_blank">free5gcWithOCF.org</a>*/}
           {/*</li>*/}
           {/*<li>*/}
           {/*  <a href="#">Company</a>*/}
@@ -14,7 +14,7 @@ const Footer = () => (
         </ul>
       </nav>
       <p className="copyright pull-right">
-        © 2019 <a href="https://free5gc.org">free5GC development team</a>
+        © 2019 <a href="https://free5gcWithOCF.org">free5GC development team</a>
       </p>
     </div>
   </footer>

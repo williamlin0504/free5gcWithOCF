@@ -10,13 +10,14 @@
 package datarepository
 
 import (
-	"free5gc/lib/http_wrapper"
-	"free5gc/lib/openapi"
-	"free5gc/lib/openapi/models"
-	"free5gc/src/udr/logger"
-	"free5gc/src/udr/producer"
-	"github.com/gin-gonic/gin"
+	"free5gcWithOCF/lib/http_wrapper"
+	"free5gcWithOCF/lib/openapi"
+	"free5gcWithOCF/lib/openapi/models"
+	"free5gcWithOCF/src/udr/logger"
+	"free5gcWithOCF/src/udr/producer"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 // HTTPAmfContext3gpp - To modify the AMF context data of a UE using 3gpp access in the UDR

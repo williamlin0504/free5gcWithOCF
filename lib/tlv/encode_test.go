@@ -2,9 +2,10 @@ package tlv_test
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
-	"free5gc/lib/tlv"
+	"free5gcWithOCF/lib/tlv"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestMarshal(t *testing.T) {

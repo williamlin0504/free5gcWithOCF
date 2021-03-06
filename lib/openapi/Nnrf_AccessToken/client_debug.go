@@ -13,7 +13,7 @@ package Nnrf_AccessToken
 
 import (
 	"crypto/tls"
-	"free5gc/lib/http2_util"
+	"free5gcWithOCF/lib/http2_util"
 	"net/http"
 
 	"golang.org/x/net/http2"

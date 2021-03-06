@@ -1,9 +1,10 @@
 package version_test
 
 import (
-	"free5gc/lib/tlv/version"
-	"github.com/stretchr/testify/assert"
+	"free5gcWithOCF/lib/tlv/version"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestVersion(t *testing.T) {
