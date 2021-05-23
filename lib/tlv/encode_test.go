@@ -3,7 +3,7 @@ package tlv_test
 import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
-	"free5gc/lib/tlv"
+	" free5gcWithOCF/lib/tlv"
 	"testing"
 )
 

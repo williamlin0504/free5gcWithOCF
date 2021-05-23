@@ -13,10 +13,10 @@ package main
 
 import (
 	"fmt"
-	"free5gc/src/app"
-	"free5gc/src/pcf/logger"
-	"free5gc/src/pcf/service"
-	"free5gc/src/pcf/version"
+	" free5gcWithOCF/src/app"
+	" free5gcWithOCF/src/pcf/logger"
+	" free5gcWithOCF/src/pcf/service"
+	" free5gcWithOCF/src/pcf/version"
 	"os"
 
 	"github.com/sirupsen/logrus"
@@ -36,7 +36,7 @@ func main() {
 	app.Name = "pcf"
 	fmt.Print(app.Name, "\n")
 	appLog.Infoln("PCF version: ", version.GetVersion())
-	app.Usage = "-free5gccfg common configuration file -pcfcfg pcf configuration file"
+	app.Usage = "- free5gcWithOCFcfg common configuration file -pcfcfg pcf configuration file"
 	app.Action = action
 	app.Flags = PCF.GetCliCmd()
 
@@ -47,7 +47,7 @@ func main() {
 }
 
 func action(c *cli.Context) {
-	app.AppInitializeWillInitialize(c.String("free5gccfg"))
+	app.AppInitializeWillInitialize(c.String(" free5gcWithOCFcfg"))
 	PCF.Initialize(c)
 	PCF.Start()
 }

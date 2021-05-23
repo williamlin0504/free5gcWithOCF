@@ -14,11 +14,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"free5gc/lib/http_wrapper"
-	"free5gc/lib/openapi"
-	"free5gc/lib/openapi/models"
-	"free5gc/src/nssf/logger"
-	"free5gc/src/nssf/producer"
+	" free5gcWithOCF/lib/http_wrapper"
+	" free5gcWithOCF/lib/openapi"
+	" free5gcWithOCF/lib/openapi/models"
+	" free5gcWithOCF/src/nssf/logger"
+	" free5gcWithOCF/src/nssf/producer"
 )
 
 func HTTPNSSAIAvailabilityUnsubscribe(c *gin.Context) {

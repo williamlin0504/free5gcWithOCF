@@ -10,8 +10,8 @@
 package subscriberdatamanagement
 
 import (
-	"free5gc/lib/logger_util"
-	"free5gc/src/udm/logger"
+	" free5gcWithOCF/lib/logger_util"
+	" free5gcWithOCF/src/udm/logger"
 	"net/http"
 	"strings"
 

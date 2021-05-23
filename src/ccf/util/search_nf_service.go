@@ -2,7 +2,7 @@ package util
 
 import (
 	"fmt"
-	"free5gc/lib/openapi/models"
+	" free5gcWithOCF/lib/openapi/models"
 )
 
 // SearchNFServiceUri returns NF Uri derived from NfProfile with corresponding service

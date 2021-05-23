@@ -1,9 +1,9 @@
 package context
 
 import (
-	"free5gc/lib/nas/nasConvert"
-	"free5gc/lib/nas/nasMessage"
-	"free5gc/src/smf/logger"
+	" free5gcWithOCF/lib/nas/nasConvert"
+	" free5gcWithOCF/lib/nas/nasMessage"
+	" free5gcWithOCF/src/smf/logger"
 )
 
 func (smContext *SMContext) HandlePDUSessionEstablishmentRequest(req *nasMessage.PDUSessionEstablishmentRequest) {

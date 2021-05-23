@@ -1,7 +1,7 @@
 package version_test
 
 import (
-	"free5gc/lib/logger_util/version"
+	" free5gcWithOCF/lib/logger_util/version"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

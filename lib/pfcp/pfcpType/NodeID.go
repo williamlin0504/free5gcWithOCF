@@ -5,7 +5,7 @@ import (
 	"math/bits"
 	"net"
 
-	"free5gc/lib/pfcp/logger"
+	" free5gcWithOCF/lib/pfcp/logger"
 )
 
 const (

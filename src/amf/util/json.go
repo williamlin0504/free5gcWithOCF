@@ -2,7 +2,7 @@ package util
 
 import (
 	"encoding/json"
-	"free5gc/src/amf/logger"
+	" free5gcWithOCF/src/amf/logger"
 	"reflect"
 )
 

@@ -3,10 +3,10 @@ package message
 import (
 	"net"
 
-	"free5gc/lib/pfcp"
-	"free5gc/lib/pfcp/pfcpType"
-	"free5gc/src/smf/context"
-	"free5gc/src/smf/pfcp/udp"
+	" free5gcWithOCF/lib/pfcp"
+	" free5gcWithOCF/lib/pfcp/pfcpType"
+	" free5gcWithOCF/src/smf/context"
+	" free5gcWithOCF/src/smf/pfcp/udp"
 )
 
 func BuildPfcpAssociationSetupRequest() (pfcp.PFCPAssociationSetupRequest, error) {

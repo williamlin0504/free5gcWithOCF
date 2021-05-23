@@ -1,7 +1,7 @@
 package nasConvert
 
 import (
-	"free5gc/lib/nas/nasType"
+	" free5gcWithOCF/lib/nas/nasType"
 	"strings"
 )
 

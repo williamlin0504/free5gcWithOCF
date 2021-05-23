@@ -1,7 +1,7 @@
 package version_test
 
 import (
-	"free5gc/lib/util_3gpp/version"
+	" free5gcWithOCF/lib/util_3gpp/version"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

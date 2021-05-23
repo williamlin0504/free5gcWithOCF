@@ -1,10 +1,10 @@
 package producer
 
 import (
-	"free5gc/lib/http_wrapper"
-	"free5gc/lib/openapi/models"
-	"free5gc/src/ccf/context"
-	"free5gc/src/ccf/logger"
+	" free5gcWithOCF/lib/http_wrapper"
+	" free5gcWithOCF/lib/openapi/models"
+	" free5gcWithOCF/src/ccf/context"
+	" free5gcWithOCF/src/ccf/logger"
 	"net/http"
 	"strconv"
 )

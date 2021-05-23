@@ -3,12 +3,12 @@ package accesstoken_test
 import (
 	"context"
 	"crypto/tls"
-	"free5gc/lib/MongoDBLibrary"
-	"free5gc/lib/openapi/Nnrf_AccessToken"
-	"free5gc/lib/openapi/models"
-	"free5gc/src/nrf/accesstoken"
-	"free5gc/src/nrf/logger"
-	"free5gc/src/nrf/util"
+	" free5gcWithOCF/lib/MongoDBLibrary"
+	" free5gcWithOCF/lib/openapi/Nnrf_AccessToken"
+	" free5gcWithOCF/lib/openapi/models"
+	" free5gcWithOCF/src/nrf/accesstoken"
+	" free5gcWithOCF/src/nrf/logger"
+	" free5gcWithOCF/src/nrf/util"
 	"net/http"
 	"os"
 	"testing"
@@ -38,7 +38,7 @@ func TestAccessTokenRequest(t *testing.T) {
 	time.Sleep(time.Duration(2) * time.Second)
 
 	// connect to mongoDB
-	MongoDBLibrary.SetMongoDB("free5gc", "mongodb://140.113.214.205:30030")
+	MongoDBLibrary.SetMongoDB(" free5gcWithOCF", "mongodb://140.113.214.205:30030")
 
 	// Set client and set url
 	configuration := Nnrf_AccessToken.NewConfiguration()

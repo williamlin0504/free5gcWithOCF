@@ -2,7 +2,7 @@ package util_3gpp
 
 import (
 	"fmt"
-	"free5gc/lib/openapi/models"
+	" free5gcWithOCF/lib/openapi/models"
 )
 
 func SNssaiToString(snssai *models.Snssai) (str string) {

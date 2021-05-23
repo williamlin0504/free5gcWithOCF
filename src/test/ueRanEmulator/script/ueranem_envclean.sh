@@ -32,7 +32,7 @@ do
 done
 shift $(($OPTIND - 1))
 
-sudo killall -15 free5gc-upfd
+sudo killall -15  free5gcWithOCF-upfd
 sleep 1
 
 if [ ${DUMP_NS} ]

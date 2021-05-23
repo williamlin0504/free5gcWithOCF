@@ -1,7 +1,7 @@
 package TestAMPolicy
 
 import (
-	"free5gc/lib/openapi/models"
+	" free5gcWithOCF/lib/openapi/models"
 	"time"
 )
 

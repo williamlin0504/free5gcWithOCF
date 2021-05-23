@@ -8,7 +8,7 @@ import (
 func TestMarshalForwardingPolicy(t *testing.T) {
 	testData := ForwardingPolicy{
 		ForwardingPolicyIdentifierLength: 13,
-		ForwardingPolicyIdentifier:       []byte("free5gc.local"),
+		ForwardingPolicyIdentifier:       []byte(" free5gcWithOCF.local"),
 	}
 	buf, err := testData.MarshalBinary()
 
@@ -24,7 +24,7 @@ func TestUnmarshalForwardingPolicy(t *testing.T) {
 	assert.Nil(t, err)
 	expectData := ForwardingPolicy{
 		ForwardingPolicyIdentifierLength: 13,
-		ForwardingPolicyIdentifier:       []byte("free5gc.local"),
+		ForwardingPolicyIdentifier:       []byte(" free5gcWithOCF.local"),
 	}
 	assert.Equal(t, expectData, testData)
 }

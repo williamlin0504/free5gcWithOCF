@@ -1,13 +1,13 @@
 package message
 
 import (
-	"free5gc/lib/aper"
-	"free5gc/lib/ngap/ngapType"
-	"free5gc/lib/openapi/models"
-	"free5gc/src/amf/context"
-	"free5gc/src/amf/logger"
-	"free5gc/src/amf/producer/callback"
-	"free5gc/src/amf/util"
+	" free5gcWithOCF/lib/aper"
+	" free5gcWithOCF/lib/ngap/ngapType"
+	" free5gcWithOCF/lib/openapi/models"
+	" free5gcWithOCF/src/amf/context"
+	" free5gcWithOCF/src/amf/logger"
+	" free5gcWithOCF/src/amf/producer/callback"
+	" free5gcWithOCF/src/amf/util"
 	"time"
 
 	"github.com/sirupsen/logrus"

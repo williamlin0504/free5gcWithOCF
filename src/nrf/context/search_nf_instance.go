@@ -1,7 +1,7 @@
 package context
 
 import (
-	"free5gc/lib/openapi/models"
+	" free5gcWithOCF/lib/openapi/models"
 )
 
 type SearchNFInstances struct {

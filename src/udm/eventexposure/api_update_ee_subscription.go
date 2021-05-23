@@ -10,11 +10,11 @@
 package eventexposure
 
 import (
-	"free5gc/lib/http_wrapper"
-	"free5gc/lib/openapi"
-	"free5gc/lib/openapi/models"
-	"free5gc/src/udm/logger"
-	"free5gc/src/udm/producer"
+	" free5gcWithOCF/lib/http_wrapper"
+	" free5gcWithOCF/lib/openapi"
+	" free5gcWithOCF/lib/openapi/models"
+	" free5gcWithOCF/src/udm/logger"
+	" free5gcWithOCF/src/udm/producer"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

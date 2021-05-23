@@ -3,7 +3,7 @@ const config = {
   API_URL: '',
 
   USERNAME: 'admin',
-  PASSWORD: 'free5gc',
+  PASSWORD: ' free5gcWithOCF',
 };
 
 // [Note]

@@ -2,11 +2,11 @@ package consumer
 
 import (
 	"context"
-	"free5gc/lib/openapi"
-	"free5gc/lib/openapi/Npcf_AMPolicy"
-	"free5gc/lib/openapi/models"
-	amf_context "free5gc/src/amf/context"
-	"free5gc/src/amf/logger"
+	" free5gcWithOCF/lib/openapi"
+	" free5gcWithOCF/lib/openapi/Npcf_AMPolicy"
+	" free5gcWithOCF/lib/openapi/models"
+	amf_context " free5gcWithOCF/src/amf/context"
+	" free5gcWithOCF/src/amf/logger"
 	"regexp"
 )
 

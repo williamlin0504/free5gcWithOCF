@@ -18,7 +18,7 @@
 
 #include "updk/env.h"
 
-#define UNIX_SOCK_BUFFERING_PATH "/tmp/free5gc_unix_sock"
+#define UNIX_SOCK_BUFFERING_PATH "/tmp/ free5gcWithOCF_unix_sock"
 
 /**
  * Gtp5gDevice - Structure for store info after gtp5g device created

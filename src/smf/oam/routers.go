@@ -1,8 +1,8 @@
 package oam
 
 import (
-	"free5gc/lib/logger_util"
-	"free5gc/src/smf/logger"
+	" free5gcWithOCF/lib/logger_util"
+	" free5gcWithOCF/src/smf/logger"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

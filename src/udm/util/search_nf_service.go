@@ -2,7 +2,7 @@ package util
 
 import (
 	"fmt"
-	"free5gc/lib/openapi/models"
+	" free5gcWithOCF/lib/openapi/models"
 )
 
 func SearchNFServiceUri(nfProfile models.NfProfile, serviceName models.ServiceName,

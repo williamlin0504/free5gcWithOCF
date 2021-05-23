@@ -2,12 +2,12 @@ package producer
 
 import (
 	"encoding/json"
-	"free5gc/lib/MongoDBLibrary"
-	"free5gc/lib/TimeDecode"
-	"free5gc/lib/http_wrapper"
-	"free5gc/lib/openapi/models"
-	"free5gc/src/nrf/context"
-	"free5gc/src/nrf/logger"
+	" free5gcWithOCF/lib/MongoDBLibrary"
+	" free5gcWithOCF/lib/TimeDecode"
+	" free5gcWithOCF/lib/http_wrapper"
+	" free5gcWithOCF/lib/openapi/models"
+	" free5gcWithOCF/src/nrf/context"
+	" free5gcWithOCF/src/nrf/logger"
 	"go.mongodb.org/mongo-driver/bson"
 	"math/big"
 	"net/http"

@@ -10,8 +10,8 @@
 package datarepository
 
 import (
-	"free5gc/lib/logger_util"
-	"free5gc/src/udr/logger"
+	" free5gcWithOCF/lib/logger_util"
+	" free5gcWithOCF/src/udr/logger"
 	"net/http"
 	"strings"
 

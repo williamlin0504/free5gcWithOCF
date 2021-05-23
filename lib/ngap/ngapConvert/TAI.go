@@ -3,9 +3,9 @@ package ngapConvert
 import (
 	"encoding/hex"
 
-	"free5gc/lib/ngap/logger"
-	"free5gc/lib/ngap/ngapType"
-	"free5gc/lib/openapi/models"
+	" free5gcWithOCF/lib/ngap/logger"
+	" free5gcWithOCF/lib/ngap/ngapType"
+	" free5gcWithOCF/lib/openapi/models"
 )
 
 func TaiToModels(tai ngapType.TAI) models.Tai {

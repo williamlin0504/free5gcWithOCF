@@ -5,14 +5,14 @@ import (
 	"os"
 	"strconv"
 
-	"free5gc/lib/path_util"
+	" free5gcWithOCF/lib/path_util"
 )
 
-var Free5gcLogDir string = path_util.Gofree5gcPath("free5gc/log") + "/"
+var Free5gcLogDir string = path_util.Go free5gcWithOCFPath(" free5gcWithOCF/log") + "/"
 var LibLogDir string = Free5gcLogDir + "lib/"
 var NfLogDir string = Free5gcLogDir + "nf/"
 
-var Free5gcLogFile string = Free5gcLogDir + "free5gc.log"
+var Free5gcLogFile string = Free5gcLogDir + " free5gcWithOCF.log"
 
 func init() {
 	if err := os.MkdirAll(LibLogDir, 0775); err != nil {
