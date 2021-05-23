@@ -1,5 +1,5 @@
 /*
- * Nchf_ConvergedChargingNotify
+ * Npcf_SMPolicyControl
  *
  * Session Management Policy Control Service
  *

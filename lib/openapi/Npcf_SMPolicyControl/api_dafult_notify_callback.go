@@ -1,4 +1,4 @@
-package Nchf_ConvergedChargingNotify
+package Npcf_SMPolicyControl
 
 import (
 	"context"

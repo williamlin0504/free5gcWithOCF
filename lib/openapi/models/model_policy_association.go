@@ -1,5 +1,5 @@
 /*
- * Nchf_AMPolicyControl
+ * Npcf_AMPolicyControl
  *
  * Access and Mobility Policy Control Service API
  *

@@ -864,7 +864,7 @@ func SendSMPolicyUpdateNotification(
 			"SM Policy Update Notification Error[Can't find smPolId[%s] in UE(%s)]", smPolId, ue.Supi)
 		return
 	}
-	client := util.GetNchfSMPolicyCallbackClient()
+	client := util.GetNpcfSMPolicyCallbackClient()
 	uri := smPolicyData.PolicyContext.NotificationUri
 	if uri != "" {
 		logger.SMpolicylog.Infof("Send SM Policy Update Notification to SMF")
@@ -903,7 +903,7 @@ func SendSMPolicyTerminationRequestNotification(
 			"SM Policy Update Notification Error[Can't find smPolId[%s] in UE(%s)]", smPolId, ue.Supi)
 		return
 	}
-	client := util.GetNchfSMPolicyCallbackClient()
+	client := util.GetNpcfSMPolicyCallbackClient()
 	uri := smPolicyData.PolicyContext.NotificationUri
 	if uri != "" {
 		rsp, err :=

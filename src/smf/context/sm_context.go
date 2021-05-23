@@ -8,7 +8,7 @@ import (
 	"free5gc/lib/openapi"
 	"free5gc/lib/openapi/Namf_Communication"
 	"free5gc/lib/openapi/Nnrf_NFDiscovery"
-	"free5gc/lib/openapi/Nchf_ConvergedChargingNotify"
+	"free5gc/lib/openapi/Npcf_SMPolicyControl"
 	"free5gc/lib/openapi/models"
 	"free5gc/lib/pfcp/pfcpType"
 	"free5gc/src/smf/logger"
@@ -81,7 +81,7 @@ type SMContext struct {
 	DnnConfiguration models.DnnConfiguration
 
 	// Client
-	SMPolicyClient      *Nchf_ConvergedChargingNotify.APIClient
+	SMPolicyClient      *Npcf_SMPolicyControl.APIClient
 	CommunicationClient *Namf_Communication.APIClient
 
 	AMFProfile         models.NfProfile
@@ -251,9 +251,9 @@ func (smContext *SMContext) PCFSelection() error {
 	// Create SMPolicyControl Client for this SM Context
 	for _, service := range *smContext.SelectedPCFProfile.NfServices {
 		if service.ServiceName == models.ServiceName_NPCF_SMPOLICYCONTROL {
-			SmPolicyControlConf := Nchf_ConvergedChargingNotify.NewConfiguration()
+			SmPolicyControlConf := Npcf_SMPolicyControl.NewConfiguration()
 			SmPolicyControlConf.SetBasePath(service.ApiPrefix)
-			smContext.SMPolicyClient = Nchf_ConvergedChargingNotify.NewAPIClient(SmPolicyControlConf)
+			smContext.SMPolicyClient = Npcf_SMPolicyControl.NewAPIClient(SmPolicyControlConf)
 		}
 	}
 

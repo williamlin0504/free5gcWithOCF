@@ -295,7 +295,7 @@ func SendAMPolicyUpdateNotification(ue *pcf_context.UeContext, PolId string, req
 		logger.AMpolicylog.Warnf("Policy Update Notification Error[Can't find polAssoId[%s] in UE(%s)]", PolId, ue.Supi)
 		return
 	}
-	client := util.GetNchfAMPolicyCallbackClient()
+	client := util.GetNpcfAMPolicyCallbackClient()
 	uri := amPolicyData.NotificationUri
 	for uri != "" {
 
@@ -341,7 +341,7 @@ func SendAMPolicyTerminationRequestNotification(ue *pcf_context.UeContext,
 			"Policy Assocition Termination Request Notification Error[Can't find polAssoId[%s] in UE(%s)]", PolId, ue.Supi)
 		return
 	}
-	client := util.GetNchfAMPolicyCallbackClient()
+	client := util.GetNpcfAMPolicyCallbackClient()
 	uri := amPolicyData.NotificationUri
 	for uri != "" {
 

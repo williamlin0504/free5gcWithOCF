@@ -3,7 +3,7 @@ package consumer
 import (
 	"context"
 	"free5gc/lib/openapi"
-	"free5gc/lib/openapi/Nchf_ConvergedChargingCreate"
+	"free5gc/lib/openapi/Npcf_AMPolicy"
 	"free5gc/lib/openapi/models"
 	amf_context "free5gc/src/amf/context"
 	"free5gc/src/amf/logger"
@@ -12,9 +12,9 @@ import (
 
 func AMPolicyControlCreate(ue *amf_context.AmfUe, anType models.AccessType) (*models.ProblemDetails, error) {
 
-	configuration := Nchf_ConvergedChargingCreate.NewConfiguration()
+	configuration := Npcf_AMPolicy.NewConfiguration()
 	configuration.SetBasePath(ue.PcfUri)
-	client := Nchf_ConvergedChargingCreate.NewAPIClient(configuration)
+	client := Npcf_AMPolicy.NewAPIClient(configuration)
 
 	amfSelf := amf_context.AMF_Self()
 
@@ -74,9 +74,9 @@ func AMPolicyControlCreate(ue *amf_context.AmfUe, anType models.AccessType) (*mo
 
 func AMPolicyControlUpdate(ue *amf_context.AmfUe, updateRequest models.PolicyAssociationUpdateRequest) (
 	problemDetails *models.ProblemDetails, err error) {
-	configuration := Nchf_ConvergedChargingCreate.NewConfiguration()
+	configuration := Npcf_AMPolicy.NewConfiguration()
 	configuration.SetBasePath(ue.PcfUri)
-	client := Nchf_ConvergedChargingCreate.NewAPIClient(configuration)
+	client := Npcf_AMPolicy.NewAPIClient(configuration)
 
 	res, httpResp, localErr := client.DefaultApi.PoliciesPolAssoIdUpdatePost(
 		context.Background(), ue.PolicyAssociationId, updateRequest)
@@ -113,9 +113,9 @@ func AMPolicyControlUpdate(ue *amf_context.AmfUe, updateRequest models.PolicyAss
 
 func AMPolicyControlDelete(ue *amf_context.AmfUe) (problemDetails *models.ProblemDetails, err error) {
 
-	configuration := Nchf_ConvergedChargingCreate.NewConfiguration()
+	configuration := Npcf_AMPolicy.NewConfiguration()
 	configuration.SetBasePath(ue.PcfUri)
-	client := Nchf_ConvergedChargingCreate.NewAPIClient(configuration)
+	client := Npcf_AMPolicy.NewAPIClient(configuration)
 
 	httpResp, localErr := client.DefaultApi.PoliciesPolAssoIdDelete(context.Background(), ue.PolicyAssociationId)
 	if localErr == nil {

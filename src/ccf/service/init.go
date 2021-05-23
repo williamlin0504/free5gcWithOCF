@@ -107,7 +107,6 @@ func (ccf *CCF) FilterCli(c *cli.Context) (args []string) {
 
 func (ccf *CCF) Start() {
 	initLog.Infoln("Server started")
-	fmt.Fprint(w, "CCF Started Ready to Start Session...")
 	router := logger_util.NewGinWithLogrus(logger.GinLog)
 
 	bdtpolicy.AddService(router)

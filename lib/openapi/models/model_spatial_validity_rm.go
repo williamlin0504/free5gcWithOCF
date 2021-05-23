@@ -1,5 +1,5 @@
 /*
- * Nchf_ConvergedChargingRelease Service API
+ * Npcf_PolicyAuthorization Service API
  *
  * This is the Policy Authorization Service
  *

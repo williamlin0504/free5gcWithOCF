@@ -870,7 +870,7 @@ func SendAppSessionEventNotification(appSession *pcf_context.AppSessionData, req
 	if uri != "" {
 		request.EvSubsUri = fmt.Sprintf("%s/events-subscription",
 			util.GetResourceUri(models.ServiceName_NPCF_POLICYAUTHORIZATION, appSession.AppSessionId))
-		client := util.GetNchfPolicyAuthorizationCallbackClient()
+		client := util.GetNpcfPolicyAuthorizationCallbackClient()
 		httpResponse, err := client.PolicyAuthorizationEventNotificationApi.PolicyAuthorizationEventNotification(
 			context.Background(), uri, request)
 		if err != nil {
@@ -1039,7 +1039,7 @@ func SendAppSessionTermination(appSession *pcf_context.AppSessionData, request m
 	uri := appSession.AppSessionContext.AscReqData.NotifUri
 	if uri != "" {
 		request.ResUri = util.GetResourceUri(models.ServiceName_NPCF_POLICYAUTHORIZATION, appSession.AppSessionId)
-		client := util.GetNchfPolicyAuthorizationCallbackClient()
+		client := util.GetNpcfPolicyAuthorizationCallbackClient()
 		httpResponse, err := client.PolicyAuthorizationTerminateRequestApi.PolicyAuthorizationTerminateRequest(
 			context.Background(), uri, request)
 		if err != nil {
