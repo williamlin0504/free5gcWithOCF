@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sync"
 
-	" free5gcWithOCF/lib/openapi/models"
+	" free5gc/lib/openapi/models"
 )
 
 var udrContext = UDRContext{}

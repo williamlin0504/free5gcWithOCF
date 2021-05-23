@@ -3,13 +3,13 @@ package webui_service
 import (
 	"bufio"
 	"fmt"
-	" free5gcWithOCF/lib/MongoDBLibrary"
-	" free5gcWithOCF/lib/path_util"
-	" free5gcWithOCF/src/app"
-	" free5gcWithOCF/webconsole/backend/WebUI"
-	" free5gcWithOCF/webconsole/backend/factory"
-	" free5gcWithOCF/webconsole/backend/logger"
-	" free5gcWithOCF/webconsole/backend/webui_context"
+	" free5gc/lib/MongoDBLibrary"
+	" free5gcth_util"
+	" free5gcp"
+	" free5gcsole/backend/WebUI"
+	" free5gcsole/backend/factory"
+	" free5gcsole/backend/logger"
+	" free5gcsole/backend/webui_context"
 	"os/exec"
 	"sync"
 
@@ -60,7 +60,7 @@ func (*WEBUI) Initialize(c *cli.Context) {
 	if config.webuicfg != "" {
 		factory.InitConfigFactory(config.webuicfg)
 	} else {
-		DefaultWebUIConfigPath := path_util.Go free5gcPath(" free5gcWithOCF/config/webuicfg.conf")
+		DefaultWebUIConfigPath := path_util.Go free5gcPath(" free5gc/webuicfg.conf")
 		factory.InitConfigFactory(DefaultWebUIConfigPath)
 	}
 

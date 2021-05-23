@@ -10,12 +10,12 @@
 package policyauthorization
 
 import (
-	" free5gcWithOCF/lib/http_wrapper"
-	" free5gcWithOCF/lib/openapi"
-	" free5gcWithOCF/lib/openapi/models"
-	" free5gcWithOCF/src/pcf/logger"
-	" free5gcWithOCF/src/pcf/producer"
-	" free5gcWithOCF/src/pcf/util"
+	" free5gc/lib/http_wrapper"
+	" free5gcenapi"
+	" free5gcenapi/models"
+	" free5gcf/logger"
+	" free5gcf/producer"
+	" free5gcf/util"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

@@ -10,11 +10,11 @@
 package discovery
 
 import (
-	" free5gcWithOCF/lib/http_wrapper"
-	" free5gcWithOCF/lib/openapi"
-	" free5gcWithOCF/lib/openapi/models"
-	" free5gcWithOCF/src/nrf/logger"
-	" free5gcWithOCF/src/nrf/producer"
+	" free5gc/lib/http_wrapper"
+	" free5gcenapi"
+	" free5gcenapi/models"
+	" free5gcf/logger"
+	" free5gcf/producer"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

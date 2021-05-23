@@ -54,9 +54,9 @@ iptables -t nat -A POSTROUTING -o <DN_Interface_Name> -j MASQUERADE
 ### Run
 ```bash
 cd build
-sudo -E ./bin/ free5gcWithOCF-upfd
+sudo -E ./bin/ free5gc-upfd
 ```
-To show usage: `./bin/ free5gcWithOCF-upfd -h`
+To show usage: `./bin/ free5gch`
 
 
 ## Clean the Environment (if needed)

@@ -1,11 +1,11 @@
 package ngap
 
 import (
-	" free5gcWithOCF/lib/ngap"
-	" free5gcWithOCF/lib/ngap/ngapType"
-	" free5gcWithOCF/src/n3iwf/context"
-	" free5gcWithOCF/src/n3iwf/logger"
-	" free5gcWithOCF/src/n3iwf/ngap/handler"
+	" free5gc/lib/ngap"
+	" free5gcap/ngapType"
+	" free5gciwf/context"
+	" free5gciwf/logger"
+	" free5gciwf/ngap/handler"
 
 	"git.cs.nctu.edu.tw/calee/sctp"
 	"github.com/sirupsen/logrus"

@@ -1,9 +1,9 @@
 package main
 
 import (
-	" free5gcWithOCF/src/app"
-	" free5gcWithOCF/webconsole/backend/logger"
-	" free5gcWithOCF/webconsole/backend/webui_service"
+	" free5gc/src/app"
+	" free5gcsole/backend/logger"
+	" free5gcsole/backend/webui_service"
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 	"os"

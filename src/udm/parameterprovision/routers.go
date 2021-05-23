@@ -10,8 +10,8 @@
 package parameterprovision
 
 import (
-	" free5gcWithOCF/lib/logger_util"
-	" free5gcWithOCF/src/udm/logger"
+	" free5gc/lib/logger_util"
+	" free5gcm/logger"
 	"net/http"
 	"strings"
 

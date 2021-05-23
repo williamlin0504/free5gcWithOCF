@@ -4,13 +4,13 @@ import (
 	"encoding/binary"
 	"encoding/hex"
 
-	" free5gcWithOCF/lib/aper"
-	" free5gcWithOCF/lib/ngap"
-	" free5gcWithOCF/lib/ngap/ngapConvert"
-	" free5gcWithOCF/lib/ngap/ngapType"
-	" free5gcWithOCF/src/n3iwf/context"
-	" free5gcWithOCF/src/n3iwf/logger"
-	" free5gcWithOCF/src/n3iwf/util"
+	" free5gc/lib/aper"
+	" free5gcap"
+	" free5gcap/ngapConvert"
+	" free5gcap/ngapType"
+	" free5gciwf/context"
+	" free5gciwf/logger"
+	" free5gciwf/util"
 )
 
 func BuildNGSetupRequest() ([]byte, error) {

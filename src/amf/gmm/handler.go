@@ -6,23 +6,23 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	" free5gcWithOCF/lib/fsm"
-	" free5gcWithOCF/lib/nas"
-	" free5gcWithOCF/lib/nas/nasConvert"
-	" free5gcWithOCF/lib/nas/nasMessage"
-	" free5gcWithOCF/lib/nas/nasType"
-	" free5gcWithOCF/lib/nas/security"
-	" free5gcWithOCF/lib/ngap/ngapConvert"
-	" free5gcWithOCF/lib/ngap/ngapType"
-	" free5gcWithOCF/lib/openapi/Nnrf_NFDiscovery"
-	" free5gcWithOCF/lib/openapi/models"
-	" free5gcWithOCF/src/amf/consumer"
-	" free5gcWithOCF/src/amf/context"
-	gmm_message " free5gcWithOCF/src/amf/gmm/message"
-	" free5gcWithOCF/src/amf/logger"
-	ngap_message " free5gcWithOCF/src/amf/ngap/message"
-	" free5gcWithOCF/src/amf/producer/callback"
-	" free5gcWithOCF/src/amf/util"
+	" free5gc/lib/fsm"
+	" free5gcs"
+	" free5gcs/nasConvert"
+	" free5gcs/nasMessage"
+	" free5gcs/nasType"
+	" free5gcs/security"
+	" free5gcap/ngapConvert"
+	" free5gcap/ngapType"
+	" free5gcenapi/Nnrf_NFDiscovery"
+	" free5gcenapi/models"
+	" free5gcf/consumer"
+	" free5gcf/context"
+	gmm_message " free5gcf/gmm/message"
+	" free5gcf/logger"
+	ngap_message " free5gcf/ngap/message"
+	" free5gcf/producer/callback"
+	" free5gcf/util"
 	"net/url"
 	"reflect"
 	"strconv"
@@ -1666,7 +1666,7 @@ func HandleConfigurationUpdateComplete(ue *context.AmfUe,
 
 	// TODO: Stop timer T3555 in TS 24.501 Figure 5.4.4.1.1 in handler
 	// TODO: Send acknowledgment by Nudm_SMD_Info_Service to UDM in handler
-	//		import " free5gcWithOCF/lib/openapi/Nudm_SubscriberDataManagement" client.Info
+	//		import " free5gcenapi/Nudm_SubscriberDataManagement" client.Info
 
 	return nil
 }

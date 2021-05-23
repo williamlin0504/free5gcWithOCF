@@ -1,8 +1,8 @@
 package pfcp
 
 import (
-	" free5gcWithOCF/lib/pfcp/pfcpType"
-	" free5gcWithOCF/lib/util_3gpp"
+	" free5gc/lib/pfcp/pfcpType"
+	" free5gcil_3gpp"
 )
 
 type Message struct {

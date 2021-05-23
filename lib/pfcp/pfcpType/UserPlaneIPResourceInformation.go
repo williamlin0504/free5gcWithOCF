@@ -2,8 +2,8 @@ package pfcpType
 
 import (
 	"fmt"
-	" free5gcWithOCF/lib/pfcp/logger"
-	" free5gcWithOCF/lib/util_3gpp"
+	" free5gc/lib/pfcp/logger"
+	" free5gcil_3gpp"
 	"math/bits"
 	"net"
 )

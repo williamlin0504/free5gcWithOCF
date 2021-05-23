@@ -2,11 +2,11 @@ package nas
 
 import (
 	"errors"
-	" free5gcWithOCF/lib/fsm"
-	" free5gcWithOCF/lib/nas"
-	" free5gcWithOCF/lib/openapi/models"
-	" free5gcWithOCF/src/amf/context"
-	" free5gcWithOCF/src/amf/gmm"
+	" free5gc/lib/fsm"
+	" free5gcs"
+	" free5gcenapi/models"
+	" free5gcf/context"
+	" free5gcf/gmm"
 )
 
 func Dispatch(ue *context.AmfUe, accessType models.AccessType, procedureCode int64, msg *nas.Message) error {

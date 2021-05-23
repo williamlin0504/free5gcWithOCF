@@ -3,16 +3,16 @@ package service
 import (
 	"bufio"
 	"fmt"
-	" free5gcWithOCF/lib/http2_util"
-	" free5gcWithOCF/lib/logger_util"
-	" free5gcWithOCF/lib/path_util"
-	" free5gcWithOCF/src/app"
-	" free5gcWithOCF/src/ausf/consumer"
-	ausf_context " free5gcWithOCF/src/ausf/context"
-	" free5gcWithOCF/src/ausf/factory"
-	" free5gcWithOCF/src/ausf/logger"
-	" free5gcWithOCF/src/ausf/ueauthentication"
-	" free5gcWithOCF/src/ausf/util"
+	" free5gc/lib/http2_util"
+	" free5gcgger_util"
+	" free5gcth_util"
+	" free5gcp"
+	" free5gcsf/consumer"
+	ausf_context " free5gcsf/context"
+	" free5gcsf/factory"
+	" free5gcsf/logger"
+	" free5gcsf/ueauthentication"
+	" free5gcsf/util"
 	"os/exec"
 	"sync"
 
@@ -61,7 +61,7 @@ func (*AUSF) Initialize(c *cli.Context) {
 	if config.ausfcfg != "" {
 		factory.InitConfigFactory(config.ausfcfg)
 	} else {
-		DefaultAusfConfigPath := path_util.Go free5gcPath(" free5gcWithOCF/config/ausfcfg.conf")
+		DefaultAusfConfigPath := path_util.Go free5gcPath(" free5gc/ausfcfg.conf")
 		factory.InitConfigFactory(DefaultAusfConfigPath)
 	}
 

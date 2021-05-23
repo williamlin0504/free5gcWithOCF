@@ -9,14 +9,14 @@ import (
 
 	"github.com/google/uuid"
 
-	" free5gcWithOCF/lib/openapi/Nnrf_NFDiscovery"
-	" free5gcWithOCF/lib/openapi/Nnrf_NFManagement"
-	" free5gcWithOCF/lib/openapi/Nudm_SubscriberDataManagement"
-	" free5gcWithOCF/lib/openapi/models"
-	" free5gcWithOCF/lib/pfcp/pfcpType"
-	" free5gcWithOCF/lib/pfcp/pfcpUdp"
-	" free5gcWithOCF/src/smf/factory"
-	" free5gcWithOCF/src/smf/logger"
+	" free5gc/lib/openapi/Nnrf_NFDiscovery"
+	" free5gcenapi/Nnrf_NFManagement"
+	" free5gcenapi/Nudm_SubscriberDataManagement"
+	" free5gcenapi/models"
+	" free5gccp/pfcpType"
+	" free5gccp/pfcpUdp"
+	" free5gcf/factory"
+	" free5gcf/logger"
 )
 
 func init() {

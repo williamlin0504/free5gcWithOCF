@@ -13,10 +13,10 @@ package main
 
 import (
 	"fmt"
-	" free5gcWithOCF/src/app"
-	" free5gcWithOCF/src/pcf/logger"
-	" free5gcWithOCF/src/pcf/service"
-	" free5gcWithOCF/src/pcf/version"
+	" free5gc/src/app"
+	" free5gcf/logger"
+	" free5gcf/service"
+	" free5gcf/version"
 	"os"
 
 	"github.com/sirupsen/logrus"

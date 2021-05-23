@@ -16,8 +16,8 @@ import (
 	"net/url"
 	"strings"
 
-	" free5gcWithOCF/lib/openapi"
-	. " free5gcWithOCF/lib/openapi/models"
+	" free5gc/lib/openapi"
+	. " free5gcenapi/models"
 )
 
 // Linger please

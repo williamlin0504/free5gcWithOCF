@@ -1,8 +1,8 @@
 package WebUI
 
 import (
-	" free5gcWithOCF/lib/logger_util"
-	" free5gcWithOCF/webconsole/backend/logger"
+	" free5gc/lib/logger_util"
+	" free5gcsole/backend/logger"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

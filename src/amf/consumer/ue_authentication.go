@@ -9,12 +9,12 @@ import (
 
 	"github.com/antihax/optional"
 
-	" free5gcWithOCF/lib/nas/nasType"
-	" free5gcWithOCF/lib/openapi"
-	" free5gcWithOCF/lib/openapi/Nausf_UEAuthentication"
-	" free5gcWithOCF/lib/openapi/models"
-	amf_context " free5gcWithOCF/src/amf/context"
-	" free5gcWithOCF/src/amf/logger"
+	" free5gc/lib/nas/nasType"
+	" free5gcenapi"
+	" free5gcenapi/Nausf_UEAuthentication"
+	" free5gcenapi/models"
+	amf_context " free5gcf/context"
+	" free5gcf/logger"
 )
 
 func SendUEAuthenticationAuthenticateRequest(ue *amf_context.AmfUe,

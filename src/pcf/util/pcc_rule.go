@@ -2,10 +2,10 @@ package util
 
 import (
 	"fmt"
-	" free5gcWithOCF/lib/openapi/models"
+	" free5gc/lib/openapi/models"
 	"time"
-	// 	" free5gcWithOCF/lib/path_util"
-	// 	" free5gcWithOCF/src/pcf/factory"
+	// 	" free5gcth_util"
+	// 	" free5gcf/factory"
 )
 
 var MediaTypeTo5qiMap = map[models.MediaType]int32{

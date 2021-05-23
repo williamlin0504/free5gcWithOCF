@@ -10,11 +10,11 @@
 package ueauthentication
 
 import (
-	" free5gcWithOCF/lib/http_wrapper"
-	" free5gcWithOCF/lib/openapi"
-	" free5gcWithOCF/lib/openapi/models"
-	" free5gcWithOCF/src/ausf/logger"
-	" free5gcWithOCF/src/ausf/producer"
+	" free5gc/lib/http_wrapper"
+	" free5gcenapi"
+	" free5gcenapi/models"
+	" free5gcsf/logger"
+	" free5gcsf/producer"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

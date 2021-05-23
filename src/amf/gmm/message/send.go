@@ -1,15 +1,15 @@
 package message
 
 import (
-	" free5gcWithOCF/lib/nas/nasMessage"
-	" free5gcWithOCF/lib/nas/nasType"
-	" free5gcWithOCF/lib/ngap/ngapType"
-	" free5gcWithOCF/lib/openapi/models"
-	" free5gcWithOCF/src/amf/context"
-	" free5gcWithOCF/src/amf/logger"
-	ngap_message " free5gcWithOCF/src/amf/ngap/message"
-	" free5gcWithOCF/src/amf/producer/callback"
-	" free5gcWithOCF/src/amf/util"
+	" free5gc/lib/nas/nasMessage"
+	" free5gcs/nasType"
+	" free5gcap/ngapType"
+	" free5gcenapi/models"
+	" free5gcf/context"
+	" free5gcf/logger"
+	ngap_message " free5gcf/ngap/message"
+	" free5gcf/producer/callback"
+	" free5gcf/util"
 	"time"
 )
 

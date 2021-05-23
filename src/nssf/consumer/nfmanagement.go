@@ -12,9 +12,9 @@ import (
 	"net/http"
 	"strings"
 
-	" free5gcWithOCF/lib/openapi/Nnrf_NFManagement"
-	" free5gcWithOCF/lib/openapi/models"
-	nssf_context " free5gcWithOCF/src/nssf/context"
+	" free5gc/lib/openapi/Nnrf_NFManagement"
+	" free5gcenapi/models"
+	nssf_context " free5gcsf/context"
 	"time"
 )
 

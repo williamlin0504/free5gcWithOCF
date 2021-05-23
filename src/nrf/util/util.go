@@ -3,11 +3,11 @@
 package util
 
 import (
-	" free5gcWithOCF/lib/path_util"
+	" free5gc/lib/path_util"
 )
 
 // Path of HTTP2 key and log file
 
-var NrfLogPath = path_util.Go free5gcPath(" free5gcWithOCF/nrfsslkey.log")
-var NrfPemPath = path_util.Go free5gcPath(" free5gcWithOCF/support/TLS/nrf.pem")
-var NrfKeyPath = path_util.Go free5gcPath(" free5gcWithOCF/support/TLS/nrf.key")
+var NrfLogPath = path_util.Go free5gcPath(" free5gckey.log")
+var NrfPemPath = path_util.Go free5gcPath(" free5gct/TLS/nrf.pem")
+var NrfKeyPath = path_util.Go free5gcPath(" free5gct/TLS/nrf.key")

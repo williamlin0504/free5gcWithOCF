@@ -10,23 +10,23 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 
-	" free5gcWithOCF/lib/http2_util"
-	" free5gcWithOCF/lib/logger_util"
-	" free5gcWithOCF/lib/openapi/models"
-	" free5gcWithOCF/lib/path_util"
-	" free5gcWithOCF/src/app"
-	" free5gcWithOCF/src/smf/callback"
-	" free5gcWithOCF/src/smf/consumer"
-	" free5gcWithOCF/src/smf/context"
-	" free5gcWithOCF/src/smf/eventexposure"
-	" free5gcWithOCF/src/smf/factory"
-	" free5gcWithOCF/src/smf/logger"
-	" free5gcWithOCF/src/smf/oam"
-	" free5gcWithOCF/src/smf/pdusession"
-	" free5gcWithOCF/src/smf/pfcp"
-	" free5gcWithOCF/src/smf/pfcp/message"
-	" free5gcWithOCF/src/smf/pfcp/udp"
-	" free5gcWithOCF/src/smf/util"
+	" free5gc/lib/http2_util"
+	" free5gcgger_util"
+	" free5gcenapi/models"
+	" free5gcth_util"
+	" free5gcp"
+	" free5gcf/callback"
+	" free5gcf/consumer"
+	" free5gcf/context"
+	" free5gcf/eventexposure"
+	" free5gcf/factory"
+	" free5gcf/logger"
+	" free5gcf/oam"
+	" free5gcf/pdusession"
+	" free5gcf/pfcp"
+	" free5gcf/pfcp/message"
+	" free5gcf/pfcp/udp"
+	" free5gcf/util"
 )
 
 type SMF struct{}
@@ -76,14 +76,14 @@ func (*SMF) Initialize(c *cli.Context) {
 	if config.smfcfg != "" {
 		factory.InitConfigFactory(config.smfcfg)
 	} else {
-		DefaultSmfConfigPath := path_util.Go free5gcPath(" free5gcWithOCF/config/smfcfg.conf")
+		DefaultSmfConfigPath := path_util.Go free5gcPath(" free5gc/smfcfg.conf")
 		factory.InitConfigFactory(DefaultSmfConfigPath)
 	}
 
 	if config.uerouting != "" {
 		factory.InitRoutingConfigFactory(config.uerouting)
 	} else {
-		DefaultUERoutingPath := path_util.Go free5gcPath(" free5gcWithOCF/config/uerouting.yaml")
+		DefaultUERoutingPath := path_util.Go free5gcPath(" free5gc/uerouting.yaml")
 		factory.InitRoutingConfigFactory(DefaultUERoutingPath)
 	}
 

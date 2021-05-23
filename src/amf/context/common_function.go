@@ -1,8 +1,8 @@
 package context
 
 import (
-	" free5gcWithOCF/lib/openapi/models"
-	" free5gcWithOCF/src/amf/logger"
+	" free5gc/lib/openapi/models"
+	" free5gcf/logger"
 	"reflect"
 
 	"github.com/mohae/deepcopy"

@@ -3,7 +3,7 @@ package milenage_test
 import (
 	"encoding/hex"
 	"fmt"
-	" free5gcWithOCF/lib/milenage"
+	" free5gc/lib/milenage"
 	// "math/rand"
 	"reflect"
 	"strings"

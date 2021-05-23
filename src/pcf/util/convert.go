@@ -2,7 +2,7 @@ package util
 
 import (
 	"fmt"
-	" free5gcWithOCF/lib/openapi/models"
+	" free5gc/lib/openapi/models"
 )
 
 var policyTriggerArray = []models.PolicyControlRequestTrigger{

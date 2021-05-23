@@ -1,7 +1,7 @@
 package version_test
 
 import (
-	" free5gcWithOCF/lib/flowdesc/version"
+	" free5gc/lib/flowdesc/version"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

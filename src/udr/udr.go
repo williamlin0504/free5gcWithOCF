@@ -1,10 +1,10 @@
 package main
 
 import (
-	" free5gcWithOCF/src/app"
-	" free5gcWithOCF/src/udr/logger"
-	udr_service " free5gcWithOCF/src/udr/service"
-	" free5gcWithOCF/src/udr/version"
+	" free5gc/src/app"
+	" free5gcr/logger"
+	udr_service " free5gcr/service"
+	" free5gcr/version"
 	"os"
 
 	"github.com/sirupsen/logrus"

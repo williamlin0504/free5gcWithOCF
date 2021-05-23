@@ -8,10 +8,10 @@ import (
 	"git.cs.nctu.edu.tw/calee/sctp"
 	"github.com/sirupsen/logrus"
 
-	" free5gcWithOCF/src/n3iwf/context"
-	" free5gcWithOCF/src/n3iwf/logger"
-	" free5gcWithOCF/src/n3iwf/ngap"
-	" free5gcWithOCF/src/n3iwf/ngap/message"
+	" free5gc/src/n3iwf/context"
+	" free5gciwf/logger"
+	" free5gciwf/ngap"
+	" free5gciwf/ngap/message"
 )
 
 var ngapLog *logrus.Entry

@@ -5,10 +5,10 @@ import (
 
 	"github.com/antihax/optional"
 
-	" free5gcWithOCF/lib/openapi"
-	" free5gcWithOCF/lib/openapi/Nudm_SubscriberDataManagement"
-	" free5gcWithOCF/lib/openapi/models"
-	amf_context " free5gcWithOCF/src/amf/context"
+	" free5gc/lib/openapi"
+	" free5gcenapi/Nudm_SubscriberDataManagement"
+	" free5gcenapi/models"
+	amf_context " free5gcf/context"
 )
 
 func PutUpuAck(ue *amf_context.AmfUe, upuMacIue string) error {

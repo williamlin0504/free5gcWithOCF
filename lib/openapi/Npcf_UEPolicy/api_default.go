@@ -12,7 +12,7 @@ package Npcf_UEPolicy
 import (
 	"context"
 	"fmt"
-	" free5gcWithOCF/lib/openapi/models"
+	" free5gc/lib/openapi/models"
 	"io/ioutil"
 	"net/http"
 	"net/url"

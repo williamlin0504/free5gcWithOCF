@@ -1,9 +1,9 @@
 package ngapConvert
 
 import (
-	" free5gcWithOCF/lib/aper"
-	" free5gcWithOCF/lib/ngap/ngapType"
-	" free5gcWithOCF/lib/openapi/models"
+	" free5gc/lib/aper"
+	" free5gcap/ngapType"
+	" free5gcenapi/models"
 )
 
 // TS 38.413 9.3.1.85

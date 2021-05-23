@@ -1,7 +1,7 @@
 package openapi_test
 
 import (
-	" free5gcWithOCF/lib/openapi"
+	" free5gc/lib/openapi"
 	"testing"
 	"time"
 

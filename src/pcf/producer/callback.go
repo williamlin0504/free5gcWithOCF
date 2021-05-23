@@ -1,9 +1,9 @@
 package producer
 
 import (
-	" free5gcWithOCF/lib/http_wrapper"
-	" free5gcWithOCF/lib/openapi/models"
-	" free5gcWithOCF/src/pcf/logger"
+	" free5gc/lib/http_wrapper"
+	" free5gcenapi/models"
+	" free5gcf/logger"
 	"net/http"
 )
 

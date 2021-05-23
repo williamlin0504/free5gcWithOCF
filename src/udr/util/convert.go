@@ -3,8 +3,8 @@ package util
 import (
 	"encoding/json"
 	"fmt"
-	" free5gcWithOCF/lib/openapi/models"
-	" free5gcWithOCF/src/udr/logger"
+	" free5gc/lib/openapi/models"
+	" free5gcr/logger"
 	"strconv"
 
 	"go.mongodb.org/mongo-driver/bson"

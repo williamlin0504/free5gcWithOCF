@@ -1,8 +1,8 @@
 package ngapConvert
 
 import (
-	" free5gcWithOCF/lib/ngap/ngapType"
-	" free5gcWithOCF/lib/openapi/models"
+	" free5gc/lib/ngap/ngapType"
+	" free5gcenapi/models"
 )
 
 func AllowedNssaiToNgap(allowedNssaiModels []models.AllowedSnssai) (allowedNssaiNgap ngapType.AllowedNSSAI) {

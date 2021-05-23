@@ -13,9 +13,9 @@ import (
 	gtpv1 "github.com/wmnsk/go-gtp/v1"
 	"golang.org/x/net/ipv4"
 
-	" free5gcWithOCF/lib/idgenerator"
-	" free5gcWithOCF/lib/ngap/ngapType"
-	" free5gcWithOCF/src/n3iwf/logger"
+	" free5gc/lib/idgenerator"
+	" free5gcap/ngapType"
+	" free5gciwf/logger"
 )
 
 var contextLog *logrus.Entry

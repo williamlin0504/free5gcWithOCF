@@ -10,8 +10,8 @@
 package _Namf_Location
 
 import (
-	" free5gcWithOCF/lib/openapi"
-	" free5gcWithOCF/lib/openapi/models"
+	" free5gc/lib/openapi"
+	" free5gcenapi/models"
 
 	"context"
 	"fmt"

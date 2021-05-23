@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
-	" free5gcWithOCF/lib/nas/logger"
-	" free5gcWithOCF/lib/nas/nasMessage"
+	" free5gc/lib/nas/logger"
+	" free5gcs/nasMessage"
 	"net"
 	"strconv"
 )

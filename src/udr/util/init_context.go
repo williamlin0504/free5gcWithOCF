@@ -6,10 +6,10 @@ import (
 
 	"github.com/google/uuid"
 
-	" free5gcWithOCF/lib/openapi/models"
-	udr_context " free5gcWithOCF/src/udr/context"
-	" free5gcWithOCF/src/udr/factory"
-	" free5gcWithOCF/src/udr/logger"
+	" free5gc/lib/openapi/models"
+	udr_context " free5gcr/context"
+	" free5gcr/factory"
+	" free5gcr/logger"
 )
 
 func InitUdrContext(context *udr_context.UDRContext) {

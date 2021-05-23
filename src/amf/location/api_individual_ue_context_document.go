@@ -10,11 +10,11 @@
 package location
 
 import (
-	" free5gcWithOCF/lib/http_wrapper"
-	" free5gcWithOCF/lib/openapi"
-	" free5gcWithOCF/lib/openapi/models"
-	" free5gcWithOCF/src/amf/logger"
-	" free5gcWithOCF/src/amf/producer"
+	" free5gc/lib/http_wrapper"
+	" free5gcenapi"
+	" free5gcenapi/models"
+	" free5gcf/logger"
+	" free5gcf/producer"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

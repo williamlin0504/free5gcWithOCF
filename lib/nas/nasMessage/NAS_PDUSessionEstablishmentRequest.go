@@ -3,8 +3,8 @@ package nasMessage
 import (
 	"bytes"
 	"encoding/binary"
-	" free5gcWithOCF/lib/nas/logger"
-	" free5gcWithOCF/lib/nas/nasType"
+	" free5gc/lib/nas/logger"
+	" free5gcs/nasType"
 )
 
 type PDUSessionEstablishmentRequest struct {

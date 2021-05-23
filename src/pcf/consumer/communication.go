@@ -3,11 +3,11 @@ package consumer
 import (
 	"context"
 	"fmt"
-	" free5gcWithOCF/lib/openapi"
-	" free5gcWithOCF/lib/openapi/models"
-	pcf_context " free5gcWithOCF/src/pcf/context"
-	" free5gcWithOCF/src/pcf/logger"
-	" free5gcWithOCF/src/pcf/util"
+	" free5gc/lib/openapi"
+	" free5gcenapi/models"
+	pcf_context " free5gcf/context"
+	" free5gcf/logger"
+	" free5gcf/util"
 	"strings"
 )
 

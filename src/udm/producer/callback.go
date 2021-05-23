@@ -1,10 +1,10 @@
 package producer
 
 import (
-	" free5gcWithOCF/lib/http_wrapper"
-	" free5gcWithOCF/lib/openapi/models"
-	" free5gcWithOCF/src/udm/logger"
-	" free5gcWithOCF/src/udm/producer/callback"
+	" free5gc/lib/http_wrapper"
+	" free5gcenapi/models"
+	" free5gcm/logger"
+	" free5gcm/producer/callback"
 	"net/http"
 )
 

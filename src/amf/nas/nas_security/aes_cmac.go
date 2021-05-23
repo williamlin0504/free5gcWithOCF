@@ -4,9 +4,9 @@ import (
 	// "encoding/hex"
 	"encoding/hex"
 	"fmt"
-	" free5gcWithOCF/lib/aes"
-	" free5gcWithOCF/lib/nas/security"
-	" free5gcWithOCF/src/amf/logger"
+	" free5gc/lib/aes"
+	" free5gcs/security"
+	" free5gcf/logger"
 )
 
 var AES_BLOCK_SIZE int32 = 16

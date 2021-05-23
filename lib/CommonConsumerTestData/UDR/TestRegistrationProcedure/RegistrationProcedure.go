@@ -1,11 +1,11 @@
 package TestRegistrationProcedure
 
 import (
-	" free5gcWithOCF/lib/openapi/models"
+	" free5gc/lib/openapi/models"
 )
 
 const (
-	FREE5GC_CASE = " free5gcWithOCF"
+	FREE5GC_CASE = " free5gc
 )
 
 var TestAmDataTable = make(map[string]models.AccessAndMobilitySubscriptionData)
@@ -68,7 +68,7 @@ func init() {
 
 	TestAmPolicyDataTable[FREE5GC_CASE] = models.AmPolicyData{
 		SubscCats: []string{
-			" free5gcWithOCF",
+			" free5gc
 		},
 	}
 

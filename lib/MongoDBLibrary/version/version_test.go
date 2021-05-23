@@ -1,7 +1,7 @@
 package version_test
 
 import (
-	" free5gcWithOCF/lib/MongoDBLibrary/version"
+	" free5gc/lib/MongoDBLibrary/version"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

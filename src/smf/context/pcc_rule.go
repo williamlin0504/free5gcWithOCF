@@ -1,6 +1,6 @@
 package context
 
-import " free5gcWithOCF/lib/openapi/models"
+import " free5gc/lib/openapi/models"
 
 // PCCRule - Policy and Charging Rule
 type PCCRule struct {

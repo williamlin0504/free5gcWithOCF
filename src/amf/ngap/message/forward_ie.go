@@ -2,11 +2,11 @@ package message
 
 import (
 	"encoding/hex"
-	" free5gcWithOCF/lib/ngap/ngapConvert"
-	" free5gcWithOCF/lib/ngap/ngapType"
-	" free5gcWithOCF/lib/openapi/models"
-	" free5gcWithOCF/src/amf/context"
-	" free5gcWithOCF/src/amf/logger"
+	" free5gc/lib/ngap/ngapConvert"
+	" free5gcap/ngapType"
+	" free5gcenapi/models"
+	" free5gcf/context"
+	" free5gcf/logger"
 )
 
 func AppendPDUSessionResourceSetupListSUReq(list *ngapType.PDUSessionResourceSetupListSUReq,

@@ -3,9 +3,9 @@ package consumer
 import (
 	"context"
 	"fmt"
-	" free5gcWithOCF/lib/openapi/Nnrf_NFManagement"
-	" free5gcWithOCF/lib/openapi/models"
-	ccf_context " free5gcWithOCF/src/ccf/context"
+	" free5gc/lib/openapi/Nnrf_NFManagement"
+	" free5gc/lib/openapi/models"
+	ccf_context " free5gc/src/ccf/context"
 	"net/http"
 	"strings"
 	"time"
@@ -23,7 +23,7 @@ func BuildNFInstance(context *ccf_context.CCFContext) (profile models.NfProfile,
 	profile.NfServices = &service
 	profile.CcfInfo = &models.CcfInfo{
 		DnnList: []string{
-			" free5gcWithOCF",
+			" free5gc",
 			"internet",
 		},
 		// SupiRanges: &[]models.SupiRange{

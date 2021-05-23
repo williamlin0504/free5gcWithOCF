@@ -11,8 +11,8 @@ package Namf_Communication
 
 import (
 	"context"
-	" free5gcWithOCF/lib/openapi"
-	" free5gcWithOCF/lib/openapi/models"
+	" free5gc/lib/openapi"
+	" free5gcenapi/models"
 	"io/ioutil"
 	"net/http"
 	"net/url"

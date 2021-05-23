@@ -6,12 +6,12 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	" free5gcWithOCF/lib/nas"
-	" free5gcWithOCF/lib/nas/logger"
-	" free5gcWithOCF/lib/nas/nasConvert"
-	" free5gcWithOCF/lib/nas/nasMessage"
-	" free5gcWithOCF/lib/nas/nasType"
-	" free5gcWithOCF/lib/openapi/models"
+	" free5gc/lib/nas"
+	" free5gcs/logger"
+	" free5gcs/nasConvert"
+	" free5gcs/nasMessage"
+	" free5gcs/nasType"
+	" free5gcenapi/models"
 )
 
 const (

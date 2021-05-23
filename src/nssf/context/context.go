@@ -15,9 +15,9 @@ import (
 
 	"github.com/google/uuid"
 
-	" free5gcWithOCF/lib/openapi/models"
-	" free5gcWithOCF/src/nssf/factory"
-	" free5gcWithOCF/src/nssf/logger"
+	" free5gc/lib/openapi/models"
+	" free5gcsf/factory"
+	" free5gcsf/logger"
 )
 
 var nssfContext = NSSFContext{}

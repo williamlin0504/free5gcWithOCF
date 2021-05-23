@@ -1,8 +1,8 @@
 package test
 
 import (
-	" free5gcWithOCF/lib/nas"
-	" free5gcWithOCF/lib/ngap/ngapType"
+	" free5gc/lib/nas"
+	" free5gcap/ngapType"
 )
 
 func GetNasPdu(ue *RanUeContext, msg *ngapType.DownlinkNASTransport) (m *nas.Message) {

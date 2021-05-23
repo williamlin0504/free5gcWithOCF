@@ -4,8 +4,8 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	" free5gcWithOCF/lib/nas/logger"
-	" free5gcWithOCF/lib/openapi/models"
+	" free5gc/lib/nas/logger"
+	" free5gcenapi/models"
 )
 
 //  subclause 9.11.3.53A in 3GPP TS 24.501.

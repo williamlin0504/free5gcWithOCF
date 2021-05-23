@@ -6,18 +6,18 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	" free5gcWithOCF/lib/aper"
-	" free5gcWithOCF/lib/nas/nasMessage"
-	libngap " free5gcWithOCF/lib/ngap"
-	" free5gcWithOCF/lib/ngap/ngapConvert"
-	" free5gcWithOCF/lib/ngap/ngapType"
-	" free5gcWithOCF/lib/openapi/models"
-	" free5gcWithOCF/src/amf/consumer"
-	" free5gcWithOCF/src/amf/context"
-	gmm_message " free5gcWithOCF/src/amf/gmm/message"
-	" free5gcWithOCF/src/amf/logger"
-	" free5gcWithOCF/src/amf/nas"
-	ngap_message " free5gcWithOCF/src/amf/ngap/message"
+	" free5gc/lib/aper"
+	" free5gcs/nasMessage"
+	libngap " free5gcap"
+	" free5gcap/ngapConvert"
+	" free5gcap/ngapType"
+	" free5gcenapi/models"
+	" free5gcf/consumer"
+	" free5gcf/context"
+	gmm_message " free5gcf/gmm/message"
+	" free5gcf/logger"
+	" free5gcf/nas"
+	ngap_message " free5gcf/ngap/message"
 )
 
 func HandleNGSetupRequest(ran *context.AmfRan, message *ngapType.NGAPPDU) {

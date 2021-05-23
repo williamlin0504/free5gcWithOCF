@@ -7,15 +7,15 @@ import (
 
 	"github.com/google/uuid"
 
-	" free5gcWithOCF/lib/openapi/models"
-	" free5gcWithOCF/lib/path_util"
-	" free5gcWithOCF/src/ausf/factory"
-	" free5gcWithOCF/src/ausf/logger"
+	" free5gc/lib/openapi/models"
+	" free5gcth_util"
+	" free5gcsf/factory"
+	" free5gcsf/logger"
 )
 
 func TestInit() {
 	// load config
-	DefaultAusfConfigPath := path_util.Go free5gcPath(" free5gcWithOCF/config/ausfcfg.conf")
+	DefaultAusfConfigPath := path_util.Go free5gcPath(" free5gc/ausfcfg.conf")
 	factory.InitConfigFactory(DefaultAusfConfigPath)
 	Init()
 }

@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	" free5gcWithOCF/src/app"
-	" free5gcWithOCF/src/udm/logger"
-	" free5gcWithOCF/src/udm/service"
-	" free5gcWithOCF/src/udm/version"
+	" free5gc/src/app"
+	" free5gcm/logger"
+	" free5gcm/service"
+	" free5gcm/version"
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 	"os"

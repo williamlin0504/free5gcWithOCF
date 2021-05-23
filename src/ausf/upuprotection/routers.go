@@ -10,8 +10,8 @@
 package upuprotection
 
 import (
-	" free5gcWithOCF/lib/logger_util"
-	" free5gcWithOCF/src/ausf/logger"
+	" free5gc/lib/logger_util"
+	" free5gcsf/logger"
 	"net/http"
 	"strings"
 

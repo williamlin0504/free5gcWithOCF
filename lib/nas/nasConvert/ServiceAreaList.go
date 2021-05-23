@@ -2,9 +2,9 @@ package nasConvert
 
 import (
 	"encoding/hex"
-	" free5gcWithOCF/lib/nas/logger"
-	" free5gcWithOCF/lib/nas/nasMessage"
-	" free5gcWithOCF/lib/openapi/models"
+	" free5gc/lib/nas/logger"
+	" free5gcs/nasMessage"
+	" free5gcenapi/models"
 )
 
 // TS 24.501 9.11.3.49

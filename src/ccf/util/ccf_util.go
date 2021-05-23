@@ -4,15 +4,15 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	" free5gcWithOCF/lib/openapi/Namf_Communication"
-	" free5gcWithOCF/lib/openapi/Nccf_AMPolicy"
-	" free5gcWithOCF/lib/openapi/Nccf_PolicyAuthorization"
-	" free5gcWithOCF/lib/openapi/Nccf_SMPolicyControl"
-	" free5gcWithOCF/lib/openapi/Nudr_DataRepository"
-	" free5gcWithOCF/lib/openapi/models"
-	" free5gcWithOCF/lib/path_util"
-	" free5gcWithOCF/src/ccf/context"
-	" free5gcWithOCF/src/ccf/logger"
+	" free5gc/lib/openapi/Namf_Communication"
+	" free5gcenapi/Nccf_AMPolicy"
+	" free5gcenapi/Nccf_PolicyAuthorization"
+	" free5gcenapi/Nccf_SMPolicyControl"
+	" free5gcenapi/Nudr_DataRepository"
+	" free5gcenapi/models"
+	" free5gcth_util"
+	" free5gcf/context"
+	" free5gcf/logger"
 	"net/http"
 	"reflect"
 	"time"
@@ -22,10 +22,10 @@ const TimeFormat = time.RFC3339
 
 // Path of HTTP2 key and log file
 var (
-	CCF_LOG_PATH                                 = path_util.Go free5gcPath(" free5gcWithOCF/ccfsslkey.log")
-	CCF_PEM_PATH                                 = path_util.Go free5gcPath(" free5gcWithOCF/support/TLS/ccf.pem")
-	CCF_KEY_PATH                                 = path_util.Go free5gcPath(" free5gcWithOCF/support/TLS/ccf.key")
-	CCF_CONFIG_PATH                              = path_util.Go free5gcPath(" free5gcWithOCF/config/ccfcfg.conf")
+	CCF_LOG_PATH                                 = path_util.Go free5gcPath(" free5gckey.log")
+	CCF_PEM_PATH                                 = path_util.Go free5gcPath(" free5gct/TLS/ccf.pem")
+	CCF_KEY_PATH                                 = path_util.Go free5gcPath(" free5gct/TLS/ccf.key")
+	CCF_CONFIG_PATH                              = path_util.Go free5gcPath(" free5gc/ccfcfg.conf")
 	CCF_BASIC_PATH                               = "https://localhost:29507"
 	ERROR_REQUEST_PARAMETERS                     = "ERROR_REQUEST_PARAMETERS"
 	USER_UNKNOWN                                 = "USER_UNKNOWN"

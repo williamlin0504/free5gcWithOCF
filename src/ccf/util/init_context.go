@@ -5,11 +5,11 @@ import (
 
 	"github.com/google/uuid"
 
-	" free5gcWithOCF/lib/openapi"
-	" free5gcWithOCF/lib/openapi/models"
-	" free5gcWithOCF/src/ccf/context"
-	" free5gcWithOCF/src/ccf/factory"
-	" free5gcWithOCF/src/ccf/logger"
+	" free5gc/lib/openapi"
+	" free5gcenapi/models"
+	" free5gcf/context"
+	" free5gcf/factory"
+	" free5gcf/logger"
 )
 
 // Init CCF Context from config flie

@@ -15,11 +15,11 @@ import (
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
 
-	" free5gcWithOCF/lib/UeauCommon"
-	" free5gcWithOCF/lib/http_wrapper"
-	" free5gcWithOCF/lib/openapi/models"
-	ausf_context " free5gcWithOCF/src/ausf/context"
-	" free5gcWithOCF/src/ausf/logger"
+	" free5gc/lib/UeauCommon"
+	" free5gctp_wrapper"
+	" free5gcenapi/models"
+	ausf_context " free5gcsf/context"
+	" free5gcsf/logger"
 )
 
 func HandleEapAuthComfirmRequest(request *http_wrapper.Request) *http_wrapper.Response {

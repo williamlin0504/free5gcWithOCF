@@ -11,24 +11,24 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 
-	" free5gcWithOCF/lib/http2_util"
-	" free5gcWithOCF/lib/logger_util"
-	" free5gcWithOCF/lib/openapi/Nnrf_NFDiscovery"
-	" free5gcWithOCF/lib/openapi/models"
-	" free5gcWithOCF/lib/path_util"
-	" free5gcWithOCF/src/app"
-	" free5gcWithOCF/src/pcf/ampolicy"
-	" free5gcWithOCF/src/pcf/bdtpolicy"
-	" free5gcWithOCF/src/pcf/consumer"
-	" free5gcWithOCF/src/pcf/context"
-	" free5gcWithOCF/src/pcf/factory"
-	" free5gcWithOCF/src/pcf/httpcallback"
-	" free5gcWithOCF/src/pcf/logger"
-	" free5gcWithOCF/src/pcf/oam"
-	" free5gcWithOCF/src/pcf/policyauthorization"
-	" free5gcWithOCF/src/pcf/smpolicy"
-	" free5gcWithOCF/src/pcf/uepolicy"
-	" free5gcWithOCF/src/pcf/util"
+	" free5gc/lib/http2_util"
+	" free5gcgger_util"
+	" free5gcenapi/Nnrf_NFDiscovery"
+	" free5gcenapi/models"
+	" free5gcth_util"
+	" free5gcp"
+	" free5gcf/ampolicy"
+	" free5gcf/bdtpolicy"
+	" free5gcf/consumer"
+	" free5gcf/context"
+	" free5gcf/factory"
+	" free5gcf/httpcallback"
+	" free5gcf/logger"
+	" free5gcf/oam"
+	" free5gcf/policyauthorization"
+	" free5gcf/smpolicy"
+	" free5gcf/uepolicy"
+	" free5gcf/util"
 )
 
 type PCF struct{}
@@ -71,7 +71,7 @@ func (*PCF) Initialize(c *cli.Context) {
 	if config.pcfcfg != "" {
 		factory.InitConfigFactory(config.pcfcfg)
 	} else {
-		DefaultPcfConfigPath := path_util.Go free5gcPath(" free5gcWithOCF/config/pcfcfg.conf")
+		DefaultPcfConfigPath := path_util.Go free5gcPath(" free5gc/pcfcfg.conf")
 		factory.InitConfigFactory(DefaultPcfConfigPath)
 	}
 

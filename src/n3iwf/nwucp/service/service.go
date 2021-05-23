@@ -7,9 +7,9 @@ import (
 	"net"
 	"strings"
 
-	" free5gcWithOCF/src/n3iwf/context"
-	" free5gcWithOCF/src/n3iwf/logger"
-	" free5gcWithOCF/src/n3iwf/ngap/message"
+	" free5gc/src/n3iwf/context"
+	" free5gciwf/logger"
+	" free5gciwf/ngap/message"
 
 	"github.com/sirupsen/logrus"
 )

@@ -16,7 +16,7 @@ func TestMarshalUserPlaneIPResourceInformation(t *testing.T) {
 		TeidRange:       21,
 		Ipv4Address:     net.ParseIP("12.34.56.78").To4(),
 		Ipv6Address:     net.ParseIP("2001:db8::68").To16(),
-		NetworkInstance: []byte(" free5gcWithOCF.local"),
+		NetworkInstance: []byte(" free5gc.local"),
 		SourceInterface: 12,
 	}
 	buf, err := testData.MarshalBinary()
@@ -42,7 +42,7 @@ func TestUnmarshalUserPlaneIPResourceInformation(t *testing.T) {
 		TeidRange:       21,
 		Ipv4Address:     net.ParseIP("12.34.56.78").To4(),
 		Ipv6Address:     net.ParseIP("2001:db8::68").To16(),
-		NetworkInstance: []byte(" free5gcWithOCF.local"),
+		NetworkInstance: []byte(" free5gc),
 		SourceInterface: 12,
 	}
 

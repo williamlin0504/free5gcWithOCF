@@ -3,10 +3,10 @@
 package util
 
 import (
-	" free5gcWithOCF/lib/path_util"
+	" free5gc/lib/path_util"
 )
 
-var UdrLogPath = path_util.Go free5gcPath(" free5gcWithOCF/udrsslkey.log")
-var UdrPemPath = path_util.Go free5gcPath(" free5gcWithOCF/support/TLS/udr.pem")
-var UdrKeyPath = path_util.Go free5gcPath(" free5gcWithOCF/support/TLS/udr.key")
-var DefaultUdrConfigPath = path_util.Go free5gcPath(" free5gcWithOCF/config/udrcfg.conf")
+var UdrLogPath = path_util.Go free5gcPath(" free5gckey.log")
+var UdrPemPath = path_util.Go free5gcPath(" free5gct/TLS/udr.pem")
+var UdrKeyPath = path_util.Go free5gcPath(" free5gct/TLS/udr.key")
+var DefaultUdrConfigPath = path_util.Go free5gcPath(" free5gc/udrcfg.conf")

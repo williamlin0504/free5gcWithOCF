@@ -1,10 +1,10 @@
 package management
 
 import (
-	" free5gcWithOCF/lib/MongoDBLibrary"
-	" free5gcWithOCF/lib/TimeDecode"
-	" free5gcWithOCF/lib/openapi/models"
-	" free5gcWithOCF/src/nrf/logger"
+	" free5gc/lib/MongoDBLibrary"
+	" free5gcmeDecode"
+	" free5gcenapi/models"
+	" free5gcf/logger"
 	"net"
 	"reflect"
 	"strconv"

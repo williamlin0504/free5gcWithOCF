@@ -9,10 +9,10 @@ import (
 	"fmt"
 	"reflect"
 
-	" free5gcWithOCF/lib/openapi/models"
-	" free5gcWithOCF/lib/path_util"
-	" free5gcWithOCF/src/nssf/factory"
-	" free5gcWithOCF/src/nssf/logger"
+	" free5gc/lib/openapi/models"
+	" free5gcth_util"
+	" free5gcsf/factory"
+	" free5gcsf/logger"
 )
 
 // Title in Problem Details for NSSF HTTP APIs
@@ -25,13 +25,13 @@ const (
 
 // Path of HTTP2 key and log file
 var (
-	NSSF_LOG_PATH = path_util.Go free5gcPath(" free5gcWithOCF/nssfsslkey.log")
-	NSSF_PEM_PATH = path_util.Go free5gcPath(" free5gcWithOCF/support/TLS/nssf.pem")
-	NSSF_KEY_PATH = path_util.Go free5gcPath(" free5gcWithOCF/support/TLS/nssf.key")
+	NSSF_LOG_PATH = path_util.Go free5gcPath(" free5gclkey.log")
+	NSSF_PEM_PATH = path_util.Go free5gcPath(" free5gct/TLS/nssf.pem")
+	NSSF_KEY_PATH = path_util.Go free5gcPath(" free5gct/TLS/nssf.key")
 )
 
 // Default configuration file
-var DEFAULT_CONFIG string = " free5gcWithOCF/config/nssfcfg.conf"
+var DEFAULT_CONFIG string = " free5gc/nssfcfg.conf"
 
 // Check if a slice contains an element
 func Contain(target interface{}, slice interface{}) bool {

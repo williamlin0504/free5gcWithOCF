@@ -10,8 +10,8 @@
 package mt
 
 import (
-	" free5gcWithOCF/lib/logger_util"
-	" free5gcWithOCF/src/amf/logger"
+	" free5gc/lib/logger_util"
+	" free5gcf/logger"
 	"net/http"
 	"strings"
 

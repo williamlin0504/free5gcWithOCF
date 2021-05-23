@@ -10,10 +10,10 @@ package main
 
 import (
 	"fmt"
-	" free5gcWithOCF/src/app"
-	" free5gcWithOCF/src/ausf/logger"
-	" free5gcWithOCF/src/ausf/service"
-	" free5gcWithOCF/src/ausf/version"
+	" free5gc/src/app"
+	" free5gcsf/logger"
+	" free5gcsf/service"
+	" free5gcsf/version"
 	"os"
 
 	"github.com/sirupsen/logrus"

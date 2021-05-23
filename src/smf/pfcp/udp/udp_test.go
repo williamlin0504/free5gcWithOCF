@@ -5,12 +5,12 @@ import (
 	"testing"
 	"time"
 
-	" free5gcWithOCF/lib/pfcp"
-	" free5gcWithOCF/lib/pfcp/pfcpType"
-	" free5gcWithOCF/lib/pfcp/pfcpUdp"
-	" free5gcWithOCF/src/smf/context"
-	smf_pfcp " free5gcWithOCF/src/smf/pfcp"
-	" free5gcWithOCF/src/smf/pfcp/udp"
+	" free5gc/lib/pfcp"
+	" free5gccp/pfcpType"
+	" free5gccp/pfcpUdp"
+	" free5gcf/context"
+	smf_pfcp " free5gcf/pfcp"
+	" free5gcf/pfcp/udp"
 
 	"github.com/stretchr/testify/require"
 )

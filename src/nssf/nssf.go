@@ -11,15 +11,15 @@ package main
 
 import (
 	"fmt"
-	" free5gcWithOCF/src/app"
+	" free5gc/src/app"
 	"os"
 
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 
-	" free5gcWithOCF/src/nssf/logger"
-	" free5gcWithOCF/src/nssf/service"
-	" free5gcWithOCF/src/nssf/version"
+	" free5gcsf/logger"
+	" free5gcsf/service"
+	" free5gcsf/version"
 )
 
 var NSSF = &service.NSSF{}

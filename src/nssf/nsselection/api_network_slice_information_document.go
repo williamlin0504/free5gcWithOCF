@@ -14,11 +14,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	" free5gcWithOCF/lib/http_wrapper"
-	" free5gcWithOCF/lib/openapi"
-	" free5gcWithOCF/lib/openapi/models"
-	" free5gcWithOCF/src/nssf/logger"
-	" free5gcWithOCF/src/nssf/producer"
+	" free5gc/lib/http_wrapper"
+	" free5gcenapi"
+	" free5gcenapi/models"
+	" free5gcsf/logger"
+	" free5gcsf/producer"
 )
 
 func HTTPNetworkSliceInformationDocument(c *gin.Context) {

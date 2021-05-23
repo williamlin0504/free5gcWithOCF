@@ -3,14 +3,14 @@ package context
 import (
 	"encoding/json"
 	"fmt"
-	" free5gcWithOCF/lib/MongoDBLibrary"
+	" free5gc/lib/MongoDBLibrary"
 
-	// " free5gcWithOCF/lib/TimeDecode"
-	// " free5gcWithOCF/lib/http_wrapper"
-	" free5gcWithOCF/lib/openapi"
-	" free5gcWithOCF/lib/openapi/models"
-	" free5gcWithOCF/src/nrf/factory"
-	" free5gcWithOCF/src/nrf/logger"
+	// " free5gcmeDecode"
+	// " free5gctp_wrapper"
+	" free5gcenapi"
+	" free5gcenapi/models"
+	" free5gcf/factory"
+	" free5gcf/logger"
 	"math/rand"
 
 	// "net"

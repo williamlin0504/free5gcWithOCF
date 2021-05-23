@@ -3,12 +3,12 @@ package consumer
 import (
 	"context"
 	"fmt"
-	" free5gcWithOCF/lib/openapi"
-	" free5gcWithOCF/lib/openapi/Nnrf_NFDiscovery"
-	" free5gcWithOCF/lib/openapi/Nudm_SubscriberDataManagement"
-	" free5gcWithOCF/lib/openapi/models"
-	smf_context " free5gcWithOCF/src/smf/context"
-	" free5gcWithOCF/src/smf/logger"
+	" free5gc/lib/openapi"
+	" free5gcenapi/Nnrf_NFDiscovery"
+	" free5gcenapi/Nudm_SubscriberDataManagement"
+	" free5gcenapi/models"
+	smf_context " free5gcf/context"
+	" free5gcf/logger"
 	"net/http"
 
 	"strings"

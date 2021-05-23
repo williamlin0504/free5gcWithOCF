@@ -4,7 +4,7 @@
 
 package factory
 
-import " free5gcWithOCF/lib/openapi/models"
+import " free5gc/lib/openapi/models"
 
 type Config struct {
 	Info *Info `yaml:"info"`
