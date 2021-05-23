@@ -1,14 +1,14 @@
 <p align="center">
-<a href="https://free5gcWithOCF.org"><img width="40%" src="https://forum.free5gcWithOCF.org/uploads/default/original/1X/324695bfc6481bd556c11018f2834086cf5ec645.png" alt="free5GC"/></a>
+<a href="https://free5gc.org"><img width="40%" src="https://forum.free5gc.org/uploads/default/original/1X/324695bfc6481bd556c11018f2834086cf5ec645.png" alt="free5GC"/></a>
 </p>
 
 <p align="center">
-<a href="https://github.com/free5gcWithOCF/free5gcWithOCF/releases"><img src="https://img.shields.io/github/v/release/free5gcWithOCF/free5gcWithOCF?color=orange" alt="Release"/></a>
-<a href="https://github.com/free5gcWithOCF/free5gcWithOCF/blob/master/LICENSE.txt"><img src="https://img.shields.io/github/license/free5gcWithOCF/free5gcWithOCF?color=blue" alt="License"/></a>
-<a href="https://forum.free5gcWithOCF.org"><img src="https://img.shields.io/discourse/topics?server=https%3A%2F%2Fforum.free5gcWithOCF.org&color=lightblue" alt="Forum"/></a>
-<a href="https://www.codefactor.io/repository/github/free5gcWithOCF/free5gcWithOCF"><img src="https://www.codefactor.io/repository/github/free5gcWithOCF/free5gcWithOCF/badge" alt="CodeFactor" /></a>
-<a href="https://goreportcard.com/report/github.com/free5gcWithOCF/free5gcWithOCF"><img src="https://goreportcard.com/badge/github.com/free5gcWithOCF/free5gcWithOCF" alt="Go Report Card" /></a>
-<a href="https://github.com/free5gcWithOCF/free5gcWithOCF/pulls"><img src="https://img.shields.io/badge/PRs-Welcome-brightgreen" alt="PRs Welcome"/></a>
+<a href="https://github.com/free5gc/free5gc/releases"><img src="https://img.shields.io/github/v/release/free5gc/free5gc?color=orange" alt="Release"/></a>
+<a href="https://github.com/free5gc/free5gc/blob/master/LICENSE.txt"><img src="https://img.shields.io/github/license/free5gc/free5gc?color=blue" alt="License"/></a>
+<a href="https://forum.free5gc.org"><img src="https://img.shields.io/discourse/topics?server=https%3A%2F%2Fforum.free5gc.org&color=lightblue" alt="Forum"/></a>
+<a href="https://www.codefactor.io/repository/github/free5gc/free5gc"><img src="https://www.codefactor.io/repository/github/free5gc/free5gc/badge" alt="CodeFactor" /></a>
+<a href="https://goreportcard.com/report/github.com/free5gc/free5gc"><img src="https://goreportcard.com/badge/github.com/free5gc/free5gc" alt="Go Report Card" /></a>
+<a href="https://github.com/free5gc/free5gc/pulls"><img src="https://img.shields.io/badge/PRs-Welcome-brightgreen" alt="PRs Welcome"/></a>
 </p>
 
 
@@ -39,7 +39,7 @@
 There are no gNB and UE for standalone 5GC available in the market yet.
 
 ## Questions
-For questions and support please use the [official forum](https://forum.free5gcWithOCF.org). The issue list of this repo is exclusively
+For questions and support please use the [official forum](https://forum.free5gc.org). The issue list of this repo is exclusively
 for bug reports and feature requests.
 
 ## Recommended Environment
@@ -127,13 +127,13 @@ You can use `go version` to check your current Go version.
 1. Clone free5GC project
     ```bash
     cd ~
-    git clone --recursive -b v3.0.4 -j `nproc` https://github.com/free5gcWithOCF/free5gcWithOCF.git
-    cd free5gcWithOCF
+    git clone --recursive -b v3.0.4 -j `nproc` https://github.com/free5gc/free5gc.git
+    cd free5gc
     ```
 
     (Optional) If you want to use the nightly version, runs:
     ```bash
-    cd ~/free5gcWithOCF
+    cd ~/free5gc
     git checkout master
     git submodule sync
     git submodule update --init --jobs `nproc`
@@ -143,19 +143,19 @@ You can use `go version` to check your current Go version.
 
 2. Run the script to install dependent packages
     ```bash
-    cd ~/free5gcWithOCF
+    cd ~/free5gc
     go mod download
     ```
-    **In step 2, the folder name should remain free5gcWithOCF. Please do not modify it or the compilation would fail.**
+    **In step 2, the folder name should remain free5gc. Please do not modify it or the compilation would fail.**
 
-3. Compile network function services in `free5gcWithOCF` individually, e.g. AMF (redo this step for each NF), or
+3. Compile network function services in `free5gc` individually, e.g. AMF (redo this step for each NF), or
     ```bash
-    cd ~/free5gcWithOCF
+    cd ~/free5gc
     make amf
     ```
     **To build all network functions in one command**
     ```bash
-    cd ~/free5gcWithOCF
+    cd ~/free5gc
     make all
     ```
 
@@ -178,26 +178,26 @@ You can use `go version` to check your current Go version.
 
 2. Build from sources (skip this step if you run make all previously) via make, or
     ```bash
-    cd ~/free5gcWithOCF
+    cd ~/free5gc
     make upf
     ```
     build manually
     ```bash
-    cd ~/free5gcWithOCF/src/upf
+    cd ~/free5gc/src/upf
     mkdir build
     cd build
     cmake ..
     make -j`nproc`
     ```
 
-**Note: UPF's config is located at** `free5gcWithOCF/src/upf/build/config/upfcfg.yaml`
+**Note: UPF's config is located at** `free5gc/src/upf/build/config/upfcfg.yaml`
 
 ## Run
 
 ### A. Run Core Network
 Option 1. Run network function service individually, e.g. AMF (redo this for each NF), or
 ```bash
-cd ~/free5gcWithOCF
+cd ~/free5gc
 ./bin/amf
 ```
 
@@ -227,7 +227,7 @@ sudo ip link set dev ipsec0 up
 
 Run N3IWF (root privilege is required):
 ```bash
-cd ~/free5gcWithOCF/
+cd ~/free5gc/
 sudo ./bin/n3iwf
 ```
 
@@ -237,17 +237,17 @@ Reference to [sample config](./sample/ran_attach_config) if need to connect the 
 
 ### D. Deploy with container
 
-Reference to [free5gcWithOCF-compose](https://github.com/free5gcWithOCF/free5gcWithOCF-compose/) as the sample for container deployment.
+Reference to [free5gc-compose](https://github.com/free5gc/free5gc-compose/) as the sample for container deployment.
 
 ## Test
 Start Wireshark to capture any interface with `pfcp||icmp||gtp` filter and run the tests below to simulate the procedures:
 ```bash
-cd ~/free5gcWithOCF
+cd ~/free5gc
 chmod +x ./test.sh
 ```
 a. TestRegistration
 ```bash
-(In directory: ~/free5gcWithOCF)
+(In directory: ~/free5gc)
 ./test.sh TestRegistration
 ```
 
@@ -301,8 +301,8 @@ k. TestULCL
 ./test_ulcl.sh -om 3 TestRegistration
 ```
 
-**For more details, you can reference to our [wiki](https://github.com/free5gcWithOCF/free5gcWithOCF/wiki)**
+**For more details, you can reference to our [wiki](https://github.com/free5gc/free5gc/wiki)**
 
 ## Release Note
-Detailed changes for each release are documented in the [release notes](https://github.com/free5gcWithOCF/free5gcWithOCF/releases).
+Detailed changes for each release are documented in the [release notes](https://github.com/free5gc/free5gc/releases).
 

@@ -2,19 +2,19 @@ package consumer
 
 import (
 	"context"
-	"free5gcWithOCF/lib/openapi"
-	"free5gcWithOCF/lib/openapi/Npcf_AMPolicy"
-	"free5gcWithOCF/lib/openapi/models"
-	amf_context "free5gcWithOCF/src/amf/context"
-	"free5gcWithOCF/src/amf/logger"
+	"free5gc/lib/openapi"
+	"free5gc/lib/openapi/Nchf_ConvergedChargingCreate"
+	"free5gc/lib/openapi/models"
+	amf_context "free5gc/src/amf/context"
+	"free5gc/src/amf/logger"
 	"regexp"
 )
 
 func AMPolicyControlCreate(ue *amf_context.AmfUe, anType models.AccessType) (*models.ProblemDetails, error) {
 
-	configuration := Npcf_AMPolicy.NewConfiguration()
+	configuration := Nchf_ConvergedChargingCreate.NewConfiguration()
 	configuration.SetBasePath(ue.PcfUri)
-	client := Npcf_AMPolicy.NewAPIClient(configuration)
+	client := Nchf_ConvergedChargingCreate.NewAPIClient(configuration)
 
 	amfSelf := amf_context.AMF_Self()
 
@@ -74,9 +74,9 @@ func AMPolicyControlCreate(ue *amf_context.AmfUe, anType models.AccessType) (*mo
 
 func AMPolicyControlUpdate(ue *amf_context.AmfUe, updateRequest models.PolicyAssociationUpdateRequest) (
 	problemDetails *models.ProblemDetails, err error) {
-	configuration := Npcf_AMPolicy.NewConfiguration()
+	configuration := Nchf_ConvergedChargingCreate.NewConfiguration()
 	configuration.SetBasePath(ue.PcfUri)
-	client := Npcf_AMPolicy.NewAPIClient(configuration)
+	client := Nchf_ConvergedChargingCreate.NewAPIClient(configuration)
 
 	res, httpResp, localErr := client.DefaultApi.PoliciesPolAssoIdUpdatePost(
 		context.Background(), ue.PolicyAssociationId, updateRequest)
@@ -113,9 +113,9 @@ func AMPolicyControlUpdate(ue *amf_context.AmfUe, updateRequest models.PolicyAss
 
 func AMPolicyControlDelete(ue *amf_context.AmfUe) (problemDetails *models.ProblemDetails, err error) {
 
-	configuration := Npcf_AMPolicy.NewConfiguration()
+	configuration := Nchf_ConvergedChargingCreate.NewConfiguration()
 	configuration.SetBasePath(ue.PcfUri)
-	client := Npcf_AMPolicy.NewAPIClient(configuration)
+	client := Nchf_ConvergedChargingCreate.NewAPIClient(configuration)
 
 	httpResp, localErr := client.DefaultApi.PoliciesPolAssoIdDelete(context.Background(), ue.PolicyAssociationId)
 	if localErr == nil {

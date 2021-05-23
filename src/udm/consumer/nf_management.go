@@ -3,9 +3,9 @@ package consumer
 import (
 	"context"
 	"fmt"
-	"free5gcWithOCF/lib/openapi/Nnrf_NFManagement"
-	"free5gcWithOCF/lib/openapi/models"
-	udm_context "free5gcWithOCF/src/udm/context"
+	"free5gc/lib/openapi/Nnrf_NFManagement"
+	"free5gc/lib/openapi/models"
+	udm_context "free5gc/src/udm/context"
 	"net/http"
 	"strings"
 	"time"

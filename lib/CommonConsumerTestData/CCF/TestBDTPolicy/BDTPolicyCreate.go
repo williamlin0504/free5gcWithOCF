@@ -1,7 +1,7 @@
 package TestBDTPolicy
 
 import (
-	"free5gcWithOCF/lib/openapi/models"
+	"free5gc/lib/openapi/models"
 	"time"
 )
 

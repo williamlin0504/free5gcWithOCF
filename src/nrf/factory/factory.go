@@ -10,7 +10,7 @@ import (
 
 	"gopkg.in/yaml.v2"
 
-	"free5gcWithOCF/src/nrf/logger"
+	"free5gc/src/nrf/logger"
 )
 
 var NrfConfig Config

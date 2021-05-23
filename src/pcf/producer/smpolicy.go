@@ -3,13 +3,13 @@ package producer
 import (
 	"context"
 	"fmt"
-	"free5gcWithOCF/lib/http_wrapper"
-	"free5gcWithOCF/lib/openapi"
-	"free5gcWithOCF/lib/openapi/Nudr_DataRepository"
-	"free5gcWithOCF/lib/openapi/models"
-	pcf_context "free5gcWithOCF/src/pcf/context"
-	"free5gcWithOCF/src/pcf/logger"
-	"free5gcWithOCF/src/pcf/util"
+	"free5gc/lib/http_wrapper"
+	"free5gc/lib/openapi"
+	"free5gc/lib/openapi/Nudr_DataRepository"
+	"free5gc/lib/openapi/models"
+	pcf_context "free5gc/src/pcf/context"
+	"free5gc/src/pcf/logger"
+	"free5gc/src/pcf/util"
 	"net/http"
 	"strconv"
 	"strings"
@@ -864,7 +864,7 @@ func SendSMPolicyUpdateNotification(
 			"SM Policy Update Notification Error[Can't find smPolId[%s] in UE(%s)]", smPolId, ue.Supi)
 		return
 	}
-	client := util.GetNpcfSMPolicyCallbackClient()
+	client := util.GetNchfSMPolicyCallbackClient()
 	uri := smPolicyData.PolicyContext.NotificationUri
 	if uri != "" {
 		logger.SMpolicylog.Infof("Send SM Policy Update Notification to SMF")
@@ -903,7 +903,7 @@ func SendSMPolicyTerminationRequestNotification(
 			"SM Policy Update Notification Error[Can't find smPolId[%s] in UE(%s)]", smPolId, ue.Supi)
 		return
 	}
-	client := util.GetNpcfSMPolicyCallbackClient()
+	client := util.GetNchfSMPolicyCallbackClient()
 	uri := smPolicyData.PolicyContext.NotificationUri
 	if uri != "" {
 		rsp, err :=

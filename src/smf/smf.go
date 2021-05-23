@@ -11,14 +11,13 @@ package main
 
 import (
 	"fmt"
-	"free5gcWithOCF/src/app"
-	"free5gcWithOCF/src/smf/logger"
-	"free5gcWithOCF/src/smf/service"
-	"free5gcWithOCF/src/smf/version"
-	"os"
-
+	"free5gc/src/app"
+	"free5gc/src/smf/logger"
+	"free5gc/src/smf/service"
+	"free5gc/src/smf/version"
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
+	"os"
 )
 
 var SMF = &service.SMF{}
@@ -34,7 +33,7 @@ func main() {
 	app.Name = "smf"
 	fmt.Print(app.Name, "\n")
 	appLog.Infoln("SMF version: ", version.GetVersion())
-	app.Usage = "-free5gcWithOCFcfg common configuration file -smfcfg smf configuration file"
+	app.Usage = "-free5gccfg common configuration file -smfcfg smf configuration file"
 	app.Action = action
 	app.Flags = SMF.GetCliCmd()
 
@@ -44,7 +43,7 @@ func main() {
 }
 
 func action(c *cli.Context) {
-	app.AppInitializeWillInitialize(c.String("free5gcWithOCFcfg"))
+	app.AppInitializeWillInitialize(c.String("free5gccfg"))
 	SMF.Initialize(c)
 	SMF.Start()
 }

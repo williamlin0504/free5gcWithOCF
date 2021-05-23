@@ -16,12 +16,12 @@ import (
 	"github.com/antihax/optional"
 	"github.com/bronze1man/radius"
 
-	"free5gcWithOCF/lib/openapi/Nnrf_NFDiscovery"
-	Nudm_UEAU "free5gcWithOCF/lib/openapi/Nudm_UEAuthentication"
-	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/src/ausf/consumer"
-	ausf_context "free5gcWithOCF/src/ausf/context"
-	"free5gcWithOCF/src/ausf/logger"
+	"free5gc/lib/openapi/Nnrf_NFDiscovery"
+	Nudm_UEAU "free5gc/lib/openapi/Nudm_UEAuthentication"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/ausf/consumer"
+	ausf_context "free5gc/src/ausf/context"
+	"free5gc/src/ausf/logger"
 )
 
 func KDF5gAka(param ...string) hash.Hash {

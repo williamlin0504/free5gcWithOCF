@@ -1,7 +1,7 @@
 /*
- * Npcf_BDTPolicyControl Service API
+ * Nchf_ConvergedChargingUpdate Service API
  *
- * The Npcf_BDTPolicyControl Service is used by an NF service consumer to
+ * The Nchf_ConvergedChargingUpdate Service is used by an NF service consumer to
  * retrieve background data transfer policies from the PCF and to update the PCF with
  * the background data transfer policy selected by the NF service consumer.
  *
@@ -13,10 +13,10 @@ package main
 
 import (
 	"fmt"
-	"free5gcWithOCF/src/app"
-	"free5gcWithOCF/src/pcf/logger"
-	"free5gcWithOCF/src/pcf/service"
-	"free5gcWithOCF/src/pcf/version"
+	"free5gc/src/app"
+	"free5gc/src/pcf/logger"
+	"free5gc/src/pcf/service"
+	"free5gc/src/pcf/version"
 	"os"
 
 	"github.com/sirupsen/logrus"
@@ -36,7 +36,7 @@ func main() {
 	app.Name = "pcf"
 	fmt.Print(app.Name, "\n")
 	appLog.Infoln("PCF version: ", version.GetVersion())
-	app.Usage = "-free5gcWithOCFcfg common configuration file -pcfcfg pcf configuration file"
+	app.Usage = "-free5gccfg common configuration file -pcfcfg pcf configuration file"
 	app.Action = action
 	app.Flags = PCF.GetCliCmd()
 
@@ -47,7 +47,7 @@ func main() {
 }
 
 func action(c *cli.Context) {
-	app.AppInitializeWillInitialize(c.String("free5gcWithOCFcfg"))
+	app.AppInitializeWillInitialize(c.String("free5gccfg"))
 	PCF.Initialize(c)
 	PCF.Start()
 }

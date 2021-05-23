@@ -3,13 +3,13 @@ package producer
 import (
 	"context"
 	"fmt"
-	"free5gcWithOCF/lib/http_wrapper"
-	"free5gcWithOCF/lib/openapi"
-	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/src/pcf/consumer"
-	pcf_context "free5gcWithOCF/src/pcf/context"
-	"free5gcWithOCF/src/pcf/logger"
-	"free5gcWithOCF/src/pcf/util"
+	"free5gc/lib/http_wrapper"
+	"free5gc/lib/openapi"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/pcf/consumer"
+	pcf_context "free5gc/src/pcf/context"
+	"free5gc/src/pcf/logger"
+	"free5gc/src/pcf/util"
 	"net/http"
 	"reflect"
 
@@ -295,7 +295,7 @@ func SendAMPolicyUpdateNotification(ue *pcf_context.UeContext, PolId string, req
 		logger.AMpolicylog.Warnf("Policy Update Notification Error[Can't find polAssoId[%s] in UE(%s)]", PolId, ue.Supi)
 		return
 	}
-	client := util.GetNpcfAMPolicyCallbackClient()
+	client := util.GetNchfAMPolicyCallbackClient()
 	uri := amPolicyData.NotificationUri
 	for uri != "" {
 
@@ -341,7 +341,7 @@ func SendAMPolicyTerminationRequestNotification(ue *pcf_context.UeContext,
 			"Policy Assocition Termination Request Notification Error[Can't find polAssoId[%s] in UE(%s)]", PolId, ue.Supi)
 		return
 	}
-	client := util.GetNpcfAMPolicyCallbackClient()
+	client := util.GetNchfAMPolicyCallbackClient()
 	uri := amPolicyData.NotificationUri
 	for uri != "" {
 

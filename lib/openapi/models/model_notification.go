@@ -1,5 +1,5 @@
 /*
- * Npcf_BDTPolicyControl Service API
+ * Nchf_ConvergedChargingUpdate Service API
  *
  * PCF BDT Policy Control Service. © 2019, 3GPP Organizational Partners (ARIB, ATIS, CCSA, ETSI, TSDSI, TTA, TTC). All rights reserved.
  *

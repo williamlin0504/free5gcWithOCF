@@ -3,15 +3,15 @@ package context
 import (
 	"context"
 	"fmt"
-	"free5gcWithOCF/lib/nas/nasConvert"
-	"free5gcWithOCF/lib/nas/nasMessage"
-	"free5gcWithOCF/lib/openapi"
-	"free5gcWithOCF/lib/openapi/Namf_Communication"
-	"free5gcWithOCF/lib/openapi/Nnrf_NFDiscovery"
-	"free5gcWithOCF/lib/openapi/Npcf_SMPolicyControl"
-	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/lib/pfcp/pfcpType"
-	"free5gcWithOCF/src/smf/logger"
+	"free5gc/lib/nas/nasConvert"
+	"free5gc/lib/nas/nasMessage"
+	"free5gc/lib/openapi"
+	"free5gc/lib/openapi/Namf_Communication"
+	"free5gc/lib/openapi/Nnrf_NFDiscovery"
+	"free5gc/lib/openapi/Nchf_ConvergedChargingNotify"
+	"free5gc/lib/openapi/models"
+	"free5gc/lib/pfcp/pfcpType"
+	"free5gc/src/smf/logger"
 	"net"
 	"net/http"
 	"sync"
@@ -81,7 +81,7 @@ type SMContext struct {
 	DnnConfiguration models.DnnConfiguration
 
 	// Client
-	SMPolicyClient      *Npcf_SMPolicyControl.APIClient
+	SMPolicyClient      *Nchf_ConvergedChargingNotify.APIClient
 	CommunicationClient *Namf_Communication.APIClient
 
 	AMFProfile         models.NfProfile
@@ -251,9 +251,9 @@ func (smContext *SMContext) PCFSelection() error {
 	// Create SMPolicyControl Client for this SM Context
 	for _, service := range *smContext.SelectedPCFProfile.NfServices {
 		if service.ServiceName == models.ServiceName_NPCF_SMPOLICYCONTROL {
-			SmPolicyControlConf := Npcf_SMPolicyControl.NewConfiguration()
+			SmPolicyControlConf := Nchf_ConvergedChargingNotify.NewConfiguration()
 			SmPolicyControlConf.SetBasePath(service.ApiPrefix)
-			smContext.SMPolicyClient = Npcf_SMPolicyControl.NewAPIClient(SmPolicyControlConf)
+			smContext.SMPolicyClient = Nchf_ConvergedChargingNotify.NewAPIClient(SmPolicyControlConf)
 		}
 	}
 

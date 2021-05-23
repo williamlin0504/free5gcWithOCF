@@ -1,10 +1,10 @@
 package main
 
 import (
-	"free5gcWithOCF/src/amf/logger"
-	"free5gcWithOCF/src/amf/service"
-	"free5gcWithOCF/src/amf/version"
-	"free5gcWithOCF/src/app"
+	"free5gc/src/amf/logger"
+	"free5gc/src/amf/service"
+	"free5gc/src/amf/version"
+	"free5gc/src/app"
 	"os"
 
 	"github.com/sirupsen/logrus"
@@ -24,7 +24,7 @@ func main() {
 	app.Name = "amf"
 	appLog.Infoln(app.Name)
 	appLog.Infoln("AMF version: ", version.GetVersion())
-	app.Usage = "-free5gcWithOCFcfg common configuration file -amfcfg amf configuration file"
+	app.Usage = "-free5gccfg common configuration file -amfcfg amf configuration file"
 	app.Action = action
 	app.Flags = AMF.GetCliCmd()
 	if err := app.Run(os.Args); err != nil {
@@ -33,7 +33,7 @@ func main() {
 }
 
 func action(c *cli.Context) {
-	app.AppInitializeWillInitialize(c.String("free5gcWithOCFcfg"))
+	app.AppInitializeWillInitialize(c.String("free5gccfg"))
 	AMF.Initialize(c)
 	AMF.Start()
 }

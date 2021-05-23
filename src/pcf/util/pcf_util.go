@@ -4,15 +4,15 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"free5gcWithOCF/lib/openapi/Namf_Communication"
-	"free5gcWithOCF/lib/openapi/Npcf_AMPolicy"
-	"free5gcWithOCF/lib/openapi/Npcf_PolicyAuthorization"
-	"free5gcWithOCF/lib/openapi/Npcf_SMPolicyControl"
-	"free5gcWithOCF/lib/openapi/Nudr_DataRepository"
-	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/lib/path_util"
-	"free5gcWithOCF/src/pcf/context"
-	"free5gcWithOCF/src/pcf/logger"
+	"free5gc/lib/openapi/Namf_Communication"
+	"free5gc/lib/openapi/Nchf_ConvergedChargingCreate"
+	"free5gc/lib/openapi/Nchf_ConvergedChargingRelease"
+	"free5gc/lib/openapi/Nchf_ConvergedChargingNotify"
+	"free5gc/lib/openapi/Nudr_DataRepository"
+	"free5gc/lib/openapi/models"
+	"free5gc/lib/path_util"
+	"free5gc/src/pcf/context"
+	"free5gc/src/pcf/logger"
 	"net/http"
 	"reflect"
 	"time"
@@ -22,10 +22,10 @@ const TimeFormat = time.RFC3339
 
 // Path of HTTP2 key and log file
 var (
-	PCF_LOG_PATH                                 = path_util.Gofree5gcWithOCFPath("free5gcWithOCF/pcfsslkey.log")
-	PCF_PEM_PATH                                 = path_util.Gofree5gcWithOCFPath("free5gcWithOCF/support/TLS/pcf.pem")
-	PCF_KEY_PATH                                 = path_util.Gofree5gcWithOCFPath("free5gcWithOCF/support/TLS/pcf.key")
-	PCF_CONFIG_PATH                              = path_util.Gofree5gcWithOCFPath("free5gcWithOCF/config/pcfcfg.conf")
+	PCF_LOG_PATH                                 = path_util.Gofree5gcPath("free5gc/pcfsslkey.log")
+	PCF_PEM_PATH                                 = path_util.Gofree5gcPath("free5gc/support/TLS/pcf.pem")
+	PCF_KEY_PATH                                 = path_util.Gofree5gcPath("free5gc/support/TLS/pcf.key")
+	PCF_CONFIG_PATH                              = path_util.Gofree5gcPath("free5gc/config/pcfcfg.conf")
 	PCF_BASIC_PATH                               = "https://localhost:29507"
 	ERROR_REQUEST_PARAMETERS                     = "ERROR_REQUEST_PARAMETERS"
 	USER_UNKNOWN                                 = "USER_UNKNOWN"
@@ -57,21 +57,21 @@ var (
 	}
 )
 
-func GetNpcfAMPolicyCallbackClient() *Npcf_AMPolicy.APIClient {
-	configuration := Npcf_AMPolicy.NewConfiguration()
-	client := Npcf_AMPolicy.NewAPIClient(configuration)
+func GetNchfAMPolicyCallbackClient() *Nchf_ConvergedChargingCreate.APIClient {
+	configuration := Nchf_ConvergedChargingCreate.NewConfiguration()
+	client := Nchf_ConvergedChargingCreate.NewAPIClient(configuration)
 	return client
 }
 
-func GetNpcfSMPolicyCallbackClient() *Npcf_SMPolicyControl.APIClient {
-	configuration := Npcf_SMPolicyControl.NewConfiguration()
-	client := Npcf_SMPolicyControl.NewAPIClient(configuration)
+func GetNchfSMPolicyCallbackClient() *Nchf_ConvergedChargingNotify.APIClient {
+	configuration := Nchf_ConvergedChargingNotify.NewConfiguration()
+	client := Nchf_ConvergedChargingNotify.NewAPIClient(configuration)
 	return client
 }
 
-func GetNpcfPolicyAuthorizationCallbackClient() *Npcf_PolicyAuthorization.APIClient {
-	configuration := Npcf_PolicyAuthorization.NewConfiguration()
-	client := Npcf_PolicyAuthorization.NewAPIClient(configuration)
+func GetNchfPolicyAuthorizationCallbackClient() *Nchf_ConvergedChargingRelease.APIClient {
+	configuration := Nchf_ConvergedChargingRelease.NewConfiguration()
+	client := Nchf_ConvergedChargingRelease.NewAPIClient(configuration)
 	return client
 }
 

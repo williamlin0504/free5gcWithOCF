@@ -1,7 +1,7 @@
 package pfcp
 
 import (
-	"free5gcWithOCF/lib/pfcp/logger"
+	"free5gc/lib/pfcp/logger"
 	"net"
 	"time"
 )

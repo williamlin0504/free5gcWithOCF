@@ -10,8 +10,8 @@
 package smpolicy
 
 import (
-	"free5gcWithOCF/lib/logger_util"
-	"free5gcWithOCF/src/ccf/logger"
+	"free5gc/lib/logger_util"
+	"free5gc/src/ccf/logger"
 	"net/http"
 	"strings"
 

@@ -6,10 +6,10 @@ import (
 
 	"github.com/google/uuid"
 
-	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/src/udm/context"
-	"free5gcWithOCF/src/udm/factory"
-	"free5gcWithOCF/src/udm/logger"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/udm/context"
+	"free5gc/src/udm/factory"
+	"free5gc/src/udm/logger"
 )
 
 func InitUDMContext(udmContext *context.UDMContext) {

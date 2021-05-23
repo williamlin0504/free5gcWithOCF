@@ -13,17 +13,17 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 
-	"free5gcWithOCF/lib/http2_util"
-	"free5gcWithOCF/lib/logger_util"
-	"free5gcWithOCF/lib/path_util"
-	"free5gcWithOCF/src/app"
-	"free5gcWithOCF/src/nssf/consumer"
-	"free5gcWithOCF/src/nssf/context"
-	"free5gcWithOCF/src/nssf/factory"
-	"free5gcWithOCF/src/nssf/logger"
-	"free5gcWithOCF/src/nssf/nssaiavailability"
-	"free5gcWithOCF/src/nssf/nsselection"
-	"free5gcWithOCF/src/nssf/util"
+	"free5gc/lib/http2_util"
+	"free5gc/lib/logger_util"
+	"free5gc/lib/path_util"
+	"free5gc/src/app"
+	"free5gc/src/nssf/consumer"
+	"free5gc/src/nssf/context"
+	"free5gc/src/nssf/factory"
+	"free5gc/src/nssf/logger"
+	"free5gc/src/nssf/nssaiavailability"
+	"free5gc/src/nssf/nsselection"
+	"free5gc/src/nssf/util"
 )
 
 type NSSF struct{}
@@ -39,7 +39,7 @@ var config Config
 
 var nssfCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  "free5gcWithOCFcfg",
+		Name:  "free5gccfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
@@ -66,7 +66,7 @@ func (*NSSF) Initialize(c *cli.Context) {
 	if config.nssfcfg != "" {
 		factory.InitConfigFactory(config.nssfcfg)
 	} else {
-		DefaultNssfConfigPath := path_util.Gofree5gcWithOCFPath("free5gcWithOCF/config/nssfcfg.conf")
+		DefaultNssfConfigPath := path_util.Gofree5gcPath("free5gc/config/nssfcfg.conf")
 		factory.InitConfigFactory(DefaultNssfConfigPath)
 	}
 

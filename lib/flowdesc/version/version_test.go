@@ -1,10 +1,9 @@
 package version_test
 
 import (
-	"free5gcWithOCF/lib/flowdesc/version"
-	"testing"
-
+	"free5gc/lib/flowdesc/version"
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestVersion(t *testing.T) {

@@ -4,12 +4,15 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"free5gcWithOCF/lib/openapi/Namf_Communication"
-	"free5gcWithOCF/lib/openapi/Nudr_DataRepository"
-	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/lib/path_util"
-	"free5gcWithOCF/src/ccf/context"
-	"free5gcWithOCF/src/ccf/logger"
+	"free5gc/lib/openapi/Namf_Communication"
+	"free5gc/lib/openapi/Nccf_AMPolicy"
+	"free5gc/lib/openapi/Nccf_PolicyAuthorization"
+	"free5gc/lib/openapi/Nccf_SMPolicyControl"
+	"free5gc/lib/openapi/Nudr_DataRepository"
+	"free5gc/lib/openapi/models"
+	"free5gc/lib/path_util"
+	"free5gc/src/ccf/context"
+	"free5gc/src/ccf/logger"
 	"net/http"
 	"reflect"
 	"time"
@@ -19,11 +22,11 @@ const TimeFormat = time.RFC3339
 
 // Path of HTTP2 key and log file
 var (
-	CCF_LOG_PATH                                 = path_util.Gofree5gcWithOCFPath("free5gcWithOCF/ccfsslkey.log")
-	CCF_PEM_PATH                                 = path_util.Gofree5gcWithOCFPath("free5gcWithOCF/support/TLS/ccf.pem")
-	CCF_KEY_PATH                                 = path_util.Gofree5gcWithOCFPath("free5gcWithOCF/support/TLS/ccf.key")
-	CCF_CONFIG_PATH                              = path_util.Gofree5gcWithOCFPath("free5gcWithOCF/config/ccfcfg.conf")
-	CCF_BASIC_PATH                               = "https://localhost:29508"
+	CCF_LOG_PATH                                 = path_util.Gofree5gcPath("free5gc/ccfsslkey.log")
+	CCF_PEM_PATH                                 = path_util.Gofree5gcPath("free5gc/support/TLS/ccf.pem")
+	CCF_KEY_PATH                                 = path_util.Gofree5gcPath("free5gc/support/TLS/ccf.key")
+	CCF_CONFIG_PATH                              = path_util.Gofree5gcPath("free5gc/config/ccfcfg.conf")
+	CCF_BASIC_PATH                               = "https://localhost:29507"
 	ERROR_REQUEST_PARAMETERS                     = "ERROR_REQUEST_PARAMETERS"
 	USER_UNKNOWN                                 = "USER_UNKNOWN"
 	CONTEXT_NOT_FOUND                            = "CONTEXT_NOT_FOUND"
@@ -201,10 +204,10 @@ func GetNegotiateSuppFeat(suppFeat string, serviceSuppFeat []byte) string {
 }
 
 var serviceUriMap = map[models.ServiceName]string{
-	models.ServiceName_NCCF_CONVERGEDCHARGING_CREATE:  "cc-create",
-	models.ServiceName_NCCF_CONVERGEDCHARGING_UPDATE:  "cc-update",
-	models.ServiceName_NCCF_CONVERGEDCHARGING_RELEASE: "cc-release",
-	models.ServiceName_NCCF_CONVERGEDCHARGING_NOTIFY:  "cc-notify",
+	models.ServiceName_NCCF_AM_POLICY_CONTROL:   "policies",
+	models.ServiceName_NCCF_SMPOLICYCONTROL:     "sm-policies",
+	models.ServiceName_NCCF_BDTPOLICYCONTROL:    "bdtpolicies",
+	models.ServiceName_NCCF_POLICYAUTHORIZATION: "app-sessions",
 }
 
 // Get Resource Uri (location Header) with param id string

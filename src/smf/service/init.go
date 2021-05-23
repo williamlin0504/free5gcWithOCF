@@ -10,23 +10,23 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 
-	"free5gcWithOCF/lib/http2_util"
-	"free5gcWithOCF/lib/logger_util"
-	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/lib/path_util"
-	"free5gcWithOCF/src/app"
-	"free5gcWithOCF/src/smf/callback"
-	"free5gcWithOCF/src/smf/consumer"
-	"free5gcWithOCF/src/smf/context"
-	"free5gcWithOCF/src/smf/eventexposure"
-	"free5gcWithOCF/src/smf/factory"
-	"free5gcWithOCF/src/smf/logger"
-	"free5gcWithOCF/src/smf/oam"
-	"free5gcWithOCF/src/smf/pdusession"
-	"free5gcWithOCF/src/smf/pfcp"
-	"free5gcWithOCF/src/smf/pfcp/message"
-	"free5gcWithOCF/src/smf/pfcp/udp"
-	"free5gcWithOCF/src/smf/util"
+	"free5gc/lib/http2_util"
+	"free5gc/lib/logger_util"
+	"free5gc/lib/openapi/models"
+	"free5gc/lib/path_util"
+	"free5gc/src/app"
+	"free5gc/src/smf/callback"
+	"free5gc/src/smf/consumer"
+	"free5gc/src/smf/context"
+	"free5gc/src/smf/eventexposure"
+	"free5gc/src/smf/factory"
+	"free5gc/src/smf/logger"
+	"free5gc/src/smf/oam"
+	"free5gc/src/smf/pdusession"
+	"free5gc/src/smf/pfcp"
+	"free5gc/src/smf/pfcp/message"
+	"free5gc/src/smf/pfcp/udp"
+	"free5gc/src/smf/util"
 )
 
 type SMF struct{}
@@ -43,7 +43,7 @@ var config Config
 
 var smfCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  "free5gcWithOCFcfg",
+		Name:  "free5gccfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
@@ -76,14 +76,14 @@ func (*SMF) Initialize(c *cli.Context) {
 	if config.smfcfg != "" {
 		factory.InitConfigFactory(config.smfcfg)
 	} else {
-		DefaultSmfConfigPath := path_util.Gofree5gcWithOCFPath("free5gcWithOCF/config/smfcfg.conf")
+		DefaultSmfConfigPath := path_util.Gofree5gcPath("free5gc/config/smfcfg.conf")
 		factory.InitConfigFactory(DefaultSmfConfigPath)
 	}
 
 	if config.uerouting != "" {
 		factory.InitRoutingConfigFactory(config.uerouting)
 	} else {
-		DefaultUERoutingPath := path_util.Gofree5gcWithOCFPath("free5gcWithOCF/config/uerouting.yaml")
+		DefaultUERoutingPath := path_util.Gofree5gcPath("free5gc/config/uerouting.yaml")
 		factory.InitRoutingConfigFactory(DefaultUERoutingPath)
 	}
 

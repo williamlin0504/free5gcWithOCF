@@ -3,12 +3,12 @@ package producer
 import (
 	"context"
 	"fmt"
-	"free5gcWithOCF/lib/http_wrapper"
-	"free5gcWithOCF/lib/openapi"
-	"free5gcWithOCF/lib/openapi/models"
-	pcf_context "free5gcWithOCF/src/pcf/context"
-	"free5gcWithOCF/src/pcf/logger"
-	"free5gcWithOCF/src/pcf/util"
+	"free5gc/lib/http_wrapper"
+	"free5gc/lib/openapi"
+	"free5gc/lib/openapi/models"
+	pcf_context "free5gc/src/pcf/context"
+	"free5gc/src/pcf/logger"
+	"free5gc/src/pcf/util"
 	"net/http"
 	"strings"
 	"time"
@@ -870,7 +870,7 @@ func SendAppSessionEventNotification(appSession *pcf_context.AppSessionData, req
 	if uri != "" {
 		request.EvSubsUri = fmt.Sprintf("%s/events-subscription",
 			util.GetResourceUri(models.ServiceName_NPCF_POLICYAUTHORIZATION, appSession.AppSessionId))
-		client := util.GetNpcfPolicyAuthorizationCallbackClient()
+		client := util.GetNchfPolicyAuthorizationCallbackClient()
 		httpResponse, err := client.PolicyAuthorizationEventNotificationApi.PolicyAuthorizationEventNotification(
 			context.Background(), uri, request)
 		if err != nil {
@@ -1039,7 +1039,7 @@ func SendAppSessionTermination(appSession *pcf_context.AppSessionData, request m
 	uri := appSession.AppSessionContext.AscReqData.NotifUri
 	if uri != "" {
 		request.ResUri = util.GetResourceUri(models.ServiceName_NPCF_POLICYAUTHORIZATION, appSession.AppSessionId)
-		client := util.GetNpcfPolicyAuthorizationCallbackClient()
+		client := util.GetNchfPolicyAuthorizationCallbackClient()
 		httpResponse, err := client.PolicyAuthorizationTerminateRequestApi.PolicyAuthorizationTerminateRequest(
 			context.Background(), uri, request)
 		if err != nil {

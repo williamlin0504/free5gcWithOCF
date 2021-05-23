@@ -2,9 +2,9 @@ package context
 
 import (
 	"fmt"
-	"free5gcWithOCF/lib/pfcp/pfcpType"
-	"free5gcWithOCF/lib/util_3gpp"
-	"free5gcWithOCF/src/smf/logger"
+	"free5gc/lib/pfcp/pfcpType"
+	"free5gc/lib/util_3gpp"
+	"free5gc/src/smf/logger"
 	"strconv"
 )
 

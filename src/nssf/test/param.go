@@ -7,13 +7,13 @@ package test
 import (
 	"flag"
 
-	"free5gcWithOCF/lib/path_util"
-	. "free5gcWithOCF/src/nssf/plugin"
+	"free5gc/lib/path_util"
+	. "free5gc/src/nssf/plugin"
 )
 
 var (
 	ConfigFileFromArgs string
-	DefaultConfigFile  string = path_util.Gofree5gcWithOCFPath("free5gcWithOCF/src/nssf/test/conf/test_nssf_config.yaml")
+	DefaultConfigFile  string = path_util.Gofree5gcPath("free5gc/src/nssf/test/conf/test_nssf_config.yaml")
 )
 
 type TestingUtil struct {

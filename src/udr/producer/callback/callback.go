@@ -2,10 +2,10 @@ package callback
 
 import (
 	"context"
-	"free5gcWithOCF/lib/openapi/Nudr_DataRepository"
-	"free5gcWithOCF/lib/openapi/models"
-	udr_context "free5gcWithOCF/src/udr/context"
-	"free5gcWithOCF/src/udr/logger"
+	"free5gc/lib/openapi/Nudr_DataRepository"
+	"free5gc/lib/openapi/models"
+	udr_context "free5gc/src/udr/context"
+	"free5gc/src/udr/logger"
 )
 
 func SendOnDataChangeNotify(ueId string, notifyItems []models.NotifyItem) {

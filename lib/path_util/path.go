@@ -2,31 +2,31 @@ package path_util
 
 import (
 	"bufio"
-	"free5gcWithOCF/lib/path_util/logger"
+	"free5gc/lib/path_util/logger"
 	"os"
 	"path/filepath"
 	"strings"
 )
 
-// Gofree5gcWithOCFPath ...
+// Gofree5gcPath ...
 /*
  * Author: Roger Chu aka Sasuke
  *
- * This package is used to locate the root directory of gofree5gcWithOCF project
+ * This package is used to locate the root directory of gofree5gc project
  * Compatible with Windows and Linux
  *
- * Please import "free5gcWithOCF/lib/path_util"
+ * Please import "free5gc/lib/path_util"
  *
  * Return value:
- * A string value of the relative path between the working directory and the root directory of the gofree5gcWithOCF project
+ * A string value of the relative path between the working directory and the root directory of the gofree5gc project
  *
  * Usage:
- * path_util.Gofree5gcWithOCFPath("your file location starting with gofree5gcWithOCF")
+ * path_util.Gofree5gcPath("your file location starting with gofree5gc")
  *
  * Example:
- * path_util.Gofree5gcWithOCFPath("free5gcWithOCF/abcdef/abcdef.pem")
+ * path_util.Gofree5gcPath("free5gc/abcdef/abcdef.pem")
  */
-func Gofree5gcWithOCFPath(path string) string {
+func Gofree5gcPath(path string) string {
 	rootCode := strings.Split(path, "/")[0]
 	cleanPath := filepath.Clean(path)
 	targetFilePath := cleanPath[len(rootCode)+1:]

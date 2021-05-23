@@ -1,10 +1,10 @@
 package main
 
 import (
-	"free5gcWithOCF/src/app"
-	"free5gcWithOCF/src/n3iwf/logger"
-	"free5gcWithOCF/src/n3iwf/service"
-	"free5gcWithOCF/src/n3iwf/version"
+	"free5gc/src/app"
+	"free5gc/src/n3iwf/logger"
+	"free5gc/src/n3iwf/service"
+	"free5gc/src/n3iwf/version"
 	"os"
 
 	"github.com/sirupsen/logrus"
@@ -24,7 +24,7 @@ func main() {
 	app.Name = "n3iwf"
 	appLog.Infoln(app.Name)
 	appLog.Infoln("N3IWF version: ", version.GetVersion())
-	app.Usage = "-free5gcWithOCFcfg common configuration file -n3iwfcfg n3iwf configuration file"
+	app.Usage = "-free5gccfg common configuration file -n3iwfcfg n3iwf configuration file"
 	app.Action = action
 	app.Flags = N3IWF.GetCliCmd()
 	if err := app.Run(os.Args); err != nil {
@@ -33,7 +33,7 @@ func main() {
 }
 
 func action(c *cli.Context) {
-	app.AppInitializeWillInitialize(c.String("free5gcWithOCFcfg"))
+	app.AppInitializeWillInitialize(c.String("free5gccfg"))
 	N3IWF.Initialize(c)
 	N3IWF.Start()
 }

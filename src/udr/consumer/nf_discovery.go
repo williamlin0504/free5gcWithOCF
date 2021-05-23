@@ -3,8 +3,8 @@ package consumer
 import (
 	"context"
 	"fmt"
-	"free5gcWithOCF/lib/openapi/Nnrf_NFDiscovery"
-	"free5gcWithOCF/lib/openapi/models"
+	"free5gc/lib/openapi/Nnrf_NFDiscovery"
+	"free5gc/lib/openapi/models"
 	"net/http"
 )
 

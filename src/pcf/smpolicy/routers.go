@@ -1,5 +1,5 @@
 /*
- * Npcf_SMPolicyControl
+ * Nchf_ConvergedChargingNotify
  *
  * Session Management Policy Control Service
  *
@@ -10,8 +10,8 @@
 package smpolicy
 
 import (
-	"free5gcWithOCF/lib/logger_util"
-	"free5gcWithOCF/src/pcf/logger"
+	"free5gc/lib/logger_util"
+	"free5gc/src/pcf/logger"
 	"net/http"
 	"strings"
 

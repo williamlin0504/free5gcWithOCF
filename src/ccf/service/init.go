@@ -11,24 +11,24 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 
-	"free5gcWithOCF/lib/http2_util"
-	"free5gcWithOCF/lib/logger_util"
-	"free5gcWithOCF/lib/openapi/Nnrf_NFDiscovery"
-	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/lib/path_util"
-	"free5gcWithOCF/src/app"
-	"free5gcWithOCF/src/ccf/ampolicy"
-	"free5gcWithOCF/src/ccf/bdtpolicy"
-	"free5gcWithOCF/src/ccf/consumer"
-	"free5gcWithOCF/src/ccf/context"
-	"free5gcWithOCF/src/ccf/factory"
-	"free5gcWithOCF/src/ccf/httpcallback"
-	"free5gcWithOCF/src/ccf/logger"
-	"free5gcWithOCF/src/ccf/oam"
-	"free5gcWithOCF/src/ccf/policyauthorization"
-	"free5gcWithOCF/src/ccf/smpolicy"
-	"free5gcWithOCF/src/ccf/uepolicy"
-	"free5gcWithOCF/src/ccf/util"
+	"free5gc/lib/http2_util"
+	"free5gc/lib/logger_util"
+	"free5gc/lib/openapi/Nnrf_NFDiscovery"
+	"free5gc/lib/openapi/models"
+	"free5gc/lib/path_util"
+	"free5gc/src/app"
+	"free5gc/src/ccf/ampolicy"
+	"free5gc/src/ccf/bdtpolicy"
+	"free5gc/src/ccf/consumer"
+	"free5gc/src/ccf/context"
+	"free5gc/src/ccf/factory"
+	"free5gc/src/ccf/httpcallback"
+	"free5gc/src/ccf/logger"
+	"free5gc/src/ccf/oam"
+	"free5gc/src/ccf/policyauthorization"
+	"free5gc/src/ccf/smpolicy"
+	"free5gc/src/ccf/uepolicy"
+	"free5gc/src/ccf/util"
 )
 
 type CCF struct{}
@@ -44,7 +44,7 @@ var config Config
 
 var ccfCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  "free5gcWithOCFcfg",
+		Name:  "free5gccfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
@@ -71,7 +71,7 @@ func (*CCF) Initialize(c *cli.Context) {
 	if config.ccfcfg != "" {
 		factory.InitConfigFactory(config.ccfcfg)
 	} else {
-		DefaultCcfConfigPath := path_util.Gofree5gcWithOCFPath("free5gcWithOCF/config/ccfcfg.conf")
+		DefaultCcfConfigPath := path_util.Gofree5gcPath("free5gc/config/ccfcfg.conf")
 		factory.InitConfigFactory(DefaultCcfConfigPath)
 	}
 
@@ -107,6 +107,7 @@ func (ccf *CCF) FilterCli(c *cli.Context) (args []string) {
 
 func (ccf *CCF) Start() {
 	initLog.Infoln("Server started")
+	fmt.Fprint(w, "CCF Started Ready to Start Session...")
 	router := logger_util.NewGinWithLogrus(logger.GinLog)
 
 	bdtpolicy.AddService(router)

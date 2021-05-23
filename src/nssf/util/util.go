@@ -9,10 +9,10 @@ import (
 	"fmt"
 	"reflect"
 
-	"free5gcWithOCF/lib/openapi/models"
-	"free5gcWithOCF/lib/path_util"
-	"free5gcWithOCF/src/nssf/factory"
-	"free5gcWithOCF/src/nssf/logger"
+	"free5gc/lib/openapi/models"
+	"free5gc/lib/path_util"
+	"free5gc/src/nssf/factory"
+	"free5gc/src/nssf/logger"
 )
 
 // Title in Problem Details for NSSF HTTP APIs
@@ -25,13 +25,13 @@ const (
 
 // Path of HTTP2 key and log file
 var (
-	NSSF_LOG_PATH = path_util.Gofree5gcWithOCFPath("free5gcWithOCF/nssfsslkey.log")
-	NSSF_PEM_PATH = path_util.Gofree5gcWithOCFPath("free5gcWithOCF/support/TLS/nssf.pem")
-	NSSF_KEY_PATH = path_util.Gofree5gcWithOCFPath("free5gcWithOCF/support/TLS/nssf.key")
+	NSSF_LOG_PATH = path_util.Gofree5gcPath("free5gc/nssfsslkey.log")
+	NSSF_PEM_PATH = path_util.Gofree5gcPath("free5gc/support/TLS/nssf.pem")
+	NSSF_KEY_PATH = path_util.Gofree5gcPath("free5gc/support/TLS/nssf.key")
 )
 
 // Default configuration file
-var DEFAULT_CONFIG string = "free5gcWithOCF/config/nssfcfg.conf"
+var DEFAULT_CONFIG string = "free5gc/config/nssfcfg.conf"
 
 // Check if a slice contains an element
 func Contain(target interface{}, slice interface{}) bool {

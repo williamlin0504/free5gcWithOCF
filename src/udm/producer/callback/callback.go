@@ -2,11 +2,11 @@ package callback
 
 import (
 	"context"
-	"free5gcWithOCF/lib/openapi/Nudm_SubscriberDataManagement"
-	"free5gcWithOCF/lib/openapi/Nudm_UEContextManagement"
-	"free5gcWithOCF/lib/openapi/models"
-	udm_context "free5gcWithOCF/src/udm/context"
-	"free5gcWithOCF/src/udm/logger"
+	"free5gc/lib/openapi/Nudm_SubscriberDataManagement"
+	"free5gc/lib/openapi/Nudm_UEContextManagement"
+	"free5gc/lib/openapi/models"
+	udm_context "free5gc/src/udm/context"
+	"free5gc/src/udm/logger"
 	"net/http"
 )
 
