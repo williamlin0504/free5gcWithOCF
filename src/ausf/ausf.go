@@ -33,7 +33,7 @@ func main() {
 	app.Name = "ausf"
 	fmt.Print(app.Name, "\n")
 	appLog.Infoln("AUSF version: ", version.GetVersion())
-	app.Usage = "- free5gcWithOCFcfg common configuration file -ausfcfg ausf configuration file"
+	app.Usage = "- free5gccfg common configuration file -ausfcfg ausf configuration file"
 	app.Action = action
 	app.Flags = AUSF.GetCliCmd()
 
@@ -44,7 +44,7 @@ func main() {
 }
 
 func action(c *cli.Context) {
-	app.AppInitializeWillInitialize(c.String(" free5gcWithOCFcfg"))
+	app.AppInitializeWillInitialize(c.String(" free5gccfg"))
 	AUSF.Initialize(c)
 	AUSF.Start()
 }

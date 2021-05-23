@@ -14,9 +14,9 @@ import (
 )
 
 var (
-	NrfLogPath = path_util.Go free5gcWithOCFPath(" free5gcWithOCF/src/nrf/management/sslkeylog.log")
-	NrfPemPath = path_util.Go free5gcWithOCFPath(" free5gcWithOCF/support/TLS/nrf.pem")
-	NrfKeyPath = path_util.Go free5gcWithOCFPath(" free5gcWithOCF/support/TLS/nrf.key")
+	NrfLogPath = path_util.Go free5gcPath(" free5gcWithOCF/src/nrf/management/sslkeylog.log")
+	NrfPemPath = path_util.Go free5gcPath(" free5gcWithOCF/support/TLS/nrf.pem")
+	NrfKeyPath = path_util.Go free5gcPath(" free5gcWithOCF/support/TLS/nrf.key")
 )
 
 func main() {

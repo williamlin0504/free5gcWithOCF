@@ -22,10 +22,10 @@ const TimeFormat = time.RFC3339
 
 // Path of HTTP2 key and log file
 var (
-	PCF_LOG_PATH                                 = path_util.Go free5gcWithOCFPath(" free5gcWithOCF/pcfsslkey.log")
-	PCF_PEM_PATH                                 = path_util.Go free5gcWithOCFPath(" free5gcWithOCF/support/TLS/pcf.pem")
-	PCF_KEY_PATH                                 = path_util.Go free5gcWithOCFPath(" free5gcWithOCF/support/TLS/pcf.key")
-	PCF_CONFIG_PATH                              = path_util.Go free5gcWithOCFPath(" free5gcWithOCF/config/pcfcfg.conf")
+	PCF_LOG_PATH                                 = path_util.Go free5gcPath(" free5gcWithOCF/pcfsslkey.log")
+	PCF_PEM_PATH                                 = path_util.Go free5gcPath(" free5gcWithOCF/support/TLS/pcf.pem")
+	PCF_KEY_PATH                                 = path_util.Go free5gcPath(" free5gcWithOCF/support/TLS/pcf.key")
+	PCF_CONFIG_PATH                              = path_util.Go free5gcPath(" free5gcWithOCF/config/pcfcfg.conf")
 	PCF_BASIC_PATH                               = "https://localhost:29507"
 	ERROR_REQUEST_PARAMETERS                     = "ERROR_REQUEST_PARAMETERS"
 	USER_UNKNOWN                                 = "USER_UNKNOWN"

@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import {Button, FormControl, FormGroup} from "react-bootstrap";
 import AuthHelper from "../../util/AuthHelper"
-import Free5gcLogo from "../../assets/images/ free5gcWithOCF_logo.png";
+import Free5gcLogo from "../../assets/images/ free5gc_logo.png";
 
 class Login extends Component {
   state = {

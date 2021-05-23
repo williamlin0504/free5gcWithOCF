@@ -6,5 +6,5 @@ import (
 )
 
 func TestFree5gcPath(t *testing.T) {
-	logger.PathLog.Infoln(Go free5gcWithOCFPath(" free5gcWithOCF/abcdef/abcdef.pem"))
+	logger.PathLog.Infoln(Go free5gcPath(" free5gcWithOCF/abcdef/abcdef.pem"))
 }

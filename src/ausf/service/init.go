@@ -33,7 +33,7 @@ var config Config
 
 var ausfCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  " free5gcWithOCFcfg",
+		Name:  " free5gccfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
@@ -61,7 +61,7 @@ func (*AUSF) Initialize(c *cli.Context) {
 	if config.ausfcfg != "" {
 		factory.InitConfigFactory(config.ausfcfg)
 	} else {
-		DefaultAusfConfigPath := path_util.Go free5gcWithOCFPath(" free5gcWithOCF/config/ausfcfg.conf")
+		DefaultAusfConfigPath := path_util.Go free5gcPath(" free5gcWithOCF/config/ausfcfg.conf")
 		factory.InitConfigFactory(DefaultAusfConfigPath)
 	}
 

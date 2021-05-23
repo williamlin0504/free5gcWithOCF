@@ -32,7 +32,7 @@ var config Config
 
 var webuiCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  " free5gcWithOCFcfg",
+		Name:  " free5gccfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
@@ -60,7 +60,7 @@ func (*WEBUI) Initialize(c *cli.Context) {
 	if config.webuicfg != "" {
 		factory.InitConfigFactory(config.webuicfg)
 	} else {
-		DefaultWebUIConfigPath := path_util.Go free5gcWithOCFPath(" free5gcWithOCF/config/webuicfg.conf")
+		DefaultWebUIConfigPath := path_util.Go free5gcPath(" free5gcWithOCF/config/webuicfg.conf")
 		factory.InitConfigFactory(DefaultWebUIConfigPath)
 	}
 

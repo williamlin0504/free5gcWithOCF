@@ -25,9 +25,9 @@ const (
 
 // Path of HTTP2 key and log file
 var (
-	NSSF_LOG_PATH = path_util.Go free5gcWithOCFPath(" free5gcWithOCF/nssfsslkey.log")
-	NSSF_PEM_PATH = path_util.Go free5gcWithOCFPath(" free5gcWithOCF/support/TLS/nssf.pem")
-	NSSF_KEY_PATH = path_util.Go free5gcWithOCFPath(" free5gcWithOCF/support/TLS/nssf.key")
+	NSSF_LOG_PATH = path_util.Go free5gcPath(" free5gcWithOCF/nssfsslkey.log")
+	NSSF_PEM_PATH = path_util.Go free5gcPath(" free5gcWithOCF/support/TLS/nssf.pem")
+	NSSF_KEY_PATH = path_util.Go free5gcPath(" free5gcWithOCF/support/TLS/nssf.key")
 )
 
 // Default configuration file

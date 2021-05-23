@@ -34,9 +34,9 @@ func init() {
 		FieldsOrder:     []string{"component", "category"},
 	}
 
-	 free5gcWithOCFLogHook, err := logger_util.NewFileHook(logger_conf.Free5gcLogFile, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
+	 free5gcLogHook, err := logger_util.NewFileHook(logger_conf.Free5gcLogFile, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
 	if err == nil {
-		log.Hooks.Add( free5gcWithOCFLogHook)
+		log.Hooks.Add( free5gcLogHook)
 	}
 
 	selfLogHook, err := logger_util.NewFileHook(logger_conf.NfLogDir+"nssf.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)

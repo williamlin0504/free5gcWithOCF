@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-// Go free5gcWithOCFPath ...
+// Go free5gcPath ...
 /*
  * Author: Roger Chu aka Sasuke
  *
@@ -21,12 +21,12 @@ import (
  * A string value of the relative path between the working directory and the root directory of the go free5gcWithOCF project
  *
  * Usage:
- * path_util.Go free5gcWithOCFPath("your file location starting with go free5gcWithOCF")
+ * path_util.Go free5gcPath("your file location starting with go free5gcWithOCF")
  *
  * Example:
- * path_util.Go free5gcWithOCFPath(" free5gcWithOCF/abcdef/abcdef.pem")
+ * path_util.Go free5gcPath(" free5gcWithOCF/abcdef/abcdef.pem")
  */
-func Go free5gcWithOCFPath(path string) string {
+func Go free5gcPath(path string) string {
 	rootCode := strings.Split(path, "/")[0]
 	cleanPath := filepath.Clean(path)
 	targetFilePath := cleanPath[len(rootCode)+1:]

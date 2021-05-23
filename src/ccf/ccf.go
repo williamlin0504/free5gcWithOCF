@@ -36,7 +36,7 @@ func main() {
 	app.Name = "ccf"
 	fmt.Print(app.Name, "\n")
 	appLog.Infoln("CCF version: ", version.GetVersion())
-	app.Usage = "- free5gcWithOCFcfg common configuration file -ccfcfg ccf configuration file"
+	app.Usage = "- free5gccfg common configuration file -ccfcfg ccf configuration file"
 	app.Action = action
 	app.Flags = CCF.GetCliCmd()
 
@@ -47,7 +47,7 @@ func main() {
 }
 
 func action(c *cli.Context) {
-	app.AppInitializeWillInitialize(c.String(" free5gcWithOCFcfg"))
+	app.AppInitializeWillInitialize(c.String(" free5gccfg"))
 	CCF.Initialize(c)
 	CCF.Start()
 }

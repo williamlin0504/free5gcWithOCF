@@ -39,7 +39,7 @@ var config Config
 
 var udmCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  " free5gcWithOCFcfg",
+		Name:  " free5gccfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
@@ -67,7 +67,7 @@ func (*UDM) Initialize(c *cli.Context) {
 	if config.udmcfg != "" {
 		factory.InitConfigFactory(config.udmcfg)
 	} else {
-		DefaultUdmConfigPath := path_util.Go free5gcWithOCFPath(" free5gcWithOCF/config/udmcfg.conf")
+		DefaultUdmConfigPath := path_util.Go free5gcPath(" free5gcWithOCF/config/udmcfg.conf")
 		factory.InitConfigFactory(DefaultUdmConfigPath)
 	}
 
@@ -121,13 +121,13 @@ func (udm *UDM) Start() {
 	ueauthentication.AddService(router)
 	uecontextmanagement.AddService(router)
 
-	udmLogPath := path_util.Go free5gcWithOCFPath(" free5gcWithOCF/udmsslkey.log")
-	udmPemPath := path_util.Go free5gcWithOCFPath(" free5gcWithOCF/support/TLS/udm.pem")
-	udmKeyPath := path_util.Go free5gcWithOCFPath(" free5gcWithOCF/support/TLS/udm.key")
+	udmLogPath := path_util.Go free5gcPath(" free5gcWithOCF/udmsslkey.log")
+	udmPemPath := path_util.Go free5gcPath(" free5gcWithOCF/support/TLS/udm.pem")
+	udmKeyPath := path_util.Go free5gcPath(" free5gcWithOCF/support/TLS/udm.key")
 	if sbi.Tls != nil {
-		udmLogPath = path_util.Go free5gcWithOCFPath(sbi.Tls.Log)
-		udmPemPath = path_util.Go free5gcWithOCFPath(sbi.Tls.Pem)
-		udmKeyPath = path_util.Go free5gcWithOCFPath(sbi.Tls.Key)
+		udmLogPath = path_util.Go free5gcPath(sbi.Tls.Log)
+		udmPemPath = path_util.Go free5gcPath(sbi.Tls.Pem)
+		udmKeyPath = path_util.Go free5gcPath(sbi.Tls.Key)
 	}
 
 	self := context.UDM_Self()

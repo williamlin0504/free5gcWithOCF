@@ -33,7 +33,7 @@ func main() {
 	app.Name = "smf"
 	fmt.Print(app.Name, "\n")
 	appLog.Infoln("SMF version: ", version.GetVersion())
-	app.Usage = "- free5gcWithOCFcfg common configuration file -smfcfg smf configuration file"
+	app.Usage = "- free5gccfg common configuration file -smfcfg smf configuration file"
 	app.Action = action
 	app.Flags = SMF.GetCliCmd()
 
@@ -43,7 +43,7 @@ func main() {
 }
 
 func action(c *cli.Context) {
-	app.AppInitializeWillInitialize(c.String(" free5gcWithOCFcfg"))
+	app.AppInitializeWillInitialize(c.String(" free5gccfg"))
 	SMF.Initialize(c)
 	SMF.Start()
 }

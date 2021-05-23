@@ -8,7 +8,7 @@ import (
 var PublicPath string
 
 func init() {
-	PublicPath = path_util.Go free5gcWithOCFPath(" free5gcWithOCF/webconsole/public")
+	PublicPath = path_util.Go free5gcPath(" free5gcWithOCF/webconsole/public")
 }
 
 func ReturnPublic() gin.HandlerFunc {

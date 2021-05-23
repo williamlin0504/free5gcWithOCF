@@ -8,7 +8,7 @@ import (
 	" free5gcWithOCF/lib/path_util"
 )
 
-var Free5gcLogDir string = path_util.Go free5gcWithOCFPath(" free5gcWithOCF/log") + "/"
+var Free5gcLogDir string = path_util.Go free5gcPath(" free5gcWithOCF/log") + "/"
 var LibLogDir string = Free5gcLogDir + "lib/"
 var NfLogDir string = Free5gcLogDir + "nf/"
 

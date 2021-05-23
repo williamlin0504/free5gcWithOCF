@@ -44,7 +44,7 @@ var config Config
 
 var ccfCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  " free5gcWithOCFcfg",
+		Name:  " free5gccfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
@@ -71,7 +71,7 @@ func (*CCF) Initialize(c *cli.Context) {
 	if config.ccfcfg != "" {
 		factory.InitConfigFactory(config.ccfcfg)
 	} else {
-		DefaultCcfConfigPath := path_util.Go free5gcWithOCFPath(" free5gcWithOCF/config/ccfcfg.conf")
+		DefaultCcfConfigPath := path_util.Go free5gcPath(" free5gcWithOCF/config/ccfcfg.conf")
 		factory.InitConfigFactory(DefaultCcfConfigPath)
 	}
 

@@ -33,7 +33,7 @@ var config Config
 
 var n3iwfCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  " free5gcWithOCFcfg",
+		Name:  " free5gccfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
@@ -61,7 +61,7 @@ func (*N3IWF) Initialize(c *cli.Context) {
 	if config.n3iwfcfg != "" {
 		factory.InitConfigFactory(config.n3iwfcfg)
 	} else {
-		DefaultN3iwfConfigPath := path_util.Go free5gcWithOCFPath(" free5gcWithOCF/config/n3iwfcfg.conf")
+		DefaultN3iwfConfigPath := path_util.Go free5gcPath(" free5gcWithOCF/config/n3iwfcfg.conf")
 		factory.InitConfigFactory(DefaultN3iwfConfigPath)
 	}
 
