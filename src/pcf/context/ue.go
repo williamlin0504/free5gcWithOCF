@@ -61,7 +61,7 @@ type UeAMPolicyData struct {
 	// related to UDR Subscription Data
 	AmPolicyData *models.AmPolicyData // Svbscription Data
 	// Corresponding UE
-	pcfUe *UeContext
+	PcfUe *UeContext
 	// AMF status change subscription
 	AmfStatusChangeSubscription *AMFStatusSubscriptionData
 }
@@ -94,7 +94,7 @@ type UeSmPolicyData struct {
 	// related to AppSession
 	AppSessions map[string]bool // related appSessionId
 	// Corresponding UE
-	pcfUe *UeContext
+	PcfUe *UeContext
 }
 
 // NewUeAMPolicyData returns created UeAMPolicyData data and insert this data to Ue.AMPolicyData with assolId as key
@@ -115,7 +115,7 @@ func (ue *UeContext) NewUeAMPolicyData(assolId string, req models.PolicyAssociat
 		Guami:             req.Guami,
 		UserLoc:           req.UserLoc,
 		ServiveName:       req.ServiveName,
-		pcfUe:             ue,
+		PcfUe:             ue,
 	}
 	ue.AMPolicyData[assolId].Pras = make(map[string]models.PresenceInfo)
 	return ue.AMPolicyData[assolId]
@@ -154,7 +154,7 @@ func (ue *UeContext) NewUeSmPolicyData(
 	// data.RefToAmPolicy = amData
 	data.PccRuleIdGenarator = 1
 	data.ChargingIdGenarator = 1
-	data.pcfUe = ue
+	data.PcfUe = ue
 	ue.SmPolicyData[key] = &data
 	return &data
 }
@@ -228,7 +228,7 @@ func (policy *UeSmPolicyData) RemovePccRule(pccRuleId string) error {
 // Check if the afEvent exists in smPolicy
 func (policy *UeSmPolicyData) CheckRelatedAfEvent(event models.AfEvent) (found bool) {
 	for appSessionId := range policy.AppSessions {
-		if val, ok := pcf_Self().AppSessionPool.Load(appSessionId); ok {
+		if val, ok := PCF_Self().AppSessionPool.Load(appSessionId); ok {
 			appSession := val.(*AppSessionData)
 			for afEvent := range appSession.Events {
 				if afEvent == event {
@@ -249,7 +249,7 @@ func (policy *UeSmPolicyData) ArrangeExistEventSubscription() (changed bool) {
 		case models.PolicyControlRequestTrigger_PLMN_CH: // PLMN Change
 			afEvent = models.AfEvent_PLMN_CHG
 		case models.PolicyControlRequestTrigger_QOS_NOTIF:
-			// SMF notify pcf when receiving from RAN that QoS can/can't be guaranteed (subsclause 4.2.4.20 in TS29512) (always)
+			// SMF notify PCF when receiving from RAN that QoS can/can't be guaranteed (subsclause 4.2.4.20 in TS29512) (always)
 			afEvent = models.AfEvent_QOS_NOTIF
 		case models.PolicyControlRequestTrigger_SUCC_RES_ALLO:
 			// Successful resource allocation (subsclause 4.2.6.5.5, 4.2.4.14 in TS29512)
@@ -359,7 +359,7 @@ func (ue *UeContext) FindAMPolicy(anType models.AccessType, plmnId *models.Netwo
 }
 
 // Return App Session Id with format "ue.Supi-%d" which be allocated
-func (ue *UeContext) AllocUeAppSessionId(context *pcfContext) string {
+func (ue *UeContext) AllocUeAppSessionId(context *PCFContext) string {
 	var allocID int64
 	var err error
 	if allocID, err = ue.AppSessionIDGenerator.Allocate(); err != nil {

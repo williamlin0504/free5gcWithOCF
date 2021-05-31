@@ -69,7 +69,7 @@ func TestDecode(t *testing.T) {
 		"AmfInfo":              &models.AmfInfo{},
 		"SmfInfo":              &models.SmfInfo{},
 		"UpfInfo":              &models.UpfInfo{},
-		"pcfInfo":              &models.pcfInfo{},
+		"PcfInfo":              &models.PcfInfo{},
 		"BsfInfo":              &models.BsfInfo{},
 		"ChfInfo":              &models.ChfInfo{},
 		"NrfInfo":              &models.NrfInfo{},

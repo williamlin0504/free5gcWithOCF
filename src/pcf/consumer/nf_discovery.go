@@ -32,7 +32,7 @@ func SendSearchNFInstances(
 
 func SendNFIntancesUDR(nrfUri, id string) string {
 	targetNfType := models.NfType_UDR
-	requestNfType := models.NfType_pcf
+	requestNfType := models.NfType_PCF
 	localVarOptionals := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{
 		// 	DataSet: optional.NewInterface(models.DataSetId_SUBSCRIPTION),
 	}
@@ -60,7 +60,7 @@ func SendNFIntancesUDR(nrfUri, id string) string {
 
 func SendNFIntancesAMF(nrfUri string, guami models.Guami, serviceName models.ServiceName) string {
 	targetNfType := models.NfType_AMF
-	requestNfType := models.NfType_pcf
+	requestNfType := models.NfType_PCF
 
 	localVarOptionals := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{
 		Guami: optional.NewInterface(util.MarshToJsonString(guami)),
@@ -89,7 +89,7 @@ func SearchAvailableAMFs(nrfUri string, serviceName models.ServiceName) (
 	amfInfos []pcf_context.AMFStatusSubscriptionData) {
 	localVarOptionals := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{}
 
-	result, err := SendSearchNFInstances(nrfUri, models.NfType_AMF, models.NfType_pcf, localVarOptionals)
+	result, err := SendSearchNFInstances(nrfUri, models.NfType_AMF, models.NfType_PCF, localVarOptionals)
 	if err != nil {
 		logger.Consumerlog.Error(err.Error())
 		return

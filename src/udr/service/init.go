@@ -36,7 +36,7 @@ var config Config
 
 var udrCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  "free5gpcfg",
+		Name:  "free5gccfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{

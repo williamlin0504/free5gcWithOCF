@@ -13,7 +13,7 @@ import (
 func AMPolicyControlCreate(ue *amf_context.AmfUe, anType models.AccessType) (*models.ProblemDetails, error) {
 
 	configuration := Npcf_AMPolicy.NewConfiguration()
-	configuration.SetBasePath(ue.pcfUri)
+	configuration.SetBasePath(ue.PcfUri)
 	client := Npcf_AMPolicy.NewAPIClient(configuration)
 
 	amfSelf := amf_context.AMF_Self()
@@ -75,7 +75,7 @@ func AMPolicyControlCreate(ue *amf_context.AmfUe, anType models.AccessType) (*mo
 func AMPolicyControlUpdate(ue *amf_context.AmfUe, updateRequest models.PolicyAssociationUpdateRequest) (
 	problemDetails *models.ProblemDetails, err error) {
 	configuration := Npcf_AMPolicy.NewConfiguration()
-	configuration.SetBasePath(ue.pcfUri)
+	configuration.SetBasePath(ue.PcfUri)
 	client := Npcf_AMPolicy.NewAPIClient(configuration)
 
 	res, httpResp, localErr := client.DefaultApi.PoliciesPolAssoIdUpdatePost(
@@ -114,7 +114,7 @@ func AMPolicyControlUpdate(ue *amf_context.AmfUe, updateRequest models.PolicyAss
 func AMPolicyControlDelete(ue *amf_context.AmfUe) (problemDetails *models.ProblemDetails, err error) {
 
 	configuration := Npcf_AMPolicy.NewConfiguration()
-	configuration.SetBasePath(ue.pcfUri)
+	configuration.SetBasePath(ue.PcfUri)
 	client := Npcf_AMPolicy.NewAPIClient(configuration)
 
 	httpResp, localErr := client.DefaultApi.PoliciesPolAssoIdDelete(context.Background(), ue.PolicyAssociationId)

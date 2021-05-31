@@ -30,9 +30,9 @@ func HandleDeletePoliciesPolAssoId(request *http_wrapper.Request) *http_wrapper.
 }
 
 func DeletePoliciesPolAssoIdProcedure(polAssoId string) *models.ProblemDetails {
-	ue := pcf_context.pcf_Self().pcfUeFindByPolicyId(polAssoId)
+	ue := pcf_context.PCF_Self().PCFUeFindByPolicyId(polAssoId)
 	if ue == nil || ue.AMPolicyData[polAssoId] == nil {
-		problemDetails := util.GetProblemDetail("polAssoId not found  in pcf", util.CONTEXT_NOT_FOUND)
+		problemDetails := util.GetProblemDetail("polAssoId not found  in PCF", util.CONTEXT_NOT_FOUND)
 		return &problemDetails
 	}
 	delete(ue.AMPolicyData, polAssoId)
@@ -59,9 +59,9 @@ func HandleGetPoliciesPolAssoId(request *http_wrapper.Request) *http_wrapper.Res
 }
 
 func GetPoliciesPolAssoIdProcedure(polAssoId string) (*models.PolicyAssociation, *models.ProblemDetails) {
-	ue := pcf_context.pcf_Self().pcfUeFindByPolicyId(polAssoId)
+	ue := pcf_context.PCF_Self().PCFUeFindByPolicyId(polAssoId)
 	if ue == nil || ue.AMPolicyData[polAssoId] == nil {
-		problemDetails := util.GetProblemDetail("polAssoId not found  in pcf", util.CONTEXT_NOT_FOUND)
+		problemDetails := util.GetProblemDetail("polAssoId not found  in PCF", util.CONTEXT_NOT_FOUND)
 		return nil, &problemDetails
 	}
 	amPolicyData := ue.AMPolicyData[polAssoId]
@@ -107,9 +107,9 @@ func HandleUpdatePostPoliciesPolAssoId(request *http_wrapper.Request) *http_wrap
 
 func UpdatePostPoliciesPolAssoIdProcedure(polAssoId string,
 	policyAssociationUpdateRequest models.PolicyAssociationUpdateRequest) (*models.PolicyUpdate, *models.ProblemDetails) {
-	ue := pcf_context.pcf_Self().pcfUeFindByPolicyId(polAssoId)
+	ue := pcf_context.PCF_Self().PCFUeFindByPolicyId(polAssoId)
 	if ue == nil || ue.AMPolicyData[polAssoId] == nil {
-		problemDetails := util.GetProblemDetail("polAssoId not found  in pcf", util.CONTEXT_NOT_FOUND)
+		problemDetails := util.GetProblemDetail("polAssoId not found  in PCF", util.CONTEXT_NOT_FOUND)
 		return nil, &problemDetails
 	}
 
@@ -203,13 +203,13 @@ func HandlePostPolicies(request *http_wrapper.Request) *http_wrapper.Response {
 func PostPoliciesProcedure(polAssoId string,
 	policyAssociationRequest models.PolicyAssociationRequest) (*models.PolicyAssociation, string, *models.ProblemDetails) {
 	var response models.PolicyAssociation
-	pcfSelf := pcf_context.pcf_Self()
+	pcfSelf := pcf_context.PCF_Self()
 	var ue *pcf_context.UeContext
 	if val, ok := pcfSelf.UePool.Load(policyAssociationRequest.Supi); ok {
 		ue = val.(*pcf_context.UeContext)
 	}
 	if ue == nil {
-		if newUe, err := pcfSelf.NewpcfUe(policyAssociationRequest.Supi); err != nil {
+		if newUe, err := pcfSelf.NewPCFUe(policyAssociationRequest.Supi); err != nil {
 			// supi format dose not match "imsi-..."
 			problemDetail := util.GetProblemDetail("Supi Format Error", util.ERROR_REQUEST_PARAMETERS)
 			logger.AMpolicylog.Errorln(err.Error())
@@ -222,8 +222,8 @@ func PostPoliciesProcedure(polAssoId string,
 	if udrUri == "" {
 		// Can't find any UDR support this Ue
 		pcfSelf.UePool.Delete(ue.Supi)
-		problemDetail := util.GetProblemDetail("Ue is not supported in pcf", util.USER_UNKNOWN)
-		logger.AMpolicylog.Errorf("Ue[%s] is not supported in pcf", ue.Supi)
+		problemDetail := util.GetProblemDetail("Ue is not supported in PCF", util.USER_UNKNOWN)
+		logger.AMpolicylog.Errorf("Ue[%s] is not supported in PCF", ue.Supi)
 		return nil, "", &problemDetail
 	}
 	ue.UdrUri = udrUri
@@ -247,7 +247,7 @@ func PostPoliciesProcedure(polAssoId string,
 		amPolicy.AmPolicyData = &amData
 	}
 
-	// TODO: according to pcf Policy to determine ServAreaRes, Rfsp, SuppFeat
+	// TODO: according to PCF Policy to determine ServAreaRes, Rfsp, SuppFeat
 	// amPolicy.ServAreaRes =
 	// amPolicy.Rfsp =
 	var requestSuppFeat openapi.SupportedFeature
@@ -256,8 +256,8 @@ func PostPoliciesProcedure(polAssoId string,
 	} else {
 		requestSuppFeat = suppFeat
 	}
-	amPolicy.SuppFeat = pcfSelf.pcfSuppFeats[models.
-		ServiceName_Npcf_AM_POLICY_CONTROL].NegotiateWith(
+	amPolicy.SuppFeat = pcfSelf.PcfSuppFeats[models.
+		ServiceName_NPCF_AM_POLICY_CONTROL].NegotiateWith(
 		requestSuppFeat).String()
 	if amPolicy.Rfsp != 0 {
 		response.Rfsp = amPolicy.Rfsp
@@ -268,7 +268,7 @@ func PostPoliciesProcedure(polAssoId string,
 	// rsp.Pras
 	ue.PolAssociationIDGenerator++
 	// Create location header for update, delete, get
-	locationHeader := util.GetResourceUri(models.ServiceName_Npcf_AM_POLICY_CONTROL, assolId)
+	locationHeader := util.GetResourceUri(models.ServiceName_NPCF_AM_POLICY_CONTROL, assolId)
 	logger.AMpolicylog.Tracef("AMPolicy association Id[%s] Create", assolId)
 
 	if policyAssociationRequest.Guami != nil {
@@ -378,5 +378,5 @@ func getUdrUri(ue *pcf_context.UeContext) string {
 	if ue.UdrUri != "" {
 		return ue.UdrUri
 	}
-	return consumer.SendNFIntancesUDR(pcf_context.pcf_Self().NrfUri, ue.Supi)
+	return consumer.SendNFIntancesUDR(pcf_context.PCF_Self().NrfUri, ue.Supi)
 }

@@ -385,7 +385,7 @@ func buildFilter(queryParameters url.Values) bson.M {
 					},
 				},
 			}
-		} else if targetNfType == "pcf" {
+		} else if targetNfType == "PCF" {
 			dnnFilter = bson.M{
 				"$or": []bson.M{
 					{
@@ -521,7 +521,7 @@ func buildFilter(queryParameters url.Values) bson.M {
 		var supiFilter bson.M
 		supi = queryParameters["supi"][0]
 		supi = supi[5:]
-		if targetNfType == "pcf" {
+		if targetNfType == "PCF" {
 			supiFilter = bson.M{
 				"$or": []bson.M{
 					{
@@ -1676,7 +1676,7 @@ func complexQueryFilterSubprocess(queryParameters map[string]*AtomElem, complexQ
 	if queryParameters["supi"] != nil {
 		var supiFilter bson.M
 		supi = queryParameters["supi"].value
-		if targetNfType == "pcf" {
+		if targetNfType == "PCF" {
 			supiFilter = bson.M{
 				"pcfInfo": bson.M{
 					"$elemMatch": bson.M{

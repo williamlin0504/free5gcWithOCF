@@ -8,7 +8,7 @@ import (
 )
 
 func HandleAmfStatusChangeNotify(request *http_wrapper.Request) *http_wrapper.Response {
-	logger.CallbackLog.Warnf("[pcf] Handle Amf Status Change Notify is not implemented.")
+	logger.CallbackLog.Warnf("[PCF] Handle Amf Status Change Notify is not implemented.")
 
 	notification := request.Body.(models.AmfStatusChangeNotification)
 
@@ -23,7 +23,7 @@ func AmfStatusChangeNotifyProcedure(notification models.AmfStatusChangeNotificat
 }
 
 func HandleSmPolicyNotify(request *http_wrapper.Request) *http_wrapper.Response {
-	logger.CallbackLog.Warnf("[pcf] Handle Sm Policy Notify is not implemented.")
+	logger.CallbackLog.Warnf("[PCF] Handle Sm Policy Notify is not implemented.")
 
 	notification := request.Body.(models.PolicyDataChangeNotification)
 	supi := request.Params["ReqURI"]

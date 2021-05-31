@@ -26,8 +26,8 @@ type UeContext struct {
 	SmsfId                   string                  `json:"smsfId,omitempty"`
 	SeafData                 *SeafData               `json:"seafData,omitempty"`
 	Var5gMmCapability        string                  `json:"5gMmCapability,omitempty"`
-	pcfId                    string                  `json:"pcfId,omitempty"`
-	pcfAmPolicyUri           string                  `json:"pcfAmPolicyUri,omitempty"`
+	PcfId                    string                  `json:"pcfId,omitempty"`
+	PcfAmPolicyUri           string                  `json:"pcfAmPolicyUri,omitempty"`
 	AmPolicyReqTriggerList   []AmPolicyReqTrigger    `json:"amPolicyReqTriggerList,omitempty"`
 	HpcfId                   string                  `json:"hpcfId,omitempty"`
 	RestrictedRatList        []RatType               `json:"restrictedRatList,omitempty"`

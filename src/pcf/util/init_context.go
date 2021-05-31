@@ -12,14 +12,14 @@ import (
 	"free5gc/src/pcf/logger"
 )
 
-// Init pcf Context from config flie
-func InitpcfContext(context *context.pcfContext) {
-	config := factory.pcfConfig
+// Init PCF Context from config flie
+func InitpcfContext(context *context.PCFContext) {
+	config := factory.PcfConfig
 	logger.UtilLog.Infof("pcfconfig Info: Version[%s] Description[%s]", config.Info.Version, config.Info.Description)
 	configuration := config.Configuration
 	context.NfId = uuid.New().String()
-	if configuration.pcfName != "" {
-		context.Name = configuration.pcfName
+	if configuration.PcfName != "" {
+		context.Name = configuration.PcfName
 	}
 	sbi := configuration.Sbi
 	context.NrfUri = configuration.NrfUri
@@ -59,9 +59,9 @@ func InitpcfContext(context *context.pcfContext) {
 	context.DefaultBdtRefId = configuration.DefaultBdtRefId
 	for _, service := range context.NfService {
 		var err error
-		context.pcfServiceUris[service.ServiceName] =
+		context.PcfServiceUris[service.ServiceName] =
 			service.ApiPrefix + "/" + string(service.ServiceName) + "/" + (*service.Versions)[0].ApiVersionInUri
-		context.pcfSuppFeats[service.ServiceName], err = openapi.NewSupportedFeature(service.SupportedFeatures)
+		context.PcfSuppFeats[service.ServiceName], err = openapi.NewSupportedFeature(service.SupportedFeatures)
 		if err != nil {
 			logger.UtilLog.Errorf("openapi NewSupportedFeature error: %+v", err)
 		}

@@ -19,7 +19,7 @@ const (
 	Nullrequesternftype_SMF      Nullrequesternftype = "SMF"
 	Nullrequesternftype_AUSF     Nullrequesternftype = "AUSF"
 	Nullrequesternftype_NEF      Nullrequesternftype = "NEF"
-	Nullrequesternftype_pcf      Nullrequesternftype = "pcf"
+	Nullrequesternftype_PCF      Nullrequesternftype = "PCF"
 	Nullrequesternftype_SMSF     Nullrequesternftype = "SMSF"
 	Nullrequesternftype_NSSF     Nullrequesternftype = "NSSF"
 	Nullrequesternftype_UDR      Nullrequesternftype = "UDR"

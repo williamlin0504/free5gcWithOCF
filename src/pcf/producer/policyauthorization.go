@@ -143,7 +143,7 @@ func HandlePostAppSessionsContext(request *http_wrapper.Request) *http_wrapper.R
 func PostAppSessionsContextProcedure(appSessionContext models.AppSessionContext) (*models.AppSessionContext,
 	string, *models.ProblemDetails) {
 	ascReqData := appSessionContext.AscReqData
-	pcfSelf := pcf_context.pcf_Self()
+	pcfSelf := pcf_context.PCF_Self()
 	// Initial BDT policy indication(the only one which is not related to session)
 	if ascReqData.BdtRefId != "" {
 		if err := handleBackgroundDataTransferPolicyIndication(pcfSelf, &appSessionContext); err != nil {
@@ -156,7 +156,7 @@ func PostAppSessionsContextProcedure(appSessionContext models.AppSessionContext)
 			AppSessionContext: &appSessionContext,
 		}
 		pcfSelf.AppSessionPool.Store(appSessionId, &data)
-		locationHeader := util.GetResourceUri(models.ServiceName_Npcf_POLICYAUTHORIZATION, appSessionId)
+		locationHeader := util.GetResourceUri(models.ServiceName_NPCF_POLICYAUTHORIZATION, appSessionId)
 		logger.PolicyAuthorizationlog.Tracef("App Session Id[%s] Create", appSessionId)
 		return &appSessionContext, locationHeader, nil
 	}
@@ -178,7 +178,7 @@ func PostAppSessionsContextProcedure(appSessionContext models.AppSessionContext)
 	}
 	logger.PolicyAuthorizationlog.Infof("Session Binding Success - UeIpv4[%s], UeIpv6[%s], UeMac[%s]",
 		ascReqData.UeIpv4, ascReqData.UeIpv6, ascReqData.UeMac)
-	ue := smPolicy.pcfUe
+	ue := smPolicy.PcfUe
 	updateSMpolicy := false
 
 	var requestSuppFeat openapi.SupportedFeature
@@ -188,7 +188,7 @@ func PostAppSessionsContextProcedure(appSessionContext models.AppSessionContext)
 		requestSuppFeat = tempRequestSuppFeat
 	}
 
-	nSuppFeat := pcfSelf.pcfSuppFeats[models.ServiceName_Npcf_POLICYAUTHORIZATION].NegotiateWith(requestSuppFeat).String()
+	nSuppFeat := pcfSelf.PcfSuppFeats[models.ServiceName_NPCF_POLICYAUTHORIZATION].NegotiateWith(requestSuppFeat).String()
 	// InfluenceOnTrafficRouting = 1 in 29514 &  Traffic Steering Control support = 1 in 29512
 	traffRoutSupp := util.CheckSuppFeat(nSuppFeat, 1) && util.CheckSuppFeat(smPolicy.PolicyDecision.SuppFeat, 1)
 	relatedPccRuleIds := make(map[string]string)
@@ -406,13 +406,13 @@ func PostAppSessionsContextProcedure(appSessionContext models.AppSessionContext)
 		appSessionContext.EvsNotif = nil
 	}
 	pcfSelf.AppSessionPool.Store(appSessionId, &data)
-	locationHeader := util.GetResourceUri(models.ServiceName_Npcf_POLICYAUTHORIZATION, appSessionId)
+	locationHeader := util.GetResourceUri(models.ServiceName_NPCF_POLICYAUTHORIZATION, appSessionId)
 	logger.PolicyAuthorizationlog.Tracef("App Session Id[%s] Create", appSessionId)
 	// Send Notification to SMF
 	if updateSMpolicy {
 		smPolicyId := fmt.Sprintf("%s-%d", ue.Supi, smPolicy.PolicyContext.PduSessionId)
 		notification := models.SmPolicyNotification{
-			ResourceUri:      util.GetResourceUri(models.ServiceName_Npcf_SMPOLICYCONTROL, smPolicyId),
+			ResourceUri:      util.GetResourceUri(models.ServiceName_NPCF_SMPOLICYCONTROL, smPolicyId),
 			SmPolicyDecision: smPolicy.PolicyDecision,
 		}
 		SendSMPolicyUpdateNotification(ue, smPolicyId, notification)
@@ -436,7 +436,7 @@ func HandleDeleteAppSessionContext(request *http_wrapper.Request) *http_wrapper.
 
 func DeleteAppSessionContextProcedure(appSessionId string,
 	eventsSubscReqData *models.EventsSubscReqData) *models.ProblemDetails {
-	pcfSelf := pcf_context.pcf_Self()
+	pcfSelf := pcf_context.PCF_Self()
 	var appSession *pcf_context.AppSessionData
 	if val, ok := pcfSelf.AppSessionPool.Load(appSessionId); ok {
 		appSession = val.(*pcf_context.AppSessionData)
@@ -477,12 +477,12 @@ func DeleteAppSessionContextProcedure(appSessionId string,
 	smPolicy.ArrangeExistEventSubscription()
 
 	// Notify SMF About Pcc Rule moval
-	smPolicyId := fmt.Sprintf("%s-%d", smPolicy.pcfUe.Supi, smPolicy.PolicyContext.PduSessionId)
+	smPolicyId := fmt.Sprintf("%s-%d", smPolicy.PcfUe.Supi, smPolicy.PolicyContext.PduSessionId)
 	notification := models.SmPolicyNotification{
-		ResourceUri:      util.GetResourceUri(models.ServiceName_Npcf_SMPOLICYCONTROL, smPolicyId),
+		ResourceUri:      util.GetResourceUri(models.ServiceName_NPCF_SMPOLICYCONTROL, smPolicyId),
 		SmPolicyDecision: smPolicy.PolicyDecision,
 	}
-	SendSMPolicyUpdateNotification(smPolicy.pcfUe, smPolicyId, notification)
+	SendSMPolicyUpdateNotification(smPolicy.PcfUe, smPolicyId, notification)
 	logger.PolicyAuthorizationlog.Tracef("Send SM Policy[%s] Update Notification", smPolicyId)
 	return nil
 }
@@ -501,7 +501,7 @@ func HandleGetAppSessionContext(request *http_wrapper.Request) *http_wrapper.Res
 }
 
 func GetAppSessionContextProcedure(appSessionId string) (*models.ProblemDetails, *models.AppSessionContext) {
-	pcfSelf := pcf_context.pcf_Self()
+	pcfSelf := pcf_context.PCF_Self()
 
 	var appSession *pcf_context.AppSessionData
 	if val, ok := pcfSelf.AppSessionPool.Load(appSessionId); ok {
@@ -531,7 +531,7 @@ func HandleModAppSessionContext(request *http_wrapper.Request) *http_wrapper.Res
 
 func ModAppSessionContextProcedure(appSessionId string,
 	appSessionContextUpdateData models.AppSessionContextUpdateData) (*models.ProblemDetails, *models.AppSessionContext) {
-	pcfSelf := pcf_context.pcf_Self()
+	pcfSelf := pcf_context.PCF_Self()
 	var appSession *pcf_context.AppSessionData
 	if val, ok := pcfSelf.AppSessionPool.Load(appSessionId); ok {
 		appSession = val.(*pcf_context.AppSessionData)
@@ -777,12 +777,12 @@ func ModAppSessionContextProcedure(appSessionId string,
 
 	// Send Notification to SMF
 	if updateSMpolicy {
-		smPolicyId := fmt.Sprintf("%s-%d", smPolicy.pcfUe.Supi, smPolicy.PolicyContext.PduSessionId)
+		smPolicyId := fmt.Sprintf("%s-%d", smPolicy.PcfUe.Supi, smPolicy.PolicyContext.PduSessionId)
 		notification := models.SmPolicyNotification{
-			ResourceUri:      util.GetResourceUri(models.ServiceName_Npcf_SMPOLICYCONTROL, smPolicyId),
+			ResourceUri:      util.GetResourceUri(models.ServiceName_NPCF_SMPOLICYCONTROL, smPolicyId),
 			SmPolicyDecision: smPolicy.PolicyDecision,
 		}
-		SendSMPolicyUpdateNotification(smPolicy.pcfUe, smPolicyId, notification)
+		SendSMPolicyUpdateNotification(smPolicy.PcfUe, smPolicyId, notification)
 		logger.PolicyAuthorizationlog.Tracef("Send SM Policy[%s] Update Notification", smPolicyId)
 	}
 	return nil, appContext
@@ -802,7 +802,7 @@ func HandleDeleteEventsSubscContext(request *http_wrapper.Request) *http_wrapper
 }
 
 func DeleteEventsSubscContextProcedure(appSessionId string) *models.ProblemDetails {
-	pcfSelf := pcf_context.pcf_Self()
+	pcfSelf := pcf_context.PCF_Self()
 	var appSession *pcf_context.AppSessionData
 	if val, ok := pcfSelf.AppSessionPool.Load(appSessionId); ok {
 		appSession = val.(*pcf_context.AppSessionData)
@@ -823,12 +823,12 @@ func DeleteEventsSubscContextProcedure(appSessionId string) *models.ProblemDetai
 	smPolicy := appSession.SmPolicyData
 	// Send Notification to SMF
 	if changed := appSession.SmPolicyData.ArrangeExistEventSubscription(); changed {
-		smPolicyId := fmt.Sprintf("%s-%d", smPolicy.pcfUe.Supi, smPolicy.PolicyContext.PduSessionId)
+		smPolicyId := fmt.Sprintf("%s-%d", smPolicy.PcfUe.Supi, smPolicy.PolicyContext.PduSessionId)
 		notification := models.SmPolicyNotification{
-			ResourceUri:      util.GetResourceUri(models.ServiceName_Npcf_SMPOLICYCONTROL, smPolicyId),
+			ResourceUri:      util.GetResourceUri(models.ServiceName_NPCF_SMPOLICYCONTROL, smPolicyId),
 			SmPolicyDecision: smPolicy.PolicyDecision,
 		}
-		SendSMPolicyUpdateNotification(smPolicy.pcfUe, smPolicyId, notification)
+		SendSMPolicyUpdateNotification(smPolicy.PcfUe, smPolicyId, notification)
 		logger.PolicyAuthorizationlog.Tracef("Send SM Policy[%s] Update Notification", smPolicyId)
 	}
 	return nil
@@ -869,7 +869,7 @@ func SendAppSessionEventNotification(appSession *pcf_context.AppSessionData, req
 	uri := appSession.EventUri
 	if uri != "" {
 		request.EvSubsUri = fmt.Sprintf("%s/events-subscription",
-			util.GetResourceUri(models.ServiceName_Npcf_POLICYAUTHORIZATION, appSession.AppSessionId))
+			util.GetResourceUri(models.ServiceName_NPCF_POLICYAUTHORIZATION, appSession.AppSessionId))
 		client := util.GetNpcfPolicyAuthorizationCallbackClient()
 		httpResponse, err := client.PolicyAuthorizationEventNotificationApi.PolicyAuthorizationEventNotification(
 			context.Background(), uri, request)
@@ -894,7 +894,7 @@ func SendAppSessionEventNotification(appSession *pcf_context.AppSessionData, req
 
 func UpdateEventsSubscContextProcedure(appSessionId string, eventsSubscReqData models.EventsSubscReqData) (
 	*models.UpdateEventsSubscResponse, string, int, *models.ProblemDetails) {
-	pcfSelf := pcf_context.pcf_Self()
+	pcfSelf := pcf_context.PCF_Self()
 
 	var appSession *pcf_context.AppSessionData
 	if val, ok := pcfSelf.AppSessionPool.Load(appSessionId); ok {
@@ -1008,17 +1008,17 @@ func UpdateEventsSubscContextProcedure(appSessionId string, eventsSubscReqData m
 
 	// Send Notification to SMF
 	if updataSmPolicy || changed {
-		smPolicyId := fmt.Sprintf("%s-%d", smPolicy.pcfUe.Supi, smPolicy.PolicyContext.PduSessionId)
+		smPolicyId := fmt.Sprintf("%s-%d", smPolicy.PcfUe.Supi, smPolicy.PolicyContext.PduSessionId)
 		notification := models.SmPolicyNotification{
-			ResourceUri:      util.GetResourceUri(models.ServiceName_Npcf_SMPOLICYCONTROL, smPolicyId),
+			ResourceUri:      util.GetResourceUri(models.ServiceName_NPCF_SMPOLICYCONTROL, smPolicyId),
 			SmPolicyDecision: smPolicy.PolicyDecision,
 		}
-		SendSMPolicyUpdateNotification(smPolicy.pcfUe, smPolicyId, notification)
+		SendSMPolicyUpdateNotification(smPolicy.PcfUe, smPolicyId, notification)
 		logger.PolicyAuthorizationlog.Tracef("Send SM Policy[%s] Update Notification", smPolicyId)
 	}
 	if created {
 		locationHeader := fmt.Sprintf("%s/events-subscription",
-			util.GetResourceUri(models.ServiceName_Npcf_POLICYAUTHORIZATION, appSessionId))
+			util.GetResourceUri(models.ServiceName_NPCF_POLICYAUTHORIZATION, appSessionId))
 		logger.PolicyAuthorizationlog.Tracef("App Session Id[%s] Create Subscription", appSessionId)
 		return &resp, locationHeader, http.StatusCreated, nil
 	} else if resp.EvsNotif != nil {
@@ -1038,7 +1038,7 @@ func SendAppSessionTermination(appSession *pcf_context.AppSessionData, request m
 	}
 	uri := appSession.AppSessionContext.AscReqData.NotifUri
 	if uri != "" {
-		request.ResUri = util.GetResourceUri(models.ServiceName_Npcf_POLICYAUTHORIZATION, appSession.AppSessionId)
+		request.ResUri = util.GetResourceUri(models.ServiceName_NPCF_POLICYAUTHORIZATION, appSession.AppSessionId)
 		client := util.GetNpcfPolicyAuthorizationCallbackClient()
 		httpResponse, err := client.PolicyAuthorizationTerminateRequestApi.PolicyAuthorizationTerminateRequest(
 			context.Background(), uri, request)
@@ -1062,7 +1062,7 @@ func SendAppSessionTermination(appSession *pcf_context.AppSessionData, request m
 }
 
 // Handle Create/ Modify  Background Data Transfer Policy Indication
-func handleBackgroundDataTransferPolicyIndication(pcfSelf *pcf_context.pcfContext,
+func handleBackgroundDataTransferPolicyIndication(pcfSelf *pcf_context.PCFContext,
 	appContext *models.AppSessionContext) (err error) {
 	req := appContext.AscReqData
 
@@ -1074,7 +1074,7 @@ func handleBackgroundDataTransferPolicyIndication(pcfSelf *pcf_context.pcfContex
 	}
 	respData := models.AppSessionContextRespData{
 		ServAuthInfo: models.ServAuthInfo_NOT_KNOWN,
-		SuppFeat: pcfSelf.pcfSuppFeats[models.ServiceName_Npcf_POLICYAUTHORIZATION].NegotiateWith(
+		SuppFeat: pcfSelf.PcfSuppFeats[models.ServiceName_NPCF_POLICYAUTHORIZATION].NegotiateWith(
 			requestSuppFeat).String(),
 	}
 	client := util.GetNudrClient(getDefaultUdrUri(pcfSelf))
@@ -1127,7 +1127,7 @@ func handleSponsoredConnectivityInformation(smPolicy *pcf_context.UeSmPolicyData
 				smPolicy.PolicyDecision.PccRules[pccRuleId] = pccRule
 			}
 			// disable the usage monitoring
-			// TODO: As a result, pcf gets the accumulated usage of the sponsored data connectivity
+			// TODO: As a result, PCF gets the accumulated usage of the sponsored data connectivity
 			delete(smPolicy.PolicyDecision.UmDecs, umId)
 		}
 	} else {
@@ -1152,10 +1152,10 @@ func handleSponsoredConnectivityInformation(smPolicy *pcf_context.UeSmPolicyData
 			} else {
 				chgIdUsed = true
 			}
-			// TODO: pcf, based on operator policies, shall check whether it is required to
+			// TODO: PCF, based on operator policies, shall check whether it is required to
 			// validate the sponsored connectivity data.
 			// If it is required, it shall perform the authorizations based on sponsored data connectivity profiles.
-			// If the authorization fails, the pcf shall send HTTP "403 Forbidden" with the "cause" attribute set to
+			// If the authorization fails, the PCF shall send HTTP "403 Forbidden" with the "cause" attribute set to
 			// "UNAUTHORIZED_SPONSORED_DATA_CONNECTIVITY"
 			pccRule.RefChgData = []string{chgData.ChgId}
 			chgData.ReportingLevel = models.ReportingLevel_SPON_CON_LEVEL

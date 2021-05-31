@@ -16,5 +16,5 @@ type UeContextCreatedData struct {
 	NgapCause          *NgApCause        `json:"ngapCause,omitempty"`
 	FailedSessionList  []N2SmInformation `json:"failedSessionList,omitempty"`
 	SupportedFeatures  string            `json:"supportedFeatures,omitempty"`
-	pcfReselectedInd   bool              `json:"pcfReselectedInd,omitempty"`
+	PcfReselectedInd   bool              `json:"pcfReselectedInd,omitempty"`
 }

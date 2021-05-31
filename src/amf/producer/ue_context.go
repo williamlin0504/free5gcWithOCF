@@ -93,8 +93,8 @@ func CreateUEContextProcedure(ueContextID string, createUeContextRequest models.
 	//ueContextCreateData.UeContext.SmsfId
 	//ueContextCreateData.UeContext.SeafData
 	//ueContextCreateData.UeContext.Var5gMmCapability
-	//ueContextCreateData.UeContext.pcfId
-	//ueContextCreateData.UeContext.pcfAmPolicyUri
+	//ueContextCreateData.UeContext.PcfId
+	//ueContextCreateData.UeContext.PcfAmPolicyUri
 	//ueContextCreateData.UeContext.AmPolicyReqTriggerList
 	//ueContextCreateData.UeContext.EventSubscriptionList
 	//ueContextCreateData.UeContext.MmContextList
@@ -110,13 +110,13 @@ func CreateUEContextProcedure(ueContextID string, createUeContextRequest models.
 	// response.JsonData.TargetToSourceData =
 	// ue.N1N2Message[ueContextId].Request.JsonData.N2InfoContainer.SmInfo.N2InfoContent
 	createUeContextResponse.JsonData.PduSessionList = ueContextCreateData.PduSessionList
-	createUeContextResponse.JsonData.pcfReselectedInd = false
-	// TODO: When  Target AMF selects a nw pcf for AM policy, set the flag to true.
+	createUeContextResponse.JsonData.PcfReselectedInd = false
+	// TODO: When  Target AMF selects a nw PCF for AM policy, set the flag to true.
 
 	//response.UeContext = ueContextCreateData.UeContext
 	//response.TargetToSourceData = ue.N1N2Message[amfSelf.Uri].Request.JsonData.N2InfoContainer.SmInfo.N2InfoContent
 	//response.PduSessionList = ueContextCreateData.PduSessionList
-	//response.pcfReselectedInd = false // TODO:When  Target AMF selects a nw pcf for AM policy, set the flag to true.
+	//response.PcfReselectedInd = false // TODO:When  Target AMF selects a nw PCF for AM policy, set the flag to true.
 	//
 
 	// return http_wrapper.NewResponse(http.StatusCreated, nil, createUeContextResponse)
@@ -326,12 +326,12 @@ func buildUEContextModel(ue *context.AmfUe) *models.UeContext {
 		}
 	}
 
-	if ue.pcfId != "" {
-		ueContext.pcfId = ue.pcfId
+	if ue.PcfId != "" {
+		ueContext.PcfId = ue.PcfId
 	}
 
 	if ue.AmPolicyUri != "" {
-		ueContext.pcfAmPolicyUri = ue.AmPolicyUri
+		ueContext.PcfAmPolicyUri = ue.AmPolicyUri
 	}
 
 	if ue.AmPolicyAssociation != nil {
@@ -467,7 +467,7 @@ func RegistrationStatusUpdateProcedure(ueContextID string, ueRegStatusUpdateReqD
 			}
 		}
 
-		if ueRegStatusUpdateReqData.pcfReselectedInd {
+		if ueRegStatusUpdateReqData.PcfReselectedInd {
 			problem, err := consumer.AMPolicyControlDelete(ue)
 			if problem != nil {
 				logger.GmmLog.Errorf("AM Policy Control Delete Failed Problem[%+v]", problem)

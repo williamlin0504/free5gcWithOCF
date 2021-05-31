@@ -1,5 +1,5 @@
 /*
- * pcf Configuration Factory
+ * PCF Configuration Factory
  */
 
 package factory
@@ -17,7 +17,7 @@ type Info struct {
 }
 
 type Configuration struct {
-	pcfName string `yaml:"pcfName,omitempty"`
+	PcfName string `yaml:"pcfName,omitempty"`
 
 	Sbi *Sbi `yaml:"sbi,omitempty"`
 

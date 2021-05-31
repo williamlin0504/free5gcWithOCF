@@ -19,7 +19,7 @@ var MediaTypeTo5qiMap = map[models.MediaType]int32{
 	models.MediaType_OTHER:       9,
 }
 
-// Create default pcc rule in pcf,
+// Create default pcc rule in PCF,
 // TODO: use config file to pass default pcc rule
 func CreateDefalutPccRules(id int32) *models.PccRule {
 	flowInfo := []models.FlowInformation{

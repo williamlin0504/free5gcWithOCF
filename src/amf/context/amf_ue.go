@@ -103,9 +103,9 @@ type AmfUe struct {
 	ABBA                              []uint8
 	Kseaf                             string
 	Kamf                              string
-	/* context about pcf */
-	pcfId                        string
-	pcfUri                       string
+	/* context about PCF */
+	PcfId                        string
+	PcfUri                       string
 	PolicyAssociationId          string
 	AmPolicyUri                  string
 	AmPolicyAssociation          *models.PolicyAssociation
@@ -627,12 +627,12 @@ func (ue *AmfUe) CopyDataFromUeContextModel(ueContext models.UeContext) {
 		ue.NCC = uint8(seafData.Ncc)
 	}
 
-	if ueContext.pcfId != "" {
-		ue.pcfId = ueContext.pcfId
+	if ueContext.PcfId != "" {
+		ue.PcfId = ueContext.PcfId
 	}
 
-	if ueContext.pcfAmPolicyUri != "" {
-		ue.AmPolicyUri = ueContext.pcfAmPolicyUri
+	if ueContext.PcfAmPolicyUri != "" {
+		ue.AmPolicyUri = ueContext.PcfAmPolicyUri
 	}
 
 	if len(ueContext.AmPolicyReqTriggerList) > 0 {

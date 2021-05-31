@@ -2,7 +2,7 @@
  * Npcf_BDTPolicyControl Service API
  *
  * The Npcf_BDTPolicyControl Service is used by an NF service consumer to
- * retrieve background data transfer policies from the pcf and to update the pcf with
+ * retrieve background data transfer policies from the PCF and to update the PCF with
  * the background data transfer policy selected by the NF service consumer.
  *
  * API version: 1.0.0
@@ -23,7 +23,7 @@ import (
 	"github.com/urfave/cli"
 )
 
-var pcf = &service.pcf{}
+var PCF = &service.PCF{}
 
 var appLog *logrus.Entry
 
@@ -35,19 +35,19 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "pcf"
 	fmt.Print(app.Name, "\n")
-	appLog.Infoln("pcf version: ", version.GetVersion())
-	app.Usage = "-free5gpcfg common configuration file -pcfcfg pcf configuration file"
+	appLog.Infoln("PCF version: ", version.GetVersion())
+	app.Usage = "-free5gccfg common configuration file -pcfcfg pcf configuration file"
 	app.Action = action
-	app.Flags = pcf.GetCliCmd()
+	app.Flags = PCF.GetCliCmd()
 
 	if err := app.Run(os.Args); err != nil {
-		fmt.Printf("pcf Run err: %v", err)
+		fmt.Printf("PCF Run err: %v", err)
 	}
 
 }
 
 func action(c *cli.Context) {
-	app.AppInitializeWillInitialize(c.String("free5gpcfg"))
-	pcf.Initialize(c)
-	pcf.Start()
+	app.AppInitializeWillInitialize(c.String("free5gccfg"))
+	PCF.Initialize(c)
+	PCF.Start()
 }

@@ -13,8 +13,8 @@ import (
 
 func AmfStatusChangeSubscribe(amfInfo pcf_context.AMFStatusSubscriptionData) (
 	problemDetails *models.ProblemDetails, err error) {
-	logger.Consumerlog.Debugf("pcf Subscribe to AMF status[%+v]", amfInfo.AmfUri)
-	pcfSelf := pcf_context.pcf_Self()
+	logger.Consumerlog.Debugf("PCF Subscribe to AMF status[%+v]", amfInfo.AmfUri)
+	pcfSelf := pcf_context.PCF_Self()
 	client := util.GetNamfClient(amfInfo.AmfUri)
 
 	subscriptionData := models.SubscriptionData{

@@ -48,19 +48,19 @@ func init() {
 		log.Hooks.Add(selfLogHook)
 	}
 
-	AppLog = log.WithFields(logrus.Fields{"component": "pcf", "category": "App"})
-	InitLog = log.WithFields(logrus.Fields{"component": "pcf", "category": "Init"})
-	HandlerLog = log.WithFields(logrus.Fields{"component": "pcf", "category": "Handler"})
-	Bdtpolicylog = log.WithFields(logrus.Fields{"component": "pcf", "category": "Bdtpolicy"})
-	AMpolicylog = log.WithFields(logrus.Fields{"component": "pcf", "category": "Ampolicy"})
-	PolicyAuthorizationlog = log.WithFields(logrus.Fields{"component": "pcf", "category": "PolicyAuth"})
-	SMpolicylog = log.WithFields(logrus.Fields{"component": "pcf", "category": "SMpolicy"})
-	UtilLog = log.WithFields(logrus.Fields{"component": "pcf", "category": "Util"})
-	CallbackLog = log.WithFields(logrus.Fields{"component": "pcf", "category": "Callback"})
-	Consumerlog = log.WithFields(logrus.Fields{"component": "pcf", "category": "Consumer"})
-	OamLog = log.WithFields(logrus.Fields{"component": "pcf", "category": "OAM"})
-	CtxLog = log.WithFields(logrus.Fields{"component": "pcf", "category": "Context"})
-	GinLog = log.WithFields(logrus.Fields{"component": "pcf", "category": "GIN"})
+	AppLog = log.WithFields(logrus.Fields{"component": "PCF", "category": "App"})
+	InitLog = log.WithFields(logrus.Fields{"component": "PCF", "category": "Init"})
+	HandlerLog = log.WithFields(logrus.Fields{"component": "PCF", "category": "Handler"})
+	Bdtpolicylog = log.WithFields(logrus.Fields{"component": "PCF", "category": "Bdtpolicy"})
+	AMpolicylog = log.WithFields(logrus.Fields{"component": "PCF", "category": "Ampolicy"})
+	PolicyAuthorizationlog = log.WithFields(logrus.Fields{"component": "PCF", "category": "PolicyAuth"})
+	SMpolicylog = log.WithFields(logrus.Fields{"component": "PCF", "category": "SMpolicy"})
+	UtilLog = log.WithFields(logrus.Fields{"component": "PCF", "category": "Util"})
+	CallbackLog = log.WithFields(logrus.Fields{"component": "PCF", "category": "Callback"})
+	Consumerlog = log.WithFields(logrus.Fields{"component": "PCF", "category": "Consumer"})
+	OamLog = log.WithFields(logrus.Fields{"component": "PCF", "category": "OAM"})
+	CtxLog = log.WithFields(logrus.Fields{"component": "PCF", "category": "Context"})
+	GinLog = log.WithFields(logrus.Fields{"component": "PCF", "category": "GIN"})
 }
 
 func SetLogLevel(level logrus.Level) {

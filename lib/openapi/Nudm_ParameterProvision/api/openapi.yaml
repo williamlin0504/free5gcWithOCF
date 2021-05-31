@@ -2461,7 +2461,7 @@ components:
             ueIpv6Addr: 2001:db8:85a3::8a2e:370:7334
             n3IwfId: n3IwfId
             portNumber: 0
-        hpcfId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        hPcfId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         gpsi: gpsi
         hoPreparationIndication: true
         servingNetwork:
@@ -2622,7 +2622,7 @@ components:
         supportedFeatures:
           pattern: ^[A-Fa-f0-9]*$
           type: string
-        hpcfId:
+        hPcfId:
           format: uuid
           type: string
         hoPreparationIndication:

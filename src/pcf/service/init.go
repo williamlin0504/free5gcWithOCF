@@ -31,7 +31,7 @@ import (
 	"free5gc/src/pcf/util"
 )
 
-type pcf struct{}
+type PCF struct{}
 
 type (
 	// Config information.
@@ -44,7 +44,7 @@ var config Config
 
 var pcfCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  "free5gpcfg",
+		Name:  "free5gccfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
@@ -59,11 +59,11 @@ func init() {
 	initLog = logger.InitLog
 }
 
-func (*pcf) GetCliCmd() (flags []cli.Flag) {
+func (*PCF) GetCliCmd() (flags []cli.Flag) {
 	return pcfCLi
 }
 
-func (*pcf) Initialize(c *cli.Context) {
+func (*PCF) Initialize(c *cli.Context) {
 
 	config = Config{
 		pcfcfg: c.String("pcfcfg"),
@@ -71,14 +71,14 @@ func (*pcf) Initialize(c *cli.Context) {
 	if config.pcfcfg != "" {
 		factory.InitConfigFactory(config.pcfcfg)
 	} else {
-		DefaultpcfConfigPath := path_util.Gofree5gcPath("free5gc/config/pcfcfg.conf")
-		factory.InitConfigFactory(DefaultpcfConfigPath)
+		DefaultPcfConfigPath := path_util.Gofree5gcPath("free5gc/config/pcfcfg.conf")
+		factory.InitConfigFactory(DefaultPcfConfigPath)
 	}
 
-	if app.ContextSelf().Logger.pcf.DebugLevel != "" {
-		level, err := logrus.ParseLevel(app.ContextSelf().Logger.pcf.DebugLevel)
+	if app.ContextSelf().Logger.PCF.DebugLevel != "" {
+		level, err := logrus.ParseLevel(app.ContextSelf().Logger.PCF.DebugLevel)
 		if err != nil {
-			initLog.Warnf("Log level [%s] is not valid, set to [info] level", app.ContextSelf().Logger.pcf.DebugLevel)
+			initLog.Warnf("Log level [%s] is not valid, set to [info] level", app.ContextSelf().Logger.PCF.DebugLevel)
 			logger.SetLogLevel(logrus.InfoLevel)
 		} else {
 			logger.SetLogLevel(level)
@@ -89,10 +89,10 @@ func (*pcf) Initialize(c *cli.Context) {
 		logger.SetLogLevel(logrus.InfoLevel)
 	}
 
-	logger.SetReportCaller(app.ContextSelf().Logger.pcf.ReportCaller)
+	logger.SetReportCaller(app.ContextSelf().Logger.PCF.ReportCaller)
 }
 
-func (pcf *pcf) FilterCli(c *cli.Context) (args []string) {
+func (pcf *PCF) FilterCli(c *cli.Context) (args []string) {
 	for _, flag := range pcf.GetCliCmd() {
 		name := flag.GetName()
 		value := fmt.Sprint(c.Generic(name))
@@ -105,7 +105,7 @@ func (pcf *pcf) FilterCli(c *cli.Context) (args []string) {
 	return args
 }
 
-func (pcf *pcf) Start() {
+func (pcf *PCF) Start() {
 	initLog.Infoln("Server started")
 	router := logger_util.NewGinWithLogrus(logger.GinLog)
 
@@ -127,18 +127,18 @@ func (pcf *pcf) Start() {
 		MaxAge:           86400,
 	}))
 
-	self := context.pcf_Self()
+	self := context.PCF_Self()
 	util.InitpcfContext(self)
 
 	addr := fmt.Sprintf("%s:%d", self.BindingIPv4, self.SBIPort)
 
 	profile, err := consumer.BuildNFInstance(self)
 	if err != nil {
-		initLog.Error("Build pcf Profile Error")
+		initLog.Error("Build PCF Profile Error")
 	}
 	_, self.NfId, err = consumer.SendRegisterNFInstance(self.NrfUri, self.NfId, profile)
 	if err != nil {
-		initLog.Errorf("pcf register to NRF Error[%s]", err.Error())
+		initLog.Errorf("PCF register to NRF Error[%s]", err.Error())
 	}
 
 	// subscribe to all Amfs' status change
@@ -162,7 +162,7 @@ func (pcf *pcf) Start() {
 	param := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{
 		ServiceNames: optional.NewInterface([]models.ServiceName{models.ServiceName_NUDR_DR}),
 	}
-	resp, err := consumer.SendSearchNFInstances(self.NrfUri, models.NfType_UDR, models.NfType_pcf, param)
+	resp, err := consumer.SendSearchNFInstances(self.NrfUri, models.NfType_UDR, models.NfType_PCF, param)
 	for _, nfProfile := range resp.NfInstances {
 		udruri := util.SearchNFServiceUri(nfProfile, models.ServiceName_NUDR_DR, models.NfServiceStatus_REGISTERED)
 		if udruri != "" {
@@ -173,7 +173,7 @@ func (pcf *pcf) Start() {
 	if err != nil {
 		initLog.Errorln(err)
 	}
-	server, err := http2_util.NewServer(addr, util.pcf_LOG_PATH, router)
+	server, err := http2_util.NewServer(addr, util.PCF_LOG_PATH, router)
 	if server == nil {
 		initLog.Errorf("Initialize HTTP server failed: %+v", err)
 		return
@@ -183,11 +183,11 @@ func (pcf *pcf) Start() {
 		initLog.Warnf("Initialize HTTP server: +%v", err)
 	}
 
-	serverScheme := factory.pcfConfig.Configuration.Sbi.Scheme
+	serverScheme := factory.PcfConfig.Configuration.Sbi.Scheme
 	if serverScheme == "http" {
 		err = server.ListenAndServe()
 	} else if serverScheme == "https" {
-		err = server.ListenAndServeTLS(util.pcf_PEM_PATH, util.pcf_KEY_PATH)
+		err = server.ListenAndServeTLS(util.PCF_PEM_PATH, util.PCF_KEY_PATH)
 	}
 
 	if err != nil {
@@ -195,7 +195,7 @@ func (pcf *pcf) Start() {
 	}
 }
 
-func (pcf *pcf) Exec(c *cli.Context) error {
+func (pcf *PCF) Exec(c *cli.Context) error {
 	initLog.Traceln("args:", c.String("pcfcfg"))
 	args := pcf.FilterCli(c)
 	initLog.Traceln("filter: ", args)
@@ -221,7 +221,7 @@ func (pcf *pcf) Exec(c *cli.Context) error {
 	}
 	go func() {
 		in := bufio.NewScanner(stderr)
-		fmt.Println("pcf log start")
+		fmt.Println("PCF log start")
 		for in.Scan() {
 			fmt.Println(in.Text())
 		}
@@ -229,11 +229,11 @@ func (pcf *pcf) Exec(c *cli.Context) error {
 	}()
 
 	go func() {
-		fmt.Println("pcf start")
+		fmt.Println("PCF start")
 		if err = command.Start(); err != nil {
 			fmt.Printf("command.Start() error: %v", err)
 		}
-		fmt.Println("pcf end")
+		fmt.Println("PCF end")
 		wg.Done()
 	}()
 

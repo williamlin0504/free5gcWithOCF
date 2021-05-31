@@ -24,7 +24,7 @@ func main() {
 	app.Name = "amf"
 	appLog.Infoln(app.Name)
 	appLog.Infoln("AMF version: ", version.GetVersion())
-	app.Usage = "-free5gpcfg common configuration file -amfcfg amf configuration file"
+	app.Usage = "-free5gccfg common configuration file -amfcfg amf configuration file"
 	app.Action = action
 	app.Flags = AMF.GetCliCmd()
 	if err := app.Run(os.Args); err != nil {
@@ -33,7 +33,7 @@ func main() {
 }
 
 func action(c *cli.Context) {
-	app.AppInitializeWillInitialize(c.String("free5gpcfg"))
+	app.AppInitializeWillInitialize(c.String("free5gccfg"))
 	AMF.Initialize(c)
 	AMF.Start()
 }

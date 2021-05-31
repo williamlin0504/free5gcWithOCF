@@ -513,7 +513,7 @@ func GenerateAuthDataProcedure(authInfoRequest models.AuthenticationInfoRequest,
 
 		// For TS 35.208 test set 19 & RFC 5448 test vector 1
 		// CK': 0093 962d 0dd8 4aa5 684b 045c 9edf fa04
-		// IK': pcfc 230c a74f cc96 c0a5 d611 64f5 a76
+		// IK': ccfc 230c a74f cc96 c0a5 d611 64f5 a76
 
 		ckPrime := kdfVal[:len(kdfVal)/2]
 		ikPrime := kdfVal[len(kdfVal)/2:]
