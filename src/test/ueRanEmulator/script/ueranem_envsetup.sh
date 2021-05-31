@@ -69,5 +69,5 @@ then
     LOCALDUMP=$!
 fi
 
-cd ../../../upf/build && ${EXEC_UPFNS} ./bin/ free5gc-upfd -f config/upfcfg.test.yaml &
+cd ../../../upf/build && ${EXEC_UPFNS} ./bin/free5gc-upfd -f config/upfcfg.test.yaml &
 sleep 2

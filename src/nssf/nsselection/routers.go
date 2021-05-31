@@ -10,8 +10,8 @@
 package nsselection
 
 import (
-	" free5gc/lib/logger_util"
-	" free5gcsf/logger"
+	"free5gc/lib/logger_util"
+	"free5gc/src/nssf/logger"
 	"net/http"
 	"strings"
 

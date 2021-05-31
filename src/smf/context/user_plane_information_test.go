@@ -1,8 +1,8 @@
 package context_test
 
 import (
-	" free5gc/src/smf/context"
-	" free5gcf/factory"
+	"free5gc/src/smf/context"
+	"free5gc/src/smf/factory"
 	"testing"
 
 	"github.com/stretchr/testify/require"

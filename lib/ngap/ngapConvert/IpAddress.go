@@ -1,9 +1,9 @@
 package ngapConvert
 
 import (
-	" free5gc/lib/aper"
-	" free5gcap/logger"
-	" free5gcap/ngapType"
+	"free5gc/lib/aper"
+	"free5gc/lib/ngap/logger"
+	"free5gc/lib/ngap/ngapType"
 	"net"
 )
 

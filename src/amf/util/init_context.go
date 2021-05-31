@@ -6,11 +6,11 @@ import (
 
 	"github.com/google/uuid"
 
-	" free5gc/lib/nas/security"
-	" free5gcenapi/models"
-	" free5gcf/context"
-	" free5gcf/factory"
-	" free5gcf/logger"
+	"free5gc/lib/nas/security"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/amf/context"
+	"free5gc/src/amf/factory"
+	"free5gc/src/amf/logger"
 )
 
 func InitAmfContext(context *context.AMFContext) {

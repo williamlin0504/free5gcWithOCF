@@ -3,17 +3,17 @@ package consumer
 import (
 	"context"
 	"fmt"
-	" free5gc/lib/openapi/Nnrf_NFManagement"
-	" free5gcenapi/models"
-	pcf_context " free5gcf/context"
+	"free5gc/lib/openapi/Nnrf_NFManagement"
+	"free5gc/lib/openapi/models"
+	pcf_context "free5gc/src/pcf/context"
 	"net/http"
 	"strings"
 	"time"
 )
 
-func BuildNFInstance(context *pcf_context.PCFContext) (profile models.NfProfile, err error) {
+func BuildNFInstance(context *pcf_context.pcfContext) (profile models.NfProfile, err error) {
 	profile.NfInstanceId = context.NfId
-	profile.NfType = models.NfType_PCF
+	profile.NfType = models.NfType_pcf
 	profile.NfStatus = models.NfStatus_REGISTERED
 	profile.Ipv4Addresses = append(profile.Ipv4Addresses, context.RegisterIPv4)
 	service := []models.NfService{}
@@ -21,9 +21,9 @@ func BuildNFInstance(context *pcf_context.PCFContext) (profile models.NfProfile,
 		service = append(service, nfService)
 	}
 	profile.NfServices = &service
-	profile.PcfInfo = &models.PcfInfo{
+	profile.pcfInfo = &models.pcfInfo{
 		DnnList: []string{
-			" free5gc
+			"free5gc",
 			"internet",
 		},
 		// SupiRanges: &[]models.SupiRange{
@@ -52,7 +52,7 @@ func SendRegisterNFInstance(nrfUri, nfInstanceId string, profile models.NfProfil
 		_, res, err = client.NFInstanceIDDocumentApi.RegisterNFInstance(context.TODO(), nfInstanceId, profile)
 		if err != nil || res == nil {
 			//TODO : add log
-			fmt.Println(fmt.Errorf("PCF register to NRF Error[%v]", err.Error()))
+			fmt.Println(fmt.Errorf("pcf register to NRF Error[%v]", err.Error()))
 			time.Sleep(2 * time.Second)
 			continue
 		}

@@ -10,23 +10,23 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 
-	" free5gc/lib/http2_util"
-	" free5gcgger_util"
-	" free5gcenapi/models"
-	" free5gcth_util"
-	" free5gcp"
-	" free5gcf/callback"
-	" free5gcf/consumer"
-	" free5gcf/context"
-	" free5gcf/eventexposure"
-	" free5gcf/factory"
-	" free5gcf/logger"
-	" free5gcf/oam"
-	" free5gcf/pdusession"
-	" free5gcf/pfcp"
-	" free5gcf/pfcp/message"
-	" free5gcf/pfcp/udp"
-	" free5gcf/util"
+	"free5gc/lib/http2_util"
+	"free5gc/lib/logger_util"
+	"free5gc/lib/openapi/models"
+	"free5gc/lib/path_util"
+	"free5gc/src/app"
+	"free5gc/src/smf/callback"
+	"free5gc/src/smf/consumer"
+	"free5gc/src/smf/context"
+	"free5gc/src/smf/eventexposure"
+	"free5gc/src/smf/factory"
+	"free5gc/src/smf/logger"
+	"free5gc/src/smf/oam"
+	"free5gc/src/smf/pdusession"
+	"free5gc/src/smf/pfcp"
+	"free5gc/src/smf/pfcp/message"
+	"free5gc/src/smf/pfcp/udp"
+	"free5gc/src/smf/util"
 )
 
 type SMF struct{}
@@ -43,7 +43,7 @@ var config Config
 
 var smfCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  " free5gccfg",
+		Name:  "free5gpcfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
@@ -76,14 +76,14 @@ func (*SMF) Initialize(c *cli.Context) {
 	if config.smfcfg != "" {
 		factory.InitConfigFactory(config.smfcfg)
 	} else {
-		DefaultSmfConfigPath := path_util.Go free5gcPath(" free5gc/smfcfg.conf")
+		DefaultSmfConfigPath := path_util.Gofree5gcPath("free5gc/config/smfcfg.conf")
 		factory.InitConfigFactory(DefaultSmfConfigPath)
 	}
 
 	if config.uerouting != "" {
 		factory.InitRoutingConfigFactory(config.uerouting)
 	} else {
-		DefaultUERoutingPath := path_util.Go free5gcPath(" free5gc/uerouting.yaml")
+		DefaultUERoutingPath := path_util.Gofree5gcPath("free5gc/config/uerouting.yaml")
 		factory.InitRoutingConfigFactory(DefaultUERoutingPath)
 	}
 

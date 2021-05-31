@@ -3,18 +3,18 @@ package consumer
 import (
 	"context"
 	"fmt"
-	" free5gc/lib/openapi"
-	" free5gcenapi/models"
-	pcf_context " free5gcf/context"
-	" free5gcf/logger"
-	" free5gcf/util"
+	"free5gc/lib/openapi"
+	"free5gc/lib/openapi/models"
+	pcf_context "free5gc/src/pcf/context"
+	"free5gc/src/pcf/logger"
+	"free5gc/src/pcf/util"
 	"strings"
 )
 
 func AmfStatusChangeSubscribe(amfInfo pcf_context.AMFStatusSubscriptionData) (
 	problemDetails *models.ProblemDetails, err error) {
-	logger.Consumerlog.Debugf("PCF Subscribe to AMF status[%+v]", amfInfo.AmfUri)
-	pcfSelf := pcf_context.PCF_Self()
+	logger.Consumerlog.Debugf("pcf Subscribe to AMF status[%+v]", amfInfo.AmfUri)
+	pcfSelf := pcf_context.pcf_Self()
 	client := util.GetNamfClient(amfInfo.AmfUri)
 
 	subscriptionData := models.SubscriptionData{

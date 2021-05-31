@@ -1,8 +1,8 @@
 package TimeDecode_test
 
 import (
-	" free5gc/lib/TimeDecode"
-	" free5gcenapi/models"
+	"free5gc/lib/TimeDecode"
+	"free5gc/lib/openapi/models"
 	"log"
 	"testing"
 	"time"
@@ -69,7 +69,7 @@ func TestDecode(t *testing.T) {
 		"AmfInfo":              &models.AmfInfo{},
 		"SmfInfo":              &models.SmfInfo{},
 		"UpfInfo":              &models.UpfInfo{},
-		"PcfInfo":              &models.PcfInfo{},
+		"pcfInfo":              &models.pcfInfo{},
 		"BsfInfo":              &models.BsfInfo{},
 		"ChfInfo":              &models.ChfInfo{},
 		"NrfInfo":              &models.NrfInfo{},

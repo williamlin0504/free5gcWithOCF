@@ -2,7 +2,7 @@ package fsm_test
 
 import (
 	"fmt"
-	" free5gc/lib/fsm"
+	"free5gc/lib/fsm"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

@@ -1,10 +1,10 @@
 package pfcp
 
 import (
-	" free5gc/lib/pfcp"
-	" free5gccp/pfcpUdp"
-	" free5gcf/logger"
-	" free5gcf/pfcp/handler"
+	"free5gc/lib/pfcp"
+	"free5gc/lib/pfcp/pfcpUdp"
+	"free5gc/src/smf/logger"
+	"free5gc/src/smf/pfcp/handler"
 )
 
 func Dispatch(msg *pfcpUdp.Message) {

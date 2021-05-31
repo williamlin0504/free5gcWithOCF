@@ -7,8 +7,8 @@ import (
 	formatter "github.com/antonfisher/nested-logrus-formatter"
 	"github.com/sirupsen/logrus"
 
-	" free5gc/lib/logger_conf"
-	" free5gcgger_util"
+	"free5gc/lib/logger_conf"
+	"free5gc/lib/logger_util"
 )
 
 var log *logrus.Logger
@@ -38,9 +38,9 @@ func init() {
 		FieldsOrder:     []string{"component", "category"},
 	}
 
-	 free5gcLogHook, err := logger_util.NewFileHook(logger_conf.Free5gcLogFile, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
+	free5gcLogHook, err := logger_util.NewFileHook(logger_conf.Free5gcLogFile, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
 	if err == nil {
-		log.Hooks.Add( free5gcLogHook)
+		log.Hooks.Add(free5gcLogHook)
 	}
 
 	selfLogHook, err := logger_util.NewFileHook(logger_conf.NfLogDir+"pcf.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
@@ -48,19 +48,19 @@ func init() {
 		log.Hooks.Add(selfLogHook)
 	}
 
-	AppLog = log.WithFields(logrus.Fields{"component": "PCF", "category": "App"})
-	InitLog = log.WithFields(logrus.Fields{"component": "PCF", "category": "Init"})
-	HandlerLog = log.WithFields(logrus.Fields{"component": "PCF", "category": "Handler"})
-	Bdtpolicylog = log.WithFields(logrus.Fields{"component": "PCF", "category": "Bdtpolicy"})
-	AMpolicylog = log.WithFields(logrus.Fields{"component": "PCF", "category": "Ampolicy"})
-	PolicyAuthorizationlog = log.WithFields(logrus.Fields{"component": "PCF", "category": "PolicyAuth"})
-	SMpolicylog = log.WithFields(logrus.Fields{"component": "PCF", "category": "SMpolicy"})
-	UtilLog = log.WithFields(logrus.Fields{"component": "PCF", "category": "Util"})
-	CallbackLog = log.WithFields(logrus.Fields{"component": "PCF", "category": "Callback"})
-	Consumerlog = log.WithFields(logrus.Fields{"component": "PCF", "category": "Consumer"})
-	OamLog = log.WithFields(logrus.Fields{"component": "PCF", "category": "OAM"})
-	CtxLog = log.WithFields(logrus.Fields{"component": "PCF", "category": "Context"})
-	GinLog = log.WithFields(logrus.Fields{"component": "PCF", "category": "GIN"})
+	AppLog = log.WithFields(logrus.Fields{"component": "pcf", "category": "App"})
+	InitLog = log.WithFields(logrus.Fields{"component": "pcf", "category": "Init"})
+	HandlerLog = log.WithFields(logrus.Fields{"component": "pcf", "category": "Handler"})
+	Bdtpolicylog = log.WithFields(logrus.Fields{"component": "pcf", "category": "Bdtpolicy"})
+	AMpolicylog = log.WithFields(logrus.Fields{"component": "pcf", "category": "Ampolicy"})
+	PolicyAuthorizationlog = log.WithFields(logrus.Fields{"component": "pcf", "category": "PolicyAuth"})
+	SMpolicylog = log.WithFields(logrus.Fields{"component": "pcf", "category": "SMpolicy"})
+	UtilLog = log.WithFields(logrus.Fields{"component": "pcf", "category": "Util"})
+	CallbackLog = log.WithFields(logrus.Fields{"component": "pcf", "category": "Callback"})
+	Consumerlog = log.WithFields(logrus.Fields{"component": "pcf", "category": "Consumer"})
+	OamLog = log.WithFields(logrus.Fields{"component": "pcf", "category": "OAM"})
+	CtxLog = log.WithFields(logrus.Fields{"component": "pcf", "category": "Context"})
+	GinLog = log.WithFields(logrus.Fields{"component": "pcf", "category": "GIN"})
 }
 
 func SetLogLevel(level logrus.Level) {

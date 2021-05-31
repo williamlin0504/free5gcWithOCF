@@ -13,10 +13,10 @@ import (
 	"strconv"
 	"time"
 
-	" free5gc/lib/openapi/models"
-	" free5gcsf/factory"
-	" free5gcsf/logger"
-	" free5gcsf/util"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/nssf/factory"
+	"free5gc/src/nssf/logger"
+	"free5gc/src/nssf/util"
 )
 
 // Get available subscription ID from configuration

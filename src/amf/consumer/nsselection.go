@@ -3,11 +3,11 @@ package consumer
 import (
 	"context"
 	"encoding/json"
-	" free5gc/lib/openapi"
-	" free5gcenapi/Nnssf_NSSelection"
-	" free5gcenapi/models"
-	amf_context " free5gcf/context"
-	" free5gcsf/logger"
+	"free5gc/lib/openapi"
+	"free5gc/lib/openapi/Nnssf_NSSelection"
+	"free5gc/lib/openapi/models"
+	amf_context "free5gc/src/amf/context"
+	"free5gc/src/nssf/logger"
 
 	"github.com/antihax/optional"
 )

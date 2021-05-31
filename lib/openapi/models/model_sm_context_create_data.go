@@ -37,7 +37,7 @@ type SmContextCreateData struct {
 	PduSessionsActivateList []int32                   `json:"pduSessionsActivateList,omitempty"`
 	UeEpsPdnConnection      string                    `json:"ueEpsPdnConnection,omitempty"`
 	HoState                 HoState                   `json:"hoState,omitempty"`
-	PcfId                   string                    `json:"pcfId,omitempty"`
+	pcfId                   string                    `json:"pcfId,omitempty"`
 	NrfUri                  string                    `json:"nrfUri,omitempty"`
 	SupportedFeatures       string                    `json:"supportedFeatures,omitempty"`
 	SelMode                 DnnSelectionMode          `json:"selMode,omitempty"`

@@ -3,15 +3,15 @@ package context
 import (
 	"context"
 	"fmt"
-	" free5gc/lib/nas/nasConvert"
-	" free5gcs/nasMessage"
-	" free5gcenapi"
-	" free5gcenapi/Namf_Communication"
-	" free5gcenapi/Nnrf_NFDiscovery"
-	" free5gcenapi/Npcf_SMPolicyControl"
-	" free5gcenapi/models"
-	" free5gccp/pfcpType"
-	" free5gcf/logger"
+	"free5gc/lib/nas/nasConvert"
+	"free5gc/lib/nas/nasMessage"
+	"free5gc/lib/openapi"
+	"free5gc/lib/openapi/Namf_Communication"
+	"free5gc/lib/openapi/Nnrf_NFDiscovery"
+	"free5gc/lib/openapi/Npcf_SMPolicyControl"
+	"free5gc/lib/openapi/models"
+	"free5gc/lib/pfcp/pfcpType"
+	"free5gc/src/smf/logger"
 	"net"
 	"net/http"
 	"sync"
@@ -85,7 +85,7 @@ type SMContext struct {
 	CommunicationClient *Namf_Communication.APIClient
 
 	AMFProfile         models.NfProfile
-	SelectedPCFProfile models.NfProfile
+	SelectedpcfProfile models.NfProfile
 	SmStatusNotifyUri  string
 
 	SMContextState SMContextState
@@ -220,16 +220,16 @@ func (smContext *SMContext) PDUAddressToNAS() (addr [12]byte, addrLen uint8) {
 	return
 }
 
-// PCFSelection will select PCF for this SM Context
-func (smContext *SMContext) PCFSelection() error {
+// pcfSelection will select pcf for this SM Context
+func (smContext *SMContext) pcfSelection() error {
 
-	// Send NFDiscovery for find PCF
+	// Send NFDiscovery for find pcf
 	localVarOptionals := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{}
 
 	rep, res, err := SMF_Self().
 		NFDiscoveryClient.
 		NFInstancesStoreApi.
-		SearchNFInstances(context.TODO(), models.NfType_PCF, models.NfType_SMF, &localVarOptionals)
+		SearchNFInstances(context.TODO(), models.NfType_pcf, models.NfType_SMF, &localVarOptionals)
 	if err != nil {
 		return err
 	}
@@ -239,18 +239,18 @@ func (smContext *SMContext) PCFSelection() error {
 			apiError := err.(openapi.GenericOpenAPIError)
 			problemDetails := apiError.Model().(models.ProblemDetails)
 
-			logger.CtxLog.Warningf("NFDiscovery PCF return status: %d\n", status)
+			logger.CtxLog.Warningf("NFDiscovery pcf return status: %d\n", status)
 			logger.CtxLog.Warningf("Detail: %v\n", problemDetails.Title)
 		}
 	}
 
-	// Select PCF from available PCF
+	// Select pcf from available pcf
 
-	smContext.SelectedPCFProfile = rep.NfInstances[0]
+	smContext.SelectedpcfProfile = rep.NfInstances[0]
 
 	// Create SMPolicyControl Client for this SM Context
-	for _, service := range *smContext.SelectedPCFProfile.NfServices {
-		if service.ServiceName == models.ServiceName_NPCF_SMPOLICYCONTROL {
+	for _, service := range *smContext.SelectedpcfProfile.NfServices {
+		if service.ServiceName == models.ServiceName_Npcf_SMPOLICYCONTROL {
 			SmPolicyControlConf := Npcf_SMPolicyControl.NewConfiguration()
 			SmPolicyControlConf.SetBasePath(service.ApiPrefix)
 			smContext.SMPolicyClient = Npcf_SMPolicyControl.NewAPIClient(SmPolicyControlConf)

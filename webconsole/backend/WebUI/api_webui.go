@@ -4,10 +4,10 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
-	" free5gc/lib/MongoDBLibrary"
-	" free5gcenapi/models"
-	" free5gcsole/backend/logger"
-	" free5gcsole/backend/webui_context"
+	"free5gc/lib/MongoDBLibrary"
+	"free5gc/lib/openapi/models"
+	"free5gc/webconsole/backend/logger"
+	"free5gc/webconsole/backend/webui_context"
 	"net/http"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -169,7 +169,7 @@ func GetSampleJSON(c *gin.Context) {
 
 	amPolicyData := models.AmPolicyData{
 		SubscCats: []string{
-			" free5gc
+			"free5gc",
 		},
 	}
 

@@ -5,7 +5,7 @@
 package factory
 
 import (
-	" free5gc/lib/openapi/models"
+	"free5gc/lib/openapi/models"
 	"time"
 )
 

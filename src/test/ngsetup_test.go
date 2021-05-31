@@ -3,21 +3,21 @@ package test_test
 import (
 	"flag"
 	"fmt"
-	" free5gc/lib/CommonConsumerTestData/UDM/TestGenAuthData"
-	" free5gcngoDBLibrary"
-	" free5gcs/security"
-	" free5gcap"
-	" free5gcth_util"
-	amf_service " free5gcf/service"
-	" free5gcp"
-	ausf_service " free5gcsf/service"
-	nrf_service " free5gcf/service"
-	nssf_service " free5gcsf/service"
-	pcf_service " free5gcf/service"
-	smf_service " free5gcf/service"
-	" free5gcst"
-	udm_service " free5gcm/service"
-	udr_service " free5gcr/service"
+	"free5gc/lib/CommonConsumerTestData/UDM/TestGenAuthData"
+	"free5gc/lib/MongoDBLibrary"
+	"free5gc/lib/nas/security"
+	"free5gc/lib/ngap"
+	"free5gc/lib/path_util"
+	amf_service "free5gc/src/amf/service"
+	"free5gc/src/app"
+	ausf_service "free5gc/src/ausf/service"
+	nrf_service "free5gc/src/nrf/service"
+	nssf_service "free5gc/src/nssf/service"
+	pcf_service "free5gc/src/pcf/service"
+	smf_service "free5gc/src/smf/service"
+	"free5gc/src/test"
+	udm_service "free5gc/src/udm/service"
+	udr_service "free5gc/src/udr/service"
 	"log"
 	"os"
 	"sync"
@@ -33,7 +33,7 @@ var NFs = []app.NetworkFunction{
 	&amf_service.AMF{},
 	&smf_service.SMF{},
 	&udr_service.UDR{},
-	&pcf_service.PCF{},
+	&pcf_service.pcf{},
 	&udm_service.UDM{},
 	&nssf_service.NSSF{},
 	&ausf_service.AUSF{},
@@ -51,10 +51,10 @@ func init() {
 
 	if init {
 		app.AppInitializeWillInitialize("")
-		flagSet := flag.NewFlagSet(" free5gc
+		flagSet := flag.NewFlagSet("free5gc", 0)
 		flagSet.String("smfcfg", "", "SMF Config Path")
 		cli := cli.NewContext(nil, flagSet, nil)
-		err := cli.Set("smfcfg", path_util.Go free5gcPath(" free5gc/test/smfcfg.test.conf"))
+		err := cli.Set("smfcfg", path_util.Gofree5gcPath("free5gc/config/test/smfcfg.test.conf"))
 		if err != nil {
 			log.Fatal("SMF test config error")
 			return
@@ -66,7 +66,7 @@ func init() {
 			time.Sleep(200 * time.Millisecond)
 		}
 	} else {
-		MongoDBLibrary.SetMongoDB(" free5gcgodb://127.0.0.1:27017")
+		MongoDBLibrary.SetMongoDB("free5gc", "mongodb://127.0.0.1:27017")
 		fmt.Println("MongoDB Set")
 	}
 
@@ -82,7 +82,7 @@ func TestNGSetup(t *testing.T) {
 	assert.Nil(t, err)
 
 	// send NGSetupRequest Msg
-	sendMsg, err = test.GetNGSetupRequest([]byte("\x00\x01\x02"), 24, " free5gc
+	sendMsg, err = test.GetNGSetupRequest([]byte("\x00\x01\x02"), 24, "free5gc")
 	assert.Nil(t, err)
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)

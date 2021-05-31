@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"time"
 
-	" free5gc/lib/openapi/models"
+	"free5gc/lib/openapi/models"
 
 	"github.com/mitchellh/mapstructure"
 )

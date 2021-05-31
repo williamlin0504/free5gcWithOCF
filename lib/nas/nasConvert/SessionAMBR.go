@@ -6,10 +6,10 @@ import (
 	"strconv"
 	"strings"
 
-	" free5gc/lib/nas/logger"
-	" free5gcs/nasMessage"
-	" free5gcs/nasType"
-	" free5gcenapi/models"
+	"free5gc/lib/nas/logger"
+	"free5gc/lib/nas/nasMessage"
+	"free5gc/lib/nas/nasType"
+	"free5gc/lib/openapi/models"
 )
 
 func ModelsToSessionAMBR(ambr *models.Ambr) (sessAmbr nasType.SessionAMBR) {

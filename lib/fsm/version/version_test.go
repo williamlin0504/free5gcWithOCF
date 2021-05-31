@@ -1,7 +1,7 @@
 package version_test
 
 import (
-	" free5gc/lib/fsm/version"
+	"free5gc/lib/fsm/version"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

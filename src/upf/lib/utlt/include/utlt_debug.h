@@ -37,7 +37,7 @@ enum ReportCaller {
     REPORTCALLER_MAX,
 };
 
-#define __FILENAME__ (strstr(__FILE__, "/go free5gc/src/upf/") ? strstr(__FILE__, "/go free5gc/src/upf/") + 11 : __FILE__)
+#define __FILENAME__ (strstr(__FILE__, "/gofree5gc/src/upf/") ? strstr(__FILE__, "/gofree5gc/src/upf/") + 11 : __FILE__)
 
 #define UTLT_Panic(fmt, ...) \
     UTLT_LogPrint(LOG_PANIC, __FILENAME__, __LINE__, __func__, fmt, ## __VA_ARGS__)

@@ -1,7 +1,7 @@
 package version_test
 
 import (
-	" free5gc/lib/http_wrapper/version"
+	"free5gc/lib/http_wrapper/version"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

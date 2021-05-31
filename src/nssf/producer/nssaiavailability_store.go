@@ -15,11 +15,11 @@ import (
 
 	jsonpatch "github.com/evanphx/json-patch"
 
-	" free5gc/lib/openapi/models"
-	" free5gcsf/factory"
-	" free5gcsf/logger"
-	" free5gcsf/plugin"
-	" free5gcsf/util"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/nssf/factory"
+	"free5gc/src/nssf/logger"
+	"free5gc/src/nssf/plugin"
+	"free5gc/src/nssf/util"
 )
 
 // NSSAIAvailability DELETE method

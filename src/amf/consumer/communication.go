@@ -4,12 +4,12 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	" free5gc/lib/nas/nasMessage"
-	" free5gcenapi"
-	" free5gcenapi/Namf_Communication"
-	" free5gcenapi/models"
-	amf_context " free5gcf/context"
-	" free5gcf/logger"
+	"free5gc/lib/nas/nasMessage"
+	"free5gc/lib/openapi"
+	"free5gc/lib/openapi/Namf_Communication"
+	"free5gc/lib/openapi/models"
+	amf_context "free5gc/src/amf/context"
+	"free5gc/src/amf/logger"
 )
 
 func BuildUeContextCreateData(ue *amf_context.AmfUe, targetRanId models.NgRanTargetId,
@@ -73,12 +73,12 @@ func BuildUeContextModel(ue *amf_context.AmfUe) (ueContext models.UeContext) {
 		}
 	}
 
-	if ue.PcfId != "" {
-		ueContext.PcfId = ue.PcfId
+	if ue.pcfId != "" {
+		ueContext.pcfId = ue.pcfId
 	}
 
 	if ue.AmPolicyUri != "" {
-		ueContext.PcfAmPolicyUri = ue.AmPolicyUri
+		ueContext.pcfAmPolicyUri = ue.AmPolicyUri
 	}
 
 	if ue.AmPolicyAssociation != nil {

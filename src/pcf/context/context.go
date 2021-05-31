@@ -2,32 +2,32 @@ package context
 
 import (
 	"fmt"
-	" free5gc/lib/idgenerator"
-	" free5gcenapi"
-	" free5gcenapi/models"
-	" free5gcf/factory"
-	" free5gcf/logger"
+	"free5gc/lib/idgenerator"
+	"free5gc/lib/openapi"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/pcf/factory"
+	"free5gc/src/pcf/logger"
 	"math"
 	"strconv"
 	"strings"
 	"sync"
 )
 
-var pcfContext = PCFContext{}
+var pcfContext = pcfContext{}
 
 func init() {
-	PCF_Self().Name = "pcf"
-	PCF_Self().UriScheme = models.UriScheme_HTTPS
-	PCF_Self().TimeFormat = "2006-01-02 15:04:05"
-	PCF_Self().DefaultBdtRefId = "BdtPolicyId-"
-	PCF_Self().NfService = make(map[models.ServiceName]models.NfService)
-	PCF_Self().PcfServiceUris = make(map[models.ServiceName]string)
-	PCF_Self().PcfSuppFeats = make(map[models.ServiceName]openapi.SupportedFeature)
-	PCF_Self().BdtPolicyIDGenerator = idgenerator.NewGenerator(1, math.MaxInt64)
-	PCF_Self().AMFStatusSubsData = make(map[string]AMFStatusSubscriptionData)
+	pcf_Self().Name = "pcf"
+	pcf_Self().UriScheme = models.UriScheme_HTTPS
+	pcf_Self().TimeFormat = "2006-01-02 15:04:05"
+	pcf_Self().DefaultBdtRefId = "BdtPolicyId-"
+	pcf_Self().NfService = make(map[models.ServiceName]models.NfService)
+	pcf_Self().pcfServiceUris = make(map[models.ServiceName]string)
+	pcf_Self().pcfSuppFeats = make(map[models.ServiceName]openapi.SupportedFeature)
+	pcf_Self().BdtPolicyIDGenerator = idgenerator.NewGenerator(1, math.MaxInt64)
+	pcf_Self().AMFStatusSubsData = make(map[string]AMFStatusSubscriptionData)
 }
 
-type PCFContext struct {
+type pcfContext struct {
 	NfId            string
 	Name            string
 	UriScheme       models.UriScheme
@@ -37,8 +37,8 @@ type PCFContext struct {
 	TimeFormat      string
 	DefaultBdtRefId string
 	NfService       map[models.ServiceName]models.NfService
-	PcfServiceUris  map[models.ServiceName]string
-	PcfSuppFeats    map[models.ServiceName]openapi.SupportedFeature
+	pcfServiceUris  map[models.ServiceName]string
+	pcfSuppFeats    map[models.ServiceName]openapi.SupportedFeature
 	NrfUri          string
 	DefaultUdrURI   string
 	//UePool          map[string]*UeContext
@@ -74,15 +74,15 @@ type AppSessionData struct {
 	SmPolicyData *UeSmPolicyData
 }
 
-// Create new PCF context
-func PCF_Self() *PCFContext {
+// Create new pcf context
+func pcf_Self() *pcfContext {
 	return &pcfContext
 }
 func GetTimeformat() string {
 	return pcfContext.TimeFormat
 }
 func GetUri(name models.ServiceName) string {
-	return pcfContext.PcfServiceUris[name]
+	return pcfContext.pcfServiceUris[name]
 }
 
 var PolicyAuthorizationUri = "/npcf-policyauthorization/v1/app-sessions/"
@@ -96,12 +96,12 @@ var Ipv6_pool = make(map[string]string)
 // BdtPolicy default value
 const DefaultBdtRefId = "BdtPolicyId-"
 
-func (context *PCFContext) GetIPv4Uri() string {
+func (context *pcfContext) GetIPv4Uri() string {
 	return fmt.Sprintf("%s://%s:%d", context.UriScheme, context.RegisterIPv4, context.SBIPort)
 }
 
 // Init NfService with supported service list ,and version of services
-func (context *PCFContext) InitNFService(serviceList []factory.Service, version string) {
+func (context *pcfContext) InitNFService(serviceList []factory.Service, version string) {
 	tmpVersion := strings.Split(version, ".")
 	versionUri := "v" + tmpVersion[0]
 	for index, service := range serviceList {
@@ -130,8 +130,8 @@ func (context *PCFContext) InitNFService(serviceList []factory.Service, version 
 	}
 }
 
-// Allocate PCF Ue with supi and add to pcf Context and returns allocated ue
-func (context *PCFContext) NewPCFUe(Supi string) (*UeContext, error) {
+// Allocate pcf Ue with supi and add to pcf Context and returns allocated ue
+func (context *pcfContext) NewpcfUe(Supi string) (*UeContext, error) {
 	if strings.HasPrefix(Supi, "imsi-") {
 		newUeContext := &UeContext{}
 		newUeContext.SmPolicyData = make(map[string]*UeSmPolicyData)
@@ -147,7 +147,7 @@ func (context *PCFContext) NewPCFUe(Supi string) (*UeContext, error) {
 }
 
 // Return Bdt Policy Id with format "BdtPolicyId-%d" which be allocated
-func (context *PCFContext) AllocBdtPolicyID() (bdtPolicyID string, err error) {
+func (context *pcfContext) AllocBdtPolicyID() (bdtPolicyID string, err error) {
 	var allocID int64
 	if allocID, err = context.BdtPolicyIDGenerator.Allocate(); err != nil {
 		logger.CtxLog.Warnf("Allocate pathID error: %+v", err)
@@ -158,8 +158,8 @@ func (context *PCFContext) AllocBdtPolicyID() (bdtPolicyID string, err error) {
 	return bdtPolicyID, nil
 }
 
-// Find PcfUe which the policyId belongs to
-func (context *PCFContext) PCFUeFindByPolicyId(PolicyId string) *UeContext {
+// Find pcfUe which the policyId belongs to
+func (context *pcfContext) pcfUeFindByPolicyId(PolicyId string) *UeContext {
 	index := strings.LastIndex(PolicyId, "-")
 	if index == -1 {
 		return nil
@@ -174,8 +174,8 @@ func (context *PCFContext) PCFUeFindByPolicyId(PolicyId string) *UeContext {
 	return nil
 }
 
-// Find PcfUe which the AppSessionId belongs to
-func (context *PCFContext) PCFUeFindByAppSessionId(appSessionId string) *UeContext {
+// Find pcfUe which the AppSessionId belongs to
+func (context *pcfContext) pcfUeFindByAppSessionId(appSessionId string) *UeContext {
 	index := strings.LastIndex(appSessionId, "-")
 	if index == -1 {
 		return nil
@@ -190,8 +190,8 @@ func (context *PCFContext) PCFUeFindByAppSessionId(appSessionId string) *UeConte
 	return nil
 }
 
-// Find PcfUe which Ipv4 belongs to
-func (context *PCFContext) PcfUeFindByIPv4(v4 string) *UeContext {
+// Find pcfUe which Ipv4 belongs to
+func (context *pcfContext) pcfUeFindByIPv4(v4 string) *UeContext {
 	var ue *UeContext
 	context.UePool.Range(func(key, value interface{}) bool {
 		ue = value.(*UeContext)
@@ -205,8 +205,8 @@ func (context *PCFContext) PcfUeFindByIPv4(v4 string) *UeContext {
 	return ue
 }
 
-// Find PcfUe which Ipv6 belongs to
-func (context *PCFContext) PcfUeFindByIPv6(v6 string) *UeContext {
+// Find pcfUe which Ipv6 belongs to
+func (context *pcfContext) pcfUeFindByIPv6(v6 string) *UeContext {
 	var ue *UeContext
 	context.UePool.Range(func(key, value interface{}) bool {
 		ue = value.(*UeContext)
@@ -243,7 +243,7 @@ func ueSMPolicyFindByAppSessionContext(ue *UeContext, req *models.AppSessionCont
 }
 
 // SessionBinding from application request to get corresponding Sm policy
-func (context *PCFContext) SessionBinding(req *models.AppSessionContextReqData) (*UeSmPolicyData, error) {
+func (context *pcfContext) SessionBinding(req *models.AppSessionContextReqData) (*UeSmPolicyData, error) {
 	var selectedUE *UeContext
 	var policy *UeSmPolicyData
 	var err error
@@ -282,7 +282,7 @@ func (context *PCFContext) SessionBinding(req *models.AppSessionContextReqData) 
 }
 
 //SetDefaultUdrURI ... function to set DefaultUdrURI
-func (context *PCFContext) SetDefaultUdrURI(uri string) {
+func (context *pcfContext) SetDefaultUdrURI(uri string) {
 	context.DefaultUdrURILock.Lock()
 	defer context.DefaultUdrURILock.Unlock()
 	context.DefaultUdrURI = uri

@@ -1,7 +1,7 @@
 package version_test
 
 import (
-	" free5gc/lib/aes/version"
+	"free5gc/lib/aes/version"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

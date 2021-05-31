@@ -10,14 +10,14 @@
 package management
 
 import (
-	" free5gc/lib/http_wrapper"
-	" free5gcenapi"
-	" free5gcenapi/models"
+	"free5gc/lib/http_wrapper"
+	"free5gc/lib/openapi"
+	"free5gc/lib/openapi/models"
 
-	" free5gcf/producer"
+	"free5gc/src/nrf/producer"
 	"net/http"
 
-	" free5gcf/logger"
+	"free5gc/src/nrf/logger"
 	"github.com/gin-gonic/gin"
 )
 

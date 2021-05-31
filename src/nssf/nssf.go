@@ -11,15 +11,15 @@ package main
 
 import (
 	"fmt"
-	" free5gc/src/app"
+	"free5gc/src/app"
 	"os"
 
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 
-	" free5gcsf/logger"
-	" free5gcsf/service"
-	" free5gcsf/version"
+	"free5gc/src/nssf/logger"
+	"free5gc/src/nssf/service"
+	"free5gc/src/nssf/version"
 )
 
 var NSSF = &service.NSSF{}
@@ -35,7 +35,7 @@ func main() {
 	app.Name = "nssf"
 	fmt.Print(app.Name, "\n")
 	appLog.Infoln("NSSF version: ", version.GetVersion())
-	app.Usage = "- free5gccfg common configuration file -nssfcfg nssf configuration file"
+	app.Usage = "-free5gpcfg common configuration file -nssfcfg nssf configuration file"
 	app.Action = action
 	app.Flags = NSSF.GetCliCmd()
 
@@ -46,7 +46,7 @@ func main() {
 }
 
 func action(c *cli.Context) {
-	app.AppInitializeWillInitialize(c.String(" free5gccfg"))
+	app.AppInitializeWillInitialize(c.String("free5gpcfg"))
 	NSSF.Initialize(c)
 	NSSF.Start()
 }

@@ -10,8 +10,8 @@
 package uecontextmanagement
 
 import (
-	" free5gc/lib/logger_util"
-	" free5gcm/logger"
+	"free5gc/lib/logger_util"
+	"free5gc/src/udm/logger"
 	"net/http"
 	"strings"
 

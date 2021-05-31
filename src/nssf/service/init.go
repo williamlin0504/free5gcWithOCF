@@ -13,17 +13,17 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 
-	" free5gc/lib/http2_util"
-	" free5gcgger_util"
-	" free5gcth_util"
-	" free5gcp"
-	" free5gcsf/consumer"
-	" free5gcsf/context"
-	" free5gcsf/factory"
-	" free5gcsf/logger"
-	" free5gcsf/nssaiavailability"
-	" free5gcsf/nsselection"
-	" free5gcsf/util"
+	"free5gc/lib/http2_util"
+	"free5gc/lib/logger_util"
+	"free5gc/lib/path_util"
+	"free5gc/src/app"
+	"free5gc/src/nssf/consumer"
+	"free5gc/src/nssf/context"
+	"free5gc/src/nssf/factory"
+	"free5gc/src/nssf/logger"
+	"free5gc/src/nssf/nssaiavailability"
+	"free5gc/src/nssf/nsselection"
+	"free5gc/src/nssf/util"
 )
 
 type NSSF struct{}
@@ -39,7 +39,7 @@ var config Config
 
 var nssfCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  " free5gccfg",
+		Name:  "free5gpcfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
@@ -66,7 +66,7 @@ func (*NSSF) Initialize(c *cli.Context) {
 	if config.nssfcfg != "" {
 		factory.InitConfigFactory(config.nssfcfg)
 	} else {
-		DefaultNssfConfigPath := path_util.Go free5gcPath(" free5gc/nssfcfg.conf")
+		DefaultNssfConfigPath := path_util.Gofree5gcPath("free5gc/config/nssfcfg.conf")
 		factory.InitConfigFactory(DefaultNssfConfigPath)
 	}
 

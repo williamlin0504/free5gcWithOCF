@@ -2,18 +2,18 @@ package consumer
 
 import (
 	"context"
-	" free5gc/lib/openapi"
-	" free5gcenapi/Npcf_AMPolicy"
-	" free5gcenapi/models"
-	amf_context " free5gcf/context"
-	" free5gcf/logger"
+	"free5gc/lib/openapi"
+	"free5gc/lib/openapi/Npcf_AMPolicy"
+	"free5gc/lib/openapi/models"
+	amf_context "free5gc/src/amf/context"
+	"free5gc/src/amf/logger"
 	"regexp"
 )
 
 func AMPolicyControlCreate(ue *amf_context.AmfUe, anType models.AccessType) (*models.ProblemDetails, error) {
 
 	configuration := Npcf_AMPolicy.NewConfiguration()
-	configuration.SetBasePath(ue.PcfUri)
+	configuration.SetBasePath(ue.pcfUri)
 	client := Npcf_AMPolicy.NewAPIClient(configuration)
 
 	amfSelf := amf_context.AMF_Self()
@@ -75,7 +75,7 @@ func AMPolicyControlCreate(ue *amf_context.AmfUe, anType models.AccessType) (*mo
 func AMPolicyControlUpdate(ue *amf_context.AmfUe, updateRequest models.PolicyAssociationUpdateRequest) (
 	problemDetails *models.ProblemDetails, err error) {
 	configuration := Npcf_AMPolicy.NewConfiguration()
-	configuration.SetBasePath(ue.PcfUri)
+	configuration.SetBasePath(ue.pcfUri)
 	client := Npcf_AMPolicy.NewAPIClient(configuration)
 
 	res, httpResp, localErr := client.DefaultApi.PoliciesPolAssoIdUpdatePost(
@@ -114,7 +114,7 @@ func AMPolicyControlUpdate(ue *amf_context.AmfUe, updateRequest models.PolicyAss
 func AMPolicyControlDelete(ue *amf_context.AmfUe) (problemDetails *models.ProblemDetails, err error) {
 
 	configuration := Npcf_AMPolicy.NewConfiguration()
-	configuration.SetBasePath(ue.PcfUri)
+	configuration.SetBasePath(ue.pcfUri)
 	client := Npcf_AMPolicy.NewAPIClient(configuration)
 
 	httpResp, localErr := client.DefaultApi.PoliciesPolAssoIdDelete(context.Background(), ue.PolicyAssociationId)

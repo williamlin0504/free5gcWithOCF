@@ -36,7 +36,7 @@ type PduSessionCreateData struct {
 	N1SmInfoFromUe          *RefToBinaryData          `json:"n1SmInfoFromUe,omitempty"`
 	UnknownN1SmInfo         *RefToBinaryData          `json:"unknownN1SmInfo,omitempty"`
 	SupportedFeatures       string                    `json:"supportedFeatures,omitempty"`
-	HPcfId                  string                    `json:"hPcfId,omitempty"`
+	HpcfId                  string                    `json:"hpcfId,omitempty"`
 	HoPreparationIndication bool                      `json:"hoPreparationIndication,omitempty"`
 	SelMode                 DnnSelectionMode          `json:"selMode,omitempty"`
 	AlwaysOnRequested       bool                      `json:"alwaysOnRequested,omitempty"`

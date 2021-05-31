@@ -10,8 +10,8 @@
 package callback
 
 import (
-	" free5gc/lib/logger_util"
-	" free5gcf/logger"
+	"free5gc/lib/logger_util"
+	"free5gc/src/smf/logger"
 
 	"github.com/gin-gonic/gin"
 )

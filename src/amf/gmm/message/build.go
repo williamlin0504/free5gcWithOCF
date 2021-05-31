@@ -3,14 +3,14 @@ package message
 import (
 	"encoding/base64"
 	"encoding/hex"
-	" free5gc/lib/nas"
-	" free5gcs/nasConvert"
-	" free5gcs/nasMessage"
-	" free5gcs/nasType"
-	" free5gcenapi/models"
-	" free5gcf/context"
-	" free5gcf/logger"
-	" free5gcf/nas/nas_security"
+	"free5gc/lib/nas"
+	"free5gc/lib/nas/nasConvert"
+	"free5gc/lib/nas/nasMessage"
+	"free5gc/lib/nas/nasType"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/amf/context"
+	"free5gc/src/amf/logger"
+	"free5gc/src/amf/nas/nas_security"
 
 	"github.com/mitchellh/mapstructure"
 )

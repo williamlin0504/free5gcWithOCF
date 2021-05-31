@@ -4,15 +4,15 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	" free5gc/lib/openapi/Namf_Communication"
-	" free5gcenapi/Npcf_AMPolicy"
-	" free5gcenapi/Npcf_PolicyAuthorization"
-	" free5gcenapi/Npcf_SMPolicyControl"
-	" free5gcenapi/Nudr_DataRepository"
-	" free5gcenapi/models"
-	" free5gcth_util"
-	" free5gcf/context"
-	" free5gcf/logger"
+	"free5gc/lib/openapi/Namf_Communication"
+	"free5gc/lib/openapi/Npcf_AMPolicy"
+	"free5gc/lib/openapi/Npcf_PolicyAuthorization"
+	"free5gc/lib/openapi/Npcf_SMPolicyControl"
+	"free5gc/lib/openapi/Nudr_DataRepository"
+	"free5gc/lib/openapi/models"
+	"free5gc/lib/path_util"
+	"free5gc/src/pcf/context"
+	"free5gc/src/pcf/logger"
 	"net/http"
 	"reflect"
 	"time"
@@ -22,11 +22,11 @@ const TimeFormat = time.RFC3339
 
 // Path of HTTP2 key and log file
 var (
-	PCF_LOG_PATH                                 = path_util.Go free5gcPath(" free5gckey.log")
-	PCF_PEM_PATH                                 = path_util.Go free5gcPath(" free5gct/TLS/pcf.pem")
-	PCF_KEY_PATH                                 = path_util.Go free5gcPath(" free5gct/TLS/pcf.key")
-	PCF_CONFIG_PATH                              = path_util.Go free5gcPath(" free5gc/pcfcfg.conf")
-	PCF_BASIC_PATH                               = "https://localhost:29507"
+	pcf_LOG_PATH                                 = path_util.Gofree5gcPath("free5gc/pcfsslkey.log")
+	pcf_PEM_PATH                                 = path_util.Gofree5gcPath("free5gc/support/TLS/pcf.pem")
+	pcf_KEY_PATH                                 = path_util.Gofree5gcPath("free5gc/support/TLS/pcf.key")
+	pcf_CONFIG_PATH                              = path_util.Gofree5gcPath("free5gc/config/pcfcfg.conf")
+	pcf_BASIC_PATH                               = "https://localhost:29507"
 	ERROR_REQUEST_PARAMETERS                     = "ERROR_REQUEST_PARAMETERS"
 	USER_UNKNOWN                                 = "USER_UNKNOWN"
 	CONTEXT_NOT_FOUND                            = "CONTEXT_NOT_FOUND"
@@ -190,7 +190,7 @@ func AndBytes(bytes1, bytes2 []byte) []byte {
 	return nil
 }
 
-// Negotiate Support Feture with PCF
+// Negotiate Support Feture with pcf
 func GetNegotiateSuppFeat(suppFeat string, serviceSuppFeat []byte) string {
 	if serviceSuppFeat == nil {
 		return ""
@@ -204,10 +204,10 @@ func GetNegotiateSuppFeat(suppFeat string, serviceSuppFeat []byte) string {
 }
 
 var serviceUriMap = map[models.ServiceName]string{
-	models.ServiceName_NPCF_AM_POLICY_CONTROL:   "policies",
-	models.ServiceName_NPCF_SMPOLICYCONTROL:     "sm-policies",
-	models.ServiceName_NPCF_BDTPOLICYCONTROL:    "bdtpolicies",
-	models.ServiceName_NPCF_POLICYAUTHORIZATION: "app-sessions",
+	models.ServiceName_Npcf_AM_POLICY_CONTROL:   "policies",
+	models.ServiceName_Npcf_SMPOLICYCONTROL:     "sm-policies",
+	models.ServiceName_Npcf_BDTPOLICYCONTROL:    "bdtpolicies",
+	models.ServiceName_Npcf_POLICYAUTHORIZATION: "app-sessions",
 }
 
 // Get Resource Uri (location Header) with param id string
@@ -252,7 +252,7 @@ func GetNotSubscribedGuamis(guamisIn []models.Guami) (guamisOut []models.Guami) 
 }
 
 func guamiInSubscriptionData(guami models.Guami) bool {
-	pcfSelf := context.PCF_Self()
+	pcfSelf := context.pcf_Self()
 	for _, subscriptionData := range pcfSelf.AMFStatusSubsData {
 		for _, sGuami := range subscriptionData.GuamiList {
 			if reflect.DeepEqual(sGuami, guami) {

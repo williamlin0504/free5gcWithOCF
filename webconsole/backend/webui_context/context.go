@@ -2,9 +2,9 @@ package webui_context
 
 import (
 	"fmt"
-	" free5gc/lib/MongoDBLibrary"
-	" free5gcenapi/models"
-	" free5gcsole/backend/logger"
+	"free5gc/lib/MongoDBLibrary"
+	"free5gc/lib/openapi/models"
+	"free5gc/webconsole/backend/logger"
 	"github.com/mitchellh/mapstructure"
 	"reflect"
 	"time"

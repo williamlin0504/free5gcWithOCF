@@ -3,10 +3,10 @@ package util
 import (
 	"encoding/binary"
 	"encoding/hex"
-	" free5gc/lib/aper"
-	" free5gcap/ngapType"
-	" free5gciwf/context"
-	" free5gciwf/logger"
+	"free5gc/lib/aper"
+	"free5gc/lib/ngap/ngapType"
+	"free5gc/src/n3iwf/context"
+	"free5gc/src/n3iwf/logger"
 	"strings"
 )
 

@@ -10,8 +10,8 @@
 package eventexposure
 
 import (
-	" free5gc/lib/logger_util"
-	" free5gcf/logger"
+	"free5gc/lib/logger_util"
+	"free5gc/src/amf/logger"
 	"net/http"
 	"strings"
 

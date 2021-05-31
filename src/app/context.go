@@ -34,8 +34,7 @@ type Logger struct {
 	OpenApi            OpenApi            `yaml:"OpenApi"`
 	Aper               Aper               `yaml:"Aper"`
 	CommonConsumerTest CommonConsumerTest `yaml:"CommonConsumerTest"`
-	PCF                PCF                `yaml:"PCF"`
-	CCF                CCF                `yaml:"CCF"`
+	pcf                pcf                `yaml:"pcf"`
 	UDR                UDR                `yaml:"UDR"`
 	NRF                NRF                `yaml:"NRF"`
 	NSSF               NSSF               `yaml:"NSSF"`
@@ -59,12 +58,7 @@ type SMF struct {
 	ReportCaller bool   `yaml:"ReportCaller"`
 }
 
-type PCF struct {
-	DebugLevel   string `yaml:"debugLevel"`
-	ReportCaller bool   `yaml:"ReportCaller"`
-}
-
-type CCF struct {
+type pcf struct {
 	DebugLevel   string `yaml:"debugLevel"`
 	ReportCaller bool   `yaml:"ReportCaller"`
 }

@@ -11,11 +11,11 @@ package uecontextmanagement
 
 import (
 	// "fmt"
-	" free5gc/lib/http_wrapper"
-	" free5gcenapi"
-	" free5gcenapi/models"
-	" free5gcm/logger"
-	" free5gcm/producer"
+	"free5gc/lib/http_wrapper"
+	"free5gc/lib/openapi"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/udm/logger"
+	"free5gc/src/udm/producer"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

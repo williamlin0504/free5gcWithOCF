@@ -3,14 +3,14 @@
 PID_LIST=()
 
 cd src/upf/build
-sudo -E ./bin/ free5gc-upfd &
+sudo -E ./bin/free5gc-upfd &
 PID_LIST+=($!)
 
 sleep 1
 
 cd ../../..
 
-NF_LIST="nrf amf smf udr pcf ccf udm nssf ausf"
+NF_LIST="nrf amf smf udr pcf udm nssf ausf ocf"
 
 export GIN_MODE=release
 

@@ -12,10 +12,10 @@ package producer
 import (
 	"net/http"
 
-	" free5gc/lib/http_wrapper"
-	" free5gcenapi/models"
-	" free5gcsf/logger"
-	" free5gcsf/plugin"
+	"free5gc/lib/http_wrapper"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/nssf/logger"
+	"free5gc/src/nssf/plugin"
 )
 
 // HandleNSSAIAvailabilityDelete - Deletes an already existing S-NSSAIs per TA

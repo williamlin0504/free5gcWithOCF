@@ -4,17 +4,17 @@ import (
 	"context"
 	"encoding/hex"
 	"fmt"
-	" free5gc/lib/http_wrapper"
+	"free5gc/lib/http_wrapper"
 	"github.com/antihax/optional"
-	// " free5gcmmonConsumerTestData/UDM/TestGenAuthData"
+	// "free5gc/lib/CommonConsumerTestData/UDM/TestGenAuthData"
 	cryptoRand "crypto/rand"
-	" free5gcauCommon"
-	" free5gclenage"
-	" free5gcenapi"
-	" free5gcenapi/Nudr_DataRepository"
-	" free5gcenapi/models"
-	" free5gcil_3gpp/suci"
-	" free5gcm/logger"
+	"free5gc/lib/UeauCommon"
+	"free5gc/lib/milenage"
+	"free5gc/lib/openapi"
+	"free5gc/lib/openapi/Nudr_DataRepository"
+	"free5gc/lib/openapi/models"
+	"free5gc/lib/util_3gpp/suci"
+	"free5gc/src/udm/logger"
 	"math/big"
 	"math/rand"
 	"net/http"
@@ -513,7 +513,7 @@ func GenerateAuthDataProcedure(authInfoRequest models.AuthenticationInfoRequest,
 
 		// For TS 35.208 test set 19 & RFC 5448 test vector 1
 		// CK': 0093 962d 0dd8 4aa5 684b 045c 9edf fa04
-		// IK': ccfc 230c a74f cc96 c0a5 d611 64f5 a76
+		// IK': pcfc 230c a74f cc96 c0a5 d611 64f5 a76
 
 		ckPrime := kdfVal[:len(kdfVal)/2]
 		ikPrime := kdfVal[len(kdfVal)/2:]

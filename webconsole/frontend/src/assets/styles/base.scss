@@ -13,11 +13,11 @@ $pe-7s-font-path: "~pe7-icon/dist/fonts" !default;
 @import 'base/typography';
 @import 'base/form';
 @import 'base/auth';
-@import ' free5gc/global';
-@import ' free5gc;
-@import ' free5gcs';
-@import ' free5gcr';
-@import ' free5gcibers';
+@import 'free5gc/global';
+@import 'free5gc/icons';
+@import 'free5gc/patches';
+@import 'free5gc/spinner';
+@import 'free5gc/subscribers';
 
 html, body {
   font-size: 14px;

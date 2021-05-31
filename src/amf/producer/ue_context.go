@@ -1,11 +1,11 @@
 package producer
 
 import (
-	" free5gc/lib/http_wrapper"
-	" free5gcenapi/models"
-	" free5gcf/consumer"
-	" free5gcf/context"
-	" free5gcf/logger"
+	"free5gc/lib/http_wrapper"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/amf/consumer"
+	"free5gc/src/amf/context"
+	"free5gc/src/amf/logger"
 	"net/http"
 	"strings"
 )
@@ -93,8 +93,8 @@ func CreateUEContextProcedure(ueContextID string, createUeContextRequest models.
 	//ueContextCreateData.UeContext.SmsfId
 	//ueContextCreateData.UeContext.SeafData
 	//ueContextCreateData.UeContext.Var5gMmCapability
-	//ueContextCreateData.UeContext.PcfId
-	//ueContextCreateData.UeContext.PcfAmPolicyUri
+	//ueContextCreateData.UeContext.pcfId
+	//ueContextCreateData.UeContext.pcfAmPolicyUri
 	//ueContextCreateData.UeContext.AmPolicyReqTriggerList
 	//ueContextCreateData.UeContext.EventSubscriptionList
 	//ueContextCreateData.UeContext.MmContextList
@@ -110,13 +110,13 @@ func CreateUEContextProcedure(ueContextID string, createUeContextRequest models.
 	// response.JsonData.TargetToSourceData =
 	// ue.N1N2Message[ueContextId].Request.JsonData.N2InfoContainer.SmInfo.N2InfoContent
 	createUeContextResponse.JsonData.PduSessionList = ueContextCreateData.PduSessionList
-	createUeContextResponse.JsonData.PcfReselectedInd = false
-	// TODO: When  Target AMF selects a nw PCF for AM policy, set the flag to true.
+	createUeContextResponse.JsonData.pcfReselectedInd = false
+	// TODO: When  Target AMF selects a nw pcf for AM policy, set the flag to true.
 
 	//response.UeContext = ueContextCreateData.UeContext
 	//response.TargetToSourceData = ue.N1N2Message[amfSelf.Uri].Request.JsonData.N2InfoContainer.SmInfo.N2InfoContent
 	//response.PduSessionList = ueContextCreateData.PduSessionList
-	//response.PcfReselectedInd = false // TODO:When  Target AMF selects a nw PCF for AM policy, set the flag to true.
+	//response.pcfReselectedInd = false // TODO:When  Target AMF selects a nw pcf for AM policy, set the flag to true.
 	//
 
 	// return http_wrapper.NewResponse(http.StatusCreated, nil, createUeContextResponse)
@@ -326,12 +326,12 @@ func buildUEContextModel(ue *context.AmfUe) *models.UeContext {
 		}
 	}
 
-	if ue.PcfId != "" {
-		ueContext.PcfId = ue.PcfId
+	if ue.pcfId != "" {
+		ueContext.pcfId = ue.pcfId
 	}
 
 	if ue.AmPolicyUri != "" {
-		ueContext.PcfAmPolicyUri = ue.AmPolicyUri
+		ueContext.pcfAmPolicyUri = ue.AmPolicyUri
 	}
 
 	if ue.AmPolicyAssociation != nil {
@@ -467,7 +467,7 @@ func RegistrationStatusUpdateProcedure(ueContextID string, ueRegStatusUpdateReqD
 			}
 		}
 
-		if ueRegStatusUpdateReqData.PcfReselectedInd {
+		if ueRegStatusUpdateReqData.pcfReselectedInd {
 			problem, err := consumer.AMPolicyControlDelete(ue)
 			if problem != nil {
 				logger.GmmLog.Errorf("AM Policy Control Delete Failed Problem[%+v]", problem)

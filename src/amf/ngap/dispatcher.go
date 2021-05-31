@@ -1,10 +1,10 @@
 package ngap
 
 import (
-	" free5gc/lib/ngap"
-	" free5gcap/ngapType"
-	" free5gcf/context"
-	" free5gcf/logger"
+	"free5gc/lib/ngap"
+	"free5gc/lib/ngap/ngapType"
+	"free5gc/src/amf/context"
+	"free5gc/src/amf/logger"
 	"net"
 
 	"github.com/sirupsen/logrus"

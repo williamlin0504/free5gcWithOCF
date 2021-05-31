@@ -1,10 +1,10 @@
 package management
 
 import (
-	" free5gc/lib/MongoDBLibrary"
-	" free5gcmeDecode"
-	" free5gcenapi/models"
-	" free5gcf/logger"
+	"free5gc/lib/MongoDBLibrary"
+	"free5gc/lib/TimeDecode"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/nrf/logger"
 	"net"
 	"reflect"
 	"strconv"
@@ -39,7 +39,7 @@ func GetNrfInfo() *models.NrfInfo {
 	nrfinfo.ServedAmfInfo = getAmfInfo()
 	nrfinfo.ServedSmfInfo = getSmfInfo()
 	nrfinfo.ServedUpfInfo = getUpfInfo()
-	nrfinfo.ServedPcfInfo = getPcfInfo()
+	nrfinfo.ServedpcfInfo = getpcfInfo()
 	nrfinfo.ServedBsfInfo = getBsfInfo()
 	nrfinfo.ServedChfInfo = getChfInfo()
 
@@ -193,28 +193,28 @@ func getUpfInfo() map[string]models.UpfInfo {
 	return servedUpfInfo
 
 }
-func getPcfInfo() map[string]models.PcfInfo {
-	var servedPcfInfo map[string]models.PcfInfo
-	servedPcfInfo = make(map[string]models.PcfInfo)
-	var PCFProfile models.NfProfile
+func getpcfInfo() map[string]models.pcfInfo {
+	var servedpcfInfo map[string]models.pcfInfo
+	servedpcfInfo = make(map[string]models.pcfInfo)
+	var pcfProfile models.NfProfile
 
 	collName := "NfProfile"
-	filter := bson.M{"nfType": "PCF"}
+	filter := bson.M{"nfType": "pcf"}
 
-	PCF := MongoDBLibrary.RestfulAPIGetMany(collName, filter)
-	PCFStruct, err := TimeDecode.Decode(PCF, time.RFC3339)
+	pcf := MongoDBLibrary.RestfulAPIGetMany(collName, filter)
+	pcfStruct, err := TimeDecode.Decode(pcf, time.RFC3339)
 	if err != nil {
 		logger.ManagementLog.Error(err)
 	}
-	for i := 0; i < len(PCFStruct); i++ {
-		err := mapstructure.Decode(PCFStruct[i], &PCFProfile)
+	for i := 0; i < len(pcfStruct); i++ {
+		err := mapstructure.Decode(pcfStruct[i], &pcfProfile)
 		if err != nil {
 			panic(err)
 		}
 		index := strconv.Itoa(i)
-		servedPcfInfo[index] = *PCFProfile.PcfInfo
+		servedpcfInfo[index] = *pcfProfile.pcfInfo
 	}
-	return servedPcfInfo
+	return servedpcfInfo
 
 }
 func getBsfInfo() map[string]models.BsfInfo {

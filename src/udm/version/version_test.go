@@ -2,7 +2,7 @@ package version_test
 
 import (
 	"fmt"
-	" free5gc/src/udm/version"
+	"free5gc/src/udm/version"
 	"os/exec"
 	"runtime"
 	"strings"

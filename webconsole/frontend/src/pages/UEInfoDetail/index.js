@@ -12,7 +12,7 @@ class UEInfoDetail extends Component {
 
         this.getAMFUEContexts = this.getAMFUEContexts.bind(this)
         this.getSMFInfo = this.getSMFInfo.bind(this)
-        this.getPCFInfo = this.getPCFInfo.bind(this)
+        this.getpcfInfo = this.getpcfInfo.bind(this)
 
     }
 
@@ -121,7 +121,7 @@ class UEInfoDetail extends Component {
         return Arr;
     }
 
-    getPCFInfo() {
+    getpcfInfo() {
         var AmPolicyData = this.props.pcfInfo.AmPolicyData
         var Arr = []
 

@@ -1,9 +1,9 @@
 package producer
 
 import (
-	" free5gc/lib/http_wrapper"
-	" free5gcenapi/models"
-	" free5gcf/logger"
+	"free5gc/lib/http_wrapper"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/nrf/logger"
 	"github.com/dgrijalva/jwt-go"
 	"net/http"
 )

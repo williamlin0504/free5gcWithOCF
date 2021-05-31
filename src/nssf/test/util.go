@@ -7,7 +7,7 @@ package test
 import (
 	"reflect"
 
-	. " free5gc/lib/openapi/models"
+	. "free5gc/lib/openapi/models"
 )
 
 func CheckAuthorizedNetworkSliceInfo(target AuthorizedNetworkSliceInfo, expectList []AuthorizedNetworkSliceInfo) bool {

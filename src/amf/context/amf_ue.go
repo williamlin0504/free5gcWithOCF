@@ -4,14 +4,14 @@ import (
 	"encoding/base64"
 	"encoding/binary"
 	"encoding/hex"
-	" free5gc/lib/UeauCommon"
-	" free5gcm"
-	" free5gcgenerator"
-	" free5gcs/nasMessage"
-	" free5gcs/nasType"
-	" free5gcs/security"
-	" free5gcenapi/models"
-	" free5gcf/logger"
+	"free5gc/lib/UeauCommon"
+	"free5gc/lib/fsm"
+	"free5gc/lib/idgenerator"
+	"free5gc/lib/nas/nasMessage"
+	"free5gc/lib/nas/nasType"
+	"free5gc/lib/nas/security"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/amf/logger"
 	"reflect"
 	"regexp"
 	"sync"
@@ -103,9 +103,9 @@ type AmfUe struct {
 	ABBA                              []uint8
 	Kseaf                             string
 	Kamf                              string
-	/* context about PCF */
-	PcfId                        string
-	PcfUri                       string
+	/* context about pcf */
+	pcfId                        string
+	pcfUri                       string
 	PolicyAssociationId          string
 	AmPolicyUri                  string
 	AmPolicyAssociation          *models.PolicyAssociation
@@ -627,12 +627,12 @@ func (ue *AmfUe) CopyDataFromUeContextModel(ueContext models.UeContext) {
 		ue.NCC = uint8(seafData.Ncc)
 	}
 
-	if ueContext.PcfId != "" {
-		ue.PcfId = ueContext.PcfId
+	if ueContext.pcfId != "" {
+		ue.pcfId = ueContext.pcfId
 	}
 
-	if ueContext.PcfAmPolicyUri != "" {
-		ue.AmPolicyUri = ueContext.PcfAmPolicyUri
+	if ueContext.pcfAmPolicyUri != "" {
+		ue.AmPolicyUri = ueContext.pcfAmPolicyUri
 	}
 
 	if len(ueContext.AmPolicyReqTriggerList) > 0 {

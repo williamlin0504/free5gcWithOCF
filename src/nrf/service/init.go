@@ -3,24 +3,24 @@ package service
 import (
 	"bufio"
 	"fmt"
-	" free5gc/lib/logger_util"
-	" free5gcth_util"
-	nrf_context " free5gcf/context"
-	" free5gcf/util"
+	"free5gc/lib/logger_util"
+	"free5gc/lib/path_util"
+	nrf_context "free5gc/src/nrf/context"
+	"free5gc/src/nrf/util"
 	"os/exec"
 	"sync"
 
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 
-	" free5gcngoDBLibrary"
-	" free5gctp2_util"
-	" free5gcp"
-	" free5gcf/accesstoken"
-	" free5gcf/discovery"
-	" free5gcf/factory"
-	" free5gcf/logger"
-	" free5gcf/management"
+	"free5gc/lib/MongoDBLibrary"
+	"free5gc/lib/http2_util"
+	"free5gc/src/app"
+	"free5gc/src/nrf/accesstoken"
+	"free5gc/src/nrf/discovery"
+	"free5gc/src/nrf/factory"
+	"free5gc/src/nrf/logger"
+	"free5gc/src/nrf/management"
 )
 
 type NRF struct{}
@@ -36,7 +36,7 @@ var config Config
 
 var nrfCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  " free5gccfg",
+		Name:  "free5gpcfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
@@ -64,7 +64,7 @@ func (*NRF) Initialize(c *cli.Context) {
 	if config.nrfcfg != "" {
 		factory.InitConfigFactory(config.nrfcfg)
 	} else {
-		DefaultNrfConfigPath := path_util.Go free5gcPath(" free5gc/nrfcfg.conf")
+		DefaultNrfConfigPath := path_util.Gofree5gcPath("free5gc/config/nrfcfg.conf")
 		factory.InitConfigFactory(DefaultNrfConfigPath)
 	}
 

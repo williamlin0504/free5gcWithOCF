@@ -9,21 +9,21 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 
-	" free5gc/lib/http2_util"
-	" free5gcgger_util"
-	" free5gcth_util"
-	" free5gcp"
-	" free5gcm/consumer"
-	" free5gcm/context"
-	" free5gcm/eventexposure"
-	" free5gcm/factory"
-	" free5gcm/httpcallback"
-	" free5gcm/logger"
-	" free5gcm/parameterprovision"
-	" free5gcm/subscriberdatamanagement"
-	" free5gcm/ueauthentication"
-	" free5gcm/uecontextmanagement"
-	" free5gcm/util"
+	"free5gc/lib/http2_util"
+	"free5gc/lib/logger_util"
+	"free5gc/lib/path_util"
+	"free5gc/src/app"
+	"free5gc/src/udm/consumer"
+	"free5gc/src/udm/context"
+	"free5gc/src/udm/eventexposure"
+	"free5gc/src/udm/factory"
+	"free5gc/src/udm/httpcallback"
+	"free5gc/src/udm/logger"
+	"free5gc/src/udm/parameterprovision"
+	"free5gc/src/udm/subscriberdatamanagement"
+	"free5gc/src/udm/ueauthentication"
+	"free5gc/src/udm/uecontextmanagement"
+	"free5gc/src/udm/util"
 )
 
 type UDM struct{}
@@ -39,7 +39,7 @@ var config Config
 
 var udmCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  " free5gccfg",
+		Name:  "free5gpcfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
@@ -67,7 +67,7 @@ func (*UDM) Initialize(c *cli.Context) {
 	if config.udmcfg != "" {
 		factory.InitConfigFactory(config.udmcfg)
 	} else {
-		DefaultUdmConfigPath := path_util.Go free5gcPath(" free5gc/udmcfg.conf")
+		DefaultUdmConfigPath := path_util.Gofree5gcPath("free5gc/config/udmcfg.conf")
 		factory.InitConfigFactory(DefaultUdmConfigPath)
 	}
 
@@ -121,13 +121,13 @@ func (udm *UDM) Start() {
 	ueauthentication.AddService(router)
 	uecontextmanagement.AddService(router)
 
-	udmLogPath := path_util.Go free5gcPath(" free5gckey.log")
-	udmPemPath := path_util.Go free5gcPath(" free5gct/TLS/udm.pem")
-	udmKeyPath := path_util.Go free5gcPath(" free5gct/TLS/udm.key")
+	udmLogPath := path_util.Gofree5gcPath("free5gc/udmsslkey.log")
+	udmPemPath := path_util.Gofree5gcPath("free5gc/support/TLS/udm.pem")
+	udmKeyPath := path_util.Gofree5gcPath("free5gc/support/TLS/udm.key")
 	if sbi.Tls != nil {
-		udmLogPath = path_util.Go free5gcPath(sbi.Tls.Log)
-		udmPemPath = path_util.Go free5gcPath(sbi.Tls.Pem)
-		udmKeyPath = path_util.Go free5gcPath(sbi.Tls.Key)
+		udmLogPath = path_util.Gofree5gcPath(sbi.Tls.Log)
+		udmPemPath = path_util.Gofree5gcPath(sbi.Tls.Pem)
+		udmKeyPath = path_util.Gofree5gcPath(sbi.Tls.Key)
 	}
 
 	self := context.UDM_Self()

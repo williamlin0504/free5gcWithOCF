@@ -19,7 +19,7 @@ MQId MQCreate(int oflag) {
     MQInfo *mq = UTLT_Malloc(sizeof(MQInfo));
     UTLT_Assert(mq, return (MQId) NULL, "");
 
-    sprintf(mq->name, "/ free5gc_upfmq_%ld", TimeNow());
+    sprintf(mq->name, "/free5gc_upfmq_%ld", TimeNow());
 
     // Create msg queue
     mq_unlink(mq->name);

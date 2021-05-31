@@ -1,4 +1,4 @@
-module  free5gc
+module free5gc
 
 go 1.14
 

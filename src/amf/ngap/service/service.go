@@ -2,7 +2,7 @@ package service
 
 import (
 	"encoding/hex"
-	" free5gc/src/amf/logger"
+	"free5gc/src/amf/logger"
 	"io"
 	"net"
 	"sync"

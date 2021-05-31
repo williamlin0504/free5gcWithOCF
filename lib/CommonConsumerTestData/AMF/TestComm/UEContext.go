@@ -1,7 +1,7 @@
 package TestComm
 
 import (
-	" free5gc/lib/openapi/models"
+	"free5gc/lib/openapi/models"
 )
 
 const (
@@ -165,12 +165,12 @@ func init() {
 	ConsumerRegistrationStatusUpdateTable[RegistrationStatusUpdate200] = models.UeRegStatusUpdateReqData{
 		TransferStatus:       models.UeContextTransferStatus_TRANSFERRED,
 		ToReleaseSessionList: nil,
-		PcfReselectedInd:     false,
+		pcfReselectedInd:     false,
 	}
 	ConsumerRegistrationStatusUpdateTable[RegistrationStatusUpdate404] = models.UeRegStatusUpdateReqData{
 		TransferStatus:       "",
 		ToReleaseSessionList: nil,
-		PcfReselectedInd:     false,
+		pcfReselectedInd:     false,
 	}
 
 }

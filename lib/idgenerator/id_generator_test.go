@@ -2,7 +2,7 @@ package idgenerator_test
 
 import (
 	"fmt"
-	" free5gc/lib/idgenerator"
+	"free5gc/lib/idgenerator"
 	"math/rand"
 	"sync"
 	"testing"

@@ -3,11 +3,11 @@ package consumer
 import (
 	"context"
 	"fmt"
-	" free5gc/lib/openapi/Nnrf_NFDiscovery"
-	" free5gcenapi/models"
-	pcf_context " free5gcf/context"
-	" free5gcf/logger"
-	" free5gcf/util"
+	"free5gc/lib/openapi/Nnrf_NFDiscovery"
+	"free5gc/lib/openapi/models"
+	pcf_context "free5gc/src/pcf/context"
+	"free5gc/src/pcf/logger"
+	"free5gc/src/pcf/util"
 	"net/http"
 
 	"github.com/antihax/optional"
@@ -32,7 +32,7 @@ func SendSearchNFInstances(
 
 func SendNFIntancesUDR(nrfUri, id string) string {
 	targetNfType := models.NfType_UDR
-	requestNfType := models.NfType_PCF
+	requestNfType := models.NfType_pcf
 	localVarOptionals := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{
 		// 	DataSet: optional.NewInterface(models.DataSetId_SUBSCRIPTION),
 	}
@@ -60,7 +60,7 @@ func SendNFIntancesUDR(nrfUri, id string) string {
 
 func SendNFIntancesAMF(nrfUri string, guami models.Guami, serviceName models.ServiceName) string {
 	targetNfType := models.NfType_AMF
-	requestNfType := models.NfType_PCF
+	requestNfType := models.NfType_pcf
 
 	localVarOptionals := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{
 		Guami: optional.NewInterface(util.MarshToJsonString(guami)),
@@ -89,7 +89,7 @@ func SearchAvailableAMFs(nrfUri string, serviceName models.ServiceName) (
 	amfInfos []pcf_context.AMFStatusSubscriptionData) {
 	localVarOptionals := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{}
 
-	result, err := SendSearchNFInstances(nrfUri, models.NfType_AMF, models.NfType_PCF, localVarOptionals)
+	result, err := SendSearchNFInstances(nrfUri, models.NfType_AMF, models.NfType_pcf, localVarOptionals)
 	if err != nil {
 		logger.Consumerlog.Error(err.Error())
 		return

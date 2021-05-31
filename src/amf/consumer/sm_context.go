@@ -2,10 +2,10 @@ package consumer
 
 import (
 	"context"
-	" free5gc/lib/openapi"
-	" free5gcenapi/Nsmf_PDUSession"
-	" free5gcenapi/models"
-	amf_context " free5gcf/context"
+	"free5gc/lib/openapi"
+	"free5gc/lib/openapi/Nsmf_PDUSession"
+	"free5gc/lib/openapi/models"
+	amf_context "free5gc/src/amf/context"
 	"strconv"
 )
 

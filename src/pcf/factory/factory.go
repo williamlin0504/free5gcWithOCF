@@ -1,5 +1,5 @@
 /*
- * PCF Configuration Factory
+ * pcf Configuration Factory
  */
 
 package factory
@@ -10,10 +10,10 @@ import (
 
 	"gopkg.in/yaml.v2"
 
-	" free5gc/src/pcf/logger"
+	"free5gc/src/pcf/logger"
 )
 
-var PcfConfig Config
+var pcfConfig Config
 
 func checkErr(err error) {
 	if err != nil {
@@ -27,9 +27,9 @@ func InitConfigFactory(f string) {
 	content, err := ioutil.ReadFile(f)
 	checkErr(err)
 
-	PcfConfig = Config{}
+	pcfConfig = Config{}
 
-	err = yaml.Unmarshal([]byte(content), &PcfConfig)
+	err = yaml.Unmarshal([]byte(content), &pcfConfig)
 	checkErr(err)
 
 	logger.InitLog.Infof("Successfully initialize configuration %s", f)

@@ -3,8 +3,8 @@ package util
 import (
 	"encoding/hex"
 	"fmt"
-	" free5gc/lib/openapi/models"
-	" free5gcf/logger"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/amf/logger"
 	"strconv"
 )
 

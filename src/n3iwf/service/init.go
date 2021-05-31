@@ -9,15 +9,15 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 
-	" free5gc/lib/path_util"
-	" free5gcp"
-	" free5gciwf/factory"
-	ike_service " free5gciwf/ike/service"
-	" free5gciwf/logger"
-	ngap_service " free5gciwf/ngap/service"
-	nwucp_service " free5gciwf/nwucp/service"
-	nwuup_service " free5gciwf/nwuup/service"
-	" free5gciwf/util"
+	"free5gc/lib/path_util"
+	"free5gc/src/app"
+	"free5gc/src/n3iwf/factory"
+	ike_service "free5gc/src/n3iwf/ike/service"
+	"free5gc/src/n3iwf/logger"
+	ngap_service "free5gc/src/n3iwf/ngap/service"
+	nwucp_service "free5gc/src/n3iwf/nwucp/service"
+	nwuup_service "free5gc/src/n3iwf/nwuup/service"
+	"free5gc/src/n3iwf/util"
 )
 
 type N3IWF struct{}
@@ -33,7 +33,7 @@ var config Config
 
 var n3iwfCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  " free5gccfg",
+		Name:  "free5gpcfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
@@ -61,7 +61,7 @@ func (*N3IWF) Initialize(c *cli.Context) {
 	if config.n3iwfcfg != "" {
 		factory.InitConfigFactory(config.n3iwfcfg)
 	} else {
-		DefaultN3iwfConfigPath := path_util.Go free5gcPath(" free5gc/n3iwfcfg.conf")
+		DefaultN3iwfConfigPath := path_util.Gofree5gcPath("free5gc/config/n3iwfcfg.conf")
 		factory.InitConfigFactory(DefaultN3iwfConfigPath)
 	}
 

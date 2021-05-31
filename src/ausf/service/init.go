@@ -3,16 +3,16 @@ package service
 import (
 	"bufio"
 	"fmt"
-	" free5gc/lib/http2_util"
-	" free5gcgger_util"
-	" free5gcth_util"
-	" free5gcp"
-	" free5gcsf/consumer"
-	ausf_context " free5gcsf/context"
-	" free5gcsf/factory"
-	" free5gcsf/logger"
-	" free5gcsf/ueauthentication"
-	" free5gcsf/util"
+	"free5gc/lib/http2_util"
+	"free5gc/lib/logger_util"
+	"free5gc/lib/path_util"
+	"free5gc/src/app"
+	"free5gc/src/ausf/consumer"
+	ausf_context "free5gc/src/ausf/context"
+	"free5gc/src/ausf/factory"
+	"free5gc/src/ausf/logger"
+	"free5gc/src/ausf/ueauthentication"
+	"free5gc/src/ausf/util"
 	"os/exec"
 	"sync"
 
@@ -33,7 +33,7 @@ var config Config
 
 var ausfCLi = []cli.Flag{
 	cli.StringFlag{
-		Name:  " free5gccfg",
+		Name:  "free5gpcfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
@@ -61,7 +61,7 @@ func (*AUSF) Initialize(c *cli.Context) {
 	if config.ausfcfg != "" {
 		factory.InitConfigFactory(config.ausfcfg)
 	} else {
-		DefaultAusfConfigPath := path_util.Go free5gcPath(" free5gc/ausfcfg.conf")
+		DefaultAusfConfigPath := path_util.Gofree5gcPath("free5gc/config/ausfcfg.conf")
 		factory.InitConfigFactory(DefaultAusfConfigPath)
 	}
 

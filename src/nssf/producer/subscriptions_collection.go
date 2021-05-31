@@ -12,9 +12,9 @@ package producer
 import (
 	"net/http"
 
-	" free5gc/lib/http_wrapper"
-	" free5gcenapi/models"
-	" free5gcsf/logger"
+	"free5gc/lib/http_wrapper"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/nssf/logger"
 )
 
 // HandleNSSAIAvailabilityPost - Creates subscriptions for notification about updates to NSSAI availability information

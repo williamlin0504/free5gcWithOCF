@@ -10,7 +10,7 @@
 package communication
 
 import (
-	" free5gc/src/amf/logger"
+	"free5gc/src/amf/logger"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

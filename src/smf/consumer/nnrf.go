@@ -3,12 +3,12 @@ package consumer
 import (
 	"context"
 	"fmt"
-	" free5gc/lib/openapi"
-	" free5gcenapi/Nnrf_NFDiscovery"
-	" free5gcenapi/Nudm_SubscriberDataManagement"
-	" free5gcenapi/models"
-	smf_context " free5gcf/context"
-	" free5gcf/logger"
+	"free5gc/lib/openapi"
+	"free5gc/lib/openapi/Nnrf_NFDiscovery"
+	"free5gc/lib/openapi/Nudm_SubscriberDataManagement"
+	"free5gc/lib/openapi/models"
+	smf_context "free5gc/src/smf/context"
+	"free5gc/src/smf/logger"
 	"net/http"
 
 	"strings"
@@ -137,10 +137,10 @@ func SendNFDiscoveryUDM() (*models.ProblemDetails, error) {
 	return nil, nil
 }
 
-func SendNFDiscoveryPCF() (problemDetails *models.ProblemDetails, err error) {
+func SendNFDiscoverypcf() (problemDetails *models.ProblemDetails, err error) {
 
 	// Set targetNfType
-	targetNfType := models.NfType_PCF
+	targetNfType := models.NfType_pcf
 	// Set requestNfType
 	requesterNfType := models.NfType_SMF
 	localVarOptionals := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{}

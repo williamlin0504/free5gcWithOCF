@@ -11,11 +11,11 @@ package Nudr_DataRepository
 
 import (
 
-	// " free5gc/lib/openapi/models"
+	// "free5gc/lib/openapi/models"
 
 	"context"
 	"fmt"
-	" free5gcenapi"
+	"free5gc/lib/openapi"
 	"io/ioutil"
 	"net/http"
 	"net/url"

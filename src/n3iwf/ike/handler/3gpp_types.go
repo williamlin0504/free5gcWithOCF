@@ -4,9 +4,9 @@ import (
 	"encoding/binary"
 	"errors"
 
-	" free5gc/lib/aper"
-	" free5gcap/ngapType"
-	" free5gciwf/ike/message"
+	"free5gc/lib/aper"
+	"free5gc/lib/ngap/ngapType"
+	"free5gc/src/n3iwf/ike/message"
 )
 
 // 3GPP specified EAP-5G

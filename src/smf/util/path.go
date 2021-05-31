@@ -3,10 +3,10 @@
 package util
 
 import (
-	" free5gc/lib/path_util"
+	"free5gc/lib/path_util"
 )
 
-var SmfLogPath = path_util.Go free5gcPath(" free5gckey.log")
-var SmfPemPath = path_util.Go free5gcPath(" free5gct/TLS/smf.pem")
-var SmfKeyPath = path_util.Go free5gcPath(" free5gct/TLS/smf.key")
-var DefaultSmfConfigPath = path_util.Go free5gcPath(" free5gc/smfcfg.conf")
+var SmfLogPath = path_util.Gofree5gcPath("free5gc/smfsslkey.log")
+var SmfPemPath = path_util.Gofree5gcPath("free5gc/support/TLS/smf.pem")
+var SmfKeyPath = path_util.Gofree5gcPath("free5gc/support/TLS/smf.key")
+var DefaultSmfConfigPath = path_util.Gofree5gcPath("free5gc/config/smfcfg.conf")

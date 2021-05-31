@@ -1,7 +1,7 @@
 package version_test
 
 import (
-	" free5gc/lib/pfcp/version"
+	"free5gc/lib/pfcp/version"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

@@ -1,8 +1,8 @@
 package context
 
 import (
-	" free5gc/lib/pfcp/pfcpType"
-	" free5gcil_3gpp"
+	"free5gc/lib/pfcp/pfcpType"
+	"free5gc/lib/util_3gpp"
 )
 
 const (

@@ -9,10 +9,10 @@ package producer
 import (
 	"net/http"
 
-	" free5gc/lib/openapi/models"
-	" free5gcsf/logger"
-	" free5gcsf/plugin"
-	" free5gcsf/util"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/nssf/logger"
+	"free5gc/src/nssf/plugin"
+	"free5gc/src/nssf/util"
 )
 
 // Set Allowed NSSAI with Subscribed S-NSSAI(s) which are marked as default S-NSSAI(s)

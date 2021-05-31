@@ -5,7 +5,7 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	" free5gc/lib/pfcp/logger"
+	"free5gc/lib/pfcp/logger"
 )
 
 // PFDContents - describe in TS 29.244 Figure 8.2.39-1: PFD Contents

@@ -1,17 +1,17 @@
 package producer
 
 import (
-	" free5gc/lib/aper"
-	" free5gctp_wrapper"
-	" free5gcs/nasMessage"
-	" free5gcap/ngapType"
-	" free5gcenapi/models"
-	" free5gcf/context"
-	gmm_message " free5gcf/gmm/message"
-	" free5gcf/logger"
-	ngap_message " free5gcf/ngap/message"
-	" free5gcf/producer/callback"
-	" free5gcf/util"
+	"free5gc/lib/aper"
+	"free5gc/lib/http_wrapper"
+	"free5gc/lib/nas/nasMessage"
+	"free5gc/lib/ngap/ngapType"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/amf/context"
+	gmm_message "free5gc/src/amf/gmm/message"
+	"free5gc/src/amf/logger"
+	ngap_message "free5gc/src/amf/ngap/message"
+	"free5gc/src/amf/producer/callback"
+	"free5gc/src/amf/util"
 	"net/http"
 	"strconv"
 )

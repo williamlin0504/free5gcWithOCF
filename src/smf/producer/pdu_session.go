@@ -3,20 +3,20 @@ package producer
 import (
 	"context"
 	"fmt"
-	" free5gc/lib/http_wrapper"
-	" free5gcs"
-	" free5gcs/nasConvert"
-	" free5gcs/nasMessage"
-	" free5gcenapi"
-	" free5gcenapi/Namf_Communication"
-	" free5gcenapi/Nsmf_PDUSession"
-	" free5gcenapi/Nudm_SubscriberDataManagement"
-	" free5gcenapi/models"
-	" free5gccp/pfcpType"
-	" free5gcf/consumer"
-	smf_context " free5gcf/context"
-	" free5gcf/logger"
-	pfcp_message " free5gcf/pfcp/message"
+	"free5gc/lib/http_wrapper"
+	"free5gc/lib/nas"
+	"free5gc/lib/nas/nasConvert"
+	"free5gc/lib/nas/nasMessage"
+	"free5gc/lib/openapi"
+	"free5gc/lib/openapi/Namf_Communication"
+	"free5gc/lib/openapi/Nsmf_PDUSession"
+	"free5gc/lib/openapi/Nudm_SubscriberDataManagement"
+	"free5gc/lib/openapi/models"
+	"free5gc/lib/pfcp/pfcpType"
+	"free5gc/src/smf/consumer"
+	smf_context "free5gc/src/smf/context"
+	"free5gc/src/smf/logger"
+	pfcp_message "free5gc/src/smf/pfcp/message"
 	"net/http"
 
 	"github.com/antihax/optional"
@@ -87,9 +87,9 @@ func HandlePDUSessionSMContextCreate(request models.PostSmContextsRequest) *http
 	establishmentRequest := m.PDUSessionEstablishmentRequest
 	smContext.HandlePDUSessionEstablishmentRequest(establishmentRequest)
 
-	logger.PduSessLog.Infof("PCF Selection for SMContext SUPI[%s] PDUSessionID[%d]\n",
+	logger.PduSessLog.Infof("pcf Selection for SMContext SUPI[%s] PDUSessionID[%d]\n",
 		smContext.Supi, smContext.PDUSessionID)
-	if err := smContext.PCFSelection(); err != nil {
+	if err := smContext.pcfSelection(); err != nil {
 		logger.PduSessLog.Errorln("pcf selection error:", err)
 	}
 
@@ -118,13 +118,13 @@ func HandlePDUSessionSMContextCreate(request models.PostSmContextsRequest) *http
 	smPolicyData.SuppFeat = "F"
 
 	var smPolicyDecision models.SmPolicyDecision
-	if smPolicyDecisionFromPCF, _, err := smContext.SMPolicyClient.
+	if smPolicyDecisionFrompcf, _, err := smContext.SMPolicyClient.
 		DefaultApi.SmPoliciesPost(context.Background(), smPolicyData); err != nil {
 		openapiError := err.(openapi.GenericOpenAPIError)
 		problemDetails := openapiError.Model().(models.ProblemDetails)
 		logger.PduSessLog.Errorln("setup sm policy association failed:", err, problemDetails)
 	} else {
-		smPolicyDecision = smPolicyDecisionFromPCF
+		smPolicyDecision = smPolicyDecisionFrompcf
 	}
 
 	if err := ApplySmPolicyFromDecision(smContext, &smPolicyDecision); err != nil {

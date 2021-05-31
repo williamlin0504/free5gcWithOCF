@@ -3,13 +3,13 @@ package message
 import (
 	"encoding/hex"
 	"fmt"
-	" free5gc/lib/aper"
-	" free5gcap"
-	" free5gcap/ngapConvert"
-	" free5gcap/ngapType"
-	" free5gcenapi/models"
-	" free5gcf/context"
-	" free5gcf/logger"
+	"free5gc/lib/aper"
+	"free5gc/lib/ngap"
+	"free5gc/lib/ngap/ngapConvert"
+	"free5gc/lib/ngap/ngapType"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/amf/context"
+	"free5gc/src/amf/logger"
 	"strings"
 )
 

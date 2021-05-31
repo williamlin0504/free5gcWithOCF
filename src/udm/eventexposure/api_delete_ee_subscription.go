@@ -10,8 +10,8 @@
 package eventexposure
 
 import (
-	" free5gc/lib/http_wrapper"
-	" free5gcm/producer"
+	"free5gc/lib/http_wrapper"
+	"free5gc/src/udm/producer"
 
 	"github.com/gin-gonic/gin"
 )

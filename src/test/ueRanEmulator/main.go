@@ -2,14 +2,14 @@ package main
 
 import (
 	"fmt"
-	" free5gc/lib/nas"
-	" free5gcs/nasMessage"
-	" free5gcs/nasTestpacket"
-	" free5gcs/nasType"
-	" free5gcs/security"
-	" free5gcap"
-	" free5gcenapi/models"
-	" free5gcst"
+	"free5gc/lib/nas"
+	"free5gc/lib/nas/nasMessage"
+	"free5gc/lib/nas/nasTestpacket"
+	"free5gc/lib/nas/nasType"
+	"free5gc/lib/nas/security"
+	"free5gc/lib/ngap"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/test"
 	"io/ioutil"
 	"log"
 	"net"
@@ -167,7 +167,7 @@ func ueRanEmulator() error {
 	fmt.Printf("[UERANEM] Conntect to UPF successfully\n")
 
 	// send NGSetupRequest Msg
-	sendMsg, err = test.GetNGSetupRequest([]byte("\x00\x01\x02"), 24, " free5gc
+	sendMsg, err = test.GetNGSetupRequest([]byte("\x00\x01\x02"), 24, "free5gc")
 	if err != nil {
 		err = fmt.Errorf("GetNGSetupRequest: %v", err)
 		return err

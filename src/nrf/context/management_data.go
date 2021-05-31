@@ -3,14 +3,14 @@ package context
 import (
 	"encoding/json"
 	"fmt"
-	" free5gc/lib/MongoDBLibrary"
+	"free5gc/lib/MongoDBLibrary"
 
-	// " free5gcmeDecode"
-	// " free5gctp_wrapper"
-	" free5gcenapi"
-	" free5gcenapi/models"
-	" free5gcf/factory"
-	" free5gcf/logger"
+	// "free5gc/lib/TimeDecode"
+	// "free5gc/lib/http_wrapper"
+	"free5gc/lib/openapi"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/nrf/factory"
+	"free5gc/src/nrf/logger"
 	"math/rand"
 
 	// "net"
@@ -327,23 +327,23 @@ func nnrfNFManagementOption(nf *models.NfProfile, nfprofile models.NfProfile) {
 		nf.UpfInfo = &a
 	}
 	//pcfInfo
-	if nfprofile.PcfInfo != nil {
+	if nfprofile.pcfInfo != nil {
 
-		var a models.PcfInfo
+		var a models.pcfInfo
 
-		if nfprofile.PcfInfo.DnnList != nil {
-			a.DnnList = nfprofile.PcfInfo.DnnList
+		if nfprofile.pcfInfo.DnnList != nil {
+			a.DnnList = nfprofile.pcfInfo.DnnList
 		}
-		if nfprofile.PcfInfo.SupiRanges != nil {
-			a.SupiRanges = nfprofile.PcfInfo.SupiRanges
+		if nfprofile.pcfInfo.SupiRanges != nil {
+			a.SupiRanges = nfprofile.pcfInfo.SupiRanges
 		}
-		if nfprofile.PcfInfo.RxDiamHost != "" {
-			a.RxDiamHost = nfprofile.PcfInfo.RxDiamHost
+		if nfprofile.pcfInfo.RxDiamHost != "" {
+			a.RxDiamHost = nfprofile.pcfInfo.RxDiamHost
 		}
-		if nfprofile.PcfInfo.RxDiamRealm != "" {
-			a.RxDiamRealm = nfprofile.PcfInfo.RxDiamRealm
+		if nfprofile.pcfInfo.RxDiamRealm != "" {
+			a.RxDiamRealm = nfprofile.pcfInfo.RxDiamRealm
 		}
-		nf.PcfInfo = &a
+		nf.pcfInfo = &a
 	}
 	//bsfInfo
 	if nfprofile.BsfInfo != nil {

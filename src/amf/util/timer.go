@@ -1,8 +1,8 @@
 package util
 
 import (
-	" free5gc/src/amf/context"
-	" free5gcf/logger"
+	"free5gc/src/amf/context"
+	"free5gc/src/amf/logger"
 )
 
 func StopT3513(ue *context.AmfUe) {

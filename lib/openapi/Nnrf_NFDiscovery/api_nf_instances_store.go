@@ -10,8 +10,8 @@
 package Nnrf_NFDiscovery
 
 import (
-	" free5gc/lib/openapi"
-	" free5gcenapi/models"
+	"free5gc/lib/openapi"
+	"free5gc/lib/openapi/models"
 
 	"context"
 	"io/ioutil"

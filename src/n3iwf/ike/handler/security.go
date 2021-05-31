@@ -16,8 +16,8 @@ import (
 	"math/big"
 	"strings"
 
-	" free5gc/src/n3iwf/context"
-	" free5gciwf/ike/message"
+	"free5gc/src/n3iwf/context"
+	"free5gc/src/n3iwf/ike/message"
 )
 
 // General data

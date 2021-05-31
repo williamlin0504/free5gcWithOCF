@@ -35,7 +35,7 @@ ERROR_AND_FREE:
 }
 
 Status BufferServerInit() {
-    strcpy(Gtp5gSelf()->unixPath, "/tmp/ free5gc_unix_sock");
+    strcpy(Gtp5gSelf()->unixPath, "/tmp/free5gc_unix_sock");
     
     Gtp5gSelf()->unixSock = BufferServerCreate(SOCK_DGRAM, Gtp5gSelf()->unixPath, UPDKBufferHandler, NULL);
     UTLT_Assert(Gtp5gSelf()->unixSock, return STATUS_ERROR, "UnixServerCreate failed");

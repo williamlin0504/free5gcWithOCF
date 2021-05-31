@@ -1579,7 +1579,7 @@ components:
         upfInfo:
           $ref: '#/components/schemas/UpfInfo'
         pcfInfo:
-          $ref: '#/components/schemas/PcfInfo'
+          $ref: '#/components/schemas/pcfInfo'
         bsfInfo:
           $ref: '#/components/schemas/BsfInfo'
         chfInfo:
@@ -1698,7 +1698,7 @@ components:
       - SMF
       - AUSF
       - NEF
-      - PCF
+      - pcf
       - SMSF
       - NSSF
       - UDR
@@ -2437,7 +2437,7 @@ components:
       - N6
       - N9
       type: string
-    PcfInfo:
+    pcfInfo:
       example:
         rxDiamHost: rxDiamHost
         dnnList:
@@ -2765,7 +2765,7 @@ components:
       - SMF
       - AUSF
       - NEF
-      - PCF
+      - pcf
       - SMSF
       - NSSF
       - UDR
@@ -2789,7 +2789,7 @@ components:
       - SMF
       - AUSF
       - NEF
-      - PCF
+      - pcf
       - SMSF
       - NSSF
       - UDR

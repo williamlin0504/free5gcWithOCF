@@ -2,7 +2,7 @@ package timer_test
 
 import (
 	"fmt"
-	" free5gc/lib/timer"
+	"free5gc/lib/timer"
 	"testing"
 	"time"
 )

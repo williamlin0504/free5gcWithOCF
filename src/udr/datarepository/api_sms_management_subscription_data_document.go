@@ -10,11 +10,11 @@
 package datarepository
 
 import (
-	" free5gc/lib/http_wrapper"
-	" free5gcenapi"
-	" free5gcenapi/models"
-	" free5gcr/logger"
-	" free5gcr/producer"
+	"free5gc/lib/http_wrapper"
+	"free5gc/lib/openapi"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/udr/logger"
+	"free5gc/src/udr/producer"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

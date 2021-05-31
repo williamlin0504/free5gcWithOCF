@@ -5,8 +5,8 @@ import (
 	"crypto/cipher"
 	"encoding/binary"
 	"fmt"
-	" free5gc/lib/nas/logger"
-	" free5gcs/security/snow3g"
+	"free5gc/lib/nas/logger"
+	"free5gc/lib/nas/security/snow3g"
 
 	"github.com/aead/cmac"
 )

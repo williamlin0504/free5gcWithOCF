@@ -10,8 +10,8 @@
 package discovery
 
 import (
-	" free5gc/lib/logger_util"
-	" free5gcf/logger"
+	"free5gc/lib/logger_util"
+	"free5gc/src/nrf/logger"
 	"net/http"
 	"strings"
 

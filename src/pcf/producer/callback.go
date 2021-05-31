@@ -1,14 +1,14 @@
 package producer
 
 import (
-	" free5gc/lib/http_wrapper"
-	" free5gcenapi/models"
-	" free5gcf/logger"
+	"free5gc/lib/http_wrapper"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/pcf/logger"
 	"net/http"
 )
 
 func HandleAmfStatusChangeNotify(request *http_wrapper.Request) *http_wrapper.Response {
-	logger.CallbackLog.Warnf("[PCF] Handle Amf Status Change Notify is not implemented.")
+	logger.CallbackLog.Warnf("[pcf] Handle Amf Status Change Notify is not implemented.")
 
 	notification := request.Body.(models.AmfStatusChangeNotification)
 
@@ -23,7 +23,7 @@ func AmfStatusChangeNotifyProcedure(notification models.AmfStatusChangeNotificat
 }
 
 func HandleSmPolicyNotify(request *http_wrapper.Request) *http_wrapper.Response {
-	logger.CallbackLog.Warnf("[PCF] Handle Sm Policy Notify is not implemented.")
+	logger.CallbackLog.Warnf("[pcf] Handle Sm Policy Notify is not implemented.")
 
 	notification := request.Body.(models.PolicyDataChangeNotification)
 	supi := request.Params["ReqURI"]

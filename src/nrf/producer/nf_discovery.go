@@ -2,12 +2,12 @@ package producer
 
 import (
 	"encoding/json"
-	" free5gc/lib/MongoDBLibrary"
-	" free5gcmeDecode"
-	" free5gctp_wrapper"
-	" free5gcenapi/models"
-	" free5gcf/context"
-	" free5gcf/logger"
+	"free5gc/lib/MongoDBLibrary"
+	"free5gc/lib/TimeDecode"
+	"free5gc/lib/http_wrapper"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/nrf/context"
+	"free5gc/src/nrf/logger"
 	"go.mongodb.org/mongo-driver/bson"
 	"math/big"
 	"net/http"
@@ -385,7 +385,7 @@ func buildFilter(queryParameters url.Values) bson.M {
 					},
 				},
 			}
-		} else if targetNfType == "PCF" {
+		} else if targetNfType == "pcf" {
 			dnnFilter = bson.M{
 				"$or": []bson.M{
 					{
@@ -521,7 +521,7 @@ func buildFilter(queryParameters url.Values) bson.M {
 		var supiFilter bson.M
 		supi = queryParameters["supi"][0]
 		supi = supi[5:]
-		if targetNfType == "PCF" {
+		if targetNfType == "pcf" {
 			supiFilter = bson.M{
 				"$or": []bson.M{
 					{
@@ -1676,7 +1676,7 @@ func complexQueryFilterSubprocess(queryParameters map[string]*AtomElem, complexQ
 	if queryParameters["supi"] != nil {
 		var supiFilter bson.M
 		supi = queryParameters["supi"].value
-		if targetNfType == "PCF" {
+		if targetNfType == "pcf" {
 			supiFilter = bson.M{
 				"pcfInfo": bson.M{
 					"$elemMatch": bson.M{

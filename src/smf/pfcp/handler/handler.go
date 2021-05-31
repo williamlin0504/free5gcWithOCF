@@ -3,14 +3,14 @@ package handler
 import (
 	"context"
 	"fmt"
-	" free5gc/lib/openapi/models"
-	" free5gccp"
-	" free5gccp/pfcpType"
-	" free5gccp/pfcpUdp"
-	smf_context " free5gcf/context"
-	" free5gcf/logger"
-	pfcp_message " free5gcf/pfcp/message"
-	" free5gcf/producer"
+	"free5gc/lib/openapi/models"
+	"free5gc/lib/pfcp"
+	"free5gc/lib/pfcp/pfcpType"
+	"free5gc/lib/pfcp/pfcpUdp"
+	smf_context "free5gc/src/smf/context"
+	"free5gc/src/smf/logger"
+	pfcp_message "free5gc/src/smf/pfcp/message"
+	"free5gc/src/smf/producer"
 )
 
 func HandlePfcpHeartbeatRequest(msg *pfcpUdp.Message) {

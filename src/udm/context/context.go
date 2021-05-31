@@ -7,11 +7,11 @@ import (
 	"strings"
 	"sync"
 
-	" free5gc/lib/idgenerator"
-	" free5gcenapi"
-	" free5gcenapi/Nnrf_NFDiscovery"
-	" free5gcenapi/models"
-	" free5gcm/factory"
+	"free5gc/lib/idgenerator"
+	"free5gc/lib/openapi"
+	"free5gc/lib/openapi/Nnrf_NFDiscovery"
+	"free5gc/lib/openapi/models"
+	"free5gc/src/udm/factory"
 )
 
 var udmContext UDMContext
