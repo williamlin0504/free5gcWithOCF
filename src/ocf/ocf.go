@@ -13,7 +13,7 @@ func main() {
         fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
     })
 
-    log.Println("OCF Server Listening on localhost: 8080")
+    log.Println("[INFO][OCF][Init] OCF Server Listening on localhost: 8080")
 
     log.Fatal(http.ListenAndServe(":8080", nil))
 
