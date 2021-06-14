@@ -1,3 +1,4 @@
+SHELL=/bin/bash
 GO_BIN_PATH = bin
 GO_SRC_PATH = src
 C_BUILD_PATH = build
