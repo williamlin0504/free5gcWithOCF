@@ -56,7 +56,6 @@ func Nchf_ConvergedChargingFunction_create(ue_ID){
     if err != nil {
         log.Fatal(err)
     }
-    }
 
     else if responseData == 0{
         log.Println("User does not have enough GU.")
