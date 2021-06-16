@@ -1,6 +1,11 @@
 package test_test
 
 import (
+	"os"
+	"log"
+	"url"
+	"ioutil"
+	"http"
 	"bytes"
 	"encoding/binary"
 	"encoding/hex"
@@ -35,29 +40,6 @@ import (
 )
 
 const ranIpAddr string = "10.200.200.1"
-
-func CTF(string ue_ID){
-	resp, err := http.PostForm("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/create",url.Values{"key": {"ue-ID"}, "id": {ue_ID}})
-
-    if err != nil {
-        fmt.Print(err.Error()) 
-        os.Exit(1)
-    }
-
-    responseData, err := ioutil.ReadAll(response.Body)
-    if err != nil {
-        log.Fatal(err)
-    }
-	log.Println("GU Authorized.")
-
-	response, err := http.PostForm("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/continous-write",url.Values{"key": {"ue-ID"}, "id": {responseData}})
-	
-	sessionResponse, err := ioutil.ReadAll(response.Body)
-    if err != nil {
-        log.Fatal(err)
-    }
-	log.Println(sessionResponse)
-}
 
 // Registration
 func TestRegistration(t *testing.T) {
@@ -294,6 +276,30 @@ func TestRegistration(t *testing.T) {
 
 	// close Connection
 	conn.Close()
+}
+
+//OCF Testing
+func CTF(string ue.Supi){
+	resp, err := http.PostForm("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/create",url.Values{"key": {"ue-ID"}, "id": {ue_ID}})
+
+    if err != nil {
+        fmt.Print(err.Error()) 
+        os.Exit(1)
+    }
+
+    responseData, err := ioutil.ReadAll(response.Body)
+    if err != nil {
+        log.Fatal(err)
+    }
+	log.Println("GU Authorized.")
+
+	response, err := http.PostForm("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/continous-write",url.Values{"key": {"ue-ID"}, "id": {responseData}})
+	
+	sessionResponse, err := ioutil.ReadAll(response.Body)
+    if err != nil {
+        log.Fatal(err)
+    }
+	log.Println(sessionResponse)
 }
 
 // Registration -> DeRegistration(UE Originating)
