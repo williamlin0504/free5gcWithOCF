@@ -36,7 +36,7 @@ import (
 
 const ranIpAddr string = "10.200.200.1"
 
-func CTF(int ue_ID){
+func CTF(string ue_ID){
 	resp, err := http.PostForm("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/create",url.Values{"key": {"ue-ID"}, "id": {ue_ID}})
 
     if err != nil {
