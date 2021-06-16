@@ -36,6 +36,29 @@ import (
 
 const ranIpAddr string = "10.200.200.1"
 
+func CTF(int ue_ID){
+	resp, err := http.PostForm("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/create",url.Values{"key": {"ue-ID"}, "id": {ue_ID}})
+
+    if err != nil {
+        fmt.Print(err.Error()) 
+        os.Exit(1)
+    }
+
+    responseData, err := ioutil.ReadAll(response.Body)
+    if err != nil {
+        log.Fatal(err)
+    }
+	log.Println("GU Authorized.")
+
+	response, err := http.PostForm("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/continous-write",url.Values{"key": {"ue-ID"}, "id": {responseData}})
+	
+	sessionResponse, err := ioutil.ReadAll(response.Body)
+    if err != nil {
+        log.Fatal(err)
+    }
+	log.Println(sessionResponse)
+}
+
 // Registration
 func TestRegistration(t *testing.T) {
 	var n int
@@ -260,6 +283,9 @@ func TestRegistration(t *testing.T) {
 	assert.Nil(t, err)
 
 	time.Sleep(1 * time.Second)
+
+	//CTF Test
+	CTF(ue.Supi)
 
 	// delete test data
 	test.DelAuthSubscriptionToMongoDB(ue.Supi)
