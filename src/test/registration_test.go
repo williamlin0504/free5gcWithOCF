@@ -288,7 +288,7 @@ func CTF(ue_ID string){
         os.Exit(1)
     }
 
-    responseData, err := ioutil.ReadAll(response.Body)
+    responseData, err := ioutil.ReadAll(resp.Body)
     if err != nil {
         log.Fatal(err)
     }
@@ -299,7 +299,7 @@ func CTF(ue_ID string){
 func Nchf_ConvergedChargingFunction(ue_ID string){
 	resp, err := http.PostForm("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/continous-write",url.Values{"key": {"ue-ID"}, "id": {ue_ID}})
 	
-	responseData, err := ioutil.ReadAll(response.Body)
+	responseData, err := ioutil.ReadAll(resp.Body)
     if err != nil {
         log.Fatal(err)
     }
