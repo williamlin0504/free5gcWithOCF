@@ -3,7 +3,7 @@ package test_test
 import (
 	"os"
 	"log"
-	"url"
+	"net/url"
 	"io/ioutil"
 	"net/http"
 	"bytes"
