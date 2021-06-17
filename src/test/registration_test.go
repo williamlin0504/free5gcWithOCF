@@ -280,10 +280,10 @@ func TestRegistration(t *testing.T) {
 }
 
 var ue string
-//var ue_ID string
+var ue_ID string
 
 //OCF Testing
-func CTF(var ue_ID string){
+func CTF(string ue_ID){
 	resp, err := http.PostForm("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/create",url.Values{"key": {"ue-ID"}, "id": {ue_ID}})
 
     if err != nil {
