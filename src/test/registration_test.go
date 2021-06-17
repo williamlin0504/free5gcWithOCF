@@ -40,8 +40,7 @@ import (
 )
 
 const ranIpAddr string = "10.200.200.1"
-var ue string
-var ueID string
+
 
 // Registration
 func TestRegistration(t *testing.T) {
@@ -280,8 +279,11 @@ func TestRegistration(t *testing.T) {
 	conn.Close()
 }
 
+var ue string
+var ue_ID string
+
 //OCF Testing
-func CTF(string ue_ID){
+func CTF(ue_ID){
 	resp, err := http.PostForm("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/create",url.Values{"key": {"ue-ID"}, "id": {ue_ID}})
 
     if err != nil {
@@ -295,7 +297,7 @@ func CTF(string ue_ID){
     }
 	log.Println("GU Authorized.")
 
-	var newDB string = responseData.EncodeToString()
+	var newDB string = string(responseData)
 
 	response, err := http.PostForm("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/continous-write",url.Values{"key": {"ue-ID"}, "id": {newDB}})
 	
