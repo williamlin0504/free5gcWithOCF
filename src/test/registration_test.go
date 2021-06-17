@@ -4,7 +4,7 @@ import (
 	"os"
 	"log"
 	"url"
-	"ioutil"
+	"io/ioutil"
 	"net/http"
 	"bytes"
 	"encoding/binary"
