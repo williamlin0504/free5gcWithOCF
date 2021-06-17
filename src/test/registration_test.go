@@ -5,7 +5,7 @@ import (
 	"log"
 	"url"
 	"ioutil"
-	"http"
+	"net/http"
 	"bytes"
 	"encoding/binary"
 	"encoding/hex"
