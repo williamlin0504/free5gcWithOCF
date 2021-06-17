@@ -295,7 +295,7 @@ func CTF(string ue_ID){
     }
 	log.Println("GU Authorized.")
 
-	string newDB = responseData.EncodeToString()
+	var newDB string = responseData.EncodeToString()
 
 	response, err := http.PostForm("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/continous-write",url.Values{"key": {"ue-ID"}, "id": {newDB}})
 	
