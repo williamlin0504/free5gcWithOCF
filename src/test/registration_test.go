@@ -293,7 +293,7 @@ func CTF(ue_ID string){
         log.Fatal(err)
     }
 	log.Println("GU Authorized.")
-	Nchf_ConvergedChargingFunction(responseData)
+	Nchf_ConvergedChargingFunction(string(responseData))
 }
 
 func Nchf_ConvergedChargingFunction(ue_ID string){
