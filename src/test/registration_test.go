@@ -279,11 +279,8 @@ func TestRegistration(t *testing.T) {
 	conn.Close()
 }
 
-var ue string
-var ue_ID string
-
 //OCF Testing
-func CTF(string ue_ID){
+func CTF(ue_ID string){
 	resp, err := http.PostForm("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/create",url.Values{"key": {"ue-ID"}, "id": {ue_ID}})
 
     if err != nil {
@@ -296,16 +293,17 @@ func CTF(string ue_ID){
         log.Fatal(err)
     }
 	log.Println("GU Authorized.")
+	Nchf_ConvergedChargingFunction(responseData)
+}
 
-	var newDB string = string(responseData)
-
-	responseData, err := http.PostForm("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/continous-write",url.Values{"key": {"ue-ID"}, "id": {newDB}})
+func Nchf_ConvergedChargingFunction(ue_ID string){
+	resp, err := http.PostForm("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/continous-write",url.Values{"key": {"ue-ID"}, "id": {ue_ID}})
 	
-	sessionResponse, err := ioutil.ReadAll(response.Body)
+	responseData, err := ioutil.ReadAll(response.Body)
     if err != nil {
         log.Fatal(err)
     }
-	log.Println(sessionResponse)
+	log.Println(responseData)
 }
 
 // Registration -> DeRegistration(UE Originating)
