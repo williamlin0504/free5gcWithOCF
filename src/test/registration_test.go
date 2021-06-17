@@ -40,8 +40,8 @@ import (
 )
 
 const ranIpAddr string = "10.200.200.1"
-string ue
-string ueID 
+var ue string
+var ueID string
 
 // Registration
 func TestRegistration(t *testing.T) {
