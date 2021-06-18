@@ -293,11 +293,36 @@ func CTF(ue_ID string){
         log.Fatal(err)
     }
 	log.Println("GU Authorized.")
-	Nchf_ConvergedChargingFunction(string(responseData))
+	Nchf_ConvergedChargingFunction_create(string(responseData))
 }
 
-func Nchf_ConvergedChargingFunction(ue_ID string){
+//Write session data into UE database
+func Nchf_ConvergedChargingFunction_create(ue_ID string){
 	resp, err := http.PostForm("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/continous-write",url.Values{"key": {"ue-ID"}, "id": {ue_ID}})
+	
+	responseData, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        log.Fatal(err)
+    }
+	log.Println(responseData)
+	Nchf_ConvergedChargingFunction_update(responseData)
+}
+
+//Update user GU
+func Nchf_ConvergedChargingFunction_update(ue_ID string){
+	resp, err := http.PostForm("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/update",url.Values{"key": {"ue-ID"}, "id": {ue_ID}})
+	
+	responseData, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        log.Fatal(err)
+    }
+	log.Println(responseData)
+	Nchf_ConvergedChargingFunction_release(responseData)
+}
+
+//Poll out the session data to S3, and Delete the session data
+func Nchf_ConvergedChargingFunction_release(ue_ID string){
+	resp, err := http.PostForm("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/release",url.Values{"key": {"ue-ID"}, "id": {ue_ID}})
 	
 	responseData, err := ioutil.ReadAll(resp.Body)
     if err != nil {
