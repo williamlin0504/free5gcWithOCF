@@ -1,7 +1,6 @@
 package test_test
 
 import (
-	"os"
 	"net/url"
 	"io/ioutil"
 	"net/http"
