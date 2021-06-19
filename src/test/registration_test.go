@@ -2,7 +2,6 @@ package test_test
 
 import (
 	"os"
-	"log"
 	"net/url"
 	"io/ioutil"
 	"net/http"
@@ -285,14 +284,9 @@ func TestRegistration(t *testing.T) {
 func CTF(ue_ID string){
 	resp, err := http.PostForm("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/registration",url.Values{"key": {"ue-ID"}, "id": {ue_ID}})
 
-    if err != nil {
-        fmt.Print(err.Error()) 
-        os.Exit(1)
-    }
-
     responseData, err := ioutil.ReadAll(resp.Body)
     if err != nil {
-        log.Println("[Registration] API Failed.")
+        fmt.Println("[Registration] API Failed.")
     }
 	Nchf_ConvergedChargingFunction_create(string(responseData))
 }
@@ -303,10 +297,10 @@ func Nchf_ConvergedChargingFunction_create(ue_ID string){
 	
 	responseData, err := ioutil.ReadAll(resp.Body)
     if err != nil {
-        log.Println("[Create] API Failed.")
+        fmt.Println("[Create] API Failed.")
     }
-	log.Println("GU Authorized.")
-	log.Println(responseData)
+	fmt.Println("GU Authorized.")
+	fmt.Println(responseData)
 	Write_Session(string(responseData))
 }
 
@@ -316,10 +310,10 @@ func Write_Session(ue_ID string){
 	
 	responseData, err := ioutil.ReadAll(resp.Body)
     if err != nil {
-        log.Println("[Session Writing] API Failed.")
+        fmt.Println("[Session Writing] API Failed.")
     }
-	log.Println("Session Started...")
-	log.Println(string(responseData))
+	fmt.Println("Session Started...")
+	fmt.Println(string(responseData))
 }
 
 //Update user GU
@@ -328,10 +322,10 @@ func Nchf_ConvergedChargingFunction_update(ue_ID string){
 	
 	responseData, err := ioutil.ReadAll(resp.Body)
     if err != nil {
-        log.Println("[Update] API Failed.")
+        fmt.Println("[Update] API Failed.")
     }
-	log.Println("GU Updated...")
-	log.Println(string(responseData))
+	fmt.Println("GU Updated...")
+	fmt.Println(string(responseData))
 }
 
 //Poll out the session data to S3, and Delete the session data
@@ -340,10 +334,10 @@ func Nchf_ConvergedChargingFunction_release(ue_ID string){
 	
 	responseData, err := ioutil.ReadAll(resp.Body)
     if err != nil {
-        log.Println("[Release] API Failed.")
+        fmt.Println("[Release] API Failed.")
     }
-	log.Println("Session Released...")
-	log.Println(string(responseData))
+	fmt.Println("Session Released...")
+	fmt.Println(string(responseData))
 }
 
 // Registration -> DeRegistration(UE Originating)
