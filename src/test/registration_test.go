@@ -292,7 +292,7 @@ func CTF(ue_ID string){
 
     responseData, err := ioutil.ReadAll(resp.Body)
     if err != nil {
-        log.Fatal(err)
+        log.Println("[Registration] API Failed.")
     }
 	Nchf_ConvergedChargingFunction_create(string(responseData))
 }
@@ -303,7 +303,7 @@ func Nchf_ConvergedChargingFunction_create(ue_ID string){
 	
 	responseData, err := ioutil.ReadAll(resp.Body)
     if err != nil {
-        log.Fatal(err)
+        log.Println("[Create] API Failed.")
     }
 	log.Println("GU Authorized.")
 	log.Println(responseData)
@@ -316,7 +316,7 @@ func Write_Session(ue_ID string){
 	
 	responseData, err := ioutil.ReadAll(resp.Body)
     if err != nil {
-        log.Fatal(err)
+        log.Println("[Session Writing] API Failed.")
     }
 	log.Println("Session Started...")
 	log.Println(string(responseData))
@@ -328,7 +328,7 @@ func Nchf_ConvergedChargingFunction_update(ue_ID string){
 	
 	responseData, err := ioutil.ReadAll(resp.Body)
     if err != nil {
-        log.Fatal(err)
+        log.Println("[Update] API Failed.")
     }
 	log.Println("GU Updated...")
 	log.Println(string(responseData))
@@ -340,7 +340,7 @@ func Nchf_ConvergedChargingFunction_release(ue_ID string){
 	
 	responseData, err := ioutil.ReadAll(resp.Body)
     if err != nil {
-        log.Fatal(err)
+        log.Println("[Release] API Failed.")
     }
 	log.Println("Session Released...")
 	log.Println(string(responseData))
