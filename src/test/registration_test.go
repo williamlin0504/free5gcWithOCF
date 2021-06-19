@@ -307,7 +307,7 @@ func Nchf_ConvergedChargingFunction_create(ue_ID string){
     }
 	log.Println("GU Authorized.")
 	log.Println(responseData)
-	Write_Session(responseData)
+	Write_Session(string(responseData))
 }
 
 //Write session data into UE database
@@ -319,7 +319,7 @@ func Write_Session(ue_ID string){
         log.Fatal(err)
     }
 	log.Println("Session Started...")
-	log.Println(responseData)
+	log.Println(string(responseData))
 }
 
 //Update user GU
@@ -331,7 +331,7 @@ func Nchf_ConvergedChargingFunction_update(ue_ID string){
         log.Fatal(err)
     }
 	log.Println("GU Updated...")
-	log.Println(responseData)
+	log.Println(string(responseData))
 }
 
 //Poll out the session data to S3, and Delete the session data
@@ -343,7 +343,7 @@ func Nchf_ConvergedChargingFunction_release(ue_ID string){
         log.Fatal(err)
     }
 	log.Println("Session Released...")
-	log.Println(responseData)
+	log.Println(string(responseData))
 }
 
 // Registration -> DeRegistration(UE Originating)
