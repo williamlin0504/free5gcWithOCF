@@ -266,9 +266,10 @@ func TestRegistration(t *testing.T) {
 	time.Sleep(1 * time.Second)
 
 	//CTF Test
-	CTF(ue.Supi)
-	Nchf_ConvergedChargingFunction_update(ue.Supi)
-	Nchf_ConvergedChargingFunction_release(ue.Supi)
+	fmt.Println("CTF Test Started...")
+	CTF("ue-61728")
+	Nchf_ConvergedChargingFunction_update("ue-61728")
+	Nchf_ConvergedChargingFunction_release("ue-61728")
 
 	// delete test data
 	test.DelAuthSubscriptionToMongoDB(ue.Supi)
