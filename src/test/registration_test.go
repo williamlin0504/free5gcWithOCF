@@ -129,9 +129,9 @@ func TestRegistration(t *testing.T) {
 	assert.Nil(t, err)
 
 	//CTF Test
-	var n int = rand.Int()
-	t := strconv.Itoa(n)
-	var ue_ID = "ue-"+ string(t)
+	var randInt int = rand.Int()
+	var spec_ID string = strconv.Itoa(randInt)
+	var ue_ID = "ue-"+ string(spec_ID)
 	log.Println("CTF Test Started...")
 	CTF("ue-61738")
 	Nchf_ConvergedChargingFunction_update("ue-61728")
