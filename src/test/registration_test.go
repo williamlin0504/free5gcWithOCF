@@ -134,8 +134,8 @@ func TestRegistration(t *testing.T) {
 	var ue_ID = "ue-"+ string(spec_ID)
 	log.Println("CTF Test Started...")
 	CTF(ue_ID)
-	Nchf_ConvergedChargingFunction_update("ue-61728")
-	Nchf_ConvergedChargingFunction_release("ue-61728")
+	//Nchf_ConvergedChargingFunction_update("ue-61728")
+	//Nchf_ConvergedChargingFunction_release("ue-61728")
 
 	// receive NAS Authentication Request Msg
 	n, err = conn.Read(recvMsg)
