@@ -376,14 +376,27 @@ func Nchf_ConvergedChargingFunction_update(ue_ID string){
 
 //Poll out the session data to S3, and Delete the session data
 func Nchf_ConvergedChargingFunction_release(ue_ID string){
-	resp, err := http.PostForm("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/release",url.Values{"key": {"ue-ID"}, "id": {ue_ID}})
+	values := map[string]string{"ue_ID": ue_ID}
+    json_data, err := json.Marshal(values)
+
+	resp, err := http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/release", "application/json",
+	bytes.NewBuffer(json_data))
 	
-	responseData, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
+	if err != nil {
         log.Println("[Release] API Failed.")
     }
+
 	log.Println("Session Released...")
-	log.Println(string(responseData))
+
+	body, err := ioutil.ReadAll(resp.Body)
+
+	sb := string(body)
+   	log.Printf(sb)
+
+    var res map[string]interface{}
+
+    json.NewDecoder(resp.Body).Decode(&res)
+    fmt.Println(res["json"])
 }
 
 // Registration -> DeRegistration(UE Originating)
