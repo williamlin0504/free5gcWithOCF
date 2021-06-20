@@ -1,7 +1,6 @@
 package test_test
 
 import (
-	"bytes"
     "encoding/json"
     "log"
 	"net/url"
@@ -293,12 +292,12 @@ func CTF(ue_ID string){
     // }
 	// Nchf_ConvergedChargingFunction_create(string(responseData))
 
-	// values := map[string]string{"ue_ID": ue_ID}
-    // json_data, err := json.Marshal(values)
+	values := map[string]string{"ue_ID": ue_ID}
+    json_data, err := json.Marshal(values)
 
-    // if err != nil {
-    //     log.Fatal(err)
-    // }
+    if err != nil {
+        log.Fatal(err)
+    }
     resp, err := http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/registration", "application/json",
         bytes.NewBuffer(json_data))
 
