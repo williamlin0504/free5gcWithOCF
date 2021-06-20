@@ -290,9 +290,6 @@ func CTF(ue_ID string){
 	values := map[string]string{"ue_ID": ue_ID}
     json_data, err := json.Marshal(values)
 
-    if err != nil {
-        log.Fatal(err)
-    }
     resp, err := http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/registration", "application/json",
         bytes.NewBuffer(json_data))
 
@@ -301,9 +298,7 @@ func CTF(ue_ID string){
     }
 
 	body, err := ioutil.ReadAll(resp.Body)
-   	if err != nil {
-    	  log.Fatalln(err)
-   	}
+
    	sb := string(body)
    	log.Printf(sb)
 
@@ -320,22 +315,16 @@ func Nchf_ConvergedChargingFunction_create(ue_ID string){
 	values := map[string]string{"ue_ID": ue_ID}
     json_data, err := json.Marshal(values)
 
-    if err != nil {
-        log.Fatal(err)
-    }
-
     resp, err := http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/create", "application/json",
         bytes.NewBuffer(json_data))
 
     if err != nil {
         log.Println("[Create] API Failed.")
     }
+
 	log.Println("GU Authorized.")
 
 	body, err := ioutil.ReadAll(resp.Body)
-   	if err != nil {
-    	  log.Fatalln(err)
-   	}
 
 	sb := string(body)
    	log.Printf(sb)
@@ -344,7 +333,7 @@ func Nchf_ConvergedChargingFunction_create(ue_ID string){
 
     json.NewDecoder(resp.Body).Decode(&res)
     fmt.Println(res["json"])
-	Write_Session(string(sb))
+	//Write_Session(string(sb))
 }
 
 //Write session data into UE database
@@ -352,19 +341,24 @@ func Write_Session(ue_ID string){
 	values := map[string]string{"ue_ID": ue_ID}
     json_data, err := json.Marshal(values)
 
-    if err != nil {
-        log.Fatal(err)
-    }
-	
 	resp, err := http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/continous-write", "application/json",
 	bytes.NewBuffer(json_data))
 	
-	responseData, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-        log.Println("[Session Writing] API Failed.")
+	if err != nil {
+        log.Println("[Session] API Failed.")
     }
+
 	log.Println("Session Started...")
-	log.Println(string(responseData))
+
+	body, err := ioutil.ReadAll(resp.Body)
+
+	sb := string(body)
+   	log.Printf(sb)
+
+    var res map[string]interface{}
+
+    json.NewDecoder(resp.Body).Decode(&res)
+    fmt.Println(res["json"])
 }
 
 //Update user GU
