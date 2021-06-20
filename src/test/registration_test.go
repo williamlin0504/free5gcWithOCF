@@ -133,7 +133,7 @@ func TestRegistration(t *testing.T) {
 	var spec_ID string = strconv.Itoa(randInt)
 	var ue_ID = "ue-"+ string(spec_ID)
 	log.Println("CTF Test Started...")
-	CTF("ue-61738")
+	CTF(ue_ID)
 	Nchf_ConvergedChargingFunction_update("ue-61728")
 	Nchf_ConvergedChargingFunction_release("ue-61728")
 
