@@ -302,7 +302,7 @@ func CTF(ue_ID string){
     json.NewDecoder(resp.Body).Decode(&res)
     log.Println(res["json"])
 
-	Nchf_ConvergedChargingFunction_create(string(resp))
+	Nchf_ConvergedChargingFunction_create(string(resp.Body))
 }
 
 //Write session data into UE database
