@@ -349,6 +349,13 @@ func Nchf_ConvergedChargingFunction_create(ue_ID string){
 
 //Write session data into UE database
 func Write_Session(ue_ID string){
+	values := map[string]string{"ue_ID": ue_ID}
+    json_data, err := json.Marshal(values)
+
+    if err != nil {
+        log.Fatal(err)
+    }
+	
 	resp, err := http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/continous-write", "application/json",
 	bytes.NewBuffer(json_data))
 	
