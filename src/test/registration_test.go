@@ -297,12 +297,19 @@ func CTF(ue_ID string){
         log.Println("[Registration] API Failed.")
     }
 
+	body, err := ioutil.ReadAll(resp.Body)
+   	if err != nil {
+    	  log.Fatalln(err)
+   	}
+   	sb := string(body)
+   	log.Printf(sb)
+
     var res map[string]interface{}
 
     json.NewDecoder(resp.Body).Decode(&res)
     log.Println(res["json"])
 
-	Nchf_ConvergedChargingFunction_create(string(resp.Body))
+	Nchf_ConvergedChargingFunction_create(string(sb)
 }
 
 //Write session data into UE database
