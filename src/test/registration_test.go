@@ -307,7 +307,7 @@ func CTF(ue_ID string){
     json.NewDecoder(resp.Body).Decode(&res)
     log.Println(res["json"])
 
-	Nchf_ConvergedChargingFunction_create(string(sb))
+	Nchf_ConvergedChargingFunction_create(sb)
 }
 
 //Write session data into UE database
@@ -333,7 +333,7 @@ func Nchf_ConvergedChargingFunction_create(ue_ID string){
 
     json.NewDecoder(resp.Body).Decode(&res)
     fmt.Println(res["json"])
-	//Write_Session(string(sb))
+	Write_Session(sb)
 }
 
 //Write session data into UE database
@@ -359,6 +359,7 @@ func Write_Session(ue_ID string){
 
     json.NewDecoder(resp.Body).Decode(&res)
     fmt.Println(res["json"])
+	time.Sleep(500 * time.Millisecond)
 }
 
 //Update user GU
