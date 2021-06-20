@@ -129,7 +129,7 @@ func TestRegistration(t *testing.T) {
 
 	//CTF Test
 	log.Println("CTF Test Started...")
-	CTF("ue-61728")
+	CTF("ue-61738")
 	Nchf_ConvergedChargingFunction_update("ue-61728")
 	Nchf_ConvergedChargingFunction_release("ue-61728")
 
@@ -284,14 +284,6 @@ func TestRegistration(t *testing.T) {
 
 //OCF Testing
 func CTF(ue_ID string){
-	// resp, err := http.PostForm("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/registration",url.Values{"key": {"ue-ID"}, "id": {ue_ID}})
-
-    // responseData, err := ioutil.ReadAll(resp.Body)
-    // if err != nil {
-    //     log.Println("[Registration] API Failed.")
-    // }
-	// Nchf_ConvergedChargingFunction_create(string(responseData))
-
 	values := map[string]string{"ue_ID": ue_ID}
     json_data, err := json.Marshal(values)
 
@@ -302,14 +294,14 @@ func CTF(ue_ID string){
         bytes.NewBuffer(json_data))
 
     if err != nil {
-        log.Fatal(err)
+        log.Println("[Registration] API Failed.")
     }
 
     var res map[string]interface{}
 
     json.NewDecoder(resp.Body).Decode(&res)
-
     fmt.Println(res["json"])
+	Nchf_ConvergedChargingFunction_create(res)
 }
 
 //Write session data into UE database
