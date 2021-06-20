@@ -129,7 +129,7 @@ func TestRegistration(t *testing.T) {
 	assert.Nil(t, err)
 
 	//CTF Test
-	var randInt int = rand.Int()
+	var randInt int = rand.Int(4)
 	var spec_ID string = strconv.Itoa(randInt)
 	var ue_ID = "ue-"+ string(spec_ID)
 	log.Println("CTF Test Started...")
@@ -324,7 +324,7 @@ func Nchf_ConvergedChargingFunction_create(ue_ID string){
     if err != nil {
         log.Fatal(err)
     }
-	
+
     resp, err := http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/create", "application/json",
         bytes.NewBuffer(json_data))
 
