@@ -333,6 +333,7 @@ func Nchf_ConvergedChargingFunction_create(ue_ID string){
 
     json.NewDecoder(resp.Body).Decode(&res)
     fmt.Println(res["json"])
+	time.Sleep(5 * time.Second)
 	Write_Session(sb)
 }
 
@@ -359,7 +360,6 @@ func Write_Session(ue_ID string){
 
     json.NewDecoder(resp.Body).Decode(&res)
     fmt.Println(res["json"])
-	time.Sleep(500 * time.Millisecond)
 }
 
 //Update user GU
