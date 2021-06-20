@@ -324,6 +324,7 @@ func Nchf_ConvergedChargingFunction_create(ue_ID string){
     if err != nil {
         log.Fatal(err)
     }
+	
     resp, err := http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/create", "application/json",
         bytes.NewBuffer(json_data))
 
