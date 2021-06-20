@@ -300,21 +300,31 @@ func CTF(ue_ID string){
     var res map[string]interface{}
 
     json.NewDecoder(resp.Body).Decode(&res)
-    fmt.Println(res["json"])
-	Nchf_ConvergedChargingFunction_create(res)
+    log.Println(res["json"])
+
+	Nchf_ConvergedChargingFunction_create(string(resp))
 }
 
 //Write session data into UE database
 func Nchf_ConvergedChargingFunction_create(ue_ID string){
-	resp, err := http.PostForm("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/create",url.Values{"key": {"ue-ID"}, "id": {ue_ID}})
-	
-	responseData, err := ioutil.ReadAll(resp.Body)
+	//Write_Session(string(responseData))
+	values := map[string]string{"ue_ID": ue_ID}
+    json_data, err := json.Marshal(values)
+
     if err != nil {
-        fmt.Println("[Create] API Failed.")
+        log.Fatal(err)
+    }
+    resp, err := http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/create", "application/json",
+        bytes.NewBuffer(json_data))
+
+    if err != nil {
+        log.Println("[Create] API Failed.")
     }
 	log.Println("GU Authorized.")
-	log.Println(responseData)
-	Write_Session(string(responseData))
+    var res map[string]interface{}
+
+    json.NewDecoder(resp.Body).Decode(&res)
+    fmt.Println(res["json"])
 }
 
 //Write session data into UE database
