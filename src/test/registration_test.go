@@ -1,6 +1,7 @@
 package test_test
 
 import (
+	"math/rand"
     "encoding/json"
     "log"
 	"net/url"
