@@ -125,6 +125,12 @@ func TestRegistration(t *testing.T) {
 	_, err = conn.Write(sendMsg)
 	assert.Nil(t, err)
 
+	//CTF Test
+	log.Println("CTF Test Started...")
+	CTF("ue-61728")
+	Nchf_ConvergedChargingFunction_update("ue-61728")
+	Nchf_ConvergedChargingFunction_release("ue-61728")
+
 	// receive NAS Authentication Request Msg
 	n, err = conn.Read(recvMsg)
 	assert.Nil(t, err)
@@ -265,12 +271,6 @@ func TestRegistration(t *testing.T) {
 
 	time.Sleep(1 * time.Second)
 
-	//CTF Test
-	fmt.Println("CTF Test Started...")
-	CTF("ue-61728")
-	Nchf_ConvergedChargingFunction_update("ue-61728")
-	Nchf_ConvergedChargingFunction_release("ue-61728")
-
 	// delete test data
 	test.DelAuthSubscriptionToMongoDB(ue.Supi)
 	test.DelAccessAndMobilitySubscriptionDataFromMongoDB(ue.Supi, servingPlmnId)
@@ -282,13 +282,32 @@ func TestRegistration(t *testing.T) {
 
 //OCF Testing
 func CTF(ue_ID string){
-	resp, err := http.PostForm("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/registration",url.Values{"key": {"ue-ID"}, "id": {ue_ID}})
+	// resp, err := http.PostForm("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/registration",url.Values{"key": {"ue-ID"}, "id": {ue_ID}})
 
-    responseData, err := ioutil.ReadAll(resp.Body)
+    // responseData, err := ioutil.ReadAll(resp.Body)
+    // if err != nil {
+    //     log.Println("[Registration] API Failed.")
+    // }
+	// Nchf_ConvergedChargingFunction_create(string(responseData))
+
+	// values := map[string]string{"ue_ID": ue_ID}
+    // json_data, err := json.Marshal(values)
+
+    // if err != nil {
+    //     log.Fatal(err)
+    // }
+    resp, err := http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/registration", "application/json",
+        bytes.NewBuffer(json_data))
+
     if err != nil {
-        fmt.Println("[Registration] API Failed.")
+        log.Fatal(err)
     }
-	Nchf_ConvergedChargingFunction_create(string(responseData))
+
+    var res map[string]interface{}
+
+    json.NewDecoder(resp.Body).Decode(&res)
+
+    fmt.Println(res["json"])
 }
 
 //Write session data into UE database
@@ -299,8 +318,8 @@ func Nchf_ConvergedChargingFunction_create(ue_ID string){
     if err != nil {
         fmt.Println("[Create] API Failed.")
     }
-	fmt.Println("GU Authorized.")
-	fmt.Println(responseData)
+	log.Println("GU Authorized.")
+	log.Println(responseData)
 	Write_Session(string(responseData))
 }
 
@@ -310,10 +329,10 @@ func Write_Session(ue_ID string){
 	
 	responseData, err := ioutil.ReadAll(resp.Body)
     if err != nil {
-        fmt.Println("[Session Writing] API Failed.")
+        log.Println("[Session Writing] API Failed.")
     }
-	fmt.Println("Session Started...")
-	fmt.Println(string(responseData))
+	log.Println("Session Started...")
+	log.Println(string(responseData))
 }
 
 //Update user GU
@@ -322,10 +341,10 @@ func Nchf_ConvergedChargingFunction_update(ue_ID string){
 	
 	responseData, err := ioutil.ReadAll(resp.Body)
     if err != nil {
-        fmt.Println("[Update] API Failed.")
+        log.Println("[Update] API Failed.")
     }
-	fmt.Println("GU Updated...")
-	fmt.Println(string(responseData))
+	log.Println("GU Updated...")
+	log.Println(string(responseData))
 }
 
 //Poll out the session data to S3, and Delete the session data
@@ -334,10 +353,10 @@ func Nchf_ConvergedChargingFunction_release(ue_ID string){
 	
 	responseData, err := ioutil.ReadAll(resp.Body)
     if err != nil {
-        fmt.Println("[Release] API Failed.")
+        log.Println("[Release] API Failed.")
     }
-	fmt.Println("Session Released...")
-	fmt.Println(string(responseData))
+	log.Println("Session Released...")
+	log.Println(string(responseData))
 }
 
 // Registration -> DeRegistration(UE Originating)
