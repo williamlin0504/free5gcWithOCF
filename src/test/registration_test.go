@@ -128,6 +128,8 @@ func TestRegistration(t *testing.T) {
 	assert.Nil(t, err)
 
 	//CTF Test
+	var n int = rand.Intn(1000)
+	var ue_ID = "ue-"+ n
 	log.Println("CTF Test Started...")
 	CTF("ue-61738")
 	Nchf_ConvergedChargingFunction_update("ue-61728")
@@ -314,7 +316,6 @@ func CTF(ue_ID string){
 
 //Write session data into UE database
 func Nchf_ConvergedChargingFunction_create(ue_ID string){
-	//Write_Session(string(responseData))
 	values := map[string]string{"ue_ID": ue_ID}
     json_data, err := json.Marshal(values)
 
@@ -328,10 +329,15 @@ func Nchf_ConvergedChargingFunction_create(ue_ID string){
         log.Println("[Create] API Failed.")
     }
 	log.Println("GU Authorized.")
+
+	sb := string(body)
+   	log.Printf(sb)
+
     var res map[string]interface{}
 
     json.NewDecoder(resp.Body).Decode(&res)
     fmt.Println(res["json"])
+	Write_Session(string(sb))
 }
 
 //Write session data into UE database
