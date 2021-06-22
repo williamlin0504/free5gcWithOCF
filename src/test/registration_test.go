@@ -348,6 +348,16 @@ func Write_Session(ue_ID string){
         log.Println("[Session] API Failed.")
     }
 
+	body, err := ioutil.ReadAll(resp.Body)
+
+	sb := string(body)
+   	log.Printf(sb)
+
+    var res map[string]interface{}
+
+    json.NewDecoder(resp.Body).Decode(&res)
+    fmt.Println(res["json"])
+
 	log.Println("Session Started...")
 }
 
@@ -364,6 +374,16 @@ func Nchf_ConvergedChargingFunction_update(ue_ID string){
     }
 
 	log.Println("GU Updated!!!")
+
+	body, err := ioutil.ReadAll(resp.Body)
+
+	sb := string(body)
+   	log.Printf(sb)
+
+    var res map[string]interface{}
+
+    json.NewDecoder(resp.Body).Decode(&res)
+    fmt.Println(res["json"])
 }
 
 //Poll out the session data to S3, and Delete the session data
@@ -379,6 +399,16 @@ func Nchf_ConvergedChargingFunction_release(ue_ID string){
     }
 
 	log.Println("Session Released!!!")
+
+	body, err := ioutil.ReadAll(resp.Body)
+
+	sb := string(body)
+   	log.Printf(sb)
+
+    var res map[string]interface{}
+
+    json.NewDecoder(resp.Body).Decode(&res)
+    fmt.Println(res["json"])
 }
 
 // Registration -> DeRegistration(UE Originating)
