@@ -1,6 +1,7 @@
 package test_test
 
 import (
+	"math/rand"
     "encoding/json"
     "log"
 	"net/url"
@@ -40,7 +41,6 @@ import (
 )
 
 const ranIpAddr string = "10.200.200.1"
-
 
 // Registration
 func TestRegistration(t *testing.T) {
@@ -128,13 +128,13 @@ func TestRegistration(t *testing.T) {
 	assert.Nil(t, err)
 
 	//CTF Test
-	// var randInt int = rand.Int(4)
-	// var spec_ID string = strconv.Itoa(randInt)
-	// var ue_ID = "ue-"+ string(spec_ID)
+	rand.Seed(time.Now().Unix())
+	randNum := rand.Intn(10000)
+	var ueID string = "ue-" + randNum
 	log.Println("CTF Test Started...")
-	CTF("ue-1469")
-	//Nchf_ConvergedChargingFunction_update("ue-61728")
-	Nchf_ConvergedChargingFunction_release("ue-1469")
+	CTF(ueID)
+	Nchf_ConvergedChargingFunction_release(ueID)
+	Nchf_ConvergedChargingFunction_update(ueID)
 
 	// receive NAS Authentication Request Msg
 	n, err = conn.Read(recvMsg)
@@ -350,28 +350,21 @@ func Write_Session(ue_ID string){
     }
 
 	log.Println("Session Started...")
-
-	body, err := ioutil.ReadAll(resp.Body)
-
-	sb := string(body)
-   	log.Printf(sb)
-
-    var res map[string]interface{}
-
-    json.NewDecoder(resp.Body).Decode(&res)
-    fmt.Println(res["json"])
 }
 
 //Update user GU
 func Nchf_ConvergedChargingFunction_update(ue_ID string){
-	resp, err := http.PostForm("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/update",url.Values{"key": {"ue-ID"}, "id": {ue_ID}})
+	values := map[string]string{"ue_ID": ue_ID}
+    json_data, err := json.Marshal(values)
+
+	resp, err := http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/update", "application/json",
+	bytes.NewBuffer(json_data))
 	
-	responseData, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
+	if err != nil {
         log.Println("[Update] API Failed.")
     }
-	log.Println("GU Updated...")
-	log.Println(string(responseData))
+
+	log.Println("GU Updated!!!")
 }
 
 //Poll out the session data to S3, and Delete the session data
@@ -386,17 +379,7 @@ func Nchf_ConvergedChargingFunction_release(ue_ID string){
         log.Println("[Release] API Failed.")
     }
 
-	log.Println("Session Released...")
-
-	body, err := ioutil.ReadAll(resp.Body)
-
-	sb := string(body)
-   	log.Printf(sb)
-
-    var res map[string]interface{}
-
-    json.NewDecoder(resp.Body).Decode(&res)
-    fmt.Println(res["json"])
+	log.Println("Session Released!!!")
 }
 
 // Registration -> DeRegistration(UE Originating)
