@@ -129,7 +129,7 @@ func TestRegistration(t *testing.T) {
 	//CTF Test
 	rand.Seed(time.Now().Unix())
 	randNum := rand.Intn(10000)
-	var ueID string = "ue-" + string(randNum)
+	var ueID string = "ue-" + strconv.Itoa(randNum)
 	log.Println("CTF Test Started...")
 	CTF(ueID)
 	Nchf_ConvergedChargingFunction_release(ueID)
