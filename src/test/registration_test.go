@@ -4,7 +4,6 @@ import (
 	"math/rand"
     "encoding/json"
     "log"
-	"net/url"
 	"io/ioutil"
 	"net/http"
 	"bytes"
