@@ -132,7 +132,6 @@ func TestRegistration(t *testing.T) {
 	//CTF Test
 	log.Println("CTF Test Started...")
 	CTF(ueID)
-	time.Sleep(15 * time.Minute)
 	Nchf_ConvergedChargingFunction_release(ueID)
 	Nchf_ConvergedChargingFunction_update(ueID)
 
@@ -333,8 +332,9 @@ func Nchf_ConvergedChargingFunction_create(ue_ID string){
 
     json.NewDecoder(resp.Body).Decode(&res)
     fmt.Println(res["json"])
-	time.Sleep(5 * time.Second)
+
 	Write_Session(sb)
+	time.Sleep(5 * time.Minute)
 }
 
 //Write session data into UE database
