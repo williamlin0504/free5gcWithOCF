@@ -132,7 +132,7 @@ func TestRegistration(t *testing.T) {
 	//CTF Test
 	log.Println("CTF Test Started...")
 	CTF(ueID)
-	time.Sleep(time.Duration(10)*time.Minutes)
+	time.Sleep(15 * time.Minute)
 	Nchf_ConvergedChargingFunction_release(ueID)
 	Nchf_ConvergedChargingFunction_update(ueID)
 
