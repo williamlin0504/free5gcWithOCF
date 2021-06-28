@@ -46,6 +46,9 @@ func TestRegistration(t *testing.T) {
 	var n int
 	var sendMsg []byte
 	var recvMsg = make([]byte, 2048)
+	rand.Seed(time.Now().Unix())
+	randNum := rand.Intn(10000)
+	var ueID string = "ue-" + strconv.Itoa(randNum)
 
 	// RAN connect to AMF
 	conn, err := test.ConntectToAmf("127.0.0.1", "127.0.0.1", 38412, 9487)
@@ -70,7 +73,7 @@ func TestRegistration(t *testing.T) {
 
 	// New UE
 	// ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA2, security.AlgIntegrity128NIA2)
-	ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
+	ue := test.NewRanUeContext(ueID, 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
 	ue.AmfUeNgapId = 1
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
 		TestGenAuthData.MilenageTestSet19.OPC,
@@ -127,9 +130,6 @@ func TestRegistration(t *testing.T) {
 	assert.Nil(t, err)
 
 	//CTF Test
-	rand.Seed(time.Now().Unix())
-	randNum := rand.Intn(10000)
-	var ueID string = "ue-" + strconv.Itoa(randNum)
 	log.Println("CTF Test Started...")
 	CTF(ueID)
 	Nchf_ConvergedChargingFunction_release(ueID)
