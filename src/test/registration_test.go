@@ -1,7 +1,6 @@
 package test_test
 
 import (
-	"github.com/aws/aws-sdk-go/service/apigateway"
 	"math/rand"
     "encoding/json"
     "log"
