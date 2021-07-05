@@ -1,6 +1,7 @@
 package test_test
 
 import (
+	"github.com/aws/aws-sdk-go/service/apigateway"
 	"math/rand"
     "encoding/json"
     "log"
@@ -46,9 +47,7 @@ func TestRegistration(t *testing.T) {
 	var n int
 	var sendMsg []byte
 	var recvMsg = make([]byte, 2048)
-	rand.Seed(time.Now().Unix())
-	randNum := rand.Intn(10000)
-	var ueID string = "ue-" + strconv.Itoa(randNum)
+	var ueID string = os.Getenv("ue_ID")
 
 	// RAN connect to AMF
 	conn, err := test.ConntectToAmf("127.0.0.1", "127.0.0.1", 38412, 9487)
