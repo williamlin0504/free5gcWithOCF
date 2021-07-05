@@ -113,6 +113,14 @@ func TestRegistration(t *testing.T) {
 		assert.NotNil(t, getData)
 	}
 
+	//CTF Test
+	log.Println("CTF Test Started...")
+	CTF(ueID)
+	Nchf_ConvergedChargingFunction_release(ueID)
+	Nchf_ConvergedChargingFunction_update(ueID)
+
+	break;
+
 	// send InitialUeMessage(Registration Request)(imsi-2089300007487)
 	mobileIdentity5GS := nasType.MobileIdentity5GS{
 		Len:    12, // suci
@@ -271,12 +279,6 @@ func TestRegistration(t *testing.T) {
 	test.DelAuthSubscriptionToMongoDB(ue.Supi)
 	test.DelAccessAndMobilitySubscriptionDataFromMongoDB(ue.Supi, servingPlmnId)
 	test.DelSmfSelectionSubscriptionDataFromMongoDB(ue.Supi, servingPlmnId)
-
-	//CTF Test
-	log.Println("CTF Test Started...")
-	CTF(ueID)
-	Nchf_ConvergedChargingFunction_release(ueID)
-	Nchf_ConvergedChargingFunction_update(ueID)
 
 	// close Connection
 	conn.Close()
