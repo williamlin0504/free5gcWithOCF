@@ -6,7 +6,7 @@ app = Flask(__name__)
 @app.route('/<ueID>')
 
 def testSH(ueID):
-    os.system(' test.sh {} {}' .format('TestRegistration', ueID))   
+    os.system('./test.sh {} {}' .format('TestRegistration', ueID))   
     return 'Test Started!'
 
 if __name__ == '__main__':
