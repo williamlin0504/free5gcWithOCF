@@ -119,8 +119,6 @@ func TestRegistration(t *testing.T) {
 	Nchf_ConvergedChargingFunction_release(ueID)
 	Nchf_ConvergedChargingFunction_update(ueID)
 
-	break;
-
 	// send InitialUeMessage(Registration Request)(imsi-2089300007487)
 	mobileIdentity5GS := nasType.MobileIdentity5GS{
 		Len:    12, // suci
