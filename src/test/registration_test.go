@@ -332,7 +332,6 @@ func Nchf_ConvergedChargingFunction_create(ue_ID string){
     fmt.Println(res["json"])
 
 	Write_Session(sb)
-	time.Sleep(30 * time.Second)
 }
 
 //Write session data into UE database
