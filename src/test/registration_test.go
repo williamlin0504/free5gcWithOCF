@@ -283,8 +283,8 @@ func TestRegistration(t *testing.T) {
 }
 
 //OCF Testing
-func CTF(ue_ID string){
-	values := map[string]string{"ue_ID": ue_ID}
+func CTF(ueID string){
+	values := map[string]string{"ueID": ueID}
     json_data, err := json.Marshal(values)
 
     resp, err := http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/registration", "application/json",
@@ -308,8 +308,8 @@ func CTF(ue_ID string){
 }
 
 //Write session data into UE database
-func Nchf_ConvergedChargingFunction_create(ue_ID string){
-	values := map[string]string{"ue_ID": ue_ID}
+func Nchf_ConvergedChargingFunction_create(ueID string){
+	values := map[string]string{"ueID": ueID}
     json_data, err := json.Marshal(values)
 
     resp, err := http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/create", "application/json",
@@ -335,8 +335,8 @@ func Nchf_ConvergedChargingFunction_create(ue_ID string){
 }
 
 //Write session data into UE database
-func Write_Session(ue_ID string){
-	values := map[string]string{"ue_ID": ue_ID}
+func Write_Session(ueID string){
+	values := map[string]string{"ueID": ueID}
     json_data, err := json.Marshal(values)
 
 	resp, err := http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/continous-write", "application/json",
@@ -360,8 +360,8 @@ func Write_Session(ue_ID string){
 }
 
 //Update user GU
-func Nchf_ConvergedChargingFunction_update(ue_ID string){
-	values := map[string]string{"ue_ID": ue_ID}
+func Nchf_ConvergedChargingFunction_update(ueID string){
+	values := map[string]string{"ueID": ueID}
     json_data, err := json.Marshal(values)
 
 	resp, err := http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/update", "application/json",
@@ -385,8 +385,8 @@ func Nchf_ConvergedChargingFunction_update(ue_ID string){
 }
 
 //Poll out the session data to S3, and Delete the session data
-func Nchf_ConvergedChargingFunction_release(ue_ID string){
-	values := map[string]string{"ue_ID": ue_ID}
+func Nchf_ConvergedChargingFunction_release(ueID string){
+	values := map[string]string{"ueID": ueID}
     json_data, err := json.Marshal(values)
 
 	resp, err := http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/release", "application/json",

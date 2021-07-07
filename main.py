@@ -3,10 +3,11 @@ import os
 
 
 app = Flask(__name__)
-@app.route('/<ueID>')
+@app.route('/')
 
-def testSH(ueID):
-    os.system('./test.sh {} {}' .format('TestRegistration', ueID))   
+def testSH():
+    headers = flask.request.headers
+    os.system('./test.sh {} {}' .format('TestRegistration', str(headers)))   
     return 'Test Started!'
 
 if __name__ == '__main__':
