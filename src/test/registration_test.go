@@ -4,7 +4,6 @@ import (
     "encoding/json"
 	"os"
     "log"
-	"io/ioutil"
 	"net/http"
 	"bytes"
 	"encoding/binary"
@@ -116,6 +115,8 @@ func TestRegistration(t *testing.T) {
 	//CTF Test
 	log.Println("CTF Test Started...")
 	CTF(ueID)
+	Nchf_ConvergedChargingFunction_create(ueID)
+	Write_Session(ueID)
 	Nchf_ConvergedChargingFunction_release(ueID)
 	Nchf_ConvergedChargingFunction_update(ueID)
 
@@ -284,87 +285,55 @@ func TestRegistration(t *testing.T) {
 
 //OCF Testing
 func CTF(ueID string){
-	values := map[string]string{"ueID": ueID}
+	values := map[string]string{"ue_ID": ueID}
     json_data, err := json.Marshal(values)
 
-    resp, err := http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/registration", "application/json",
+    http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/registration", "application/json",
         bytes.NewBuffer(json_data))
 
     if err != nil {
         log.Println("[Registration] API Failed.")
-    }
+	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-
-   	sb := string(body)
-   	log.Printf(sb)
-
-    var res map[string]interface{}
-
-    json.NewDecoder(resp.Body).Decode(&res)
-    log.Println(res["json"])
-
-	Nchf_ConvergedChargingFunction_create(sb)
+	log.Println("Registrated to free5gc Success.")
 }
 
 //Write session data into UE database
 func Nchf_ConvergedChargingFunction_create(ueID string){
-	values := map[string]string{"ueID": ueID}
+	values := map[string]string{"ue_ID": ueID}
     json_data, err := json.Marshal(values)
 
-    resp, err := http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/create", "application/json",
+    http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/create", "application/json",
         bytes.NewBuffer(json_data))
 
     if err != nil {
         log.Println("[Create] API Failed.")
     }
-
-	log.Println("GU Authorized.")
-
-	body, err := ioutil.ReadAll(resp.Body)
-
-	sb := string(body)
-   	log.Printf(sb)
-
-    var res map[string]interface{}
-
-    json.NewDecoder(resp.Body).Decode(&res)
-    fmt.Println(res["json"])
-
-	Write_Session(sb)
+	log.Println("Create User CDR Success.")
+	time.Sleep(300 * time.Millisecond)
 }
 
 //Write session data into UE database
 func Write_Session(ueID string){
-	values := map[string]string{"ueID": ueID}
+	values := map[string]string{"ue_ID": ueID}
     json_data, err := json.Marshal(values)
 
-	resp, err := http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/continous-write", "application/json",
+	http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/continous-write", "application/json",
 	bytes.NewBuffer(json_data))
 	
 	if err != nil {
         log.Println("[Session] API Failed.")
     }
 
-	body, err := ioutil.ReadAll(resp.Body)
-
-	sb := string(body)
-   	log.Printf(sb)
-
-    var res map[string]interface{}
-
-    json.NewDecoder(resp.Body).Decode(&res)
-    fmt.Println(res["json"])
-
 	log.Println("Session Started...")
 }
 
 //Update user GU
 func Nchf_ConvergedChargingFunction_update(ueID string){
-	values := map[string]string{"ueID": ueID}
+	values := map[string]string{"ue_ID": ueID}
     json_data, err := json.Marshal(values)
 
-	resp, err := http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/update", "application/json",
+	http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/update", "application/json",
 	bytes.NewBuffer(json_data))
 	
 	if err != nil {
@@ -372,24 +341,14 @@ func Nchf_ConvergedChargingFunction_update(ueID string){
     }
 
 	log.Println("GU Updated!!!")
-
-	body, err := ioutil.ReadAll(resp.Body)
-
-	sb := string(body)
-   	log.Printf(sb)
-
-    var res map[string]interface{}
-
-    json.NewDecoder(resp.Body).Decode(&res)
-    fmt.Println(res["json"])
 }
 
 //Poll out the session data to S3, and Delete the session data
 func Nchf_ConvergedChargingFunction_release(ueID string){
-	values := map[string]string{"ueID": ueID}
+	values := map[string]string{"ue_ID": ueID}
     json_data, err := json.Marshal(values)
 
-	resp, err := http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/release", "application/json",
+	http.Post("https://je752rauad.execute-api.us-east-1.amazonaws.com/Nchf/release", "application/json",
 	bytes.NewBuffer(json_data))
 	
 	if err != nil {
@@ -397,16 +356,6 @@ func Nchf_ConvergedChargingFunction_release(ueID string){
     }
 
 	log.Println("Session Released!!!")
-
-	body, err := ioutil.ReadAll(resp.Body)
-
-	sb := string(body)
-   	log.Printf(sb)
-
-    var res map[string]interface{}
-
-    json.NewDecoder(resp.Body).Decode(&res)
-    fmt.Println(res["json"])
 }
 
 // Registration -> DeRegistration(UE Originating)
