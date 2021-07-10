@@ -326,6 +326,7 @@ func Write_Session(ueID string){
     }
 
 	log.Println("Session Started...")
+	time.Sleep(300 * time.Millisecond)
 }
 
 //Update user GU
@@ -354,7 +355,7 @@ func Nchf_ConvergedChargingFunction_release(ueID string){
 	if err != nil {
         log.Println("[Release] API Failed.")
     }
-
+	time.Sleep(600 * time.Millisecond)
 	log.Println("Session Released!!!")
 }
 
