@@ -19,12 +19,13 @@ const (
 )
 
 var ConsumerAMFCreateUEContextRequsetTable = make(map[string]models.CreateUeContextRequest)
+var ueID string = os.Getenv("ueID")
 
 func init() {
 	ConsumerAMFCreateUEContextRequsetTable[CreateUEContext403] = models.CreateUeContextRequest{
 		JsonData: &models.UeContextCreateData{
 			UeContext: &models.UeContext{
-				Supi: "imsi-2089300007487",
+				Supi: ueID,
 			},
 			TargetId:           &models.NgRanTargetId{},
 			SourceToTargetData: &models.N2InfoContent{},
@@ -38,7 +39,7 @@ func init() {
 	ConsumerAMFCreateUEContextRequsetTable[CreateUEContext201] = models.CreateUeContextRequest{
 		JsonData: &models.UeContextCreateData{
 			UeContext: &models.UeContext{
-				Supi: "imsi-2089300007487",
+				Supi: ueID,
 				RestrictedRatList: []models.RatType{
 					models.RatType_NR,
 				},
@@ -102,7 +103,7 @@ func init() {
 		},
 	}
 	ConsumerAMFReleaseUEContextRequestTable[UeContextRelease201] = models.UeContextRelease{
-		Supi:                "imsi-2089300007487",
+		Supi:                ueID,
 		UnauthenticatedSupi: true,
 		NgapCause: &models.NgApCause{
 			Group: 0,

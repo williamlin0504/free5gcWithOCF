@@ -77,7 +77,7 @@ func TestRegistration(t *testing.T) {
 		TestGenAuthData.MilenageTestSet19.OP)
 	// insert UE data to MongoDB
 
-	servingPlmnId := "20893"
+	servingPlmnId := "46692"
 	test.InsertAuthSubscriptionToMongoDB(ue.Supi, ue.AuthenticationSubs)
 	getData := test.GetAuthSubscriptionFromMongoDB(ue.Supi)
 	assert.NotNil(t, getData)
@@ -310,7 +310,6 @@ func Nchf_ConvergedChargingFunction_create(ueID string){
         log.Println("[Create] API Failed.")
     }
 	log.Println("Create User CDR Success.")
-	time.Sleep(300 * time.Millisecond)
 }
 
 //Write session data into UE database
@@ -326,7 +325,6 @@ func Write_Session(ueID string){
     }
 
 	log.Println("Session Started...")
-	time.Sleep(300 * time.Millisecond)
 }
 
 //Update user GU
@@ -355,7 +353,6 @@ func Nchf_ConvergedChargingFunction_release(ueID string){
 	if err != nil {
         log.Println("[Release] API Failed.")
     }
-	time.Sleep(600 * time.Millisecond)
 	log.Println("Session Released!!!")
 }
 
@@ -364,6 +361,7 @@ func TestDeregistration(t *testing.T) {
 	var n int
 	var sendMsg []byte
 	var recvMsg = make([]byte, 2048)
+	var ueID string = os.Getenv("ueID")
 
 	// RAN connect to AMF
 	conn, err := test.ConntectToAmf("127.0.0.1", "127.0.0.1", 38412, 9487)
@@ -382,14 +380,14 @@ func TestDeregistration(t *testing.T) {
 	assert.Nil(t, err)
 
 	// New UE
-	ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
+	ue := test.NewRanUeContext(ueID, 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
 	ue.AmfUeNgapId = 1
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
 		TestGenAuthData.MilenageTestSet19.OPC,
 		TestGenAuthData.MilenageTestSet19.OP)
 	// insert UE data to MongoDB
 
-	servingPlmnId := "20893"
+	servingPlmnId := "46692"
 	test.InsertAuthSubscriptionToMongoDB(ue.Supi, ue.AuthenticationSubs)
 	getData := test.GetAuthSubscriptionFromMongoDB(ue.Supi)
 	assert.NotNil(t, getData)
@@ -556,6 +554,7 @@ func TestServiceRequest(t *testing.T) {
 	var n int
 	var sendMsg []byte
 	var recvMsg = make([]byte, 2048)
+	var ueID string = os.Getenv("ueID")
 
 	// RAN connect to AMF
 	conn, err := test.ConntectToAmf("127.0.0.1", "127.0.0.1", 38412, 9487)
@@ -574,14 +573,14 @@ func TestServiceRequest(t *testing.T) {
 	assert.Nil(t, err)
 
 	// New UE
-	ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
+	ue := test.NewRanUeContext(ueID, 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
 	ue.AmfUeNgapId = 1
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
 		TestGenAuthData.MilenageTestSet19.OPC,
 		TestGenAuthData.MilenageTestSet19.OP)
 	// insert UE data to MongoDB
 
-	servingPlmnId := "20893"
+	servingPlmnId := "46692"
 	test.InsertAuthSubscriptionToMongoDB(ue.Supi, ue.AuthenticationSubs)
 	getData := test.GetAuthSubscriptionFromMongoDB(ue.Supi)
 	assert.NotNil(t, getData)
@@ -772,6 +771,7 @@ func TestGUTIRegistration(t *testing.T) {
 	var n int
 	var sendMsg []byte
 	var recvMsg = make([]byte, 2048)
+	var ueID string = os.Getenv("ueID")
 
 	// RAN connect to AMF
 	conn, err := test.ConntectToAmf("127.0.0.1", "127.0.0.1", 38412, 9487)
@@ -790,14 +790,14 @@ func TestGUTIRegistration(t *testing.T) {
 	require.Nil(t, err)
 
 	// New UE
-	ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
+	ue := test.NewRanUeContext(ueID, 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
 	ue.AmfUeNgapId = 1
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
 		TestGenAuthData.MilenageTestSet19.OPC,
 		TestGenAuthData.MilenageTestSet19.OP)
 	// insert UE data to MongoDB
 
-	servingPlmnId := "20893"
+	servingPlmnId := "46692"
 	test.InsertAuthSubscriptionToMongoDB(ue.Supi, ue.AuthenticationSubs)
 	getData := test.GetAuthSubscriptionFromMongoDB(ue.Supi)
 	require.NotNil(t, getData)
@@ -1072,6 +1072,7 @@ func TestPDUSessionReleaseRequest(t *testing.T) {
 	var n int
 	var sendMsg []byte
 	var recvMsg = make([]byte, 2048)
+	var ueID string = os.Getenv("ueID")
 
 	// RAN connect to AMF
 	conn, err := test.ConntectToAmf("127.0.0.1", "127.0.0.1", 38412, 9487)
@@ -1090,14 +1091,14 @@ func TestPDUSessionReleaseRequest(t *testing.T) {
 	assert.Nil(t, err)
 
 	// New UE
-	ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
+	ue := test.NewRanUeContext(ueID, 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
 	ue.AmfUeNgapId = 1
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
 		TestGenAuthData.MilenageTestSet19.OPC,
 		TestGenAuthData.MilenageTestSet19.OP)
 	// insert UE data to MongoDB
 
-	servingPlmnId := "20893"
+	servingPlmnId := "46692"
 	test.InsertAuthSubscriptionToMongoDB(ue.Supi, ue.AuthenticationSubs)
 	getData := test.GetAuthSubscriptionFromMongoDB(ue.Supi)
 	assert.NotNil(t, getData)
@@ -1273,6 +1274,7 @@ func TestXnHandover(t *testing.T) {
 	var n int
 	var sendMsg []byte
 	var recvMsg = make([]byte, 2048)
+	var ueID string = os.Getenv("ueID")
 
 	// RAN connect to AMF
 	conn, err := test.ConntectToAmf("127.0.0.1", "127.0.0.1", 38412, 9487)
@@ -1308,14 +1310,14 @@ func TestXnHandover(t *testing.T) {
 	assert.Nil(t, err)
 
 	// New UE
-	ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
+	ue := test.NewRanUeContext(ueID, 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
 	ue.AmfUeNgapId = 1
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
 		TestGenAuthData.MilenageTestSet19.OPC,
 		TestGenAuthData.MilenageTestSet19.OP)
 	// insert UE data to MongoDB
 
-	servingPlmnId := "20893"
+	servingPlmnId := "46692"
 	test.InsertAuthSubscriptionToMongoDB(ue.Supi, ue.AuthenticationSubs)
 	getData := test.GetAuthSubscriptionFromMongoDB(ue.Supi)
 	assert.NotNil(t, getData)
@@ -1476,6 +1478,7 @@ func TestPaging(t *testing.T) {
 	var n int
 	var sendMsg []byte
 	var recvMsg = make([]byte, 2048)
+	var ueID string = os.Getenv("ueID")
 
 	// RAN connect to AMFcd
 	conn, err := test.ConntectToAmf("127.0.0.1", "127.0.0.1", 38412, 9487)
@@ -1494,14 +1497,14 @@ func TestPaging(t *testing.T) {
 	assert.Nil(t, err)
 
 	// New UE
-	ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
+	ue := test.NewRanUeContext(ueID, 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
 	ue.AmfUeNgapId = 1
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
 		TestGenAuthData.MilenageTestSet19.OPC,
 		TestGenAuthData.MilenageTestSet19.OP)
 	// insert UE data to MongoDB
 
-	servingPlmnId := "20893"
+	servingPlmnId := "46692"
 	test.InsertAuthSubscriptionToMongoDB(ue.Supi, ue.AuthenticationSubs)
 	getData := test.GetAuthSubscriptionFromMongoDB(ue.Supi)
 	assert.NotNil(t, getData)
@@ -1714,6 +1717,7 @@ func TestN2Handover(t *testing.T) {
 	var n int
 	var sendMsg []byte
 	var recvMsg = make([]byte, 2048)
+	var ueID string = os.Getenv("ueID")
 
 	// RAN1 connect to AMF
 	conn, err := test.ConntectToAmf("127.0.0.1", "127.0.0.1", 38412, 9487)
@@ -1758,14 +1762,14 @@ func TestN2Handover(t *testing.T) {
 	assert.Nil(t, err)
 
 	// New UE
-	ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
+	ue := test.NewRanUeContext(ueID, 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
 	ue.AmfUeNgapId = 1
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
 		TestGenAuthData.MilenageTestSet19.OPC,
 		TestGenAuthData.MilenageTestSet19.OP)
 	// insert UE data to MongoDB
 
-	servingPlmnId := "20893"
+	servingPlmnId := "46692"
 	test.InsertAuthSubscriptionToMongoDB(ue.Supi, ue.AuthenticationSubs)
 	getData := test.GetAuthSubscriptionFromMongoDB(ue.Supi)
 	assert.NotNil(t, getData)
@@ -2058,6 +2062,7 @@ func TestDuplicateRegistration(t *testing.T) {
 	var n int
 	var sendMsg []byte
 	var recvMsg = make([]byte, 2048)
+	var ueID string = os.Getenv("ueID")
 
 	// RAN connect to AMF
 	conn, err := test.ConntectToAmf("127.0.0.1", "127.0.0.1", 38412, 9487)
@@ -2080,7 +2085,7 @@ func TestDuplicateRegistration(t *testing.T) {
 	assert.Nil(t, err)
 
 	// New UE
-	ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
+	ue := test.NewRanUeContext(ueID, 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
 	// ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA0)
 	ue.AmfUeNgapId = 1
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
@@ -2088,7 +2093,7 @@ func TestDuplicateRegistration(t *testing.T) {
 		TestGenAuthData.MilenageTestSet19.OP)
 	// insert UE data to MongoDB
 
-	servingPlmnId := "20893"
+	servingPlmnId := "46692"
 	test.InsertAuthSubscriptionToMongoDB(ue.Supi, ue.AuthenticationSubs)
 	getData := test.GetAuthSubscriptionFromMongoDB(ue.Supi)
 	assert.NotNil(t, getData)
@@ -2303,6 +2308,7 @@ func TestReSynchronisation(t *testing.T) {
 	var n int
 	var sendMsg []byte
 	var recvMsg = make([]byte, 2048)
+	var ueID string = os.Getenv("ueID")
 
 	// RAN connect to AMF
 	conn, err := test.ConntectToAmf("127.0.0.1", "127.0.0.1", 38412, 9487)
@@ -2326,14 +2332,14 @@ func TestReSynchronisation(t *testing.T) {
 
 	// New UE
 	// ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA2, security.AlgIntegrity128NIA2)
-	ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
+	ue := test.NewRanUeContext(ueID, 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA2)
 	ue.AmfUeNgapId = 1
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
 		TestGenAuthData.MilenageTestSet19.OPC,
 		TestGenAuthData.MilenageTestSet19.OP)
 	// insert UE data to MongoDB
 
-	servingPlmnId := "20893"
+	servingPlmnId := "46692"
 	test.InsertAuthSubscriptionToMongoDB(ue.Supi, ue.AuthenticationSubs)
 	getData := test.GetAuthSubscriptionFromMongoDB(ue.Supi)
 	assert.NotNil(t, getData)

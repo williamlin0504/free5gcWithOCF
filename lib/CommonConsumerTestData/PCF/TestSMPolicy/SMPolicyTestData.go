@@ -9,6 +9,7 @@ import (
 func CreateTestData() models.SmPolicyContextData {
 	t := time.Date(2000, 2, 1, 12, 30, 0, 0, time.UTC)
 	// timeNow := time.Now()
+	var ueID string = os.Getenv("ueID")
 	smReqData := models.SmPolicyContextData{
 		NotificationUri: "https://127.0.0.1:29502/nsmf-callback/v1/sm-policies/imsi-2089300007487-1",
 		// AccNetChId: &models.AccNetChId{
@@ -20,7 +21,7 @@ func CreateTestData() models.SmPolicyContextData {
 		// 	AnChargIpv4Addr: "198.51.100.1",
 		// 	AnChargIpv6Addr: "2001:db8:85a3::8a2e:370:7334",
 		// },
-		Supi:       "imsi-2089300007487",
+		Supi:       ueID,
 		SuppFeat:   "3fff",
 		Pei:        "123456789123456",
 		RatType:    models.RatType_NR,

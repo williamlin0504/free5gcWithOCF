@@ -98,8 +98,9 @@ func TestNGSetup(t *testing.T) {
 }
 
 func TestCN(t *testing.T) {
+	var ueID string = os.Getenv("ueID")
 	// New UE
-	ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA2, security.AlgIntegrity128NIA2)
+	ue := test.NewRanUeContext(ueID, 1, security.AlgCiphering128NEA2, security.AlgIntegrity128NIA2)
 	// ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA0)
 	ue.AmfUeNgapId = 1
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
@@ -107,7 +108,7 @@ func TestCN(t *testing.T) {
 		TestGenAuthData.MilenageTestSet19.OP)
 	// insert UE data to MongoDB
 
-	servingPlmnId := "20893"
+	servingPlmnId := "46692"
 	test.InsertAuthSubscriptionToMongoDB(ue.Supi, ue.AuthenticationSubs)
 	getData := test.GetAuthSubscriptionFromMongoDB(ue.Supi)
 	assert.NotNil(t, getData)
@@ -152,6 +153,6 @@ func TestCN(t *testing.T) {
 func beforeClose(ue *test.RanUeContext) {
 	// delete test data
 	test.DelAuthSubscriptionToMongoDB(ue.Supi)
-	test.DelAccessAndMobilitySubscriptionDataFromMongoDB(ue.Supi, "20893")
-	test.DelSmfSelectionSubscriptionDataFromMongoDB(ue.Supi, "20893")
+	test.DelAccessAndMobilitySubscriptionDataFromMongoDB(ue.Supi, "46692")
+	test.DelSmfSelectionSubscriptionDataFromMongoDB(ue.Supi, "46692")
 }

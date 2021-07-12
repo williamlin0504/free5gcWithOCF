@@ -200,7 +200,7 @@ func GetSampleJSON(c *gin.Context) {
 		},
 	}
 
-	servingPlmnId := "20893"
+	servingPlmnId := "46692"
 	ueId := "imsi-2089300007487"
 
 	subsData = SubsData{
