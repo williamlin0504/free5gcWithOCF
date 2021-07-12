@@ -19,6 +19,7 @@ import (
 	"net"
 	"testing"
 	"time"
+	"os"
 
 	"github.com/sparrc/go-ping"
 	"github.com/stretchr/testify/assert"
