@@ -385,14 +385,14 @@ func buildFilter(queryParameters url.Values) bson.M {
 					},
 				},
 			}
-		} else if targetNfType == "ccf" {
+		} else if targetNfType == "PCF" {
 			dnnFilter = bson.M{
 				"$or": []bson.M{
 					{
-						"ccfInfo.dnnList": dnn,
+						"pcfInfo.dnnList": dnn,
 					},
 					{
-						"ccfInfo.dnnList": bson.M{
+						"pcfInfo.dnnList": bson.M{
 							"$exists": false,
 						},
 					},
@@ -521,11 +521,11 @@ func buildFilter(queryParameters url.Values) bson.M {
 		var supiFilter bson.M
 		supi = queryParameters["supi"][0]
 		supi = supi[5:]
-		if targetNfType == "ccf" {
+		if targetNfType == "PCF" {
 			supiFilter = bson.M{
 				"$or": []bson.M{
 					{
-						"ccfInfo.supiRanges": bson.M{
+						"pcfInfo.supiRanges": bson.M{
 							"$elemMatch": bson.M{
 								"start": bson.M{
 									"$lte": supi,
@@ -537,7 +537,7 @@ func buildFilter(queryParameters url.Values) bson.M {
 						},
 					},
 					{
-						"ccfInfo.supiRanges": bson.M{
+						"pcfInfo.supiRanges": bson.M{
 							"$exists": false,
 						},
 					},
@@ -1676,9 +1676,9 @@ func complexQueryFilterSubprocess(queryParameters map[string]*AtomElem, complexQ
 	if queryParameters["supi"] != nil {
 		var supiFilter bson.M
 		supi = queryParameters["supi"].value
-		if targetNfType == "ccf" {
+		if targetNfType == "PCF" {
 			supiFilter = bson.M{
-				"ccfInfo": bson.M{
+				"pcfInfo": bson.M{
 					"$elemMatch": bson.M{
 						"supiRanges": bson.M{
 							"$elemMatch": bson.M{

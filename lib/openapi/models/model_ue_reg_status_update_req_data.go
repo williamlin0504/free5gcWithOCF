@@ -12,5 +12,5 @@ package models
 type UeRegStatusUpdateReqData struct {
 	TransferStatus       UeContextTransferStatus `json:"transferStatus"`
 	ToReleaseSessionList []int32                 `json:"toReleaseSessionList,omitempty"`
-	ccfReselectedInd     bool                    `json:"ccfReselectedInd,omitempty"`
+	PcfReselectedInd     bool                    `json:"pcfReselectedInd,omitempty"`
 }

@@ -414,7 +414,7 @@ components:
             sst: 153
           - sd: sd
             sst: 153
-          ccfInfo:
+          pcfInfo:
             rxDiamHost: rxDiamHost
             dnnList:
             - null
@@ -778,7 +778,7 @@ components:
             sst: 153
           - sd: sd
             sst: 153
-          ccfInfo:
+          pcfInfo:
             rxDiamHost: rxDiamHost
             dnnList:
             - null
@@ -1155,7 +1155,7 @@ components:
           sst: 153
         - sd: sd
           sst: 153
-        ccfInfo:
+        pcfInfo:
           rxDiamHost: rxDiamHost
           dnnList:
           - null
@@ -1578,8 +1578,8 @@ components:
           $ref: '#/components/schemas/SmfInfo'
         upfInfo:
           $ref: '#/components/schemas/UpfInfo'
-        ccfInfo:
-          $ref: '#/components/schemas/ccfInfo'
+        pcfInfo:
+          $ref: '#/components/schemas/PcfInfo'
         bsfInfo:
           $ref: '#/components/schemas/BsfInfo'
         chfInfo:
@@ -1698,7 +1698,7 @@ components:
       - SMF
       - AUSF
       - NEF
-      - ccf
+      - PCF
       - SMSF
       - NSSF
       - UDR
@@ -2437,7 +2437,7 @@ components:
       - N6
       - N9
       type: string
-    ccfInfo:
+    PcfInfo:
       example:
         rxDiamHost: rxDiamHost
         dnnList:
@@ -2609,12 +2609,12 @@ components:
       - nausf-auth
       - nausf-sorprotection
       - nnef-pfdmanagement
-      - nccf-am-policy-control
-      - nccf-smpolicycontrol
-      - nccf-policyauthorization
-      - nccf-bdtpolicycontrol
-      - nccf-eventexposure
-      - nccf-ue-policy-control
+      - npcf-am-policy-control
+      - npcf-smpolicycontrol
+      - npcf-policyauthorization
+      - npcf-bdtpolicycontrol
+      - npcf-eventexposure
+      - npcf-ue-policy-control
       - nsmsf-sms
       - nnssf-nsselection
       - nnssf-nssaiavailability
@@ -2765,7 +2765,7 @@ components:
       - SMF
       - AUSF
       - NEF
-      - ccf
+      - PCF
       - SMSF
       - NSSF
       - UDR
@@ -2789,7 +2789,7 @@ components:
       - SMF
       - AUSF
       - NEF
-      - ccf
+      - PCF
       - SMSF
       - NSSF
       - UDR

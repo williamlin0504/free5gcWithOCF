@@ -9,7 +9,7 @@
 
 package models
 
-type ccfInfo struct {
+type PcfInfo struct {
 	DnnList     []string    `json:"dnnList,omitempty" yaml:"dnnList" bson:"dnnList" mapstructure:"DnnList"`
 	SupiRanges  []SupiRange `json:"supiRanges,omitempty" yaml:"supiRanges" bson:"supiRanges" mapstructure:"SupiRanges"`
 	RxDiamHost  string      `json:"rxDiamHost,omitempty" yaml:"rxDiamHost" bson:"rxDiamHost" mapstructure:"RxDiamHost"`

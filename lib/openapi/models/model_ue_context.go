@@ -26,10 +26,10 @@ type UeContext struct {
 	SmsfId                   string                  `json:"smsfId,omitempty"`
 	SeafData                 *SeafData               `json:"seafData,omitempty"`
 	Var5gMmCapability        string                  `json:"5gMmCapability,omitempty"`
-	ccfId                    string                  `json:"ccfId,omitempty"`
-	ccfAmPolicyUri           string                  `json:"ccfAmPolicyUri,omitempty"`
+	PcfId                    string                  `json:"pcfId,omitempty"`
+	PcfAmPolicyUri           string                  `json:"pcfAmPolicyUri,omitempty"`
 	AmPolicyReqTriggerList   []AmPolicyReqTrigger    `json:"amPolicyReqTriggerList,omitempty"`
-	HccfId                   string                  `json:"hccfId,omitempty"`
+	HpcfId                   string                  `json:"hpcfId,omitempty"`
 	RestrictedRatList        []RatType               `json:"restrictedRatList,omitempty"`
 	ForbiddenAreaList        []Area                  `json:"forbiddenAreaList,omitempty"`
 	ServiceAreaRestriction   *ServiceAreaRestriction `json:"serviceAreaRestriction,omitempty"`

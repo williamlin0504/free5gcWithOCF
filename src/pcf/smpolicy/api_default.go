@@ -1,5 +1,5 @@
 /*
- * Nccf_SMPolicyControl
+ * Npcf_SMPolicyControl
  *
  * Session Management Policy Control Service
  *
@@ -13,8 +13,8 @@ import (
 	"free5gc/lib/http_wrapper"
 	"free5gc/lib/openapi"
 	"free5gc/lib/openapi/models"
-	"free5gc/src/ccf/logger"
-	"free5gc/src/ccf/producer"
+	"free5gc/src/pcf/logger"
+	"free5gc/src/pcf/producer"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

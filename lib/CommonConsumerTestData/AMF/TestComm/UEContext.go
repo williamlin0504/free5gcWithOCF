@@ -165,12 +165,12 @@ func init() {
 	ConsumerRegistrationStatusUpdateTable[RegistrationStatusUpdate200] = models.UeRegStatusUpdateReqData{
 		TransferStatus:       models.UeContextTransferStatus_TRANSFERRED,
 		ToReleaseSessionList: nil,
-		ccfReselectedInd:     false,
+		PcfReselectedInd:     false,
 	}
 	ConsumerRegistrationStatusUpdateTable[RegistrationStatusUpdate404] = models.UeRegStatusUpdateReqData{
 		TransferStatus:       "",
 		ToReleaseSessionList: nil,
-		ccfReselectedInd:     false,
+		PcfReselectedInd:     false,
 	}
 
 }

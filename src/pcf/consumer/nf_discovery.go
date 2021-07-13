@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"free5gc/lib/openapi/Nnrf_NFDiscovery"
 	"free5gc/lib/openapi/models"
-	ccf_context "free5gc/src/ccf/context"
-	"free5gc/src/ccf/logger"
-	"free5gc/src/ccf/util"
+	pcf_context "free5gc/src/pcf/context"
+	"free5gc/src/pcf/logger"
+	"free5gc/src/pcf/util"
 	"net/http"
 
 	"github.com/antihax/optional"
@@ -32,7 +32,7 @@ func SendSearchNFInstances(
 
 func SendNFIntancesUDR(nrfUri, id string) string {
 	targetNfType := models.NfType_UDR
-	requestNfType := models.NfType_ccf
+	requestNfType := models.NfType_PCF
 	localVarOptionals := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{
 		// 	DataSet: optional.NewInterface(models.DataSetId_SUBSCRIPTION),
 	}
@@ -60,7 +60,7 @@ func SendNFIntancesUDR(nrfUri, id string) string {
 
 func SendNFIntancesAMF(nrfUri string, guami models.Guami, serviceName models.ServiceName) string {
 	targetNfType := models.NfType_AMF
-	requestNfType := models.NfType_ccf
+	requestNfType := models.NfType_PCF
 
 	localVarOptionals := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{
 		Guami: optional.NewInterface(util.MarshToJsonString(guami)),
@@ -86,10 +86,10 @@ func SendNFIntancesAMF(nrfUri string, guami models.Guami, serviceName models.Ser
 }
 
 func SearchAvailableAMFs(nrfUri string, serviceName models.ServiceName) (
-	amfInfos []ccf_context.AMFStatusSubscriptionData) {
+	amfInfos []pcf_context.AMFStatusSubscriptionData) {
 	localVarOptionals := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{}
 
-	result, err := SendSearchNFInstances(nrfUri, models.NfType_AMF, models.NfType_ccf, localVarOptionals)
+	result, err := SendSearchNFInstances(nrfUri, models.NfType_AMF, models.NfType_PCF, localVarOptionals)
 	if err != nil {
 		logger.Consumerlog.Error(err.Error())
 		return
@@ -98,7 +98,7 @@ func SearchAvailableAMFs(nrfUri string, serviceName models.ServiceName) (
 	for _, profile := range result.NfInstances {
 		uri := util.SearchNFServiceUri(profile, serviceName, models.NfServiceStatus_REGISTERED)
 		if uri != "" {
-			item := ccf_context.AMFStatusSubscriptionData{
+			item := pcf_context.AMFStatusSubscriptionData{
 				AmfUri:    uri,
 				GuamiList: *profile.AmfInfo.GuamiList,
 			}

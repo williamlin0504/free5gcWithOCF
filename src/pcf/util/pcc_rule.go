@@ -5,7 +5,7 @@ import (
 	"free5gc/lib/openapi/models"
 	"time"
 	// 	"free5gc/lib/path_util"
-	// 	"free5gc/src/ccf/factory"
+	// 	"free5gc/src/pcf/factory"
 )
 
 var MediaTypeTo5qiMap = map[models.MediaType]int32{
@@ -19,7 +19,7 @@ var MediaTypeTo5qiMap = map[models.MediaType]int32{
 	models.MediaType_OTHER:       9,
 }
 
-// Create default pcc rule in ccf,
+// Create default pcc rule in PCF,
 // TODO: use config file to pass default pcc rule
 func CreateDefalutPccRules(id int32) *models.PccRule {
 	flowInfo := []models.FlowInformation{

@@ -326,24 +326,24 @@ func nnrfNFManagementOption(nf *models.NfProfile, nfprofile models.NfProfile) {
 
 		nf.UpfInfo = &a
 	}
-	//ccfInfo
-	if nfprofile.ccfInfo != nil {
+	//pcfInfo
+	if nfprofile.PcfInfo != nil {
 
-		var a models.ccfInfo
+		var a models.PcfInfo
 
-		if nfprofile.ccfInfo.DnnList != nil {
-			a.DnnList = nfprofile.ccfInfo.DnnList
+		if nfprofile.PcfInfo.DnnList != nil {
+			a.DnnList = nfprofile.PcfInfo.DnnList
 		}
-		if nfprofile.ccfInfo.SupiRanges != nil {
-			a.SupiRanges = nfprofile.ccfInfo.SupiRanges
+		if nfprofile.PcfInfo.SupiRanges != nil {
+			a.SupiRanges = nfprofile.PcfInfo.SupiRanges
 		}
-		if nfprofile.ccfInfo.RxDiamHost != "" {
-			a.RxDiamHost = nfprofile.ccfInfo.RxDiamHost
+		if nfprofile.PcfInfo.RxDiamHost != "" {
+			a.RxDiamHost = nfprofile.PcfInfo.RxDiamHost
 		}
-		if nfprofile.ccfInfo.RxDiamRealm != "" {
-			a.RxDiamRealm = nfprofile.ccfInfo.RxDiamRealm
+		if nfprofile.PcfInfo.RxDiamRealm != "" {
+			a.RxDiamRealm = nfprofile.PcfInfo.RxDiamRealm
 		}
-		nf.ccfInfo = &a
+		nf.PcfInfo = &a
 	}
 	//bsfInfo
 	if nfprofile.BsfInfo != nil {

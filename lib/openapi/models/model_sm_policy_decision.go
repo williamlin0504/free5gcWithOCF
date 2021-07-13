@@ -1,5 +1,5 @@
 /*
- * Nccf_SMPolicyControl
+ * Npcf_SMPolicyControl
  *
  * Session Management Policy Control Service
  *
@@ -39,9 +39,9 @@ type SmPolicyDecision struct {
 	Offline bool `json:"offline,omitempty" yaml:"offline" bson:"offline" mapstructure:"Offline"`
 	// Indicates the online charging is applicable to the PDU session or PCC rule.
 	Online bool `json:"online,omitempty" yaml:"online" bson:"online" mapstructure:"Online"`
-	// Defines the policy control request triggers subscribed by the ccf.
+	// Defines the policy control request triggers subscribed by the PCF.
 	PolicyCtrlReqTriggers []PolicyControlRequestTrigger `json:"policyCtrlReqTriggers,omitempty" yaml:"policyCtrlReqTriggers" bson:"policyCtrlReqTriggers" mapstructure:"PolicyCtrlReqTriggers"`
-	// Defines the last list of rule control data requested by the ccf.
+	// Defines the last list of rule control data requested by the PCF.
 	LastReqRuleData  []RequestedRuleData `json:"lastReqRuleData,omitempty" yaml:"lastReqRuleData" bson:"lastReqRuleData" mapstructure:"LastReqRuleData"`
 	LastReqUsageData *RequestedUsageData `json:"lastReqUsageData,omitempty" yaml:"lastReqUsageData" bson:"lastReqUsageData" mapstructure:"LastReqUsageData"`
 	// Map of PRA information.

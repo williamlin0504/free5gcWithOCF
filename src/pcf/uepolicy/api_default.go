@@ -1,5 +1,5 @@
 /*
- * Nccf_UEPolicyControl
+ * Npcf_UEPolicyControl
  *
  * UE Policy Control Service API
  *

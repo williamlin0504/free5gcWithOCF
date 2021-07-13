@@ -19,7 +19,7 @@ const (
 	Nullnftype_SMF      Nullnftype = "SMF"
 	Nullnftype_AUSF     Nullnftype = "AUSF"
 	Nullnftype_NEF      Nullnftype = "NEF"
-	Nullnftype_ccf      Nullnftype = "ccf"
+	Nullnftype_PCF      Nullnftype = "PCF"
 	Nullnftype_SMSF     Nullnftype = "SMSF"
 	Nullnftype_NSSF     Nullnftype = "NSSF"
 	Nullnftype_UDR      Nullnftype = "UDR"

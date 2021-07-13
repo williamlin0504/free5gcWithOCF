@@ -2,7 +2,7 @@ package httpcallback
 
 import (
 	"free5gc/lib/logger_util"
-	"free5gc/src/ccf/logger"
+	"free5gc/src/pcf/logger"
 	"net/http"
 	"strings"
 
@@ -32,8 +32,8 @@ func NewRouter() *gin.Engine {
 }
 
 func AddService(engine *gin.Engine) *gin.RouterGroup {
-	group := engine.Group("/nccf-callback/v1")
-	// https://localhost:29507/nccf-callback/v1/route
+	group := engine.Group("/npcf-callback/v1")
+	// https://localhost:29507/npcf-callback/v1/route
 	for _, route := range routes {
 		switch route.Method {
 		case "POST":

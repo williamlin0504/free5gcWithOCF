@@ -6,10 +6,10 @@ import (
 	"free5gc/lib/http_wrapper"
 	"free5gc/lib/openapi"
 	"free5gc/lib/openapi/models"
-	"free5gc/src/ccf/consumer"
-	ccf_context "free5gc/src/ccf/context"
-	"free5gc/src/ccf/logger"
-	"free5gc/src/ccf/util"
+	"free5gc/src/pcf/consumer"
+	pcf_context "free5gc/src/pcf/context"
+	"free5gc/src/pcf/logger"
+	"free5gc/src/pcf/util"
 	"net/http"
 	"reflect"
 
@@ -30,9 +30,9 @@ func HandleDeletePoliciesPolAssoId(request *http_wrapper.Request) *http_wrapper.
 }
 
 func DeletePoliciesPolAssoIdProcedure(polAssoId string) *models.ProblemDetails {
-	ue := ccf_context.ccf_Self().ccfUeFindByPolicyId(polAssoId)
+	ue := pcf_context.PCF_Self().PCFUeFindByPolicyId(polAssoId)
 	if ue == nil || ue.AMPolicyData[polAssoId] == nil {
-		problemDetails := util.GetProblemDetail("polAssoId not found  in ccf", util.CONTEXT_NOT_FOUND)
+		problemDetails := util.GetProblemDetail("polAssoId not found  in PCF", util.CONTEXT_NOT_FOUND)
 		return &problemDetails
 	}
 	delete(ue.AMPolicyData, polAssoId)
@@ -59,9 +59,9 @@ func HandleGetPoliciesPolAssoId(request *http_wrapper.Request) *http_wrapper.Res
 }
 
 func GetPoliciesPolAssoIdProcedure(polAssoId string) (*models.PolicyAssociation, *models.ProblemDetails) {
-	ue := ccf_context.ccf_Self().ccfUeFindByPolicyId(polAssoId)
+	ue := pcf_context.PCF_Self().PCFUeFindByPolicyId(polAssoId)
 	if ue == nil || ue.AMPolicyData[polAssoId] == nil {
-		problemDetails := util.GetProblemDetail("polAssoId not found  in ccf", util.CONTEXT_NOT_FOUND)
+		problemDetails := util.GetProblemDetail("polAssoId not found  in PCF", util.CONTEXT_NOT_FOUND)
 		return nil, &problemDetails
 	}
 	amPolicyData := ue.AMPolicyData[polAssoId]
@@ -107,9 +107,9 @@ func HandleUpdatePostPoliciesPolAssoId(request *http_wrapper.Request) *http_wrap
 
 func UpdatePostPoliciesPolAssoIdProcedure(polAssoId string,
 	policyAssociationUpdateRequest models.PolicyAssociationUpdateRequest) (*models.PolicyUpdate, *models.ProblemDetails) {
-	ue := ccf_context.ccf_Self().ccfUeFindByPolicyId(polAssoId)
+	ue := pcf_context.PCF_Self().PCFUeFindByPolicyId(polAssoId)
 	if ue == nil || ue.AMPolicyData[polAssoId] == nil {
-		problemDetails := util.GetProblemDetail("polAssoId not found  in ccf", util.CONTEXT_NOT_FOUND)
+		problemDetails := util.GetProblemDetail("polAssoId not found  in PCF", util.CONTEXT_NOT_FOUND)
 		return nil, &problemDetails
 	}
 
@@ -203,13 +203,13 @@ func HandlePostPolicies(request *http_wrapper.Request) *http_wrapper.Response {
 func PostPoliciesProcedure(polAssoId string,
 	policyAssociationRequest models.PolicyAssociationRequest) (*models.PolicyAssociation, string, *models.ProblemDetails) {
 	var response models.PolicyAssociation
-	ccfSelf := ccf_context.ccf_Self()
-	var ue *ccf_context.UeContext
-	if val, ok := ccfSelf.UePool.Load(policyAssociationRequest.Supi); ok {
-		ue = val.(*ccf_context.UeContext)
+	pcfSelf := pcf_context.PCF_Self()
+	var ue *pcf_context.UeContext
+	if val, ok := pcfSelf.UePool.Load(policyAssociationRequest.Supi); ok {
+		ue = val.(*pcf_context.UeContext)
 	}
 	if ue == nil {
-		if newUe, err := ccfSelf.NewccfUe(policyAssociationRequest.Supi); err != nil {
+		if newUe, err := pcfSelf.NewPCFUe(policyAssociationRequest.Supi); err != nil {
 			// supi format dose not match "imsi-..."
 			problemDetail := util.GetProblemDetail("Supi Format Error", util.ERROR_REQUEST_PARAMETERS)
 			logger.AMpolicylog.Errorln(err.Error())
@@ -221,9 +221,9 @@ func PostPoliciesProcedure(polAssoId string,
 	udrUri := getUdrUri(ue)
 	if udrUri == "" {
 		// Can't find any UDR support this Ue
-		ccfSelf.UePool.Delete(ue.Supi)
-		problemDetail := util.GetProblemDetail("Ue is not supported in ccf", util.USER_UNKNOWN)
-		logger.AMpolicylog.Errorf("Ue[%s] is not supported in ccf", ue.Supi)
+		pcfSelf.UePool.Delete(ue.Supi)
+		problemDetail := util.GetProblemDetail("Ue is not supported in PCF", util.USER_UNKNOWN)
+		logger.AMpolicylog.Errorf("Ue[%s] is not supported in PCF", ue.Supi)
 		return nil, "", &problemDetail
 	}
 	ue.UdrUri = udrUri
@@ -247,7 +247,7 @@ func PostPoliciesProcedure(polAssoId string,
 		amPolicy.AmPolicyData = &amData
 	}
 
-	// TODO: according to ccf Policy to determine ServAreaRes, Rfsp, SuppFeat
+	// TODO: according to PCF Policy to determine ServAreaRes, Rfsp, SuppFeat
 	// amPolicy.ServAreaRes =
 	// amPolicy.Rfsp =
 	var requestSuppFeat openapi.SupportedFeature
@@ -256,8 +256,8 @@ func PostPoliciesProcedure(polAssoId string,
 	} else {
 		requestSuppFeat = suppFeat
 	}
-	amPolicy.SuppFeat = ccfSelf.ccfSuppFeats[models.
-		ServiceName_Nccf_AM_POLICY_CONTROL].NegotiateWith(
+	amPolicy.SuppFeat = pcfSelf.PcfSuppFeats[models.
+		ServiceName_NPCF_AM_POLICY_CONTROL].NegotiateWith(
 		requestSuppFeat).String()
 	if amPolicy.Rfsp != 0 {
 		response.Rfsp = amPolicy.Rfsp
@@ -268,12 +268,12 @@ func PostPoliciesProcedure(polAssoId string,
 	// rsp.Pras
 	ue.PolAssociationIDGenerator++
 	// Create location header for update, delete, get
-	locationHeader := util.GetResourceUri(models.ServiceName_Nccf_AM_POLICY_CONTROL, assolId)
+	locationHeader := util.GetResourceUri(models.ServiceName_NPCF_AM_POLICY_CONTROL, assolId)
 	logger.AMpolicylog.Tracef("AMPolicy association Id[%s] Create", assolId)
 
 	if policyAssociationRequest.Guami != nil {
 		// if consumer is AMF then subscribe this AMF Status
-		for _, statusSubsData := range ccfSelf.AMFStatusSubsData {
+		for _, statusSubsData := range pcfSelf.AMFStatusSubsData {
 			for _, guami := range statusSubsData.GuamiList {
 				if reflect.DeepEqual(guami, policyAssociationRequest.Guami) {
 					amPolicy.AmfStatusChangeSubscription = &statusSubsData
@@ -285,7 +285,7 @@ func PostPoliciesProcedure(polAssoId string,
 }
 
 // Send AM Policy Update to AMF if policy has changed
-func SendAMPolicyUpdateNotification(ue *ccf_context.UeContext, PolId string, request models.PolicyUpdate) {
+func SendAMPolicyUpdateNotification(ue *pcf_context.UeContext, PolId string, request models.PolicyUpdate) {
 	if ue == nil {
 		logger.AMpolicylog.Warnln("Policy Update Notification Error[Ue is nil]")
 		return
@@ -295,7 +295,7 @@ func SendAMPolicyUpdateNotification(ue *ccf_context.UeContext, PolId string, req
 		logger.AMpolicylog.Warnf("Policy Update Notification Error[Can't find polAssoId[%s] in UE(%s)]", PolId, ue.Supi)
 		return
 	}
-	client := util.GetNccfAMPolicyCallbackClient()
+	client := util.GetNpcfAMPolicyCallbackClient()
 	uri := amPolicyData.NotificationUri
 	for uri != "" {
 
@@ -329,7 +329,7 @@ func SendAMPolicyUpdateNotification(ue *ccf_context.UeContext, PolId string, req
 }
 
 // Send AM Policy Update to AMF if policy has been terminated
-func SendAMPolicyTerminationRequestNotification(ue *ccf_context.UeContext,
+func SendAMPolicyTerminationRequestNotification(ue *pcf_context.UeContext,
 	PolId string, request models.TerminationNotification) {
 	if ue == nil {
 		logger.AMpolicylog.Warnln("Policy Assocition Termination Request Notification Error[Ue is nil]")
@@ -341,7 +341,7 @@ func SendAMPolicyTerminationRequestNotification(ue *ccf_context.UeContext,
 			"Policy Assocition Termination Request Notification Error[Can't find polAssoId[%s] in UE(%s)]", PolId, ue.Supi)
 		return
 	}
-	client := util.GetNccfAMPolicyCallbackClient()
+	client := util.GetNpcfAMPolicyCallbackClient()
 	uri := amPolicyData.NotificationUri
 	for uri != "" {
 
@@ -374,9 +374,9 @@ func SendAMPolicyTerminationRequestNotification(ue *ccf_context.UeContext,
 }
 
 // returns UDR Uri of Ue, if ue.UdrUri dose not exist, query NRF to get supported Udr Uri
-func getUdrUri(ue *ccf_context.UeContext) string {
+func getUdrUri(ue *pcf_context.UeContext) string {
 	if ue.UdrUri != "" {
 		return ue.UdrUri
 	}
-	return consumer.SendNFIntancesUDR(ccf_context.ccf_Self().NrfUri, ue.Supi)
+	return consumer.SendNFIntancesUDR(pcf_context.PCF_Self().NrfUri, ue.Supi)
 }

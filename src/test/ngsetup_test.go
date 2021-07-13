@@ -13,7 +13,7 @@ import (
 	ausf_service "free5gc/src/ausf/service"
 	nrf_service "free5gc/src/nrf/service"
 	nssf_service "free5gc/src/nssf/service"
-	ccf_service "free5gc/src/ccf/service"
+	pcf_service "free5gc/src/pcf/service"
 	smf_service "free5gc/src/smf/service"
 	"free5gc/src/test"
 	udm_service "free5gc/src/udm/service"
@@ -33,7 +33,7 @@ var NFs = []app.NetworkFunction{
 	&amf_service.AMF{},
 	&smf_service.SMF{},
 	&udr_service.UDR{},
-	&ccf_service.ccf{},
+	&pcf_service.PCF{},
 	&udm_service.UDM{},
 	&nssf_service.NSSF{},
 	&ausf_service.AUSF{},

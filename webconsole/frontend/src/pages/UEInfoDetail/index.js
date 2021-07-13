@@ -12,7 +12,7 @@ class UEInfoDetail extends Component {
 
         this.getAMFUEContexts = this.getAMFUEContexts.bind(this)
         this.getSMFInfo = this.getSMFInfo.bind(this)
-        this.getccfInfo = this.getccfInfo.bind(this)
+        this.getPCFInfo = this.getPCFInfo.bind(this)
 
     }
 
@@ -121,8 +121,8 @@ class UEInfoDetail extends Component {
         return Arr;
     }
 
-    getccfInfo() {
-        var AmPolicyData = this.props.ccfInfo.AmPolicyData
+    getPCFInfo() {
+        var AmPolicyData = this.props.pcfInfo.AmPolicyData
         var Arr = []
 
         Object.getOwnPropertyNames(AmPolicyData).forEach(
@@ -230,7 +230,7 @@ class UEInfoDetail extends Component {
 const mapStateToProps = state => ({
     amfInfo: state.ueinfo.amfInfo,
     smfInfo: state.ueinfo.smfInfo,
-    ccfInfo: state.ueinfo.ueInfoDetail.ccfInfo
+    pcfInfo: state.ueinfo.ueInfoDetail.pcfInfo
 
   });
 

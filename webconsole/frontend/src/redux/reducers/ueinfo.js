@@ -8,7 +8,7 @@ const initialState = {
         smfInfo: {
         }, 
     
-        ccfInfo: {
+        pcfInfo: {
             AmPolicyData:  [{
                 PolicyAssociationID: "string",
                 AccessType: "string",

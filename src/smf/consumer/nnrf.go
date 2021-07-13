@@ -137,10 +137,10 @@ func SendNFDiscoveryUDM() (*models.ProblemDetails, error) {
 	return nil, nil
 }
 
-func SendNFDiscoveryccf() (problemDetails *models.ProblemDetails, err error) {
+func SendNFDiscoveryPCF() (problemDetails *models.ProblemDetails, err error) {
 
 	// Set targetNfType
-	targetNfType := models.NfType_ccf
+	targetNfType := models.NfType_PCF
 	// Set requestNfType
 	requesterNfType := models.NfType_SMF
 	localVarOptionals := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{}

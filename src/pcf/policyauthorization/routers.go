@@ -1,5 +1,5 @@
 /*
- * Nccf_PolicyAuthorization Service API
+ * Npcf_PolicyAuthorization Service API
  *
  * This is the Policy Authorization Service
  *
@@ -11,7 +11,7 @@ package policyauthorization
 
 import (
 	"free5gc/lib/logger_util"
-	"free5gc/src/ccf/logger"
+	"free5gc/src/pcf/logger"
 	"net/http"
 	"strings"
 
@@ -41,7 +41,7 @@ func NewRouter() *gin.Engine {
 }
 
 func AddService(engine *gin.Engine) *gin.RouterGroup {
-	group := engine.Group("/nccf-policyauthorization/v1")
+	group := engine.Group("/npcf-policyauthorization/v1")
 
 	for _, route := range routes {
 		switch route.Method {

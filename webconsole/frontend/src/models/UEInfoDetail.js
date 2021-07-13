@@ -3,12 +3,12 @@ export default class UEInfoDetail {
   ueInfoDetail = {
       amfInfo:{},
       smfInfo:{},
-      ccfInfo:{}
+      pcfInfo:{}
   }
 
   constructor(info) {
      this.amfInfo = info.amfInfo;
      this.smfInfo = info.smfInfo;
-     this.ccfInfo = info.ccfInfo;
+     this.pcfInfo = info.pcfInfo;
   }
 }

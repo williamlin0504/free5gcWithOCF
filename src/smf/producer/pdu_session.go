@@ -87,10 +87,10 @@ func HandlePDUSessionSMContextCreate(request models.PostSmContextsRequest) *http
 	establishmentRequest := m.PDUSessionEstablishmentRequest
 	smContext.HandlePDUSessionEstablishmentRequest(establishmentRequest)
 
-	logger.PduSessLog.Infof("ccf Selection for SMContext SUPI[%s] PDUSessionID[%d]\n",
+	logger.PduSessLog.Infof("PCF Selection for SMContext SUPI[%s] PDUSessionID[%d]\n",
 		smContext.Supi, smContext.PDUSessionID)
-	if err := smContext.ccfSelection(); err != nil {
-		logger.PduSessLog.Errorln("ccf selection error:", err)
+	if err := smContext.PCFSelection(); err != nil {
+		logger.PduSessLog.Errorln("pcf selection error:", err)
 	}
 
 	smPolicyData := models.SmPolicyContextData{}
@@ -118,13 +118,13 @@ func HandlePDUSessionSMContextCreate(request models.PostSmContextsRequest) *http
 	smPolicyData.SuppFeat = "F"
 
 	var smPolicyDecision models.SmPolicyDecision
-	if smPolicyDecisionFromccf, _, err := smContext.SMPolicyClient.
+	if smPolicyDecisionFromPCF, _, err := smContext.SMPolicyClient.
 		DefaultApi.SmPoliciesPost(context.Background(), smPolicyData); err != nil {
 		openapiError := err.(openapi.GenericOpenAPIError)
 		problemDetails := openapiError.Model().(models.ProblemDetails)
 		logger.PduSessLog.Errorln("setup sm policy association failed:", err, problemDetails)
 	} else {
-		smPolicyDecision = smPolicyDecisionFromccf
+		smPolicyDecision = smPolicyDecisionFromPCF
 	}
 
 	if err := ApplySmPolicyFromDecision(smContext, &smPolicyDecision); err != nil {
