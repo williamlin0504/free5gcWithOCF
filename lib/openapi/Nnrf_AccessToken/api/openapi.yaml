@@ -169,7 +169,7 @@ components:
       - SMF
       - AUSF
       - NEF
-      - PCF
+      - ccf
       - SMSF
       - NSSF
       - UDR

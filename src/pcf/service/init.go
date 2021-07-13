@@ -17,38 +17,38 @@ import (
 	"free5gc/lib/openapi/models"
 	"free5gc/lib/path_util"
 	"free5gc/src/app"
-	"free5gc/src/pcf/ampolicy"
-	"free5gc/src/pcf/bdtpolicy"
-	"free5gc/src/pcf/consumer"
-	"free5gc/src/pcf/context"
-	"free5gc/src/pcf/factory"
-	"free5gc/src/pcf/httpcallback"
-	"free5gc/src/pcf/logger"
-	"free5gc/src/pcf/oam"
-	"free5gc/src/pcf/policyauthorization"
-	"free5gc/src/pcf/smpolicy"
-	"free5gc/src/pcf/uepolicy"
-	"free5gc/src/pcf/util"
+	"free5gc/src/ccf/ampolicy"
+	"free5gc/src/ccf/bdtpolicy"
+	"free5gc/src/ccf/consumer"
+	"free5gc/src/ccf/context"
+	"free5gc/src/ccf/factory"
+	"free5gc/src/ccf/httpcallback"
+	"free5gc/src/ccf/logger"
+	"free5gc/src/ccf/oam"
+	"free5gc/src/ccf/policyauthorization"
+	"free5gc/src/ccf/smpolicy"
+	"free5gc/src/ccf/uepolicy"
+	"free5gc/src/ccf/util"
 )
 
-type PCF struct{}
+type ccf struct{}
 
 type (
 	// Config information.
 	Config struct {
-		pcfcfg string
+		ccfcfg string
 	}
 )
 
 var config Config
 
-var pcfCLi = []cli.Flag{
+var ccfCLi = []cli.Flag{
 	cli.StringFlag{
 		Name:  "free5gccfg",
 		Usage: "common config file",
 	},
 	cli.StringFlag{
-		Name:  "pcfcfg",
+		Name:  "ccfcfg",
 		Usage: "config file",
 	},
 }
@@ -59,26 +59,26 @@ func init() {
 	initLog = logger.InitLog
 }
 
-func (*PCF) GetCliCmd() (flags []cli.Flag) {
-	return pcfCLi
+func (*ccf) GetCliCmd() (flags []cli.Flag) {
+	return ccfCLi
 }
 
-func (*PCF) Initialize(c *cli.Context) {
+func (*ccf) Initialize(c *cli.Context) {
 
 	config = Config{
-		pcfcfg: c.String("pcfcfg"),
+		ccfcfg: c.String("ccfcfg"),
 	}
-	if config.pcfcfg != "" {
-		factory.InitConfigFactory(config.pcfcfg)
+	if config.ccfcfg != "" {
+		factory.InitConfigFactory(config.ccfcfg)
 	} else {
-		DefaultPcfConfigPath := path_util.Gofree5gcPath("free5gc/config/pcfcfg.conf")
-		factory.InitConfigFactory(DefaultPcfConfigPath)
+		DefaultccfConfigPath := path_util.Gofree5gcPath("free5gc/config/ccfcfg.conf")
+		factory.InitConfigFactory(DefaultccfConfigPath)
 	}
 
-	if app.ContextSelf().Logger.PCF.DebugLevel != "" {
-		level, err := logrus.ParseLevel(app.ContextSelf().Logger.PCF.DebugLevel)
+	if app.ContextSelf().Logger.ccf.DebugLevel != "" {
+		level, err := logrus.ParseLevel(app.ContextSelf().Logger.ccf.DebugLevel)
 		if err != nil {
-			initLog.Warnf("Log level [%s] is not valid, set to [info] level", app.ContextSelf().Logger.PCF.DebugLevel)
+			initLog.Warnf("Log level [%s] is not valid, set to [info] level", app.ContextSelf().Logger.ccf.DebugLevel)
 			logger.SetLogLevel(logrus.InfoLevel)
 		} else {
 			logger.SetLogLevel(level)
@@ -89,11 +89,11 @@ func (*PCF) Initialize(c *cli.Context) {
 		logger.SetLogLevel(logrus.InfoLevel)
 	}
 
-	logger.SetReportCaller(app.ContextSelf().Logger.PCF.ReportCaller)
+	logger.SetReportCaller(app.ContextSelf().Logger.ccf.ReportCaller)
 }
 
-func (pcf *PCF) FilterCli(c *cli.Context) (args []string) {
-	for _, flag := range pcf.GetCliCmd() {
+func (ccf *ccf) FilterCli(c *cli.Context) (args []string) {
+	for _, flag := range ccf.GetCliCmd() {
 		name := flag.GetName()
 		value := fmt.Sprint(c.Generic(name))
 		if value == "" {
@@ -105,7 +105,7 @@ func (pcf *PCF) FilterCli(c *cli.Context) (args []string) {
 	return args
 }
 
-func (pcf *PCF) Start() {
+func (ccf *ccf) Start() {
 	initLog.Infoln("Server started")
 	router := logger_util.NewGinWithLogrus(logger.GinLog)
 
@@ -127,18 +127,18 @@ func (pcf *PCF) Start() {
 		MaxAge:           86400,
 	}))
 
-	self := context.PCF_Self()
-	util.InitpcfContext(self)
+	self := context.ccf_Self()
+	util.InitccfContext(self)
 
 	addr := fmt.Sprintf("%s:%d", self.BindingIPv4, self.SBIPort)
 
 	profile, err := consumer.BuildNFInstance(self)
 	if err != nil {
-		initLog.Error("Build PCF Profile Error")
+		initLog.Error("Build ccf Profile Error")
 	}
 	_, self.NfId, err = consumer.SendRegisterNFInstance(self.NrfUri, self.NfId, profile)
 	if err != nil {
-		initLog.Errorf("PCF register to NRF Error[%s]", err.Error())
+		initLog.Errorf("ccf register to NRF Error[%s]", err.Error())
 	}
 
 	// subscribe to all Amfs' status change
@@ -162,7 +162,7 @@ func (pcf *PCF) Start() {
 	param := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{
 		ServiceNames: optional.NewInterface([]models.ServiceName{models.ServiceName_NUDR_DR}),
 	}
-	resp, err := consumer.SendSearchNFInstances(self.NrfUri, models.NfType_UDR, models.NfType_PCF, param)
+	resp, err := consumer.SendSearchNFInstances(self.NrfUri, models.NfType_UDR, models.NfType_ccf, param)
 	for _, nfProfile := range resp.NfInstances {
 		udruri := util.SearchNFServiceUri(nfProfile, models.ServiceName_NUDR_DR, models.NfServiceStatus_REGISTERED)
 		if udruri != "" {
@@ -173,7 +173,7 @@ func (pcf *PCF) Start() {
 	if err != nil {
 		initLog.Errorln(err)
 	}
-	server, err := http2_util.NewServer(addr, util.PCF_LOG_PATH, router)
+	server, err := http2_util.NewServer(addr, util.ccf_LOG_PATH, router)
 	if server == nil {
 		initLog.Errorf("Initialize HTTP server failed: %+v", err)
 		return
@@ -183,11 +183,11 @@ func (pcf *PCF) Start() {
 		initLog.Warnf("Initialize HTTP server: +%v", err)
 	}
 
-	serverScheme := factory.PcfConfig.Configuration.Sbi.Scheme
+	serverScheme := factory.ccfConfig.Configuration.Sbi.Scheme
 	if serverScheme == "http" {
 		err = server.ListenAndServe()
 	} else if serverScheme == "https" {
-		err = server.ListenAndServeTLS(util.PCF_PEM_PATH, util.PCF_KEY_PATH)
+		err = server.ListenAndServeTLS(util.ccf_PEM_PATH, util.ccf_KEY_PATH)
 	}
 
 	if err != nil {
@@ -195,11 +195,11 @@ func (pcf *PCF) Start() {
 	}
 }
 
-func (pcf *PCF) Exec(c *cli.Context) error {
-	initLog.Traceln("args:", c.String("pcfcfg"))
-	args := pcf.FilterCli(c)
+func (ccf *ccf) Exec(c *cli.Context) error {
+	initLog.Traceln("args:", c.String("ccfcfg"))
+	args := ccf.FilterCli(c)
 	initLog.Traceln("filter: ", args)
-	command := exec.Command("./pcf", args...)
+	command := exec.Command("./ccf", args...)
 
 	stdout, err := command.StdoutPipe()
 	if err != nil {
@@ -221,7 +221,7 @@ func (pcf *PCF) Exec(c *cli.Context) error {
 	}
 	go func() {
 		in := bufio.NewScanner(stderr)
-		fmt.Println("PCF log start")
+		fmt.Println("ccf log start")
 		for in.Scan() {
 			fmt.Println(in.Text())
 		}
@@ -229,11 +229,11 @@ func (pcf *PCF) Exec(c *cli.Context) error {
 	}()
 
 	go func() {
-		fmt.Println("PCF start")
+		fmt.Println("ccf start")
 		if err = command.Start(); err != nil {
 			fmt.Printf("command.Start() error: %v", err)
 		}
-		fmt.Println("PCF end")
+		fmt.Println("ccf end")
 		wg.Done()
 	}()
 

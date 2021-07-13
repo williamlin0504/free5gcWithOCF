@@ -39,7 +39,7 @@ func GetNrfInfo() *models.NrfInfo {
 	nrfinfo.ServedAmfInfo = getAmfInfo()
 	nrfinfo.ServedSmfInfo = getSmfInfo()
 	nrfinfo.ServedUpfInfo = getUpfInfo()
-	nrfinfo.ServedPcfInfo = getPcfInfo()
+	nrfinfo.ServedccfInfo = getccfInfo()
 	nrfinfo.ServedBsfInfo = getBsfInfo()
 	nrfinfo.ServedChfInfo = getChfInfo()
 
@@ -193,28 +193,28 @@ func getUpfInfo() map[string]models.UpfInfo {
 	return servedUpfInfo
 
 }
-func getPcfInfo() map[string]models.PcfInfo {
-	var servedPcfInfo map[string]models.PcfInfo
-	servedPcfInfo = make(map[string]models.PcfInfo)
-	var PCFProfile models.NfProfile
+func getccfInfo() map[string]models.ccfInfo {
+	var servedccfInfo map[string]models.ccfInfo
+	servedccfInfo = make(map[string]models.ccfInfo)
+	var ccfProfile models.NfProfile
 
 	collName := "NfProfile"
-	filter := bson.M{"nfType": "PCF"}
+	filter := bson.M{"nfType": "ccf"}
 
-	PCF := MongoDBLibrary.RestfulAPIGetMany(collName, filter)
-	PCFStruct, err := TimeDecode.Decode(PCF, time.RFC3339)
+	ccf := MongoDBLibrary.RestfulAPIGetMany(collName, filter)
+	ccfStruct, err := TimeDecode.Decode(ccf, time.RFC3339)
 	if err != nil {
 		logger.ManagementLog.Error(err)
 	}
-	for i := 0; i < len(PCFStruct); i++ {
-		err := mapstructure.Decode(PCFStruct[i], &PCFProfile)
+	for i := 0; i < len(ccfStruct); i++ {
+		err := mapstructure.Decode(ccfStruct[i], &ccfProfile)
 		if err != nil {
 			panic(err)
 		}
 		index := strconv.Itoa(i)
-		servedPcfInfo[index] = *PCFProfile.PcfInfo
+		servedccfInfo[index] = *ccfProfile.ccfInfo
 	}
-	return servedPcfInfo
+	return servedccfInfo
 
 }
 func getBsfInfo() map[string]models.BsfInfo {

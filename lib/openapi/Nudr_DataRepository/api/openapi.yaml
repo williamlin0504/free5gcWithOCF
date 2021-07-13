@@ -10171,12 +10171,12 @@ components:
       - nausf-auth
       - nausf-sorprotection
       - nnef-pfdmanagement
-      - npcf-am-policy-control
-      - npcf-smpolicycontrol
-      - npcf-policyauthorization
-      - npcf-bdtpolicycontrol
-      - npcf-eventexposure
-      - npcf-ue-policy-control
+      - nccf-am-policy-control
+      - nccf-smpolicycontrol
+      - nccf-policyauthorization
+      - nccf-bdtpolicycontrol
+      - nccf-eventexposure
+      - nccf-ue-policy-control
       - nsmsf-sms
       - nnssf-nsselection
       - nnssf-nssaiavailability

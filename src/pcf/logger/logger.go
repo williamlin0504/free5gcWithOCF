@@ -43,24 +43,24 @@ func init() {
 		log.Hooks.Add(free5gcLogHook)
 	}
 
-	selfLogHook, err := logger_util.NewFileHook(logger_conf.NfLogDir+"pcf.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
+	selfLogHook, err := logger_util.NewFileHook(logger_conf.NfLogDir+"ccf.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
 	if err == nil {
 		log.Hooks.Add(selfLogHook)
 	}
 
-	AppLog = log.WithFields(logrus.Fields{"component": "PCF", "category": "App"})
-	InitLog = log.WithFields(logrus.Fields{"component": "PCF", "category": "Init"})
-	HandlerLog = log.WithFields(logrus.Fields{"component": "PCF", "category": "Handler"})
-	Bdtpolicylog = log.WithFields(logrus.Fields{"component": "PCF", "category": "Bdtpolicy"})
-	AMpolicylog = log.WithFields(logrus.Fields{"component": "PCF", "category": "Ampolicy"})
-	PolicyAuthorizationlog = log.WithFields(logrus.Fields{"component": "PCF", "category": "PolicyAuth"})
-	SMpolicylog = log.WithFields(logrus.Fields{"component": "PCF", "category": "SMpolicy"})
-	UtilLog = log.WithFields(logrus.Fields{"component": "PCF", "category": "Util"})
-	CallbackLog = log.WithFields(logrus.Fields{"component": "PCF", "category": "Callback"})
-	Consumerlog = log.WithFields(logrus.Fields{"component": "PCF", "category": "Consumer"})
-	OamLog = log.WithFields(logrus.Fields{"component": "PCF", "category": "OAM"})
-	CtxLog = log.WithFields(logrus.Fields{"component": "PCF", "category": "Context"})
-	GinLog = log.WithFields(logrus.Fields{"component": "PCF", "category": "GIN"})
+	AppLog = log.WithFields(logrus.Fields{"component": "ccf", "category": "App"})
+	InitLog = log.WithFields(logrus.Fields{"component": "ccf", "category": "Init"})
+	HandlerLog = log.WithFields(logrus.Fields{"component": "ccf", "category": "Handler"})
+	Bdtpolicylog = log.WithFields(logrus.Fields{"component": "ccf", "category": "Bdtpolicy"})
+	AMpolicylog = log.WithFields(logrus.Fields{"component": "ccf", "category": "Ampolicy"})
+	PolicyAuthorizationlog = log.WithFields(logrus.Fields{"component": "ccf", "category": "PolicyAuth"})
+	SMpolicylog = log.WithFields(logrus.Fields{"component": "ccf", "category": "SMpolicy"})
+	UtilLog = log.WithFields(logrus.Fields{"component": "ccf", "category": "Util"})
+	CallbackLog = log.WithFields(logrus.Fields{"component": "ccf", "category": "Callback"})
+	Consumerlog = log.WithFields(logrus.Fields{"component": "ccf", "category": "Consumer"})
+	OamLog = log.WithFields(logrus.Fields{"component": "ccf", "category": "OAM"})
+	CtxLog = log.WithFields(logrus.Fields{"component": "ccf", "category": "Context"})
+	GinLog = log.WithFields(logrus.Fields{"component": "ccf", "category": "GIN"})
 }
 
 func SetLogLevel(level logrus.Level) {

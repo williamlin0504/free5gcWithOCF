@@ -73,12 +73,12 @@ func BuildUeContextModel(ue *amf_context.AmfUe) (ueContext models.UeContext) {
 		}
 	}
 
-	if ue.PcfId != "" {
-		ueContext.PcfId = ue.PcfId
+	if ue.ccfId != "" {
+		ueContext.ccfId = ue.ccfId
 	}
 
 	if ue.AmPolicyUri != "" {
-		ueContext.PcfAmPolicyUri = ue.AmPolicyUri
+		ueContext.ccfAmPolicyUri = ue.AmPolicyUri
 	}
 
 	if ue.AmPolicyAssociation != nil {

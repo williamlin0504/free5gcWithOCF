@@ -111,10 +111,10 @@ func GetEstablishmentRequestData(testType string) (n1SmBytes []byte) {
 }
 
 var ConsumerSMFPDUSessionSMContextCreateTable = make(map[string]models.SmContextCreateData)
-var ueID string = os.Getenv("ueID")
+
 func init() {
 	ConsumerSMFPDUSessionSMContextCreateTable[SERVICE_REQUEST] = models.SmContextCreateData{
-		Supi:                ueID,
+		Supi:                "imsi-2089300007487",
 		UnauthenticatedSupi: false,
 		PduSessionId:        2,
 		Dnn:                 "internet",

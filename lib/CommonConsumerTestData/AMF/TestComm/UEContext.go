@@ -19,13 +19,12 @@ const (
 )
 
 var ConsumerAMFCreateUEContextRequsetTable = make(map[string]models.CreateUeContextRequest)
-var ueID string = os.Getenv("ueID")
 
 func init() {
 	ConsumerAMFCreateUEContextRequsetTable[CreateUEContext403] = models.CreateUeContextRequest{
 		JsonData: &models.UeContextCreateData{
 			UeContext: &models.UeContext{
-				Supi: ueID,
+				Supi: "imsi-2089300007487",
 			},
 			TargetId:           &models.NgRanTargetId{},
 			SourceToTargetData: &models.N2InfoContent{},
@@ -39,7 +38,7 @@ func init() {
 	ConsumerAMFCreateUEContextRequsetTable[CreateUEContext201] = models.CreateUeContextRequest{
 		JsonData: &models.UeContextCreateData{
 			UeContext: &models.UeContext{
-				Supi: ueID,
+				Supi: "imsi-2089300007487",
 				RestrictedRatList: []models.RatType{
 					models.RatType_NR,
 				},
@@ -103,7 +102,7 @@ func init() {
 		},
 	}
 	ConsumerAMFReleaseUEContextRequestTable[UeContextRelease201] = models.UeContextRelease{
-		Supi:                ueID,
+		Supi:                "imsi-2089300007487",
 		UnauthenticatedSupi: true,
 		NgapCause: &models.NgApCause{
 			Group: 0,
@@ -166,12 +165,12 @@ func init() {
 	ConsumerRegistrationStatusUpdateTable[RegistrationStatusUpdate200] = models.UeRegStatusUpdateReqData{
 		TransferStatus:       models.UeContextTransferStatus_TRANSFERRED,
 		ToReleaseSessionList: nil,
-		PcfReselectedInd:     false,
+		ccfReselectedInd:     false,
 	}
 	ConsumerRegistrationStatusUpdateTable[RegistrationStatusUpdate404] = models.UeRegStatusUpdateReqData{
 		TransferStatus:       "",
 		ToReleaseSessionList: nil,
-		PcfReselectedInd:     false,
+		ccfReselectedInd:     false,
 	}
 
 }

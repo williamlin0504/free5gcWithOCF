@@ -1,5 +1,5 @@
 /*
- * Npcf_PolicyAuthorization Service API
+ * Nccf_PolicyAuthorization Service API
  *
  * This is the Policy Authorization Service
  *

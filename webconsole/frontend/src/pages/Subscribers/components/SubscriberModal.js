@@ -42,7 +42,7 @@ class SubscriberModal extends Component {
       plmnID: {
         type: "string",
         title: "PLMN ID",
-        default: "46692",
+        default: "20893",
       },
       ueId: {
         type: "string",

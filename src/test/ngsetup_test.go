@@ -13,7 +13,7 @@ import (
 	ausf_service "free5gc/src/ausf/service"
 	nrf_service "free5gc/src/nrf/service"
 	nssf_service "free5gc/src/nssf/service"
-	pcf_service "free5gc/src/pcf/service"
+	ccf_service "free5gc/src/ccf/service"
 	smf_service "free5gc/src/smf/service"
 	"free5gc/src/test"
 	udm_service "free5gc/src/udm/service"
@@ -33,7 +33,7 @@ var NFs = []app.NetworkFunction{
 	&amf_service.AMF{},
 	&smf_service.SMF{},
 	&udr_service.UDR{},
-	&pcf_service.PCF{},
+	&ccf_service.ccf{},
 	&udm_service.UDM{},
 	&nssf_service.NSSF{},
 	&ausf_service.AUSF{},
@@ -98,9 +98,8 @@ func TestNGSetup(t *testing.T) {
 }
 
 func TestCN(t *testing.T) {
-	var ueID string = os.Getenv("ueID")
 	// New UE
-	ue := test.NewRanUeContext(ueID, 1, security.AlgCiphering128NEA2, security.AlgIntegrity128NIA2)
+	ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA2, security.AlgIntegrity128NIA2)
 	// ue := test.NewRanUeContext("imsi-2089300007487", 1, security.AlgCiphering128NEA0, security.AlgIntegrity128NIA0)
 	ue.AmfUeNgapId = 1
 	ue.AuthenticationSubs = test.GetAuthSubscription(TestGenAuthData.MilenageTestSet19.K,
@@ -108,7 +107,7 @@ func TestCN(t *testing.T) {
 		TestGenAuthData.MilenageTestSet19.OP)
 	// insert UE data to MongoDB
 
-	servingPlmnId := "46692"
+	servingPlmnId := "20893"
 	test.InsertAuthSubscriptionToMongoDB(ue.Supi, ue.AuthenticationSubs)
 	getData := test.GetAuthSubscriptionFromMongoDB(ue.Supi)
 	assert.NotNil(t, getData)
@@ -153,6 +152,6 @@ func TestCN(t *testing.T) {
 func beforeClose(ue *test.RanUeContext) {
 	// delete test data
 	test.DelAuthSubscriptionToMongoDB(ue.Supi)
-	test.DelAccessAndMobilitySubscriptionDataFromMongoDB(ue.Supi, "46692")
-	test.DelSmfSelectionSubscriptionDataFromMongoDB(ue.Supi, "46692")
+	test.DelAccessAndMobilitySubscriptionDataFromMongoDB(ue.Supi, "20893")
+	test.DelSmfSelectionSubscriptionDataFromMongoDB(ue.Supi, "20893")
 }

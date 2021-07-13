@@ -75,7 +75,7 @@ func CreateUEContextProcedure(ueContextID string, createUeContextRequest models.
 	// optional
 	ue.UdmGroupId = ueContextCreateData.UeContext.UdmGroupId
 	ue.AusfGroupId = ueContextCreateData.UeContext.AusfGroupId
-	//ueContextCreateData.UeContext.HpcfId
+	//ueContextCreateData.UeContext.HccfId
 	ue.RatType = ueContextCreateData.UeContext.RestrictedRatList[0] //minItem = -1
 	//ueContextCreateData.UeContext.ForbiddenAreaList
 	//ueContextCreateData.UeContext.ServiceAreaRestriction
@@ -93,8 +93,8 @@ func CreateUEContextProcedure(ueContextID string, createUeContextRequest models.
 	//ueContextCreateData.UeContext.SmsfId
 	//ueContextCreateData.UeContext.SeafData
 	//ueContextCreateData.UeContext.Var5gMmCapability
-	//ueContextCreateData.UeContext.PcfId
-	//ueContextCreateData.UeContext.PcfAmPolicyUri
+	//ueContextCreateData.UeContext.ccfId
+	//ueContextCreateData.UeContext.ccfAmPolicyUri
 	//ueContextCreateData.UeContext.AmPolicyReqTriggerList
 	//ueContextCreateData.UeContext.EventSubscriptionList
 	//ueContextCreateData.UeContext.MmContextList
@@ -110,13 +110,13 @@ func CreateUEContextProcedure(ueContextID string, createUeContextRequest models.
 	// response.JsonData.TargetToSourceData =
 	// ue.N1N2Message[ueContextId].Request.JsonData.N2InfoContainer.SmInfo.N2InfoContent
 	createUeContextResponse.JsonData.PduSessionList = ueContextCreateData.PduSessionList
-	createUeContextResponse.JsonData.PcfReselectedInd = false
-	// TODO: When  Target AMF selects a nw PCF for AM policy, set the flag to true.
+	createUeContextResponse.JsonData.ccfReselectedInd = false
+	// TODO: When  Target AMF selects a nw ccf for AM policy, set the flag to true.
 
 	//response.UeContext = ueContextCreateData.UeContext
 	//response.TargetToSourceData = ue.N1N2Message[amfSelf.Uri].Request.JsonData.N2InfoContainer.SmInfo.N2InfoContent
 	//response.PduSessionList = ueContextCreateData.PduSessionList
-	//response.PcfReselectedInd = false // TODO:When  Target AMF selects a nw PCF for AM policy, set the flag to true.
+	//response.ccfReselectedInd = false // TODO:When  Target AMF selects a nw ccf for AM policy, set the flag to true.
 	//
 
 	// return http_wrapper.NewResponse(http.StatusCreated, nil, createUeContextResponse)
@@ -326,12 +326,12 @@ func buildUEContextModel(ue *context.AmfUe) *models.UeContext {
 		}
 	}
 
-	if ue.PcfId != "" {
-		ueContext.PcfId = ue.PcfId
+	if ue.ccfId != "" {
+		ueContext.ccfId = ue.ccfId
 	}
 
 	if ue.AmPolicyUri != "" {
-		ueContext.PcfAmPolicyUri = ue.AmPolicyUri
+		ueContext.ccfAmPolicyUri = ue.AmPolicyUri
 	}
 
 	if ue.AmPolicyAssociation != nil {
@@ -467,7 +467,7 @@ func RegistrationStatusUpdateProcedure(ueContextID string, ueRegStatusUpdateReqD
 			}
 		}
 
-		if ueRegStatusUpdateReqData.PcfReselectedInd {
+		if ueRegStatusUpdateReqData.ccfReselectedInd {
 			problem, err := consumer.AMPolicyControlDelete(ue)
 			if problem != nil {
 				logger.GmmLog.Errorf("AM Policy Control Delete Failed Problem[%+v]", problem)

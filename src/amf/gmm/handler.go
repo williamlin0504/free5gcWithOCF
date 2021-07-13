@@ -114,7 +114,7 @@ func HandleULNASTransport(ue *context.AmfUe, anType models.AccessType,
 	case nasMessage.PayloadContainerTypeSOR:
 		return fmt.Errorf("PayloadContainerTypeSOR has not been implemented yet in UL NAS TRANSPORT")
 	case nasMessage.PayloadContainerTypeUEPolicy:
-		logger.GmmLog.Infoln("AMF Transfer UEPolicy To PCF")
+		logger.GmmLog.Infoln("AMF Transfer UEPolicy To ccf")
 		callback.SendN1MessageNotify(ue, models.N1MessageClass_UPDP,
 			ulNasTransport.PayloadContainer.GetPayloadContainerContents(), nil)
 	case nasMessage.PayloadContainerTypeUEParameterUpdate:
@@ -797,7 +797,7 @@ func HandleInitialRegistration(ue *context.AmfUe, anType models.AccessType) erro
 		req := models.UeRegStatusUpdateReqData{
 			TransferStatus: models.UeContextTransferStatus_TRANSFERRED,
 		}
-		// TODO: based on locol policy, decide if need to change serving PCF for UE
+		// TODO: based on locol policy, decide if need to change serving ccf for UE
 		regStatusTransferComplete, problemDetails, err := consumer.RegistrationStatusUpdate(ue, req)
 		if problemDetails != nil {
 			logger.GmmLog.Errorf("Registration Status Update Failed Problem[%+v]", problemDetails)
@@ -829,22 +829,22 @@ func HandleInitialRegistration(ue *context.AmfUe, anType models.AccessType) erro
 		Supi: optional.NewString(ue.Supi),
 	}
 	for {
-		resp, err := consumer.SendSearchNFInstances(amfSelf.NrfUri, models.NfType_PCF, models.NfType_AMF, &param)
+		resp, err := consumer.SendSearchNFInstances(amfSelf.NrfUri, models.NfType_ccf, models.NfType_AMF, &param)
 		if err != nil {
-			logger.GmmLog.Error("AMF can not select an PCF by NRF")
+			logger.GmmLog.Error("AMF can not select an ccf by NRF")
 		} else {
-			// select the first PCF, TODO: select base on other info
-			var pcfUri string
+			// select the first ccf, TODO: select base on other info
+			var ccfUri string
 			for _, nfProfile := range resp.NfInstances {
-				pcfUri = util.SearchNFServiceUri(nfProfile, models.ServiceName_NPCF_AM_POLICY_CONTROL,
+				ccfUri = util.SearchNFServiceUri(nfProfile, models.ServiceName_Nccf_AM_POLICY_CONTROL,
 					models.NfServiceStatus_REGISTERED)
-				if pcfUri != "" {
-					ue.PcfId = nfProfile.NfInstanceId
+				if ccfUri != "" {
+					ue.ccfId = nfProfile.NfInstanceId
 					break
 				}
 			}
-			if ue.PcfUri = pcfUri; ue.PcfUri == "" {
-				logger.GmmLog.Error("AMF can not select an PCF by NRF")
+			if ue.ccfUri = ccfUri; ue.ccfUri == "" {
+				logger.GmmLog.Error("AMF can not select an ccf by NRF")
 			} else {
 				break
 			}

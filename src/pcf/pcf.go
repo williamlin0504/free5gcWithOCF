@@ -1,8 +1,8 @@
 /*
- * Npcf_BDTPolicyControl Service API
+ * Nccf_BDTPolicyControl Service API
  *
- * The Npcf_BDTPolicyControl Service is used by an NF service consumer to
- * retrieve background data transfer policies from the PCF and to update the PCF with
+ * The Nccf_BDTPolicyControl Service is used by an NF service consumer to
+ * retrieve background data transfer policies from the ccf and to update the ccf with
  * the background data transfer policy selected by the NF service consumer.
  *
  * API version: 1.0.0
@@ -14,16 +14,16 @@ package main
 import (
 	"fmt"
 	"free5gc/src/app"
-	"free5gc/src/pcf/logger"
-	"free5gc/src/pcf/service"
-	"free5gc/src/pcf/version"
+	"free5gc/src/ccf/logger"
+	"free5gc/src/ccf/service"
+	"free5gc/src/ccf/version"
 	"os"
 
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 )
 
-var PCF = &service.PCF{}
+var ccf = &service.ccf{}
 
 var appLog *logrus.Entry
 
@@ -33,21 +33,21 @@ func init() {
 
 func main() {
 	app := cli.NewApp()
-	app.Name = "pcf"
+	app.Name = "ccf"
 	fmt.Print(app.Name, "\n")
-	appLog.Infoln("PCF version: ", version.GetVersion())
-	app.Usage = "-free5gccfg common configuration file -pcfcfg pcf configuration file"
+	appLog.Infoln("ccf version: ", version.GetVersion())
+	app.Usage = "-free5gccfg common configuration file -ccfcfg ccf configuration file"
 	app.Action = action
-	app.Flags = PCF.GetCliCmd()
+	app.Flags = ccf.GetCliCmd()
 
 	if err := app.Run(os.Args); err != nil {
-		fmt.Printf("PCF Run err: %v", err)
+		fmt.Printf("ccf Run err: %v", err)
 	}
 
 }
 
 func action(c *cli.Context) {
 	app.AppInitializeWillInitialize(c.String("free5gccfg"))
-	PCF.Initialize(c)
-	PCF.Start()
+	ccf.Initialize(c)
+	ccf.Start()
 }

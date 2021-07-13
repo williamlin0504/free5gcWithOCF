@@ -50,10 +50,9 @@ UserLoc :
 func GetAMreqdata() models.PolicyAssociationRequest {
 	timeNow := time.Now()
 	//d := time.Date(2019, 7, 5, 12, 30, 0, 0, time.UTC)
-	var ueID string = os.Getenv("ueID")
 	amCreateReqData := models.PolicyAssociationRequest{
-		NotificationUri: "http://127.0.0.1:29518/namf-callback/v1/am-policy/"+ueID+"-1",
-		Supi:            ueID,
+		NotificationUri: "http://127.0.0.1:29518/namf-callback/v1/am-policy/imsi-2089300007487-1",
+		Supi:            "imsi-2089300007487",
 		SuppFeat:        "1",
 		Pei:             "123456789123456",
 		RatType:         models.RatType_NR,

@@ -3,8 +3,8 @@ package producer
 import (
 	"free5gc/lib/http_wrapper"
 	"free5gc/lib/openapi/models"
-	"free5gc/src/pcf/context"
-	"free5gc/src/pcf/logger"
+	"free5gc/src/ccf/context"
+	"free5gc/src/ccf/logger"
 	"net/http"
 	"strconv"
 )
@@ -49,9 +49,9 @@ func HandleOAMGetAmPolicyRequest(request *http_wrapper.Request) *http_wrapper.Re
 func OAMGetAmPolicyProcedure(supi string) (response *UEAmPolicys, problemDetails *models.ProblemDetails) {
 	logger.OamLog.Infof("Handle OAM Get Am Policy")
 	response = &UEAmPolicys{}
-	pcfSelf := context.PCF_Self()
+	ccfSelf := context.ccf_Self()
 
-	if val, exists := pcfSelf.UePool.Load(supi); exists {
+	if val, exists := ccfSelf.UePool.Load(supi); exists {
 		ue := val.(*context.UeContext)
 		for _, amPolicy := range ue.AMPolicyData {
 			ueAmPolicy := UEAmPolicy{

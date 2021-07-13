@@ -1,4 +1,4 @@
-package Npcf_SMPolicyControl
+package Nccf_SMPolicyControl
 
 import (
 	"context"

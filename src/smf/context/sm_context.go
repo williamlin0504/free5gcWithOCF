@@ -8,7 +8,7 @@ import (
 	"free5gc/lib/openapi"
 	"free5gc/lib/openapi/Namf_Communication"
 	"free5gc/lib/openapi/Nnrf_NFDiscovery"
-	"free5gc/lib/openapi/Npcf_SMPolicyControl"
+	"free5gc/lib/openapi/Nccf_SMPolicyControl"
 	"free5gc/lib/openapi/models"
 	"free5gc/lib/pfcp/pfcpType"
 	"free5gc/src/smf/logger"
@@ -81,11 +81,11 @@ type SMContext struct {
 	DnnConfiguration models.DnnConfiguration
 
 	// Client
-	SMPolicyClient      *Npcf_SMPolicyControl.APIClient
+	SMPolicyClient      *Nccf_SMPolicyControl.APIClient
 	CommunicationClient *Namf_Communication.APIClient
 
 	AMFProfile         models.NfProfile
-	SelectedPCFProfile models.NfProfile
+	SelectedccfProfile models.NfProfile
 	SmStatusNotifyUri  string
 
 	SMContextState SMContextState
@@ -220,16 +220,16 @@ func (smContext *SMContext) PDUAddressToNAS() (addr [12]byte, addrLen uint8) {
 	return
 }
 
-// PCFSelection will select PCF for this SM Context
-func (smContext *SMContext) PCFSelection() error {
+// ccfSelection will select ccf for this SM Context
+func (smContext *SMContext) ccfSelection() error {
 
-	// Send NFDiscovery for find PCF
+	// Send NFDiscovery for find ccf
 	localVarOptionals := Nnrf_NFDiscovery.SearchNFInstancesParamOpts{}
 
 	rep, res, err := SMF_Self().
 		NFDiscoveryClient.
 		NFInstancesStoreApi.
-		SearchNFInstances(context.TODO(), models.NfType_PCF, models.NfType_SMF, &localVarOptionals)
+		SearchNFInstances(context.TODO(), models.NfType_ccf, models.NfType_SMF, &localVarOptionals)
 	if err != nil {
 		return err
 	}
@@ -239,21 +239,21 @@ func (smContext *SMContext) PCFSelection() error {
 			apiError := err.(openapi.GenericOpenAPIError)
 			problemDetails := apiError.Model().(models.ProblemDetails)
 
-			logger.CtxLog.Warningf("NFDiscovery PCF return status: %d\n", status)
+			logger.CtxLog.Warningf("NFDiscovery ccf return status: %d\n", status)
 			logger.CtxLog.Warningf("Detail: %v\n", problemDetails.Title)
 		}
 	}
 
-	// Select PCF from available PCF
+	// Select ccf from available ccf
 
-	smContext.SelectedPCFProfile = rep.NfInstances[0]
+	smContext.SelectedccfProfile = rep.NfInstances[0]
 
 	// Create SMPolicyControl Client for this SM Context
-	for _, service := range *smContext.SelectedPCFProfile.NfServices {
-		if service.ServiceName == models.ServiceName_NPCF_SMPOLICYCONTROL {
-			SmPolicyControlConf := Npcf_SMPolicyControl.NewConfiguration()
+	for _, service := range *smContext.SelectedccfProfile.NfServices {
+		if service.ServiceName == models.ServiceName_Nccf_SMPOLICYCONTROL {
+			SmPolicyControlConf := Nccf_SMPolicyControl.NewConfiguration()
 			SmPolicyControlConf.SetBasePath(service.ApiPrefix)
-			smContext.SMPolicyClient = Npcf_SMPolicyControl.NewAPIClient(SmPolicyControlConf)
+			smContext.SMPolicyClient = Nccf_SMPolicyControl.NewAPIClient(SmPolicyControlConf)
 		}
 	}
 

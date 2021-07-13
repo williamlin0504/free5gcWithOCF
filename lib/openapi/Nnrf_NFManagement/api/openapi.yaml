@@ -781,7 +781,7 @@ components:
               - start: start
                 pattern: pattern
                 end: end
-          servedPcfInfo:
+          servedccfInfo:
             key:
               rxDiamHost: rxDiamHost
               dnnList:
@@ -1018,7 +1018,7 @@ components:
         allowedNfTypes:
         - null
         - null
-        pcfInfo:
+        ccfInfo:
           rxDiamHost: rxDiamHost
           dnnList:
           - null
@@ -1515,8 +1515,8 @@ components:
           $ref: '#/components/schemas/SmfInfo'
         upfInfo:
           $ref: '#/components/schemas/UpfInfo'
-        pcfInfo:
-          $ref: '#/components/schemas/PcfInfo'
+        ccfInfo:
+          $ref: '#/components/schemas/ccfInfo'
         bsfInfo:
           $ref: '#/components/schemas/BsfInfo'
         chfInfo:
@@ -1676,7 +1676,7 @@ components:
       - SMF
       - AUSF
       - NEF
-      - PCF
+      - ccf
       - SMSF
       - NSSF
       - UDR
@@ -2391,7 +2391,7 @@ components:
       - N6
       - N9
       type: string
-    PcfInfo:
+    ccfInfo:
       example:
         rxDiamHost: rxDiamHost
         dnnList:
@@ -2677,12 +2677,12 @@ components:
       - nausf-auth
       - nausf-sorprotection
       - nnef-pfdmanagement
-      - npcf-am-policy-control
-      - npcf-smpolicycontrol
-      - npcf-policyauthorization
-      - npcf-bdtpolicycontrol
-      - npcf-eventexposure
-      - npcf-ue-policy-control
+      - nccf-am-policy-control
+      - nccf-smpolicycontrol
+      - nccf-policyauthorization
+      - nccf-bdtpolicycontrol
+      - nccf-eventexposure
+      - nccf-ue-policy-control
       - nsmsf-sms
       - nnssf-nsselection
       - nnssf-nssaiavailability
@@ -2847,7 +2847,7 @@ components:
             - start: start
               pattern: pattern
               end: end
-        servedPcfInfo:
+        servedccfInfo:
           key:
             rxDiamHost: rxDiamHost
             dnnList:
@@ -3112,9 +3112,9 @@ components:
             $ref: '#/components/schemas/UpfInfo'
           minProperties: 1
           type: object
-        servedPcfInfo:
+        servedccfInfo:
           additionalProperties:
-            $ref: '#/components/schemas/PcfInfo'
+            $ref: '#/components/schemas/ccfInfo'
           minProperties: 1
           type: object
         servedBsfInfo:
@@ -3367,7 +3367,7 @@ components:
       - SMF
       - AUSF
       - NEF
-      - PCF
+      - ccf
       - SMSF
       - NSSF
       - UDR

@@ -2655,7 +2655,7 @@ components:
             - null
             - null
           pei: pei
-          pcfId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          ccfId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           ausfGroupId: ausfGroupId
           smsfId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           amPolicyReqTriggerList:
@@ -2957,7 +2957,7 @@ components:
           groupList:
           - null
           - null
-          pcfAmPolicyUri: pcfAmPolicyUri
+          ccfAmPolicyUri: ccfAmPolicyUri
           traceData:
             eventList: eventList
             collectionEntityIpv6Addr: 2001:db8:85a3::8a2e:370:7334
@@ -3000,7 +3000,7 @@ components:
               sd: sd
               sst: 51
             smContextRef: smContextRef
-          hpcfId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          hccfId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           restrictedRatList:
           - null
           - null
@@ -3510,7 +3510,7 @@ components:
           - null
           - null
         pei: pei
-        pcfId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        ccfId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         ausfGroupId: ausfGroupId
         smsfId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         amPolicyReqTriggerList:
@@ -3812,7 +3812,7 @@ components:
         groupList:
         - null
         - null
-        pcfAmPolicyUri: pcfAmPolicyUri
+        ccfAmPolicyUri: ccfAmPolicyUri
         traceData:
           eventList: eventList
           collectionEntityIpv6Addr: 2001:db8:85a3::8a2e:370:7334
@@ -3855,7 +3855,7 @@ components:
             sd: sd
             sst: 51
           smContextRef: smContextRef
-        hpcfId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        hccfId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         restrictedRatList:
         - null
         - null
@@ -3925,17 +3925,17 @@ components:
         5gMmCapability:
           format: byte
           type: string
-        pcfId:
+        ccfId:
           format: uuid
           type: string
-        pcfAmPolicyUri:
+        ccfAmPolicyUri:
           type: string
         amPolicyReqTriggerList:
           items:
             $ref: '#/components/schemas/AMPolicyReqTrigger'
           minItems: 1
           type: array
-        hpcfId:
+        hccfId:
           format: uuid
           type: string
         restrictedRatList:
@@ -4413,7 +4413,7 @@ components:
         toReleaseSessionList:
         - null
         - null
-        pcfReselectedInd: true
+        ccfReselectedInd: true
       properties:
         transferStatus:
           $ref: '#/components/schemas/UeContextTransferStatus'
@@ -4422,7 +4422,7 @@ components:
             $ref: '#/components/schemas/PduSessionId'
           minItems: 1
           type: array
-        pcfReselectedInd:
+        ccfReselectedInd:
           type: boolean
       required:
       - transferStatus
@@ -4949,7 +4949,7 @@ components:
             - null
             - null
           pei: pei
-          pcfId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          ccfId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           ausfGroupId: ausfGroupId
           smsfId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           amPolicyReqTriggerList:
@@ -5251,7 +5251,7 @@ components:
           groupList:
           - null
           - null
-          pcfAmPolicyUri: pcfAmPolicyUri
+          ccfAmPolicyUri: ccfAmPolicyUri
           traceData:
             eventList: eventList
             collectionEntityIpv6Addr: 2001:db8:85a3::8a2e:370:7334
@@ -5294,7 +5294,7 @@ components:
               sd: sd
               sst: 51
             smContextRef: smContextRef
-          hpcfId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          hccfId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           restrictedRatList:
           - null
           - null
@@ -5314,7 +5314,7 @@ components:
           - null
           - null
           udmGroupId: udmGroupId
-        pcfReselectedInd: true
+        ccfReselectedInd: true
         targetToSourceData:
           ngapData:
             contentId: contentId
@@ -5381,7 +5381,7 @@ components:
         supportedFeatures:
           pattern: ^[A-Fa-f0-9]*$
           type: string
-        pcfReselectedInd:
+        ccfReselectedInd:
           type: boolean
       required:
       - pduSessions

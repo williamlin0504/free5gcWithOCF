@@ -5,20 +5,20 @@ import (
 	"fmt"
 	"free5gc/lib/openapi"
 	"free5gc/lib/openapi/models"
-	pcf_context "free5gc/src/pcf/context"
-	"free5gc/src/pcf/logger"
-	"free5gc/src/pcf/util"
+	ccf_context "free5gc/src/ccf/context"
+	"free5gc/src/ccf/logger"
+	"free5gc/src/ccf/util"
 	"strings"
 )
 
-func AmfStatusChangeSubscribe(amfInfo pcf_context.AMFStatusSubscriptionData) (
+func AmfStatusChangeSubscribe(amfInfo ccf_context.AMFStatusSubscriptionData) (
 	problemDetails *models.ProblemDetails, err error) {
-	logger.Consumerlog.Debugf("PCF Subscribe to AMF status[%+v]", amfInfo.AmfUri)
-	pcfSelf := pcf_context.PCF_Self()
+	logger.Consumerlog.Debugf("ccf Subscribe to AMF status[%+v]", amfInfo.AmfUri)
+	ccfSelf := ccf_context.ccf_Self()
 	client := util.GetNamfClient(amfInfo.AmfUri)
 
 	subscriptionData := models.SubscriptionData{
-		AmfStatusUri: fmt.Sprintf("%s/npcf-callback/v1/amfstatus", pcfSelf.GetIPv4Uri()),
+		AmfStatusUri: fmt.Sprintf("%s/nccf-callback/v1/amfstatus", ccfSelf.GetIPv4Uri()),
 		GuamiList:    amfInfo.GuamiList,
 	}
 
@@ -29,12 +29,12 @@ func AmfStatusChangeSubscribe(amfInfo pcf_context.AMFStatusSubscriptionData) (
 		logger.Consumerlog.Debugf("location header: %+v", locationHeader)
 
 		subscriptionId := locationHeader[strings.LastIndex(locationHeader, "/")+1:]
-		amfStatusSubsData := pcf_context.AMFStatusSubscriptionData{
+		amfStatusSubsData := ccf_context.AMFStatusSubscriptionData{
 			AmfUri:       amfInfo.AmfUri,
 			AmfStatusUri: res.AmfStatusUri,
 			GuamiList:    res.GuamiList,
 		}
-		pcfSelf.AMFStatusSubsData[subscriptionId] = amfStatusSubsData
+		ccfSelf.AMFStatusSubsData[subscriptionId] = amfStatusSubsData
 	} else if httpResp != nil {
 		if httpResp.Status != localErr.Error() {
 			err = localErr

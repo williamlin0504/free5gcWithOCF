@@ -1,5 +1,5 @@
 /*
- * Npcf_SMPolicyControl
+ * Nccf_SMPolicyControl
  *
  * Session Management Policy Control Service
  *
